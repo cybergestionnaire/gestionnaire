@@ -320,10 +320,11 @@ function searchUserRapid($exp)
 // recherche des utilisateurs dans une ville et renvoi le resultat de la recherche
 function searchUserByCity($id)
 {
-    $sql="SELECT `id_user` , `nom_user` , `prenom_user`
+    $sql="SELECT `id_user` , `nom_user` , `prenom_user`,`status_user`
         FROM `tab_user`
         WHERE `ville_user` =".$id."
-        AND `status_user`=1";
+        AND `status_user`<3
+        ORDER BY `nom_user` ASC ";
     $db=opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);

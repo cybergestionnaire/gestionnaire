@@ -115,7 +115,7 @@ if ($mesno !="")
 		<div class="col-xs-4"><input type="text" class="form-control" name="newcity" placeholder="Nom"></div>
 		<div class="col-xs-3"><input type="text" class="form-control" name="newcodepost" placeholder="Code Postal"></div>
 		<div class="col-xs-3"><input type="text" name="newpays"class="form-control"  placeholder="Pays"></div>
-		<a type="submit" value="Cr&eacute;er"><button class="btn btn-success">Cr&eacute;er</button></a>
+		<a type="submit" value="Cr&eacute;er"><button class="btn btn-primary">Cr&eacute;er</button></a>
 	</div>
 	</form>
 </div>
@@ -138,8 +138,8 @@ for ($i=0;$i<$nbc;$i++)
 			<td><input class="form-control" type="text" name="city" value="<?php echo stripslashes($row["nom_city"]); ?>"></td>
 			<td><input class="form-control" type="text" name="codepost" value="<?php echo $row["code_postale_city"]; ?>"></td>
 			<td><input class="form-control" type="text" name="pays" value="<?php echo stripslashes($row["pays_city"]); ?>"></td>
-			<td><button class="btn btn-success btn-sm"  type="submit" value="modifier">Modifier</button></td>
-			<td><a href="index.php?a=41&act=3&idcity=<?php echo $row["id_city"]; ?>"><button type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></a></td>
+			<td><button class="btn btn-success"  type="submit" value="modifier"><i class="fa fa-edit"></i></button>&nbsp;
+			<a href="index.php?a=41&act=3&idcity=<?php echo $row["id_city"]; ?>"><button type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></a></td>
 			<td><a href="index.php?a=41&act=4&idcity=<?php echo $row["id_city"]; ?>"><?php echo statCityalladh($row["id_city"]); ?> Adh.</a></td>
 		 </tr></form>
 	<?php	
@@ -168,17 +168,19 @@ if ($act == 4)
   else
   {
     $nb = mysqli_num_rows($result);
+    $arraystatus=array(1=>"Actif", 2=>"Inactif");
+   $arraycolor=array(1=>"bg-light-blue", 2=>"bg-yellow");
     echo "<div class=\"box box-primary\">
-	<div class=\"box-header\">
-		<h3 class=\"box-title\">Liste des adh&eacute;rents concern&eacute;s</h3></div>
+	<div class=\"box-header\"><h3 class=\"box-title\">Liste des adh&eacute;rents inscrits dans la commune</h3></div>
     	<div class=\"box-body no-padding\"> <table class=\"table\">
-    	<thead><tr><td>Nom</td><td>Pr&eacute;nom</td><td>Voir</td></tr></thead>";
+    	<thead><tr><th>Nom</th><th>Pr&eacute;nom</th><th></th><th>Voir</th></tr></thead>";
     for ($i=1;$i<=$nb;$i++)
     {
         $row = mysqli_fetch_array($result);
         echo "<tr>
                  <td>".$row["nom_user"]."</td>
                  <td>".$row["prenom_user"]."</td>
+                 <td><span class=\"badge ".$arraycolor[$row['status_user']]."\">".$arraystatus[$row['status_user']]."</span></td>
                  <td><a href=\"index.php?a=1&b=2&iduser=".$row["id_user"]."\">Voir</a></td></tr>";
     }
     echo "</table>";

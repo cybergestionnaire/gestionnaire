@@ -51,7 +51,7 @@ if ($mesno !="")
 <!-- liste des salles existants-->
 <div class="box box-solid box-warning"><div class="box-header"><h3 class="box-title">Liste des Salles</h3>
 <div class="box-tools pull-right">
-				<a href="index.php?a=44&b=1"><button class="btn bg-gray btn-sm"  data-toggle="tooltip" title="Ajouter"><i class="fa fa-plus"></i></button></a>
+				<a href="index.php?a=44&b=1"><button class="btn btn-primary btn-sm"  data-toggle="tooltip" title="Ajouter"><i class="fa fa-plus"></i></button></a>
 			</div></div>
 
 	<div class="box-body no-padding"> <table class="table">
@@ -128,11 +128,7 @@ if ($mesno !="")
 
 <!-- bouton nouvelle salle-->
 <section class="col-lg-3 connectedSortable"> 
-<div class="small-box bg-light-blue">
-                <div class="inner"><h3>&nbsp;</h3><p>Nouvelle salle</p></div>
-		<div class="icon"><i class="ion ion-stop"></i></div>
-<a href="index.php?a=44&b=1" class="small-box-footer">Ajouter <i class="fa fa-arrow-circle-right"></i></a>
-</div>
+
 
 <!-- AIDE -->
 <div class="box">

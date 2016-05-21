@@ -78,7 +78,7 @@ if ($mesno !="")
 <!-- liste des espaces existants-->
 <div class="box box-solid box-warning"><div class="box-header"><h3 class="box-title">Liste des espaces</h3>
 			<div class="box-tools pull-right">
-				<a href="index.php?a=43&b=1"><button class="btn bg-green btn-sm"  data-toggle="tooltip" title="Ajouter"><i class="fa fa-plus"></i></button></a>
+				<a href="index.php?a=43&b=1"><button class="btn btn-primary btn-sm"  data-toggle="tooltip" title="Ajouter"><i class="fa fa-plus"></i></button></a>
 			</div></div>
 	 <div class="box-body no-padding"> <table class="table">
 			<thead> <tr> 
