@@ -1,0 +1,16 @@
+
+
+.error{
+    color:#CC0000;
+    font-weight:bolder;
+}
+.error:before{
+    content:"[ ERREUR ] " ; 
+}
+.writable{
+    color:#00CC00;
+}
+.writable:before{
+    content:"[ OK ] " ;
+}
+
