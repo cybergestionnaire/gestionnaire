@@ -23,9 +23,9 @@
 
 $host = "localhost" ;
 $port = "3306"; 
-$database = "" ;
-$userdb = "" ;
-$passdb = "" ;
+$database = "test" ;
+$userdb = "root" ;
+$passdb = "php1506" ;
 
 
 ?>
