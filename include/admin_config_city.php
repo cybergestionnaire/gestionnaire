@@ -34,41 +34,57 @@ if (isset($_GET["act"])){
 	switch ($act)
 	{
 	  case 1: // creation
-	       $nom = addslashes($_POST["newcity"]);
+	       $nom = htmlentities(addslashes($_POST["newcity"]));
 	       $codepost = $_POST["newcodepost"];
-	       $pays = addslashes($_POST["newpays"]);
+	       $pays =  htmlentities(addslashes($_POST["newpays"]));
+	       
+	   if (!$nom || !$codepost || !$pays)
+    {
+       $mess = getError(4);
+    }
+    else
+    {   
+	       
 	       if (FALSE == addCity($nom, $codepost, $pays))
 	       {
 		   echo getError(0);
 	       }else{
-	       
-		header("Location:index.php?a=41") ;
+	       header("Location:index.php?a=41&mesno=14") ;
+				}
 		}
 	  break;
 	  case 2: // modification
-	       $nom = $_POST["city"];
+	       $nom =  htmlentities($_POST["city"]);
 	       $codepost = $_POST["codepost"];
-	       $pays = $_POST["pays"];
+	       $pays =  htmlentities($_POST["pays"]);
+	       
+	 if (!$nom || !$codepost || !$pays)
+    {
+       $mess = getError(4);
+    }
+    else
+    {    
 	       if (FALSE == modCity($idcity,$nom, $codepost, $pays))
 	       {
-		   echo getError(0);
+					echo getError(0);
 	       }else{
 	       
-		header("Location:index.php?a=41") ;
-		}
+					header("Location:index.php?a=41&mesno=14") ;
+					}
+					}
 	  break;
 	  case 3: // suppression
 	       $errno = supCity($idcity) ;
 	       switch ($errno)
 	       {
-		   case 0: // impossible de joindre la base
-			echo getError(0);
-		   break;
-		   case 1:// la liste des adhrents n'est pas vide
-			echo getError(11);
-		   break;
-	       }
-	  break; 
+					case 0: // impossible de joindre la base
+					echo getError(0);
+					break;
+					case 1:// la liste des adhrents n'est pas vide
+					echo getError(11);
+					break;
+						}
+				break; 
 		
 	
 		
@@ -113,8 +129,8 @@ if ($mesno !="")
 	<form method="post" action="index.php?a=41&act=1">
 	<div class="row">
 		<div class="col-xs-4"><input type="text" class="form-control" name="newcity" placeholder="Nom"></div>
-		<div class="col-xs-3"><input type="text" class="form-control" name="newcodepost" placeholder="Code Postal"></div>
-		<div class="col-xs-3"><input type="text" name="newpays"class="form-control"  placeholder="Pays"></div>
+		<div class="col-xs-3"><input type="text" class="form-control" name="newcodepost" placeholder="Code Postal" maxlength="10"></div>
+		<div class="col-xs-3"><input type="text" name="newpays" class="form-control"  placeholder="Pays"></div>
 		<a type="submit" value="Cr&eacute;er"><button class="btn btn-primary">Cr&eacute;er</button></a>
 	</div>
 	</form>
@@ -136,7 +152,7 @@ for ($i=0;$i<$nbc;$i++)
 	<form action="index.php?a=41&act=2&idcity=<?php echo $row["id_city"] ; ?>" method="post" role="form">
 			<tr>
 			<td><input class="form-control" type="text" name="city" value="<?php echo stripslashes($row["nom_city"]); ?>"></td>
-			<td><input class="form-control" type="text" name="codepost" value="<?php echo $row["code_postale_city"]; ?>"></td>
+			<td><input class="form-control" type="text" name="codepost" value="<?php echo $row["code_postale_city"]; ?>" maxlength="10"></td>
 			<td><input class="form-control" type="text" name="pays" value="<?php echo stripslashes($row["pays_city"]); ?>"></td>
 			<td><button class="btn btn-success"  type="submit" value="modifier"><i class="fa fa-edit"></i></button>&nbsp;
 			<a href="index.php?a=41&act=3&idcity=<?php echo $row["id_city"]; ?>"><button type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></a></td>

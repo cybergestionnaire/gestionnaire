@@ -22,16 +22,13 @@
   include/admin_materiel.php V0.1
 */
 
-// Fichier de gestion des salles ...
-$mesno= $_GET["mesno"];
-if ($mesno !="")
-{
-  echo getError($mesno);
-}
+// Fichier de gestion des espaces ...
+
 
 ?>
-
+<div class="row">
 <!-- DIV accès direct aux autres paramètres-->
+<div class="col-lg-12">
  <div class="box">
 		<div class="box-header">
 			<h3 class="box-title">Param&eacute;trages</h3>
@@ -48,6 +45,17 @@ if ($mesno !="")
 		</div><!-- /.box-body -->
 </div><!-- /.box -->
 
+<?php
+$mesno= $_GET["mesno"];
+if ($mesno !="")
+{
+ 
+ echo getError($mesno);
+ 
+}
+?>
+
+</div></div>
 
 <div class="row">
  <section class="col-lg-3 connectedSortable"> 

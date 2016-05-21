@@ -166,6 +166,8 @@ $mes_48= "<div class=\"alert alert-warning alert-dismissable\"><i class=\"fa fa-
           <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button><b>Attention</b> Le format du mail n'est pas valide</div>" ;
 $mes_49= "<div class=\"alert alert-warning alert-dismissable\"><i class=\"fa fa-warning\"></i>
           <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button><b>Attention</b> La date saisie n'est pas valide</div>" ;
-      
+//form epn
+$mes_50 ="<div class=\"alert alert-warning alert-dismissable\"><i class=\"fa fa-warning\"></i>
+          <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Veuillez d'abord supprimer les salles qui sont attribu&eacute;es &agrave; cet epn !</div>";
 	  
 ?>

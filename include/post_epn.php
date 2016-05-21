@@ -54,7 +54,7 @@ if($b<3){
 if ($act !="" AND $act!=3)  // verife si non vide
 {
   // Traitement des champs a insérer
-    if (!$nom || !$ville )
+    if (!$nom || !$ville || !$mail || !$adresse )
     {
        $mess = getError(4);
     }
@@ -75,6 +75,7 @@ if ($act !="" AND $act!=3)  // verife si non vide
                  {
 										copyhoraires($idespace);
 										copyconfig($idespace,'0');
+										copyconfiglogiciel($idespace);
 					
 										header("Location: ./index.php?a=43&mesno=14");
                  }
@@ -115,14 +116,22 @@ if ($act !="" AND $act!=3)  // verife si non vide
 
 if ($act==3) // supprime un espace
 {
-  if (FALSE == supEspace($id))
-  {
-      header("Location: ./index.php?a=43&mesno=0");
-  }
-  else
-  {
-      header("Location: ./index.php?a=43");
-  }
+  $id       =  $_GET["idespace"];
+   $errno = supEspace($id) ;
+	       switch ($errno)
+	       {
+					case 0: // impossible de joindre la base
+						header("Location:index.php?a=43&mesno=0");
+					break;
+					case 1:// l'espace contient des salles
+						header("Location:index.php?a=43&mesno=50") ;
+					break;
+					case 2:
+						header("Location:index.php?a=43&mesno=14") ;
+					break;
+						}
+  
+ 
 }
 
 

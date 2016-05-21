@@ -118,7 +118,7 @@ echo $mess ;
 			 <div class="input-group"><div class="input-group-addon"><i class="fa fa-fax"></i></div>
     		<input name="fax" type="text" class="form-control" value="<?php echo $fax;?>" data-inputmask='"mask": "0112345678"' data-mask/></div>
     		<br>
-    		 <div class="input-group"><div class="input-group-addon"><i class="fa fa-envelope"></i></div>
+    		 <div class="input-group"><div class="input-group-addon"><i class="fa fa-envelope"></i>*</div>
     		<input name="mail" type="text" class="form-control" value="<?php echo $mail;?>" ></div>
 				
 </div></div></div>				

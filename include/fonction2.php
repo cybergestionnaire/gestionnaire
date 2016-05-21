@@ -3589,6 +3589,22 @@ $db=opendb();
 
 }
 
+function copyconfiglogiciel($idespace){
+	$sql="INSERT INTO `tab_config_logiciel`(`id_config_logiciel`, `id_espace`, `config_menu_logiciel`, `page_inscription_logiciel`, `page_renseignement_logiciel`, `connexion_anim_logiciel`, `bloquage_touche_logiciel`, `affichage_temps_logiciel`, `deconnexion_auto_logiciel`, `fermeture_session_auto`) VALUES ('','".$idespace."','1','0','1','1','1','1','1','0')";
+	$db=opendb();
+ $result = mysqli_query($db,$sql);
+  closedb($db);
+  if (FALSE == $result)
+  {
+      return FALSE ;
+  }
+  else
+  {
+	return TRUE ;
+  }
+	
+}
+
 //
 // modEspace()
 // modifie un espace dans la table espace
@@ -3662,27 +3678,53 @@ $db=opendb();
 // supprime un espace dans la table espace
 function supEspace($id)
 {
- 
-  $sql = "DELETE FROM `tab_espace` WHERE `id_espace` = ".$id." LIMIT 1" ;
-  //supprimer aussi les config correspondante
-  $sql2="DELETE FROM `tab_config` WHERE `id_espace`=".$id." LIMIT 1" ;
-  $sql3="DELETE FROM `tab_config_logiciel` WHERE `id_espace`= ".$id." LIMIT 1" ;
-  $sql4="DELETE FROM `tab_horaire` WHERE `id_epn`=".$id." LIMIT 1" ;
+ //verification qu'il n'y a plus de salle dans l'espace
+ $sql="SELECT `id_salle` FROM `tab_salle` WHERE `id_espace`=".$id;
+ $db=opendb();
+  $result = mysqli_query($db,$sql);
+  closedb($db);
   
-  $db=opendb();
- $result = mysqli_query($db,$sql);
- $result2 = mysqli_query($db,$sql2);
- $result3 = mysqli_query($db,$sql3);
- $result4 = mysqli_query($db,$sql4);
-   closedb($db);
-  if (FALSE == $result)
+  if($result == FALSE)
   {
-      return FALSE;
+     return 0; //erreur !
   }
   else
   {
-      return TRUE;
-  }
+		 $nb = mysqli_num_rows($result);
+    if ($nb > 0 )
+    {
+        return 1; //salles encore attribuees
+    }
+    else
+    {
+			//suppression de l'espace
+			$sql1 = "DELETE FROM `tab_espace` WHERE `id_espace` = ".$id." LIMIT 1" ;
+			//supprimer aussi les config correspondante
+			$sql2="DELETE FROM `tab_config` WHERE `id_espace`=".$id." LIMIT 1" ;
+			$sql3="DELETE FROM `tab_config_logiciel` WHERE `id_espace`= ".$id." LIMIT 1" ;
+			$sql4="DELETE FROM `tab_horaire` WHERE `id_epn`=".$id." LIMIT 1" ;
+			
+			$db=opendb();
+			$result1 = mysqli_query($db,$sql1);
+			$result2 = mysqli_query($db,$sql2);
+			$result3 = mysqli_query($db,$sql3);
+			$result4 = mysqli_query($db,$sql4);
+			
+			closedb($db);
+			if (FALSE == $result4)
+			{
+					return 0;
+			}
+			else
+			{
+					return 2;
+			}
+  
+		}
+	}
+  
+  
+ 
 }
 
 //
