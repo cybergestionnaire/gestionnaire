@@ -3345,18 +3345,42 @@ function modSalle($id,$nom, $espace, $comment)
 // supprime une salle de la table salle
 function supSalle($id)
 {
-  $sql = "DELETE FROM `tab_salle` WHERE `id_salle` = ".$id." LIMIT 1" ;
-  $db=opendb();
- $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
+ //rechercher si la salle ne contient pas d'ordi'
+ $sql="SELECT `id_computer` FROM `tab_computer` WHERE `id_salle`='".$id."' ";
+	$db=opendb();
+	$result = mysqli_query($db,$sql);
+	closedb($db);
+   
+  if($result == FALSE)
   {
-      return FALSE;
+     return 0; //erreur !
   }
   else
   {
-      return TRUE;
-  }
+			
+		$nb = mysqli_num_rows($result);
+		
+    if ($nb > 0 )
+    {
+        return 1; // des ordis dans la salle !
+    }
+    else
+    {
+			//supression de la salle vide
+		$sql1 = "DELETE FROM `tab_salle` WHERE `id_salle` = '".$id."' LIMIT 1" ;
+		$db=opendb();
+		$result1 = mysqli_query($db,$sql1);
+			closedb($db);
+			if (FALSE == $result1)
+			{
+					return 0;
+			}
+			else
+			{
+					return 2;
+			}
+		}
+	}
 }
 
 //
@@ -3475,7 +3499,10 @@ function getAllEPN()
 //retourne les noms des salles de la base
 function getAllsalles()
 {
- $sql = "SELECT `id_salle`, `nom_salle` FROM `tab_salle`  ORDER BY `id_salle`" ;
+ $sql = "SELECT `id_salle` , `nom_salle` , nom_espace
+FROM `tab_salle` , tab_espace
+WHERE tab_salle.`id_espace` = tab_espace.`id_espace`
+ORDER BY `id_salle" ;
     $db=opendb();
    $result = mysqli_query($db,$sql);
     closedb($db);
@@ -3485,14 +3512,17 @@ function getAllsalles()
     }
     else
     {
-        $epn = array();
+        $salle = array();
+        
         $nb= mysqli_num_rows($result);
-        for ($i=1;$i<=$nb;$i++)
+        for ($i=0;$i<$nb;$i++)
         {
             $row = mysqli_fetch_array($result);
-            $epn[$row["id_salle"]] = $row["nom_salle"] ;
+            $salle[$row["id_salle"]] = $row["nom_salle"]." (".$row["nom_espace"].")" ;
         }
-        return $epn ;
+        
+       
+        return $salle ;
     }
 
 
@@ -4186,6 +4216,7 @@ SET `id_epn`='".$epn_r."',
 `id_salle`='".$salles."',
 `anim_avatar`='".$avatar_r."' 
 WHERE id_animateur='".$idanim."' ";
+
 $sql2="UPDATE tab_user SET epn_user='".$epn_r."' WHERE id_user='".$idanim."' ";
 
 $db=opendb();

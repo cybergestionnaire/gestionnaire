@@ -169,5 +169,8 @@ $mes_49= "<div class=\"alert alert-warning alert-dismissable\"><i class=\"fa fa-
 //form epn
 $mes_50 ="<div class=\"alert alert-warning alert-dismissable\"><i class=\"fa fa-warning\"></i>
           <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Veuillez d'abord supprimer les salles qui sont attribu&eacute;es &agrave; cet epn !</div>";
-	  
+          
+//form salle
+$mes_51 ="<div class=\"alert alert-warning alert-dismissable\"><i class=\"fa fa-warning\"></i>
+          <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Veuillez d'abord enlever les ordinateurs de cette salle !</div>";
 ?>

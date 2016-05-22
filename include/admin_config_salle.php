@@ -23,13 +23,11 @@
 */
 
 // Fichier de gestion des salles ...
-$mesno= $_GET["mesno"];
-if ($mesno !="")
-{
-  echo getError($mesno);
-}
+
 ?>
-<!-- DIV acc&egrave;s direct aux autres param&egrave;tres-->
+<div class="row">
+<!-- DIV accès direct aux autres paramètres-->
+<div class="col-lg-12">
  <div class="box">
 		<div class="box-header">
 			<h3 class="box-title">Param&eacute;trages</h3>
@@ -44,6 +42,14 @@ if ($mesno !="")
 			
 		</div><!-- /.box-body -->
 </div><!-- /.box -->
+<?php
+$mesno= $_GET["mesno"];
+if ($mesno !="")
+{
+  echo getError($mesno);
+}
+?>
+</div></div>
 
 <div class="row">
 <section class="col-lg-9 connectedSortable">
@@ -115,7 +121,7 @@ if ($mesno !="")
                     <td><?php echo $nbpost; ?></td>
                     <td><?php echo $row["comment_salle"]; ?></td>
                     <td><a href="index.php?a=44&b=2&idsalle=<?php echo $row["id_salle"];?>"><button class="btn btn-success btn-sm"  type="submit" value="modifier">Modifier</button></a></td>
-                <td><a href="index.php?a=44&b=3&act=3&idsalle=<?php echo $row["id_salle"];?>"><button type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></a></td></tr>
+                <td><a href="index.php?a=44&act=3&idsalle=<?php echo $row["id_salle"];?>"><button type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></a></td></tr>
             	<?php
           	}
         }

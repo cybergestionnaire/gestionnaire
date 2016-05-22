@@ -142,10 +142,10 @@ $state = array(
                     {
                         $row = mysqli_fetch_array($result) ;
                         $testAnim=Ptestanim($row["id_user"]);
-						$row2 = getAnimateur($row["id_user"]);
-						$statut=$state[$row["status_user"]];
-						// Information Utilisateur
-						$salles=explode(";",$row2["id_salle"]);
+													$row2 = getAnimateur($row["id_user"]);
+													$statut=$state[$row["status_user"]];
+													// Information Utilisateur
+													$salles=explode(";",$row2["id_salle"]);
 						//$nomsalles=$sallesarray[$salle[1]];
 						if($row["status_user"]==5){ 
 							$class="text-muted";

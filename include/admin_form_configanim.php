@@ -48,6 +48,11 @@ $b=$_GET["b"];
 		$avatar=$row["anim_avatar"];
 		$epn_r=$row['id_epn'];
 		$salles=explode(";",$row["id_salle"]);
+		//changer l'id de la session_epn pour l'admin connecte qui change ses params
+			if($_SESSION["iduser"]==$idamin){
+				$_SESSION["idepn"]=$epn_r;
+				}
+
 		
     }
     
@@ -57,7 +62,7 @@ $espaces = getAllepn();
    //recupere les salles
 	$sallesarray = getAllsalles();
 	$nbsalle=count($sallesarray);
-	
+
 //array avatars
 $filesavatararray=array();
 $filedir="./img/avatar/";
@@ -65,8 +70,6 @@ $filesavatararray = array_diff(scandir($filedir), array('..', '.'));
 $nbavatar=count($filesavatararray);
 $filesavatararray = array_values($filesavatararray); //réindexer le tableau après avoir enlever lignes vides
 
-//Affichage -----
-echo $mess ;
 
 ?>
 
@@ -136,14 +139,15 @@ if ($_GET["mess"] == "ok")
 	<p >Indiquez la (ou les) salle(s) de la consultation internet qui sera surveill&eacute;e par l'animateur</p>
   	 <?php 
      
-	for ($x=1;$x<=$nbsalle;$x++){
 	
-	if (in_array($x,$salles))  { 
+	foreach ($sallesarray as $key => $value){
+	
+	if (in_array($key,$salles))  { 
 	$check = "checked"; 
 	} else {
 	$check = ''; 
 	}
-		echo "<div class=\"checkbox\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"salle_r[]\" value=".$x."  ".$check.">&nbsp;".$sallesarray[$x]."&nbsp;(".getEpnSalle($x).") </div>";
+		echo "<div class=\"checkbox\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"salle_r[]\" value=".$key."  ".$check.">&nbsp;".$value."</div>";
 	}
 	 ?>
     

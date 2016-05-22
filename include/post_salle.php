@@ -27,9 +27,9 @@
 $act      =  $_GET["act"];
 $id       =  $_GET["idsalle"];
 
-$nom     = addslashes($_POST["nom"]) ;
-$espace      = addslashes($_POST["espace"]) ;
-$comment = addslashes($_POST["comment"]) ;
+$nom     = htmlentities(addslashes($_POST["nom"])) ;
+$espace      = htmlentities(addslashes($_POST["espace"])) ;
+$comment = htmlentities(addslashes($_POST["comment"])) ;
 
 if ($act !="" AND $act!=3)  // verife si non vide
 {
@@ -66,15 +66,25 @@ if ($act !="" AND $act!=3)  // verife si non vide
         }
     }
 }
+
 if ($act==3) // supprime une salle
 {
-  if (FALSE == supSalle($id))
-  {
-      header("Location: ./index.php?a=44mesno=");
-  }
-  else
-  {
-      header("Location: ./index.php?a=44");
-  }
+ $id =  $_GET["idsalle"];
+  $errno = supSalle($id) ;
+  
+	       switch ($errno)
+	       {
+					case 0: // impossible de joindre la base
+						header("Location:index.php?a=44&mesno=0");
+					break;
+					case 1:// des postes sont dans la salle
+						header("Location:index.php?a=44&mesno=51") ;
+					break;
+					case 2: //reussi
+						header("Location:index.php?a=44&mesno=14") ;
+					break;
+						}
+  
+  
 }
 ?>

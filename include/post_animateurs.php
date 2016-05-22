@@ -17,7 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
  2006 Namont Nicolas
- 
+
 
  include/post_animateur.php V0.1
 */
@@ -60,13 +60,13 @@ if ($b==1) // creation
 	
 	if (!$epn_r || !$salles )
 		  {
-			 $mess = getError(50);
+			 $mess = getError(13);
 		  }
 		  else
 		  {
 			if (FALSE == modifparamAnim($idanim,$epn_r,$salles,$avatar_r))
 					  {
-						header("Location:index.php?a=50&idanim=".$idanim."&mesno=50");
+						header("Location:index.php?a=50&idanim=".$idanim."&mesno=0");
 					  }
 					  else
 					  {
