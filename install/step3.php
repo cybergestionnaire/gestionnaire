@@ -28,6 +28,8 @@ session_start() ;
  **/
 $file = '../connect_db.php';
 $str = file_get_contents($file);
+
+//modification et correction des chemins
 $str = preg_replace("#host = \"(.*)\"#", "host = \"".$_SESSION['db']['db_host']."\"", $str);
 $str = preg_replace("#port = \"(.*)\"#", "port = \"".$_SESSION['db']['db_port']."\"", $str);
 $str = preg_replace("#database = \"(.*)\"#", "database = \"".$_SESSION['db']['db_name']."\"", $str);
@@ -621,6 +623,24 @@ $query[] = "CREATE TABLE `tab_resa` (
   
   PRIMARY KEY  (`id_resa`)
 ) ENGINE=MyISAM";
+
+
+
+
+//table reseau
+$query[] = "DROP TABLE IF EXISTS `tab_reseau`";
+$query[] = "CREATE TABLE `tab_reseau` (
+`id_reseau` int(11) NOT NULL auto_increment,
+  `res_nom` varchar(200) NOT NULL,
+  `res_adresse` varchar(300) NOT NULL,
+  `res_ville` int(11) NOT NULL,
+  `res_logo` varchar(200) NOT NULL,
+  `res_courrier` int(11) NOT NULL,
+  `res_activation` int(11) NOT NULL,
+  PRIMARY KEY  (`id_reseau`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8  ;";
+
+$query[]="INSERT INTO `tab_reseau`(`id_reseau`, `res_nom`, `res_adresse`, `res_ville`, `res_tel`, `res_mail`, `res_logo`, `res_courrier`, `res_activation`) VALUES (1,'nom de votre reseau','1, rue du libre',1,'00 00 00 00 00','mail@mail.com','','1','1')";
 
 //table des salles
 $query[] = "DROP TABLE IF EXISTS `tab_salle` ";
