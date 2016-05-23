@@ -26,16 +26,15 @@ session_start() ;
  * CREATION DU FICHIER DE CONFIGURATION
  *
  **/
-$handle = @fopen('../connect_db.php','a+');
-$string = (string)'
-$host = "'.$_SESSION['db']['db_host'].'" ;
-$port = "'.$_SESSION['db']['db_port'].'"; 
-$database = "'.$_SESSION['db']['db_name'].'" ;
-$userdb = "'.$_SESSION['db']['db_user'].'" ;
-$passdb = "'.$_SESSION['db']['db_pass'].'" ;
-?>' ;
+$file = '../connect_db.php';
+$str = file_get_contents($file);
+$str = preg_replace("#host = \"(.*)\"#", "host = \"".$_SESSION['db']['db_host']."\"", $str);
+$str = preg_replace("#port = \"(.*)\"#", "port = \"".$_SESSION['db']['db_port']."\"", $str);
+$str = preg_replace("#database = \"(.*)\"#", "database = \"".$_SESSION['db']['db_name']."\"", $str);
+$str = preg_replace("#userdb = \"(.*)\"#", "userdb = \"".$_SESSION['db']['db_user']."\"", $str);
+$str = preg_replace("#passdb = \"(.*)\"#", "passdb = \"".$_SESSION['db']['db_pass']."\"", $str);
 
-if ( FALSE == @fwrite($handle, $string))
+if ( FALSE == file_put_contents($file, $str))
 {
     $config_class = 'error';
     $config = '<span class="error">Une erreur s\'est produite lors de la cr&eacute;ation du fichier de configuration</span>'; 

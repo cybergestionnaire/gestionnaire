@@ -37,13 +37,14 @@ switch ($actarif)
 		switch($typetarif) {
 			
 			case 1: //impressions et divers
-				$nomtarif = addslashes($_POST["newnomtarif"]);
+				$nomtarif = htmlentities(addslashes($_POST["newnomtarif"]));
 				$prixtarif=$_POST["newprixtarif"];
-				$comment=addslashes($_POST["newdescriptiontarif"]);
+				if(is_numeric($prixtarif)){$prixtarif=$prixtarif; }else{ $prixtarif="";}
+				$comment=htmlentities(addslashes($_POST["newdescriptiontarif"]));
 				$categoryTarif=$_POST["catTarif"];
 				$duree="0"; //0=illimité
 			 
-			 if (!$nomtarif | !$prixtarif )
+			 if (!$nomtarif || !$prixtarif )
 				{
 				$mess= getError(4) ; //autres champs manquants
 				}
@@ -60,10 +61,10 @@ switch ($actarif)
 			break;
 			 
 			 case 2: //ateliers
-				$nomtarif = addslashes($_POST["newnomtarifa"]);
+				$nomtarif = htmlentities(addslashes($_POST["newnomtarifa"]));
 				$prixtarif=$_POST["newprixtarifa"];
 				//$prixtarif=preg_replace("/[^0-9]/","",$prixtarif0); 
-				$comment=addslashes($_POST["newdescriptiontarifa"]);
+				$comment=htmlentities(addslashes($_POST["newdescriptiontarifa"]));
 				$categoryTarif=5;
 				$typeduree=$_POST["typedureetarifa"]; //0=illimite
 				if($typeduree>0){
@@ -87,10 +88,10 @@ switch ($actarif)
 			break;
 			
 			case 3: //consult
-			$nom_forfait= addslashes($_POST["nom_forfait"]);
+			$nom_forfait= htmlentities(addslashes($_POST["nom_forfait"]));
 			$prix_forfait = $_POST["prix_forfait"];
 			$critere_forfait= "";
-			$comment_forfait= addslashes($_POST["comment_forfait"]);
+			$comment_forfait= htmlentities(addslashes($_POST["comment_forfait"]));
 			$date_debut_forfait = date('d/m/Y');
 			$date_creat_forfait     = date("d/m/Y");
 		
@@ -173,9 +174,9 @@ switch ($actarif)
 	
 		if($categoryTarif<6) {
 			//categories 1 à 5 impression et ateliers
-				$nomtarif = addslashes($_POST["nomtarif"]);
+				$nomtarif = htmlentities(addslashes($_POST["nomtarif"]));
 				$prixtarif=$_POST["prixtarif"];
-				$desctarif=addslashes($_POST["descriptiontarif"]);
+				$desctarif=htmlentities(addslashes($_POST["descriptiontarif"]));
 				$typeduree=$_POST["typedureetarif"]; //0=illimite
 				if($typeduree>0){
 					$duree=$_POST["dureetarif"].'-'.$_POST["typedureetarif"];
@@ -210,9 +211,9 @@ switch ($actarif)
 			*/
 		
 			$idforfait=$_POST["id_forfait"];
-			$nom_forfait= addslashes($_POST["nom_forfait"]);
+			$nom_forfait= htmlentities(addslashes($_POST["nom_forfait"]));
 			$prix_forfait = $_POST["prix_forfait"];
-			$comment_forfait= addslashes($_POST["commentaire_forfait"]);
+			$comment_forfait= htmlentities(addslashes($_POST["commentaire_forfait"]));
 									
 			//pour une affectation occasionnelle
 			if($_POST["temps_affectation_occasionnel"]>0){
@@ -243,6 +244,7 @@ switch ($actarif)
 				}
 			
 			$espacesselected=$_POST['espace'];
+			
 			///Modification des données dans la base
 			if (!$idforfait || !$prix_forfait || !$type_forfait )
 				{

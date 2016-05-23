@@ -39,13 +39,6 @@ if (isset($tarif_r)){
 	$ptarif=1;
 	}
 
-
-$mesno= $_GET["mesno"];
-if ($mesno !="")
-{
-  echo getError($mesno);
-}
-
 $espaces = getAllepn();
 // tableau unit&eacute;s pour les ateliers
 $dureetype=array(0=>'Illimit&eacute;e', 
@@ -96,6 +89,18 @@ $dureetype=array(0=>'Illimit&eacute;e',
 			
 		</div><!-- /.box-body -->
 </div><!-- /.box -->
+<?php
+$mesno= $_GET["mesno"];
+if ($mesno !="")
+{
+  echo getError($mesno);
+}
+
+if($mess!=""){
+echo $mess;
+}
+?>
+
 </div>
 </div>
  <div class="row">
