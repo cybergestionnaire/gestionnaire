@@ -113,15 +113,16 @@ function checkUser($log,$pass)
 {
   if ($log !="" AND $pass !="")
   {
-      $sql = "SELECT `id_user`,`login_user` , `status_user`,`epn_user`
+      $db=opendb();
+      $log = mysqli_real_escape_string($db, $log);
+      $sql = "SELECT `id_user`,`login_user` , `status_user`
            FROM `tab_user`
            WHERE `login_user` = '".$log."'
            AND `pass_user` = '".passwd($pass)."'
-          ";
-      $db=opendb();
-        $log = mysqli_real_escape_string($db, $log);
+           LIMIT 0,1 ";
       $result= mysqli_query($db,$sql);
       closedb($db);
+      
       if (mysqli_num_rows($result) == 1)
       {
           $row = mysqli_fetch_array($result);
@@ -131,19 +132,7 @@ function checkUser($log,$pass)
           $_SESSION["iduser"] = $row["id_user"];
 					$_SESSION["idepn"]=$row["epn_user"];
 	 
-		//epn de rattachment par default
-		/*
-		 if ($row["status_user"]==3 OR $row["status_user"]==4)
-		 { 
-		 $sqla="SELECT `id_epn` FROM `rel_user_anim` WHERE `id_animateur`='".$row["id_user"]."' ";
-		 $db=opendb();
-			$resulta= mysqli_query($db,$sqla);
-			closedb($db);
-			$epna=mysqli_fetch_array($resulta);
-			$_SESSION["idepn"]=$epna["id_epn"];
 		
-		 }
-		 	*/
 		  //enregistrement de la visite		  
       $sql = "UPDATE tab_user SET lastvisit_user='".date("Y-m-d")."' WHERE `id_user`=".$_SESSION['iduser'] ;
             $db=opendb();
