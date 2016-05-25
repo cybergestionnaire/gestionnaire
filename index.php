@@ -113,16 +113,8 @@ $couleur=$couleurArray[$epnspec["couleur_espace"]];
     <link href="template/dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
     <!-- iCheck -->
     <link href="template/plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />
-    <!-- Morris chart -->
-    <link href="template/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
-    <!-- jvectormap -->
-    <link href="template/plugins/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
     <!-- Date Picker -->
     <link href="template/plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />
-    <!-- Daterange picker -->
-    <link href="template/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
-    <!-- bootstrap wysihtml5 - text editor -->
-    <link href="template/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
 	<!-- Select2 -->
     <link href="template/plugins/select2/select2.min.css" type="text/css" rel="stylesheet" >
 		 <!-- iCheck -->
@@ -138,8 +130,6 @@ $couleur=$couleurArray[$epnspec["couleur_espace"]];
 	
 	<script src="js/ckeditor/ckeditor.js"></script>
 	
- <script src="template/plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
-  <script src="template/plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
  
 	<link href='rome-master/dist/rome.css' rel='stylesheet' type='text/css' />
 	
@@ -331,14 +321,14 @@ $couleur=$couleurArray[$epnspec["couleur_espace"]];
  <!--   <script>
       $.widget.bridge('uibutton', $.ui.button);
     </script>-->
+    <script src="template/plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
+    <script src="template/plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
    
 	 
     <script src="template/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>    
   
     <!-- datepicker -->
     <script src="template/plugins/datepicker/bootstrap-datepicker.js" type="text/javascript"></script>
-    <!-- Bootstrap WYSIHTML5 -->
-    <script src="template/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
     
 		<script src="template/plugins/select2/select2.full.min.js"></script>
     <!-- Slimscroll -->
