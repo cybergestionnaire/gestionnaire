@@ -57,7 +57,7 @@ $db_pass ='';
     
     
     /**
-     * Test de la connexion a la base de donnÈes
+     * Test de la connexion a la base de donnees
           * @return bool TRUE ou FALSE
      **/
 function testDb($array){
@@ -73,7 +73,7 @@ $sql = new mysqli($array['db_host'], $array['db_user'],$array['db_pass'], $array
     
 }
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr" class="lockscreen">
 <head>
     <title>Installation de Cyber-Gestionnaire</title>
@@ -93,13 +93,12 @@ $sql = new mysqli($array['db_host'], $array['db_user'],$array['db_pass'], $array
 </head>
 <body class="register-page">
     <div class="register-box">
-      <div class="register-logo">Installation Etape 2 / 3</div>
+        <div class="register-logo">Installation Etape 2 / 3</div>
      
-     <div class="register-box-body"> 
-    <form method="post" action="step2.php">
-       <p class="login-box-msg">
+        <div class="register-box-body"> 
+        <form method="post" action="step2.php">
             <h4>Param&egrave;tres de connexion &agrave; la base de donn&eacute;es</h4>
-            <p >Cette &eacute;tape vous permet de d&eacute;finir vos param&ecirc;tres de connexions &agrave; la base de donn&eacute;es .<br/>
+            <p >Cette &eacute;tape vous permet de d&eacute;finir vos param&egrave;tres de connexions &agrave; la base de donn&eacute;es .<br/>
             <br/><strong>Attention !!</strong> Ceci va &eacute;craser la base si celle ci contient d&eacute;j&agrave; des tables ou des donn&eacute;es, les donn&eacute;es
             seront perdues. Si vous utilisez une version pr&eacute;c&eacute;dente de Cybermin (V1.0) vous devez cr&eacute;er une autre base de donn&eacute;es
             ou sauvegarder et importer vos donn&eacute;es ult&eacute;rieurement. Attention &agrave; la casse (Maj ou Min) !</p>
@@ -108,26 +107,31 @@ $sql = new mysqli($array['db_host'], $array['db_user'],$array['db_pass'], $array
                 echo '<span class="error">'.$mess.'</span>' ;
             }
             ?>
-	 <div class="form-group has-feedback"><label>Nom ou adresse IP de l'hote <a href="#" onclick="showTip(1)">?</a></label>
-			<input type="text" name="db_host" class="form-control" value="<?php echo $db_host;?>" required>  </div>
+            <div class="form-group has-feedback">
+                <label>Nom ou adresse IP de l'hote <a href="#" onclick="showTip(1)">?</a></label>
+                <input type="text" name="db_host" class="form-control" value="<?php echo $db_host;?>" required>
+            </div>
             
-    <div class="form-group has-feedback"><label>Port de la base de donn&eacute;es  <a href="#" onclick="showTip(2)">?</a></label>
-			<input type="text" name="db_port" class="form-control" value="<?php echo $db_port;?>"/> </div>
-		
-   <div class="form-group has-feedback"><input type="text" name="db_user" class="form-control" value="<?php echo $db_user;?>" placeholder="Utilisateur" required></div>
+            <div class="form-group has-feedback">
+                <label>Port de la base de donn&eacute;es  <a href="#" onclick="showTip(2)">?</a></label>
+                <input type="text" name="db_port" class="form-control" value="<?php echo $db_port;?>"/>
+            </div>
+
+            <div class="form-group has-feedback"><input type="text" name="db_user" class="form-control" value="<?php echo $db_user;?>" placeholder="Utilisateur" required></div>
             
-    <div class="form-group has-feedback"><input type="text" class="form-control" name="db_pass" value="<?php echo $db_pass;?>" placeholder="mon mot de passe" required></div>
+            <div class="form-group has-feedback"><input type="text" class="form-control" name="db_pass" value="<?php echo $db_pass;?>" placeholder="mon mot de passe" required></div>
     
-     <div class="form-group has-feedback"><input type="text" class="form-control" name="db_name" value="<?php echo $db_name;?>" placeholder="nom de la base sql" required></div>
+            <div class="form-group has-feedback"><input type="text" class="form-control" name="db_name" value="<?php echo $db_name;?>" placeholder="nom de la base sql" required></div>
      
-    <div class="row">
-     <div class="col-xs-6">	<button  type="submit" class="btn bg-blue btn-block" name="step1" value="Etape 1 "/><i class="fa fa-arrow-circle-left "></i> &nbsp;Etape 1</button></div>
+            <div class="row">
+                <div class="col-xs-6">	<button  type="submit" class="btn bg-blue btn-block" name="step1" value="Etape 1 "><i class="fa fa-arrow-circle-left "></i> &nbsp;Etape 1</button></div>
      
-			 <div class="col-xs-6">	<button  type="submit" class="btn bg-blue btn-block"  name="step3" value="Etape 3"/> Etape 3&nbsp; <i class="fa fa-arrow-circle-right"></i></button></div>
-		</div>
+                <div class="col-xs-6">	<button  type="submit" class="btn bg-blue btn-block"  name="step3" value="Etape 3"> Etape 3&nbsp; <i class="fa fa-arrow-circle-right"></i></button></div>
+            </div>
         
-    </form>
-    </div></div>
+        </form>
+        </div><!-- register-box-body -->
+    </div><!-- register-box -->
     <!-- jQuery 2.1.3 -->
     <script src="../template/plugins/jQuery/jQuery-2.1.3.min.js"></script>
     <!-- Bootstrap 3.3.2 JS -->
