@@ -320,7 +320,7 @@ $query[] = "CREATE TABLE `tab_config` (
   `duree_resarapide` int(11) NOT NULL,
   PRIMARY KEY (`id_config`)
 ) ENGINE=MyISAM";
-$query[] = "INSERT INTO `tab_config`(`id_config`, `activer_console`, `name_config`, `unit_default_config`, `unit_config`, `maxtime_config`, `maxtime_default_config`, `inscription_usagers_auto`, `message_inscription`, `id_espace`, `nom_espace`, `activation_forfait`, `resarapide`, `duree_resarapide`) VALUES (1,1,'1.1',15,15,120,120,1,'message par defaut',1,'EPN Test',1,1,60)";
+$query[] = "INSERT INTO `tab_config`(`id_config`, `activer_console`, `name_config`, `unit_default_config`, `unit_config`, `maxtime_config`, `maxtime_default_config`, `inscription_usagers_auto`, `message_inscription`, `id_espace`, `nom_espace`, `activation_forfait`, `resarapide`, `duree_resarapide`) VALUES (1,1,'1.3',15,15,120,120,1,'message par defaut',1,'EPN Test',1,1,60)";
 
 
 //table config logiciels
@@ -549,8 +549,8 @@ $query[] = "CREATE TABLE `tab_logs` (
   PRIMARY KEY (`id_log`)
 ) ENGINE=MyISAM ";
 $query[] = "INSERT INTO `tab_logs` (`id_log`,  `log_type`,`log_date`, `log_MAJ`,`log_valid`,`log_comment`) 
-VALUES (1,'maj',NOW(),'1.0',1,'Installation de la version 1.0 par la procedure installation complete'),
-(2,'bac',NOW(),'1.0',1,'creation de la base de donnee')";
+VALUES (1,'maj',NOW(),'1.3',1,'Installation de la version 1.3 par la procedure installation complete'),
+(2,'bac',NOW(),'1.3',1,'creation de la base de donnee')";
 
 //table messages epn connect
 $query[] = "DROP TABLE IF EXISTS `tab_message_epnconnect`";
@@ -635,6 +635,8 @@ $query[] = "CREATE TABLE `tab_reseau` (
   `res_adresse` varchar(300) NOT NULL,
   `res_ville` int(11) NOT NULL,
   `res_logo` varchar(200) NOT NULL,
+  `res_tel` varchar(30) NOT NULL,
+  `res_mail` varchar(200) NOT NULL,
   `res_courrier` int(11) NOT NULL,
   `res_activation` int(11) NOT NULL,
   PRIMARY KEY  (`id_reseau`)
@@ -829,7 +831,7 @@ $link = mysqli_connect($_SESSION['db']['db_host'],$_SESSION['db']['db_user'],$_S
 
 foreach ($query AS $value)
 {
-if (mysqli_query($link, utf8_decode($value)) == FALSE) {
+    if (mysqli_query($link, utf8_decode($value)) == FALSE) {
        $error = 1 ;
         break ;   
     }
@@ -847,14 +849,14 @@ else
     $db = 'Cr&eacute;ation de la base de donn&eacute;es'; 
 }
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr"  class="lockscreen">
 <head>
     <title>Installation de Cyber-Gestionnaire</title>
-   <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
     <script type="text/javascript" src="script.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
           <!-- Bootstrap 3.3.2 -->
     <link href="../template/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- Font Awesome Icons -->
@@ -866,31 +868,38 @@ else
 </head>
 <body class="register-page">
     <div class="register-box">
-<div class="register-logo">Installation Etape 3 / 3</div>
+        <div class="register-logo">Installation Etape 3 / 3</div>
      
-     <div class="register-box-body"> 
+        <div class="register-box-body"> 
      
-        <h4>Fin de l'installation</h4>
-        <ul>
-            <li class="<?php echo $config_class ;?>"><?php echo $config ;?></li>
-            <li class="<?php echo $db_class ;?>"><?php echo $db ;?></li>
-        </ul>  
-        <p class="login-box-msg">
-        <strong>Bravo !! Votre installation est d&eacute;sormais termin&eacute;e.</strong><br/><br/>
-        Vous pouvez vous connecter &agrave; l'application. Utilisez les login/mot de passe suivants:
-        </p>
-        <ul>
-        <li>Login : <strong>admin</strong></li>
-        <li>Mot de passe : <strong>admin</strong></li>
-        </ul>
-       </p>
+            <h4>Fin de l'installation</h4>
+            <ul>
+                <li class="<?php echo $config_class ;?>"><?php echo $config ;?></li>
+                <li class="<?php echo $db_class ;?>"><?php echo $db ;?></li>
+            </ul>  
+<?php if (FALSE == isset($error))
+{   ?>
+            <p class="login-box-msg">
+            <strong>Bravo !! Votre installation est d&eacute;sormais termin&eacute;e.</strong><br/><br/>
+            Vous pouvez vous connecter &agrave; l'application. Utilisez les login/mot de passe suivants:
+            </p>
+            <ul>
+            <li>Login : <strong>admin</strong></li>
+            <li>Mot de passe : <strong>admin</strong></li>
+            </ul>
        
-        <a href="../index.php">	<button  type="submit" class="btn bg-blue btn-block" /> Accedez &agrave; Cyber-Gestionnaire&nbsp; <i class="fa fa-arrow-circle-right"></i></button></a>
-        <br/>
-        <p class="login-box-msg">
-        Par mesure de s&eacute;curit&eacute; nous vous conseillons de supprimer le dossier install, et de changer le mot de passe du compte "admin"
-        </p> 
-    
-    </div></div>
+            <a href="../index.php"  class="btn bg-blue btn-block"> Accedez &agrave; Cyber-Gestionnaire&nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+            <br/>
+            <p class="login-box-msg">
+            Par mesure de s&eacute;curit&eacute; nous vous conseillons de supprimer le dossier install, et de changer le mot de passe du compte "admin"
+            </p> 
+<?php } else { ?>
+            <p class="login-box-msg">
+            <strong>Il y a eu une erreur dans la cr&eacute;ation de la base.</strong><br/><br/>
+            Pour une raison inconnue, l'installation de CyberGestionnaire a &eacute;chou&eacute;. Merci de demander de l'aide sur <a href="http://animepn.openphpbb.com/forum">http://animepn.openphpbb.com/forum</a>.
+            </p>
+<?php } ?>
+        </div><!-- register-box-body -->
+    </div><!-- register-box -->
 </body>
 </html>
