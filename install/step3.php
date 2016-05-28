@@ -425,7 +425,7 @@ $query[] = "CREATE TABLE `tab_espace` (
    `mail_espace` VARCHAR( 300 ) COLLATE latin1_general_ci NOT NULL,
  PRIMARY KEY (`id_espace`)
 ) ENGINE=MyISAM";
-$query[] ="INSERT INTO `tab_espace`(`id_espace`, `nom_espace`, `id_city`, `adresse`, `tel_espace`, `fax_espace`, `logo_espace`, `couleur_espace`,`mail_espace`) VALUES(1, 'Epn Test', 1, '45, rue franklin roosevelt','0011223344','5566778899', 1, 1,'mail@mail.com');";
+$query[] ="INSERT INTO `tab_espace`(`id_espace`, `nom_espace`, `id_city`, `adresse`, `tel_espace`, `fax_espace`, `logo_espace`, `couleur_espace`,`mail_espace`) VALUES(1, 'Epn Test', 1, '45, rue franklin roosevelt','0011223344','5566778899', 'CyberGestionnaire.png', 1,'mail@mail.com');";
 
 //
 // Structure de la table `tab_forfait`
