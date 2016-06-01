@@ -1,4 +1,4 @@
-<?php
+<?php   
 /*
      This file is part of Cybermin.
 
@@ -31,9 +31,14 @@
 	<?php
 	 //photo de profil
 	if( $_SESSION["status"]==3 OR  $_SESSION["status"]==4){
-	$rowa = getAvatar($_SESSION["iduser"]);
-	$avatar="img/avatar/".$rowa["anim_avatar"];
-	}else{
+        $rowa = getAvatar($_SESSION["iduser"]);
+
+        if (!isset($rowa["anim_avatar"]) || $rowa["anim_avatar"] == "") {
+            $avatar = "img/avatar/default.png";
+        } else {
+            $avatar="img/avatar/".$rowa["anim_avatar"];
+        }
+	} else {
 		$resultuser=getUser($_SESSION["iduser"]);						
 		$nomSE=str_replace(CHR(32),"",$resultuser['nom_user']);
 		$prenomSE=str_replace(CHR(32),"",$resultuser['prenom_user']);
