@@ -3382,9 +3382,13 @@ $sql = "DELETE FROM `tab_pretcable` WHERE `id_pret`=".$id ;
 // getAllcity()
 // recupere les villes et renvoile resultat sous la forme d'un tableau
 
-function getAllCityname()
+function getAllCityname($ordreAlpha = false)
 {
-    $sql = "SELECT `id_city`,`nom_city` FROM `tab_city` ORDER BY `id_city`" ;
+    if ($ordreAlpha) {
+      $sql = "SELECT `id_city`,`nom_city` FROM `tab_city` ORDER BY `nom_city`" ;
+    } else {
+      $sql = "SELECT `id_city`,`nom_city` FROM `tab_city` ORDER BY `id_city`" ;
+    }
     $db=opendb();
     $result = mysqli_query($db,$sql);
     closedb($db);
