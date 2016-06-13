@@ -24,7 +24,7 @@
 */
  //declencher les MAJ, verifier la version dans la tab_config
  $versionactuelle=getMajConfigVersion($_SESSION["idepn"]);
- $versionew="1.2";
+ $versionew="1.3";
 
  
 ?>
@@ -46,7 +46,7 @@ if($testbdd==FALSE){
 		?>
 		<div class="col-md-6">
  <div class="box box-danger"><div class="box-header"> 
-	<i class="fa fa-warning"></i><h3 class="box-title">Mise à jour de version depuis la version 1.1 vers la <?php echo $versionew; ?></h3></div>
+	<i class="fa fa-warning"></i><h3 class="box-title">Mise à jour de version depuis la version <?php echo $versionactuelle; ?> vers la <?php echo $versionew; ?></h3></div>
 
 	<div class="box-body">
 		<p>Cela fait un mois que la base de donnée n'a pas été sauvegardée, cliquez sur le bouton pour la lancer avant de faire toute mise à jour !</p>
@@ -65,7 +65,7 @@ if($testbdd==FALSE){
 <?php 
 //1. ajout des tables
 
-
+/*
 	$row1=Tab_ins1(); 
 		if ($row1=="echec"){
 				$error.= "Echec impossible Modification de la table des preinscriptions (1)"." \r\n"; 
@@ -114,7 +114,8 @@ if($testbdd==FALSE){
 		
 	
 	
-		
+		*/
+        include("upgrade-database.php");
 		echo '</div></div></div>';
 		$testmaj='ok';
 	}
@@ -155,7 +156,7 @@ if($testbdd==FALSE){
 			$error.= "Echec impossible d'ecrire dans la table des logs"." \r\n"; 
 	}else{
 		//inscrire l'ensemble des erreurs dans le fichier log de la version 				
-		if($error!=""){	gFilelog(addslashes($error),"log_majv1.2.txt");	}
+		if($error!=""){	gFilelog(addslashes($error),"log_majv1.3.txt");	}
 	
 			
 		//vider les variables

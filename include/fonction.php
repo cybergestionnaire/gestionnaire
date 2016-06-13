@@ -42,6 +42,7 @@ function opendb()
        }
    else
 	{
+        mysqli_query($db, "SET NAMES 'utf8'");
     	return $db ;
 	}
 }     
