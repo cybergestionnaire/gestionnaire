@@ -210,6 +210,10 @@ $couleur=$couleurArray[$epnspec["couleur_espace"]];
 				
 				$rowa = getAvatar($_SESSION["iduser"]);
 				$avatar=$rowa["anim_avatar"];
+                //echo "<br><h1>avatar = {$avatar}</h1><br>";
+                if (!isset($avatar) || $avatar == "") {
+                    $avatar = "default.png";
+                }
 				
 				?>
                                     <img src="img/avatar/<?php echo $avatar; ?>" class="img-circle" alt="" />

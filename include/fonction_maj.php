@@ -13,7 +13,7 @@ new BackupMySQL(array(
 	));
 
 $sql="INSERT INTO `tab_logs`(`id_log`, `log_type`, `log_date`, `log_MAJ`, `log_valid`, `log_comment`) 
-	VALUES ('','bac' ,NOW(), '1.2','1', 'Backup integral de la base effectue') ";
+	VALUES ('','bac' ,NOW(), '1.3','1', 'Backup integral de la base effectue') ";
 	
 $db=opendb();
 $result = mysqli_query($db,$sql);

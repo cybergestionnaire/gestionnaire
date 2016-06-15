@@ -78,7 +78,7 @@ if ($logadh==TRUE){ echo '<div class="col-md-4"> <div class="alert alert-success
 //***** Fonctions administrateur ONLY MAJ + Backup *****///
 if($_SESSION["status"]=="4"){
  $version=getConfigVersion($_SESSION["idepn"]);
-$newversion=1.2;
+ $newversion=1.3;
 if($version<>$newversion){ ?>
  <!--DIV Mises &agrave; jour -->
   <div class="col-md-4"><div class="box box-danger"><div class="box-header"> <i class="fa fa-warning"></i><h3 class="box-title">Mise &agrave; jour de version</h3></div>

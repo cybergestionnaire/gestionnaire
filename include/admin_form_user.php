@@ -158,7 +158,7 @@ $month = array(
        12=> "D&eacute;cembre"
 );
 // recupere les villes
-$town = getAllCityname();
+$town = getAllCityname(true);
 
 //recupere la csp -- Ajout
 $profession = getAllCsp();

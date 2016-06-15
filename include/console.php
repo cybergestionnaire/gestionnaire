@@ -153,12 +153,10 @@ header("Content-Type: text/html; charset=UTF-8");
                         $heurelastetat = $rowPostes["lastetat_computer"]; // en secondes depuis 0:00:00
                         $heure = floor($heurelastetat / 3600);
                         $minute = floor(($heurelastetat - $heure * 3600) / 60 );
-                        if ($minute < 10) {
-                            $temp = $rowPostes["date_lastetat_computer"]." ".$heure.":0".$minute;
-                        } else {
-                            $temp = $rowPostes["date_lastetat_computer"]." ".$heure.":".$minute;
-                        }
-                        $datelastetat = date_create_from_format("Y-m-d H:i",$temp);
+                        $seconde = floor($heurelastetat - $heure * 3600 - $minute*60);
+                        
+                        $temp = $rowPostes["date_lastetat_computer"]." ".str_pad($heure, 2, "0",STR_PAD_LEFT).":".str_pad($minute, 2, "0",STR_PAD_LEFT).":".str_pad($seconde, 2, "0",STR_PAD_LEFT);
+                        $datelastetat = date_create_from_format("Y-m-d H:i:s",$temp);
                         $diff = time() - date_timestamp_get($datelastetat); // difference en secondes
                         if ($diff < 60) {
                             $time = "<1mm" ;
