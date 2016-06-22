@@ -42,7 +42,7 @@ function opendb()
        }
    else
 	{
-        mysqli_query($db, "SET NAMES 'utf8'");
+        $db->set_charset("utf8");
     	return $db ;
 	}
 }     

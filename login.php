@@ -36,7 +36,7 @@ $rowprinscription=getPreinsmode();
     <link href="template/dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />
     <!-- iCheck -->
     <link href="template/plugins/iCheck/square/blue.css" rel="stylesheet" type="text/css" />
-
+    </head>
 <body class="login-page">
 	<div class="login-box">
 	<div class="login-logo"><?php 
