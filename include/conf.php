@@ -80,14 +80,15 @@ switch ($m)
   
 }
 
+if (isset($_SESSION["status"])) {
 
-switch ($_SESSION["status"])
-{
-    case 3:
-    	include('include/conf_anim.php') ;
-    break;
-    case 4:
-    	include('include/conf_admin.php') ;
-    break;
+    switch ($_SESSION["status"]) {
+        case 3:
+            include('include/conf_anim.php') ;
+        break;
+        case 4:
+            include('include/conf_admin.php') ;
+        break;
+    }
 }
 ?>

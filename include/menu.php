@@ -99,20 +99,20 @@ switch($_SESSION['status'])
         $statut ="Animateur";
         ?>
 	<ul class="sidebar-menu">
-		<li class="<?php if ($_GET["a"]=="") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php"><i class="fa fa-home"></i><span>Accueil</span></a></li>
+		<li class="<?php if ($a=="") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php"><i class="fa fa-home"></i><span>Accueil</span></a></li>
 		
 		<li class="treeview"><a href="index.php?m=3&month="<?php echo date('n'); ?>"&year="<?php echo date('Y'); ?>"&jour="<?php echo date('d') ; ?>"&mois="<?php echo date('n'); ?>"&annee="<?php echo date('Y'); ?>"><i class="fa fa-calendar"></i><span>Réservations</span></a></li>
 		
 		<?php 
 		$consolemode=getConfigConsole($_SESSION["idepn"], "activer_console");
 		if ($consolemode==1){
-			if($_GET["a"]==45) {$class="active"; }else{ $class="treeview" ;}
+			if($a==45) {$class="active"; }else{ $class="treeview" ;}
 			echo '<li class="'.$class.'"><a href="index.php?a=45"><i class="fa fa-dashboard"></i><span>Console</span></a></li>';
 		}
 		?>
-		<!--	<li class="<?php if ($_GET["a"]==41) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php?a=41"><i class="fa fa-gears"></i> <span>Configuration</span> </a></li>-->
+		<!--	<li class="<?php if ($a==41) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php?a=41"><i class="fa fa-gears"></i> <span>Configuration</span> </a></li>-->
 		
-		<li class="<?php if ($_GET["a"]==1 OR $_GET["a"]==24 OR $_GET["a"]==23) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-group"></i> <span>Adh&eacute;rents</span><i class="fa fa-angle-left pull-right"></i></a>
+		<li class="<?php if ($a==1 OR $a==24 OR $a==23) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-group"></i> <span>Adh&eacute;rents</span><i class="fa fa-angle-left pull-right"></i></a>
 		    <ul class="treeview-menu">
 				<li ><a href="index.php?a=1"><i class="fa fa-angle-double-right"></i>Liste des Adh&eacute;rents</a></li>
 				<li ><a href="index.php?a=1&b=1"><i class="fa fa-angle-double-right"></i>Cr&eacute;er Adh&eacute;rent</a></li>
@@ -120,13 +120,13 @@ switch($_SESSION['status'])
 			<!--	<li ><a href="index.php?a=23"><i class="fa fa-angle-double-right"></i>Gestion des Admin/Anim</a></li>-->
 		</ul></li>
 		
-		<li class="<?php if ($_GET["a"]==21 OR $_GET["a"]==8) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-money"></i><span>Transactions</span><i class="fa fa-angle-left pull-right"></i></a>
+		<li class="<?php if ($a==21 OR $a==8) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-money"></i><span>Transactions</span><i class="fa fa-angle-left pull-right"></i></a>
 			<ul class="treeview-menu">
 				<li><a href="index.php?a=21"><i class="fa fa-angle-double-right"></i>Impressions</a></li>
 				<li><a href="index.php?a=8"><i class="fa fa-angle-double-right"></i>Forfaits Ateliers</a></li>
 		</ul></li>
 		
-		<li class="<?php if ($_GET["a"]==11 OR $_GET["a"]==12  OR $_GET["a"]==18) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-keyboard-o"></i> <span>Ateliers</span><i class="fa fa-angle-left pull-right"></i></a>
+		<li class="<?php if ($a==11 OR $a==12  OR $a==18) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-keyboard-o"></i> <span>Ateliers</span><i class="fa fa-angle-left pull-right"></i></a>
 			<ul class="treeview-menu">
 				<li ><a href="index.php?a=11"><i class="fa fa-angle-double-right"></i>Programmation en cours</a></li>
 				<li ><a href="index.php?a=12"><i class="fa fa-angle-double-right"></i>Planifier un atelier</a></li>
@@ -135,7 +135,7 @@ switch($_SESSION['status'])
 			<!-- <li class="icn_mail"><a href="index.php?a=33"> Gestion des courriers</a></li>-->
 			</ul></li>
 		
-		<li class="<?php if ($_GET["a"]==31 OR $_GET["a"]==37  OR $_GET["a"]==36) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-ticket"></i> <span>Sessions</span><i class="fa fa-angle-left pull-right"></i></a>
+		<li class="<?php if ($a==31 OR $a==37  OR $a==36) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-ticket"></i> <span>Sessions</span><i class="fa fa-angle-left pull-right"></i></a>
 			<ul class="treeview-menu">
 				<li ><a href="index.php?a=37"><i class="fa fa-angle-double-right"></i>Sessions en cours</a></li>
 				<li ><a href="index.php?a=31&m=1"><i class="fa fa-angle-double-right"></i>Planifier une session</a></li>
@@ -143,7 +143,7 @@ switch($_SESSION['status'])
 			</ul></li>
 		
 		
-		<li class="<?php if ($_GET["a"]==5) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-bar-chart-o"></i> <span>Statistiques</span><i class="fa fa-angle-left pull-right"></i></a>
+		<li class="<?php if ($a==5) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-bar-chart-o"></i> <span>Statistiques</span><i class="fa fa-angle-left pull-right"></i></a>
 			<ul class="treeview-menu">
 				<li ><a href="index.php?a=5&b=1"><i class="fa fa-angle-double-right"></i>Adh&eacute;rents</a></li>
 			<li ><a href="index.php?a=5&b=2" disabled><i class="fa fa-angle-double-right"></i>R&eacute;servations</a></li>
@@ -153,20 +153,20 @@ switch($_SESSION['status'])
 		</ul></li>
 		
 			
-		<li class="<?php if ($_GET["a"]==3 OR $_GET["a"]==4 OR $_GET["a"]==7 OR $_GET["a"]==10 or $_GET["a"]==15 OR $_GET["a"]==17 or  $_GET["a"]==34 OR $_GET["a"]==35) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-gear"></i> <span>Gestion de l'espace</span><i class="fa fa-angle-left pull-right"></i></a>
+		<li class="<?php if ($a==3 OR $a==4 OR $a==7 OR $a==10 or $a==15 OR $a==17 or  $a==34 OR $a==35) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-gear"></i> <span>Gestion de l'espace</span><i class="fa fa-angle-left pull-right"></i></a>
 			<ul class="treeview-menu">
 				
 				<li>
 				  <a href="#"><i class="fa fa-angle-double-right"></i> Param&egrave;tres atelier <i class="fa fa-angle-left pull-right"></i></a>
 				  <ul class="treeview-menu">
 				    <li><a href="index.php?a=7"><i class="fa fa-angle-double-right"></i> Cat&eacute;gories / Niveaux</a></li>
-				    <li class="<?php if ( $_GET["a"]==15 OR $_GET["a"]==17){ echo "active treeview"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-angle-double-right"></i> Ateliers <i class="fa fa-angle-left pull-right"></i></a>
+				    <li class="<?php if ( $a==15 OR $a==17){ echo "active treeview"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-angle-double-right"></i> Ateliers <i class="fa fa-angle-left pull-right"></i></a>
 				      <ul class="treeview-menu active">
 					<li><a href="index.php?a=15"><i class="fa fa-angle-double-right"></i> Cr&eacute;er un sujet</a></li>
 					<li><a href="index.php?a=17"><i class="fa fa-angle-double-right"></i> Modifier un sujet</a></li>
 				      </ul>
 				    </li>
-				    <li class="<?php if ( $_GET["a"]==34 OR $_GET["a"]==35){ echo "active treeview"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-angle-double-right"></i> Sessions <i class="fa fa-angle-left pull-right"></i></a>
+				    <li class="<?php if ( $a==34 OR $a==35){ echo "active treeview"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-angle-double-right"></i> Sessions <i class="fa fa-angle-left pull-right"></i></a>
 				      <ul class="treeview-menu">
 					<li><a href="index.php?a=34"><i class="fa fa-angle-double-right"></i> Cr&eacute;er un sujet</a></li>
 					<li><a href="index.php?a=35"><i class="fa fa-angle-double-right"></i> Modifier un sujet</a></li>
@@ -191,19 +191,19 @@ switch($_SESSION['status'])
         ?>
 	<ul class="sidebar-menu">
 	
-		<li class="<?php if ($_GET["a"]=="") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php"><i class="fa fa-home"></i><span>Accueil</span></a></li>
+		<li class="<?php if ($a=="") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php"><i class="fa fa-home"></i><span>Accueil</span></a></li>
 	
 		<li class="treeview"><a href="index.php?m=3&month=<?php echo date('n'); ?>&year=<?php echo date('Y'); ?>&jour=<?php echo date('d') ; ?>&mois=<?php echo date('n'); ?>&annee=<?php echo date('Y'); ?>"><i class="fa fa-calendar"></i><span>Réservations</span></a></li>
 		<?php 
 		$consolemode=getConfigConsole($_SESSION["idepn"] ,"activer_console");
 		if ($consolemode==1){
-			if($_GET["a"]==45) {$class="active"; }else{ $class="treeview" ;}
+			if($a==45) {$class="active"; }else{ $class="treeview" ;}
 			echo '<li class="'.$class.'"><a href="index.php?a=45"><i class="fa fa-dashboard"></i><span>Console</span></a></li>';
 		}
 		?>
-			<li class="<?php if ($_GET["a"]==41) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php?a=41"><i class="fa fa-gears"></i> <span>Configuration</span> </a></li>
+			<li class="<?php if ($a==41) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php?a=41"><i class="fa fa-gears"></i> <span>Configuration</span> </a></li>
 		
-		<li class="<?php if ($_GET["a"]==1 OR $_GET["a"]==24 OR $_GET["a"]==23) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-group"></i> <span>Adh&eacute;rents</span><i class="fa fa-angle-left pull-right"></i></a>
+		<li class="<?php if ($a==1 OR $a==24 OR $a==23) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-group"></i> <span>Adh&eacute;rents</span><i class="fa fa-angle-left pull-right"></i></a>
 		    <ul class="treeview-menu">
 				<li ><a href="index.php?a=1"><i class="fa fa-angle-double-right"></i>Liste des Adh&eacute;rents</a></li>
 				<li ><a href="index.php?a=1&b=1"><i class="fa fa-angle-double-right"></i>Cr&eacute;er Adh&eacute;rent</a></li>
@@ -212,14 +212,14 @@ switch($_SESSION['status'])
 		</ul>
 		</li>
 		
-		<li class="<?php if ($_GET["a"]==21 OR $_GET["a"]==8) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-money"></i><span>Transactions</span><i class="fa fa-angle-left pull-right"></i></a>
+		<li class="<?php if ($a==21 OR $a==8) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-money"></i><span>Transactions</span><i class="fa fa-angle-left pull-right"></i></a>
 			<ul class="treeview-menu">
 				<li><a href="index.php?a=21"><i class="fa fa-angle-double-right"></i>Impressions</a></li>
 				<li><a href="index.php?a=8"><i class="fa fa-angle-double-right"></i>Forfaits Ateliers</a></li>
 		</ul>
 		</li>
 		
-		<li class="<?php if ($_GET["a"]==11 OR $_GET["a"]==12  OR $_GET["a"]==18) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-keyboard-o"></i> <span>Ateliers</span><i class="fa fa-angle-left pull-right"></i></a>
+		<li class="<?php if ($a==11 OR $a==12  OR $a==18) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-keyboard-o"></i> <span>Ateliers</span><i class="fa fa-angle-left pull-right"></i></a>
 			<ul class="treeview-menu">
 				<li ><a href="index.php?a=11"><i class="fa fa-angle-double-right"></i>Programmation en cours</a></li>
 				<li ><a href="index.php?a=12"><i class="fa fa-angle-double-right"></i>Planifier un atelier</a></li>
@@ -229,7 +229,7 @@ switch($_SESSION['status'])
 			</ul>
 			</li>
 		
-		<li class="<?php if ($_GET["a"]==31 OR $_GET["a"]==37  OR $_GET["a"]==36) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-ticket"></i> <span>Sessions</span><i class="fa fa-angle-left pull-right"></i></a>
+		<li class="<?php if ($a==31 OR $a==37  OR $a==36) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-ticket"></i> <span>Sessions</span><i class="fa fa-angle-left pull-right"></i></a>
 			<ul class="treeview-menu">
 				<li ><a href="index.php?a=37"><i class="fa fa-angle-double-right"></i>Sessions en cours</a></li>
 				<li ><a href="index.php?a=31&m=1"><i class="fa fa-angle-double-right"></i>Planifier une session</a></li>
@@ -238,7 +238,7 @@ switch($_SESSION['status'])
 			</li>
 		
 		
-		<li class="<?php if ($_GET["a"]==5) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-bar-chart-o"></i> <span>Statistiques</span><i class="fa fa-angle-left pull-right"></i></a>
+		<li class="<?php if ($a==5) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-bar-chart-o"></i> <span>Statistiques</span><i class="fa fa-angle-left pull-right"></i></a>
 			<ul class="treeview-menu">
 				<li ><a href="index.php?a=5&b=1"><i class="fa fa-angle-double-right"></i>Adh&eacute;rents</a></li>
 				<li ><a href="index.php?a=5&b=2" disabled><i class="fa fa-angle-double-right"></i>R&eacute;servations</a></li>
@@ -249,14 +249,14 @@ switch($_SESSION['status'])
 		</li>
 		
 			<!-- Gestion -->	
-		<li class="<?php if ($_GET["a"]==3 OR $_GET["a"]==4 OR $_GET["a"]==7 OR $_GET["a"]==10 or $_GET["a"]==15 OR $_GET["a"]==17 or  $_GET["a"]==34 OR $_GET["a"]==35) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-gear"></i> <span>Gestion de l'espace</span><i class="fa fa-angle-left pull-right"></i></a>
+		<li class="<?php if ($a==3 OR $a==4 OR $a==7 OR $a==10 or $a==15 OR $a==17 or  $a==34 OR $a==35) { echo "active"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-gear"></i> <span>Gestion de l'espace</span><i class="fa fa-angle-left pull-right"></i></a>
 			
 		<ul class="treeview-menu"><li><a href="#"><i class="fa fa-angle-double-right"></i> Param&egrave;tres atelier <i class="fa fa-angle-left pull-right"></i></a>
 				
 					<ul class="treeview-menu">
 				    <li><a href="index.php?a=7"><i class="fa fa-angle-double-right"></i> Cat&eacute;gories / Niveaux</a></li>
 				   
-				   <li class="<?php if ( $_GET["a"]==15 OR $_GET["a"]==17){ echo "active treeview"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-angle-double-right"></i> Ateliers <i class="fa fa-angle-left pull-right"></i></a>
+				   <li class="<?php if ( $a==15 OR $a==17){ echo "active treeview"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-angle-double-right"></i> Ateliers <i class="fa fa-angle-left pull-right"></i></a>
 				      <ul class="treeview-menu active">
 									<li><a href="index.php?a=15"><i class="fa fa-angle-double-right"></i> Cr&eacute;er un sujet</a></li>
 									<li><a href="index.php?a=17"><i class="fa fa-angle-double-right"></i> Modifier un sujet</a></li>
@@ -264,7 +264,7 @@ switch($_SESSION['status'])
 				   </li>
 				 
 						<!-- -->	    
-						<li class="<?php if ( $_GET["a"]==34 OR $_GET["a"]==35){ echo "active treeview"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-angle-double-right"></i> Sessions <i class="fa fa-angle-left pull-right"></i></a>
+						<li class="<?php if ( $a==34 OR $a==35){ echo "active treeview"; }else{ echo "treeview" ;} ?>"><a href="#"><i class="fa fa-angle-double-right"></i> Sessions <i class="fa fa-angle-left pull-right"></i></a>
 											
 											<ul class="treeview-menu">
 									<li><a href="index.php?a=34"><i class="fa fa-angle-double-right"></i> Cr&eacute;er un sujet</a></li>

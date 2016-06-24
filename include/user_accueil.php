@@ -25,17 +25,17 @@
 // Page d'accueil sur le compte animateur ou administrateur
 
 // admin --- Utilisateur
-include ("post_reservation-rapide.php");
+include("post_reservation-rapide.php");
 include("fonction_stat.php");
-$term   = $_POST["term"];
-$mesno  = $_GET["mesno"];
+$term   = isset($_POST["term"]) ? $_POST["term"] : '';
+$mesno  = isset($_GET["mesno"]) ? $_GET["mesno"] : '';
 
 //Tous les utilisateurs, inscription de la connexion dans la tab_connexion(user,date,type=1=login,MACADRESS,Navigateur, System)
-$exploitation=operating_system_detection();
-$ua=getBrowser();
-$navig=$ua['name'] . " " . $ua['version'] ;
-$macadress="inconnue pour l\'instant";
-$cx=enterConnexionstatus($_SESSION['iduser'],date('Y-m-d H:i:s'),1,$macadress,$navig,$exploitation);
+$exploitation = operating_system_detection();
+$ua           = getBrowser();
+$navig        = $ua['name'] . " " . $ua['version'] ;
+$macadress    = "inconnue pour l\'instant";
+$cx           = enterConnexionstatus($_SESSION['iduser'], date('Y-m-d H:i:s'), 1, $macadress, $navig, $exploitation);
 
 
 
@@ -47,7 +47,8 @@ if ($_SESSION["status"]=="3" OR $_SESSION["status"]=="4")
   $nbTA=mysqli_num_rows($listeWeekAtelier);
 
  // verifier les abonnements des adherent et mettre a jour le statut actif
- $majadh=getLogUser('adh');
+ $majadh = getLogUser('adh');
+ $logadh = FALSE;
  if (mysqli_num_rows($majadh)==0){
 	$listAdhinactifs=getAdhInactif(date('Y-m-d'));
 	$updateA=updateUserStatut(); // les usagers dont la date de renouvellement est du jour.
@@ -329,11 +330,12 @@ if(TRUE==getLogBackup()){
 		<div class="input-group"><label>R&eacute;pondre A :</label>
 				 <select name="chatdestinataire" class="form-control pull-right">
 	    <?php
-		if($_SESSION["status"]==3){
-		$listeAdhreponse=getListReponse($_SESSION["iduser"]);
+		if($_SESSION["status"]==3) {
+            $listeAdhreponse=getListReponse($_SESSION["iduser"]);
 		}else{
-		$listeAdhreponse=getListRepAdmin();
+            $listeAdhreponse=getListRepAdmin();
 		}
+        
 		foreach ($listeAdhreponse AS $key=>$value)
 		{
 		    if ($adhreponse == $key)

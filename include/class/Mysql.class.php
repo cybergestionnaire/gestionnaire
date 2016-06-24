@@ -1,11 +1,13 @@
 <?php
 
-class Mysql {
+class Mysql
+{
     
-    public static function opendb() {
+    public static function opendb()
+    {
         include ("./connect_db.php");
     
-        if ($port=="" OR FALSE==is_numeric($port)){
+        if ($port=="" OR FALSE==is_numeric($port)) {
             $port="3306" ;
         }
     
@@ -14,15 +16,14 @@ class Mysql {
         /*en cas d'echec*/
         if (mysqli_connect_errno()) {
             return false;
-        }
-        else {
+        } else {
             $db->set_charset("utf8");
             return $db ;
         }
     }
     
-    public static function closedb ($mydb) {
+    public static function closedb ($mydb)
+    {
         mysqli_close ($mydb) ;
     }
 }
-?>

@@ -23,14 +23,14 @@
 //----
 //----------
 //------------ Validation de la resa rapide -------------------------------------------------------------------///
-$duree=$_POST["duree"];
-$heure=$_POST["heure"];
-$date=$_POST["date"];
-$id_user=$_POST["adh_submit"];
-$id_poste=$_POST["idcomp"];
-$restant=$_POST["restant"];
+$duree    = isset($_POST["duree"]) ? $_POST["duree"] : '';
+$heure    = isset($_POST["heure"]) ? $_POST["heure"] : '';
+$date     = isset($_POST["date"]) ? $_POST["date"] : '';
+$id_user  = isset($_POST["adh_submit"]) ? $_POST["adh_submit"] : '';
+$id_poste = isset($_POST["idcomp"]) ? $_POST["idcomp"] : '';
+$restant  = isset($_POST["restant"]) ? $_POST["restant"] : '';
 
-if($_POST["pastresa"]==1){
+if(isset($_POST["pastresa"]) && $_POST["pastresa"] == 1){
 	$heurepp=explode(':',$heure);
 	$heure=($heurepp[0]*60)+$heurepp[1];
 	
@@ -68,11 +68,11 @@ if (TRUE == isset($_POST['resa_submit'])){
 //----
 //----------
 //------------ Validation des messages -------------------------------------------------------------------///
-$message=addslashes($_POST["chattxt_message"]);
-$tags=$_POST["tags_message"];
-$id_user=$_POST["chatadh"];
-$date=$_POST["chatdate"];
-$destinataire=$_POST["chatdestinataire"];
+$message      = isset($_POST["chattxt_message"]) ? addslashes($_POST["chattxt_message"]) : '';
+$tags         = isset($_POST["tags_message"]) ? $_POST["tags_message"] :'';
+$id_user      = isset($_POST["chatadh"]) ? $_POST["chatadh"] :'';
+$date         = isset($_POST["chatdate"]) ? $_POST["chatdate"] :'';
+$destinataire = isset($_POST["chatdestinataire"]) ? $_POST["chatdestinataire"] :'';
 //debug($message);
  if (TRUE == isset($_POST['message_submit'])){
  

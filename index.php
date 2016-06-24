@@ -1,111 +1,84 @@
 <?php
 /*
-     This file is part of Cybermin.
+     This file is part of CyberGestionnaire.
 
-    Cybermin is free software; you can redistribute it and/or modify
+    CyberGestionnaire is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    Cybermin is distributed in the hope that it will be useful,
+    CyberGestionnaire is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Cybermin; if not, write to the Free Software
+    along with CyberGestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
- 2006-2008 Namont Nicolas
- 
- index.php V0.1  
- cybermin 2
-
+    Original work : cybermin / 2006-2008 Namont Nicolas
 */
+
 // Desactivation du rapport d'erreur
-error_reporting(0);
+//error_reporting(0);
 // Affichage des erreurs pour le debuggage
-//error_reporting(E_ALL);
+error_reporting(E_ALL);
 
 
 //demarrage de la session
 session_start();
 
 //Recuperation des variable du menu
-$m=$_GET["m"];
-$a=$_GET["a"];
-$b=$_GET["b"];
+$m = isset($_GET['m']) ? $_GET['m'] : '';
+$a = isset($_GET['a']) ? $_GET['a'] : '';
+$b = isset($_GET['b']) ? $_GET['b'] : '';
 // Recuperation des variable de fonctionnement
-$error=$_GET["error"];
-$logout=$_GET["logout"];
+$error  = isset($_GET['error']) ? $_GET['error'] : '';
+$logout = isset($_GET['logout']) ? $_GET['logout'] : '';
 
 // Fichier inclus
 include("include/fonction.php");
 include("include/fonction2.php");
 include("include/conf.php");
 // deconnexion
-if (FALSE !=isset($logout))
-{
-  
-//log des donnees de navigation pour la deconnexion
-	enterConnexionstatus($_SESSION['iduser'],date('Y-m-d H:i:s'),2,0,0,0);
-  unset($_SESSION["login"]);
-  unset($_SESSION["status"]);
-  unset($_SESSION["iduser"]);
-  unset($_SESSION["idepn"]);
-   
+if ($logout != '') {
+    //log des donnees de navigation pour la deconnexion
+    enterConnexionstatus($_SESSION['iduser'],date('Y-m-d H:i:s'),2,0,0,0);
+    unset($_SESSION["login"]);
+    unset($_SESSION["status"]);
+    unset($_SESSION["iduser"]);
+    unset($_SESSION["idepn"]);
 }
 
 
 
  //Autentification
-if (FALSE == isset($_SESSION["login"]))
-{
+if (FALSE == isset($_SESSION["login"])) {
   include ("login.php") ;
 }
+else {
+    // Acces autorise
+    include_once("include/class/Espace.class.php");
 
-// Acces autorise
-else
-
-{
-
-
-$error=$_GET["error"];
-
-//Variables de l'epn
-$epnspec=getCyberSpec($_SESSION["idepn"]);
-
-//tableau des couleurs
-$couleurArray=array(
-	1=> "green",
-	2=> "blue",
-	3=> "yellow",
-	4=> "red",
-	//5=> "olive",
-	6=> "purple",
-	//7=> "orange",
-	//8=> "maroon",
-	9=> "black"
-	);
-$couleur=$couleurArray[$epnspec["couleur_espace"]];
+    //Variables de l'epn
+    $espace = new Espace(intval($_SESSION["idepn"]));
 
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<!doctype html>
 <html>
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<title><?php echo $titre; ?> -- <?php echo $epnspec["nom_espace"] ; ?></title>
-	<!--<title>Cyber-Gestionnaire V0.8</title>-->
-	
-	<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-       <!-- Bootstrap 3.3.2 -->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title><?php echo $titre; ?> -- <?php echo $espace->getNom(); ?></title>
+    <!--<title>Cyber-Gestionnaire V0.8</title>-->
+
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <!-- Bootstrap 3.3.2 -->
     <link href="template/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />    
     <!-- FontAwesome 4.3.0 -->
-   <link  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Ionicons -->
     <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css" />
-   
+
     <!-- Theme style -->
     <link href="template/dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />
     <!-- AdminLTE Skins. Choose a skin from the css/skins 
@@ -115,52 +88,41 @@ $couleur=$couleurArray[$epnspec["couleur_espace"]];
     <link href="template/plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" />
     <!-- Date Picker -->
     <link href="template/plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />
-	<!-- Select2 -->
+    <!-- Select2 -->
     <link href="template/plugins/select2/select2.min.css" type="text/css" rel="stylesheet" >
-		 <!-- iCheck -->
+    <!-- iCheck -->
     <link href="template/plugins/iCheck/square/blue.css" type="text/css" rel="stylesheet" >
-		
-	
-	<!-- calendar style -->
-  <link href="template/style_calendar.css" rel="stylesheet" type="text/css" />
-	<!--FONT SPECIFIC -->
-	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-	<!-- ajout console -->
-	<script type="text/javascript" src="js/fonction.js"></script>
-	
-	<script src="js/ckeditor/ckeditor.js"></script>
-	
- 
-	<link href='rome-master/dist/rome.css' rel='stylesheet' type='text/css' />
-	
-	
+        
+    <!-- calendar style -->
+    <link href="template/style_calendar.css" rel="stylesheet" type="text/css" />
+    <!--FONT SPECIFIC -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link href='rome-master/dist/rome.css' rel='stylesheet' type='text/css' />
+
+    <!-- ajout console -->
+    <script type="text/javascript" src="js/fonction.js"></script>
+    <script src="js/ckeditor/ckeditor.js"></script>
+
 </head>
 
 
-<body class="hold-transition  sidebar-mini skin-<?php echo $couleur; ?>">
-<div class="wrapper">
-
-	 <header class="main-header">
-		
-		
-		<!-- section pour les adminsitrateurs -->
-	<?php if($_SESSION["status"]=="3" OR $_SESSION["status"]=="4"){
-	
-			?>
-			<a href="index.php?m=1" class="logo"><img src="img/logo/<?php echo $epnspec["logo_espace"]; ?>" class="logo"></a>
-		<!-- Header Navbar: style can be found in header.less -->
+<body class="hold-transition sidebar-mini skin-<?php echo $espace->getCouleur(); ?>">
+    <div class="wrapper">
+        <header class="main-header">
+        <?php if($_SESSION["status"]=="3" OR $_SESSION["status"]=="4") {?>
+            <!-- section pour les administrateurs -->
+            <a href="index.php?m=1" class="logo"><img src="img/logo/<?php echo $espace->getLogo(); ?>" class="logo"></a>
+            <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
                 <!-- Sidebar toggle button-->
                 <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                     <span class="sr-only">Navigation</span>
-                  
                 </a>
-		 <span class="navbar-brand"><?php echo $epnspec["nom_espace"] ; ?></span>
-			 <div class="navbar-custom-menu">
-			
-       <ul class="nav navbar-nav">
-						<!-- Notifications, preinsciptions en attente -->
-						
+            <span class="navbar-brand"><?php echo $espace->getNom() ; ?></span>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                    <!-- Notifications, preinsciptions en attente -->
+                    
 					 <?php
               //retrouve le nombre de preinscriptions en attente
               $newinscritsar=getAllUserInsc();
