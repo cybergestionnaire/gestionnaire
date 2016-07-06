@@ -125,7 +125,7 @@ class Utilisateur
                                             . "-" . $row["jour_naissance_user"]
                                           );
                 $this->_adresse         = $row["adresse_user"];
-                $this->_idVille           = $row["ville_user"];
+                $this->_idVille         = $row["ville_user"];
                 $this->_telephone       = $row["tel_user"];
                 $this->_mail            = $row["mail_user"];
                 $this->_temps           = $row["temps_user"];
@@ -154,8 +154,39 @@ class Utilisateur
         return $this->_login;
     }
     
+    public function getNom() {
+        return $this->_nom;
+    }
+    public function getPrenom() {
+        return $this->_prenom;
+    }
+    
     public function getStatut() {
         return $this->_statut;
+    }
+    public function getAvatar() {
+        $sql = "SELECT `anim_avatar` FROM `rel_user_anim` WHERE `id_animateur`='" . $this->_id . "' ";
+        $db = Mysql::opendb();
+        $result = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        if($result == FALSE)
+        {
+            $avatar = "default.png";
+        }
+        else
+        {
+            $row = mysqli_fetch_array($result) ;
+            $avatar = $row["anim_avatar"];
+            if (!isset($avatar) || $avatar == "") {
+                $avatar = "default.png";
+            }
+        }
+
+        return $avatar;
+    }
+    
+    public function getDateInscription() {
+        return $this->_dateInscription;
     }
     
     public function getEpn() {

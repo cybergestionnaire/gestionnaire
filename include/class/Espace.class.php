@@ -32,7 +32,7 @@ class Espace
         $numArgs = func_num_args();
         
         // valeur par défaut. Doit changer si l'initialisation a réussi,
-        // sinon, ça veut dire que l'utilisateur n'existe pas.
+        // sinon, ça veut dire que l'espace n'existe pas.
         $this->_id = 0;    
 
         if ($numArgs === 1) {

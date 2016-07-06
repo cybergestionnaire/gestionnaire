@@ -1,22 +1,23 @@
 <?php
 /*
-     This file is part of Cybermin.
+     This file is part of CyberGestionnaire.
 
-    Cybermin is free software; you can redistribute it and/or modify
+    CyberGestionnaire is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    Cybermin is distributed in the hope that it will be useful,
+    CyberGestionnaire is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Cybermin; if not, write to the Free Software
+    along with CyberGestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
- 2006 Namont Nicolas
+    2006 Namont Nicolas
+    2016 Tariel Christophe
  
 
   include/admin_city.php V0.1
@@ -25,38 +26,39 @@
 // Gestion des villes
 //
 
+include_once("include/class/Ville.class.php");
 
 // traitement des post
-$act = $_GET["act"];
-$idcity = $_GET["idcity"];
+$act    = isset($_GET['act']) ? $_GET['act'] : '';
+$idcity = isset($_GET['idcity']) ? $_GET['idcity'] : '';
 
-if (isset($_GET["act"])){
-	switch ($act)
-	{
-	  case 1: // creation
-	       $nom = htmlentities(addslashes($_POST["newcity"]));
-	       $codepost = $_POST["newcodepost"];
-	       $pays =  htmlentities(addslashes($_POST["newpays"]));
-	       
-	   if (!$nom || !$codepost || !$pays)
+if (isset($_GET["act"])) {
+
+    switch ($act)
     {
-       $mess = getError(4);
-    }
-    else
-    {   
-	       
-	       if (FALSE == addCity($nom, $codepost, $pays))
-	       {
-		   echo getError(0);
-	       }else{
-	       header("Location:index.php?a=41&mesno=14") ;
-				}
-		}
-	  break;
-	  case 2: // modification
-	       $nom =  htmlentities($_POST["city"]);
+        case 1: // creation
+            $nom      = htmlentities(addslashes($_POST["newcity"]));
+            $codepost = $_POST["newcodepost"];
+            $pays     = htmlentities(addslashes($_POST["newpays"]));
+           
+            if (!$nom || !$codepost || !$pays)
+            {
+               $mess = getError(4);
+            }
+            else
+            {   
+                if (FALSE == addCity($nom, $codepost, $pays)) {
+                    echo getError(0);
+                } else {
+               header("Location:index.php?a=41&mesno=14") ;
+                    }
+            }
+            break;
+            
+        case 2: // modification
+	       $nom      = htmlentities($_POST["city"]);
 	       $codepost = $_POST["codepost"];
-	       $pays =  htmlentities($_POST["pays"]);
+	       $pays     = htmlentities($_POST["pays"]);
 	       
 	 if (!$nom || !$codepost || !$pays)
     {
@@ -93,7 +95,7 @@ if (isset($_GET["act"])){
 
 
 // affichage  -----------
-$mesno= $_GET["mesno"];
+$mesno = isset($_GET['mesno']) ? $_GET['mesno'] : '';
 if ($mesno !="")
 {
   echo getError($mesno);

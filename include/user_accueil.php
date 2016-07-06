@@ -43,99 +43,57 @@ $cx           = enterConnexionstatus($_SESSION['iduser'], date('Y-m-d H:i:s'), 1
 if ($_SESSION["status"]=="3" OR $_SESSION["status"]=="4")
 {
 //liste des ateliers/evenements de la journee
- $listeWeekAtelier=getWeekAteliers(date('Y-m-d'),$_SESSION["idepn"]);
-  $nbTA=mysqli_num_rows($listeWeekAtelier);
+    $listeWeekAtelier = getWeekAteliers(date('Y-m-d'),$_SESSION["idepn"]);
+    $nbTA             = mysqli_num_rows($listeWeekAtelier);
 
- // verifier les abonnements des adherent et mettre a jour le statut actif
- $majadh = getLogUser('adh');
- $logadh = FALSE;
- if (mysqli_num_rows($majadh)==0){
-	$listAdhinactifs=getAdhInactif(date('Y-m-d'));
-	$updateA=updateUserStatut(); // les usagers dont la date de renouvellement est du jour.
-	//ajout d'un log 
-	if($updateA<>FALSE){ //maj type 1 == update tab_user
-		$logadh=addLog(date('Y-m-d H:i'),"adh",'1','Mise &agrave; jour des adhesions adherents du jour');
-		}
-	
-  }
-  $espaces = getAllepn(); 
+    $espaces = getAllepn(); 
 
-if ($mesno !="")
-{
-  echo getError($mesno);
-  
-}
+    if ($mesno != "")
+    {
+      echo getError($mesno);
+    }
 
 ?>
 
 <div class="row">
 
 <?php
-//*****   Mises &agrave; jour des adh&eacute;rents dont le forfait arrive a expiration ///
- 
-if ($logadh==TRUE){ echo '<div class="col-md-4"> <div class="alert alert-success alert-dismissable"><i class="fa fa-check-square"></i>
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Mise &agrave; jour des adh&eacute;rents effectu&eacute;e. '.$updateA.' adh&eacute;rents inactifs !</div></div>';}
+    //*****   Mises &agrave; jour des adh&eacute;rents dont le forfait arrive a expiration ///
+    include("boites/MAJ_adherents.php"); 
 
-//***** Fonctions administrateur ONLY MAJ + Backup *****///
-if($_SESSION["status"]=="4"){
- $version=getConfigVersion($_SESSION["idepn"]);
- $newversion=1.3;
-if($version<>$newversion){ ?>
- <!--DIV Mises &agrave; jour -->
-  <div class="col-md-4"><div class="box box-danger"><div class="box-header"> <i class="fa fa-warning"></i><h3 class="box-title">Mise &agrave; jour de version</h3></div>
-	<div class="box-body">
-	Une nouvelle version demande bien quelques efforts, cliquez sur le bouton ci-dessous pour faire la mise &agrave; jour imm&eacute;diatement !
-	</div>
-	 <div class="box-footer"><a href="index.php?a=61"><input type="submit" name="mises &agrave; jour" value="Faire la mise &agrave; jour" class="btn btn-danger"></a>
-			</div>
- </div></div>
- <!-- / MAJ -->
- <?php 
-  }
- 
- //*** Backup base automatique 1 fois par mois pour les admins qui se connectent! ***///
-if(TRUE==getLogBackup()){
-			 
-	?>
-	<div class="col-md-4"><div class="box box-danger"><div class="box-header"> <i class="fa fa-warning"></i><h3 class="box-title">Sauvegarde de la base de donn&eacute;e</h3></div>
-	<div class="box-body">
-		Cela fait un mois que la base de donn&eacute;e n'a pas &eacute;t&eacute; sauvegard&eacute;e, cliquez sur le bouton pour la lancer !
-	</div>
-	 <div class="box-footer"><a href="index.php?a=62&maj=0"><input type="submit" name="sauvegarde" value="Lancer la sauvegarde" class="btn btn-danger"></a>
-			</div>
- </div></div>
-	
-	<?php 
-	}
- } //***** FIN Fonctions administrateur MAJ + Backup *****///
+    //***** Fonctions administrateur ONLY MAJ + Backup *****///
+    if ($_SESSION["status"] == "4") {
+        include("boites/MAJ_version.php");
+        include("boites/verifBackup.php");
+    }
+    //***** FIN Fonctions administrateur MAJ + Backup *****///
  
  
-  //debug($_session["idepn"]);
-  ?>
- </div>
+    //debug($_session["idepn"]);
+?>
+</div>
  
  <!-- Info boxes Statistiques-->
-          <div class="row">
-            <div class="col-md-3 col-sm-6 col-xs-12">
-              <div class="info-box">
-                <span class="info-box-icon bg-aqua" style="padding-top:18px"><i class="ion ion-ios-time"></i></span>
-                <div class="info-box-content">
-								<?php 
-								$rowresastatmois=getStatResa(date('m'),date('Y'),$_SESSION["idepn"]);
-								$resamois=$rowresastatmois["nb"];
-								
-								$datehier=date('Y-m')."-".(date('d')-1);
-								$rowresahier=getStatResaByDay($datehier,$_SESSION["idepn"]);
-								
-								$resahier=$rowresahier["nb"]." (".getTime($rowresahier["duree"]).")";
-								
-								?>
-                  <span class="info-box-text">R&eacute;servations</span>
-                  <span class="info-box-number"><?php echo $resahier; ?><small> hier</small><br><?php echo $resamois; ?><small> ce mois</small></span>
-									
-                </div><!-- /.info-box-content -->
-              </div><!-- /.info-box -->
-            </div><!-- /.col -->
+<div class="row">
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-aqua" style="padding-top:18px"><i class="ion ion-ios-time"></i></span>
+            <div class="info-box-content">
+<?php 
+    $rowresastatmois=getStatResa(date('m'),date('Y'),$_SESSION["idepn"]);
+    $resamois=$rowresastatmois["nb"];
+    
+    $datehier=date('Y-m')."-".(date('d')-1);
+    $rowresahier=getStatResaByDay($datehier,$_SESSION["idepn"]);
+    
+    $resahier=$rowresahier["nb"]." (".getTime($rowresahier["duree"]).")";
+    
+?>
+                <span class="info-box-text">R&eacute;servations</span>
+                <span class="info-box-number"><?php echo $resahier; ?><small> hier</small><br><?php echo $resamois; ?><small> ce mois</small></span>
+            </div><!-- /.info-box-content -->
+        </div><!-- /.info-box -->
+    </div><!-- /.col -->
             <div class="col-md-3 col-sm-6 col-xs-12">
               <div class="info-box">
                 <span class="info-box-icon bg-red" style="padding-top:18px"><i class="fa ion-university"></i></span>

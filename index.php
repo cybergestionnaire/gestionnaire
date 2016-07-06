@@ -54,14 +54,16 @@ if ($logout != '') {
 
  //Autentification
 if (FALSE == isset($_SESSION["login"])) {
-  include ("login.php") ;
+    include ("login.php") ;
 }
 else {
     // Acces autorise
     include_once("include/class/Espace.class.php");
+    include_once("include/class/Utilisateur.class.php");
 
     //Variables de l'epn
     $espace = new Espace(intval($_SESSION["idepn"]));
+    $utilisateur = new Utilisateur(intval($_SESSION["iduser"]));
 
 ?>
 <!doctype html>
@@ -162,35 +164,24 @@ else {
 				<li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="ion ion-person"></i>
-                                <span><?php $row = getUser($_SESSION["iduser"]); ?>
-								<?php echo $row["prenom_user"]; ?>&nbsp;<?php echo $row["nom_user"]; ?><i class="caret"></i></span>
+                                <span><?php echo $utilisateur->getPrenom(); ?>&nbsp;<?php echo $utilisateur->getNom(); ?><i class="caret"></i></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header bg-light-blue">
-				<?php
-				
-				$rowa = getAvatar($_SESSION["iduser"]);
-				$avatar=$rowa["anim_avatar"];
-                //echo "<br><h1>avatar = {$avatar}</h1><br>";
-                if (!isset($avatar) || $avatar == "") {
-                    $avatar = "default.png";
-                }
-				
-				?>
-                                    <img src="img/avatar/<?php echo $avatar; ?>" class="img-circle" alt="" />
+                                    <img src="img/avatar/<?php echo $utilisateur->getAvatar(); ?>" class="img-circle" alt="" />
 				 
-                                    <p><?php echo $row["prenom_user"]; ?>&nbsp;<?php echo $row["nom_user"]; ?>
-                                        <small>inscrit depuis <?php echo $row["date_insc_user"]; ?></small>
+                                    <p><?php echo $utilisateur->getPrenom(); ?>&nbsp;<?php echo $utilisateur->getNom(); ?>
+                                        <small>inscrit depuis <?php echo $utilisateur->getDateInscription(); ?></small>
                                     </p>
                                 </li>
 								<!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="index.php?a=51&b=2&iduser=<?php echo $_SESSION["iduser"]; ?>" class="btn btn-default btn-flat">Profil</a>
+                                        <a href="index.php?a=51&b=2&iduser=<?php echo $utilisateur->getId(); ?>" class="btn btn-default btn-flat">Profil</a>
                                     </div>
                                     <div class="pull-right">
-					<a href="lockscreen.php?iduser=<?php echo $_SESSION["iduser"]; ?>" class="btn btn-default btn-flat">Veille</a>
+					<a href="lockscreen.php?iduser=<?php echo $utilisateur->getId(); ?>" class="btn btn-default btn-flat">Veille</a>
                                         <a href="index.php?logout=yes" class="btn btn-default btn-flat">D&eacute;connexion</a>
                                     </div>
                                 </li>
@@ -219,10 +210,9 @@ else {
      <div class="navbar-custom-menu">
 			<ul class="nav navbar-nav"><li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="ion ion-person"></i>
-           <span><?php $row = getUser($_SESSION["iduser"]); ?>
-								<?php echo $row["prenom_user"]; ?>&nbsp;<?php echo $row["nom_user"]; ?><i class="caret"></i></span> </a>
+           <span><?php echo $utilisateur->getPrenom(); ?>&nbsp;<?php echo $utilisateur->getNom(); ?><i class="caret"></i></span> </a>
                            
-         <ul class="dropdown-menu"><li class="user-header bg-light-blue"><p><?php echo $row["prenom_user"]; ?>&nbsp;<?php echo $row["nom_user"]; ?><small>inscrit depuis <?php echo $row["date_insc_user"]; ?></small></p> </li>
+         <ul class="dropdown-menu"><li class="user-header bg-light-blue"><p><?php echo $utilisateur->getPrenom(); ?>&nbsp;<?php echo $utilisateur->getNom(); ?><small>inscrit depuis <?php echo $utilisateur->getDateInscription(); ?></small></p> </li>
 								<!-- Menu Footer-->
             <li class="user-footer">
                   <div class="pull-left"><a href="#" class="btn btn-default btn-flat">Profil</a>  </div>

@@ -59,7 +59,7 @@ $result = mysqli_query($db,$sql);
 //affiche les boutons dans la config suivant la page desactivee
 function configBut($page)
 {
-		$confbut=array(
+	$confbut=array(
 		array(41,"fa fa-cloud","VILLES"),
 		array(43,"fa fa-home","EPN"),
 		array(44,"fa fa-square","SALLES"),
@@ -73,15 +73,13 @@ function configBut($page)
 		array(25,"fa fa-unlock-alt","EPN-CONNECT"),
 		array(53,"fa fa-user-plus","INSCRIPTIONS"),
 	);
-	
+	$htmlbut = '';
 	for($u=0;$u<count($confbut);$u++){
 		if($confbut[$u][0]==$page){ $disab="disabled";}else{$disab="";}
 		//debug($confbut[$u][0]);
 		$htmlbut.='<a class="btn btn-app '.$disab.'"  href="index.php?a='.$confbut[$u][0].'"><i class="'.$confbut[$u][1].'"></i> '.$confbut[$u][2].'</a>';
 		
 	}
-		
-	
 	return $htmlbut;
 }
 
