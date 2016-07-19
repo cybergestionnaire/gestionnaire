@@ -78,16 +78,9 @@ function getAllUserbyPage($nb=1,$nbpager=25,$page=1)
   }
   else
   {
-    if ($page==1)
-    {
-    $sql="SELECT `id_user`, `date_insc_user`, `nom_user`, `prenom_user`, `sexe_user`, `jour_naissance_user`, `mois_naissance_user`, `annee_naissance_user`, `temps_user`, `login_user`, `lastvisit_user`, `status_user`
-        FROM tab_user WHERE `status_user`=".$nb."  ORDER BY `nom_user` LIMIT 0,".$nbpager ;
-    }
-    else
-    {
+
     $sql="SELECT `id_user`, `date_insc_user`, `nom_user`, `prenom_user`, `sexe_user`, `jour_naissance_user`, `mois_naissance_user`, `annee_naissance_user`, `temps_user`, `login_user`, `lastvisit_user`, `status_user`
         FROM tab_user WHERE `status_user`=".$nb."  ORDER BY `nom_user` LIMIT ".((($page-1)*$nbpager)).",".$nbpager ;
-    }
   }
   $db=opendb();
   $result = mysqli_query($db,$sql);
@@ -215,8 +208,6 @@ function searchUserRapid($exp)
     }
 }
 
-
-
 //
 // searchUserByCity()
 // recherche des utilisateurs dans une ville et renvoi le resultat de la recherche
@@ -240,29 +231,6 @@ function searchUserByCity($id)
     }
 }
 
-//page config city retourne le nombre d'adhérent par ville
-function statCityalladh($ville)
-{                              
- // $ville =addslashes($ville) ;
-  $sql = "SELECT count(`id_user`) AS nb FROM `tab_user`  
-          WHERE `ville_user` = '".$ville."' 
-		  AND `status_user`<3
-		 
-		  
-		  ";
-    $db=opendb();
-  	$result = mysqli_query($db, $sql);
-    closedb($db);
-  if($result == FALSE)
-  {
-      return FALSE;
-  }
-  else
-  {
-      $row = mysqli_fetch_array($result)  ;
-      return $row['nb'] ;
-  }
-}
 //
 // countUser()
 // compte le nombre d'utilisateur actif ,inactifs , total
@@ -3384,67 +3352,6 @@ function addCity($nom,$codepost,$pays)
   else
   {
       return $id;
-  }
-}
-
-//
-// modCity()
-// modife une ville
-function modCity($id,$nom,$codepost, $pays)
-{
-  $sql="UPDATE `tab_city`
-        SET `nom_city`='".$nom."', `code_postale_city`='".$codepost."', `pays_city`='".$pays."'
-        WHERE `id_city`=".$id;
-  $db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-  if ($result == FALSE )
-  {
-      return FALSE;
-  }
-  else
-  {
-      return TRUE;
-  }
-}
-
-//
-// delCity()
-// supprime une ville
-function supCity($id)
-{
-  // Verification avant suppression si il n'y a plus d'adherents
-  $sql="SELECT `id_user` FROM `tab_user` WHERE `ville_user`=".$id ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if($result == FALSE)
-  {
-     return 0;
-  }
-  else
-  {
-    $nb = mysqli_num_rows($result);
-    if ($nb > 0 )
-    {
-        return 1;
-    }
-    else
-    {
-        // Suppression de la ville
-        $sql2="DELETE FROM `tab_city` WHERE `id_city`=".$id;
-        $db=opendb();
-        $result = mysqli_query($db,$sql2);
-        closedb($db);
-        if ($result == FALSE )
-        {
-            return 0;
-        }
-        else
-        {
-            return 2;
-        }
-    }
   }
 }
 

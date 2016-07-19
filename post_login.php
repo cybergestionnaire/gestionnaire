@@ -40,7 +40,7 @@ else {
     $_SESSION["login"]  = $utilisateur->getLogin();
     $_SESSION["status"] = $utilisateur->getStatut();
     $_SESSION["iduser"] = $utilisateur->getId();
-    $_SESSION["idepn"]  = $utilisateur->getEpn();
+    $_SESSION["idepn"]  = $utilisateur->getIdEpn();
     $utilisateur->MAJVisite();
     header("Location: ./index.php");
 }

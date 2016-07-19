@@ -71,12 +71,11 @@
     
 if(isset($_POST["submit"])){
 	//1 ajout de la ville en plus si besoin
-	if($ville==0){
-				$idnewcity == addCity($commune, $codepost, $pays);
-	       if (FALSE==$idnewcity)
-	       {
-						echo getError(0);
-						$ville=0;
+	if ($ville == 0) {
+        $idnewcity == addCity($commune, $codepost, $pays);
+        if (FALSE == $idnewcity) {
+            echo getError(0);
+            $ville=0;
 						
 	       }else{
 						$ville=$idnewcity;

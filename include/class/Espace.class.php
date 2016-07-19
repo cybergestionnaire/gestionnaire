@@ -28,7 +28,7 @@ class Espace
     
     public function __construct()
     {
-        $args = func_get_args();
+        $args    = func_get_args();
         $numArgs = func_num_args();
         
         // valeur par défaut. Doit changer si l'initialisation a réussi,

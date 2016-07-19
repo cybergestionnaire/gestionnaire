@@ -125,7 +125,7 @@ else {
                     <ul class="nav navbar-nav">
                     <!-- Notifications, preinsciptions en attente -->
                     
-					 <?php
+             <?php
               //retrouve le nombre de preinscriptions en attente
               $newinscritsar=getAllUserInsc();
               $nbinscrits=mysqli_num_rows( $newinscritsar);
@@ -144,9 +144,8 @@ else {
                     <ul class="menu">
                     <?php
                     for($i=0;$i<$nbinscrits;$i++){
-											$newinscrits=mysqli_fetch_array($newinscritsar);
-											echo '
-                      <li><a href="index.php?a=24&b=1&iduser='.$newinscrits["id_inscription_user"].'"><i class="fa fa-users text-aqua"></i>
+                        $newinscrits=mysqli_fetch_array($newinscritsar);
+                        echo '<li><a href="index.php?a=24&b=1&iduser='.$newinscrits["id_inscription_user"].'"><i class="fa fa-users text-aqua"></i>
                       '.$newinscrits["nom_inscription_user"].'&nbsp;'.$newinscrits["prenom_inscription_user"].'&nbsp;('.$newinscrits["date_inscription_user"].')</a></li>';
                      
                      }
@@ -296,7 +295,7 @@ else {
 		 <!-- iCheck -->
 		 
 		<?php if($a==1 OR $a==43){ 
-			nothing;
+			"nothing";
 		}else{
 		?>
     <script src="template/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
