@@ -62,8 +62,8 @@ else {
     include_once("include/class/Utilisateur.class.php");
 
     //Variables de l'epn
-    $espace = new Espace(intval($_SESSION["idepn"]));
-    $utilisateur = new Utilisateur(intval($_SESSION["iduser"]));
+    $espace = Espace::getEspacebyId(intval($_SESSION["idepn"]));
+    $utilisateur = Utilisateur::getUtilisateurById(intval($_SESSION["iduser"]));
 
 ?>
 <!doctype html>
@@ -71,7 +71,6 @@ else {
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <title><?php echo $titre; ?> -- <?php echo $espace->getNom(); ?></title>
-    <!--<title>Cyber-Gestionnaire V0.8</title>-->
 
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.2 -->
@@ -127,8 +126,8 @@ else {
                     
              <?php
               //retrouve le nombre de preinscriptions en attente
-              $newinscritsar=getAllUserInsc();
-              $nbinscrits=mysqli_num_rows( $newinscritsar);
+              $newinscritsar = getAllUserInsc();
+              $nbinscrits = mysqli_num_rows( $newinscritsar);
               if($nbinscrits>0){
               ?>
               <li class="dropdown notifications-menu">

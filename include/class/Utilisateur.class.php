@@ -1,5 +1,24 @@
 <?php
+/*
+    This file is part of CyberGestionnaire.
+
+    CyberGestionnaire is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 2 of the License, or
+    (at your option) any later version.
+
+    CyberGestionnaire is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with CyberGestionnaire.  If not, see <http://www.gnu.org/licenses/>
+
+*/
+
 include_once("Mysql.class.php");
+
 class Utilisateur
 {
     private $_id;
@@ -27,160 +46,7 @@ class Utilisateur
     private $_idEpn;
     private $_newsletter;
     
-    public function __construct()
-    {
-        $args    = func_get_args();
-        $numArgs = func_num_args();
-        
-        // valeur par défaut. Doit changer si l'initialisation a réussi,
-        // sinon, ça veut dire que l'utilisateur n'existe pas.
-        $this->_id = 0;    
-        
-        if ($numArgs === 1) {
-            if (is_int($args[0]) ) {
-                $this->__constructId($args[0]);
-            }
-            
-            if (is_array($args[0]) && count($args[0]) == 26) {
-                $this->__constructArray($args[0]);
-            }
-        }
-        if ($numArgs === 2) {
-            if (is_string($args[0]) && is_string($args[1])) {
-                $this->__constructLoginPassword($args[0], $args[1]);
-            }
-        }
-        
-        if ($numArgs === 23) {
-            $this->__constructUtilisateur(
-                $args[0],   // dateInscription (format Y-m-d)
-                $args[1],   // nom
-                $args[2],   // prenom
-                $args[3],   // sexe
-                $args[4],   // dateNaissance (format Y-m-d)
-                $args[5],   // adresse
-                $args[6],   // idVille
-                $args[7],   // telephone
-                $args[8],   // mail
-                $args[9],   // temps
-                $args[10],  // login
-                $args[11],  // motDePasse
-                $args[12],  // statut
-                $args[13],  // derniereVisite (format Y-m-d)
-                $args[14],  // csp
-                $args[15],  // equipement
-                $args[16],  // utilisation
-                $args[17],  // connaissance
-                $args[18],  // info
-                $args[19],  // tarif
-                $args[20],  // dateRenouvellement (format Y-m-d)
-                $args[21],  // idEpn
-                $args[22]   // newsletter
-                ); 
-        }
-        
-    }
-    
-    public function __constructId($id)
-    {
-        if ($id != 0) {
-            $db = Mysql::opendb();
-            $id = mysqli_real_escape_string($db, $id);
-            $sql = "SELECT * "
-                 . "FROM `tab_user` "
-                 . "WHERE `id_user` = " . $id . "";
-            $result = mysqli_query($db,$sql);
-            Mysql::closedb($db);
-            
-            if (mysqli_num_rows($result) == 1) {
-                
-                $row = mysqli_fetch_array($result);
-                
-                $this->_id                  = $row["id_user"];
-                $this->_dateInscription     = $row["date_insc_user"];
-                $this->_nom                 = $row["nom_user"];
-                $this->_prenom              = $row["prenom_user"];
-                $this->_sexe                = $row["sexe_user"];
-                $this->_dateNaissance       = date_create_from_format(
-                                                "Y-m-d",
-                                                $row["annee_naissance_user"]
-                                                . "-" . $row["mois_naissance_user"]
-                                                . "-" . $row["jour_naissance_user"]
-                                                );
-                $this->_adresse             = $row["adresse_user"];
-                $this->_idVille             = $row["ville_user"];
-                $this->_telephone           = $row["tel_user"];
-                $this->_mail                = $row["mail_user"];
-                $this->_temps               = $row["temps_user"];
-                $this->_login               = $row["login_user"];
-                $this->_motDePasse          = $row["pass_user"];
-                $this->_statut              = $row["status_user"];
-                $this->_derniereVisite      = $row["lastvisit_user"];
-                $this->_csp                 = $row["csp_user"];
-                $this->_equipement          = $row["equipement_user"];
-                $this->_utilisation         = $row["utilisation_user"];
-                $this->_connaissance        = $row["connaissance_user"];
-                $this->_info                = $row["info_user"];
-                $this->_tarif               = $row["tarif_user"];
-                $this->_dateRenouvellement  = $row["dateRen_user"];
-                $this->_idEpn               = $row["epn_user"];
-                $this->_newsletter          = $row["newsletter_user"];
-            }
-            mysqli_free_result($result);
-        }            
-
-    }
-    public function __constructLoginPassword($login, $password)
-    {
-        if ($login != "" && $password != "") {
-            $db = Mysql::opendb();
-            $login = mysqli_real_escape_string($db, $login);
-            $sql = "SELECT * "
-                 . "FROM `tab_user` "
-                 . "WHERE `login_user` = '" . $login ."' "
-                 . "AND `pass_user` = '" . md5($password) . "'";
-            $result = mysqli_query($db,$sql);
-            Mysql::closedb($db);
-            
-            if (mysqli_num_rows($result) == 1) {
-                
-                $row = mysqli_fetch_array($result);
-                
-                $this->_id                  = $row["id_user"];
-                $this->_dateInscription     = $row["date_insc_user"];
-                $this->_nom                 = $row["nom_user"];
-                $this->_prenom              = $row["prenom_user"];
-                $this->_sexe                = $row["sexe_user"];
-                $this->_dateNaissance       = date_create_from_format(
-                                                "Y-m-d",
-                                                $row["annee_naissance_user"]
-                                                . "-" . $row["mois_naissance_user"]
-                                                . "-" . $row["jour_naissance_user"]
-                                              );
-                $this->_adresse             = $row["adresse_user"];
-                $this->_idVille             = $row["ville_user"];
-                $this->_telephone           = $row["tel_user"];
-                $this->_mail                = $row["mail_user"];
-                $this->_temps               = $row["temps_user"];
-                $this->_login               = $row["login_user"];
-                $this->_motDePasse          = $row["pass_user"];
-                $this->_statut              = $row["status_user"];
-                $this->_derniereVisite      = $row["lastvisit_user"];
-                $this->_csp                 = $row["csp_user"];
-                $this->_equipement          = $row["equipement_user"];
-                $this->_utilisation         = $row["utilisation_user"];
-                $this->_connaissance        = $row["connaissance_user"];
-                $this->_info                = $row["info_user"];
-                $this->_tarif               = $row["tarif_user"];
-                $this->_dateRenouvellement  = $row["dateRen_user"];
-                $this->_idEpn               = $row["epn_user"];
-                $this->_newsletter          = $row["newsletter_user"];
-            }
-            mysqli_free_result($result);
-        }
-    }
-
-    public function __constructArray($array)
+    public function __construct($array)
     {
         $this->_id                  = $array["id_user"];
         $this->_dateInscription     = $array["date_insc_user"];
@@ -212,8 +78,80 @@ class Utilisateur
         $this->_idEpn               = $array["epn_user"];
         $this->_newsletter          = $array["newsletter_user"];
     }
+
+    /*
+     * Accesseurs basiques
+     */
+    public function getId() {
+        return $this->_id;
+    }
     
-    public function __constructUtilisateur(
+    public function getLogin() {
+        return $this->_login;
+    }
+    
+    public function getNom() {
+        return $this->_nom;
+    }
+    public function getPrenom() {
+        return $this->_prenom;
+    }
+    
+    public function getStatut() {
+        return $this->_statut;
+    }
+    
+    /**
+     * Fonction de récupération des avatars.
+     * A retravailler pour aller chercher les photos des usagers
+     * OU
+     * adapter la base de données pour plus de cohérence (mettre l'avatar dans l'enregitrement utlisateur...)
+     */
+     
+    public function getAvatar() {
+        $sql = "SELECT `anim_avatar` FROM `rel_user_anim` WHERE `id_animateur`='" . $this->_id . "'";
+        $db = Mysql::opendb();
+        $result = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        if($result == FALSE)
+        {
+            $avatar = "default.png";
+        }
+        else
+        {
+            $row = mysqli_fetch_array($result) ;
+            $avatar = $row["anim_avatar"];
+            if (!isset($avatar) || $avatar == "") {
+                $avatar = "default.png";
+            }
+        }
+        mysqli_free_result($result);
+        return $avatar;
+    }
+    
+    public function getDateInscription() {
+        return $this->_dateInscription;
+    }
+    
+    public function getIdEpn() {
+        return $this->_idEpn;
+    }
+    
+    public function MAJVisite() {
+        $sql    = "UPDATE tab_user SET lastvisit_user='" . date("Y-m-d") . "' WHERE `id_user`=" . $this->_id ;
+        $db     = Mysql::opendb();
+        $result = mysqli_query($db, $sql);
+        if (result) {
+            mysqli_free_result($result);
+        }
+        Mysql::closedb($db);
+    }
+
+    /*
+     * Fonctions statiques
+     */
+     
+    public static function creerUtilisateur(
                             $dateInscription,
                             $nom,
                             $prenom,
@@ -239,7 +177,8 @@ class Utilisateur
                             $newsletter
                         )
     {
-
+        $utilisateur = null;
+        
         if (date_create_from_format('Y-m-d', $dateInscription) !== FALSE 
             && nom != ""
             && $prenom != ""
@@ -299,95 +238,96 @@ class Utilisateur
                 $result2 = mysqli_query($db,$sql);
  
                 if ($result2) {
-                    $this->_id                  = mysqli_insert_id($db);
-                    $this->_dateInscription     = $dateInscription;
-                    $this->_nom                 = $nom;
-                    $this->_prenom              = $prenom;
-                    $this->_sexe                = $sexe;
-                    $this->_dateNaissance       = $dateNaissance;
-                    $this->_adresse             = $adresse;
-                    $this->_idVille             = $idVille;
-                    $this->_telephone           = $telephone;
-                    $this->_mail                = $mail;
-                    $this->_temps               = $temps;
-                    $this->_login               = $login;
-                    $this->_motDePasse          = $motDePasse;
-                    $this->_statut              = $statut;
-                    $this->_derniereVisite      = $derniereVisite;
-                    $this->_csp                 = $csp;
-                    $this->_equipement          = $equipement;
-                    $this->_utilisation         = $utilisation;
-                    $this->_connaissance        = $connaissance;
-                    $this->_info                = $info;
-                    $this->_tarif               = $tarif;
-                    $this->_dateRenouvellement  = $dateRenouvellement;
-                    $this->_idEpn               = $idEpn;
-                    $this->_newsletter          = $newsletter;
-                }
+                    $utilisateur = new Utilisateur(
+                        array(
+                            "id_user"               => mysqli_insert_id($db),
+                            "date_insc_user"        => $dateInscription,
+                            "nom_user"              => $nom,
+                            "prenom_user"           => $prenom,
+                            "sexe_user"             => $sexe,
+                            "jour_naissance_user"   => $jourNaissance,
+                            "mois_naissance_user"   => $moisNaissance,
+                            "annee_naissance_user"  => $anneeNaissance,
+                            "adresse_user"          => $adresse,
+                            "ville_user"            => $idVille,
+                            "tel_user"              => $telephone,
+                            "mail_user"             => $mail,
+                            "temps_user"            => $temps,
+                            "login_user"            => $login,
+                            "pass_user"             => $motDePasse,
+                            "status_user"           => $statut,
+                            "lastvisit_user"        => $derniereVisite,
+                            "csp_user"              => $csp,
+                            "equipement_user"       => $equipement,
+                            "utilisation_user"      => $utilisation,
+                            "connaissance_user"     => $connaissance,
+                            "info_user"             => $info,
+                            "tarif_user"            => $tarif,
+                            "dateRen_user"          => $dateRenouvellement,
+                            "epn_user"              => $idEpn,
+                            "newsletter_user"       => $newsletter
+                        )
+                    );
+                }  
                 mysqli_free_result($result2);
-            }
+            }       
             mysqli_free_result($result);
             Mysql::closedb($db);
         }
     }
     
-    public function getId() {
-        return $this->_id;
-    }
-    
-    public function getLogin() {
-        return $this->_login;
-    }
-    
-    public function getNom() {
-        return $this->_nom;
-    }
-    public function getPrenom() {
-        return $this->_prenom;
-    }
-    
-    public function getStatut() {
-        return $this->_statut;
-    }
-    public function getAvatar() {
-        $sql = "SELECT `anim_avatar` FROM `rel_user_anim` WHERE `id_animateur`='" . $this->_id . "'";
-        $db = Mysql::opendb();
-        $result = mysqli_query($db,$sql);
-        Mysql::closedb($db);
-        if($result == FALSE)
-        {
-            $avatar = "default.png";
-        }
-        else
-        {
-            $row = mysqli_fetch_array($result) ;
-            $avatar = $row["anim_avatar"];
-            if (!isset($avatar) || $avatar == "") {
-                $avatar = "default.png";
+    public static function getUtilisateurById($id)
+    {
+        $utilisateur = null;
+        
+        if ($id != 0) {
+            $db  = Mysql::opendb();
+            $id  = mysqli_real_escape_string($db, $id);
+            $sql = "SELECT * "
+                 . "FROM `tab_user` "
+                 . "WHERE `id_user` = " . $id . "";
+            $result = mysqli_query($db,$sql);
+            
+            if (mysqli_num_rows($result) == 1) {
+                $utilisateur = new Utilisateur(mysqli_fetch_assoc($result));
             }
-        }
-        mysqli_free_result($result);
-        return $avatar;
-    }
-    
-    public function getDateInscription() {
-        return $this->_dateInscription;
-    }
-    
-    public function getIdEpn() {
-        return $this->_idEpn;
-    }
-    
-    public function MAJVisite() {
-        $sql = "UPDATE tab_user SET lastvisit_user='" . date("Y-m-d") . "' WHERE `id_user`=" . $this->_id ;
-        $db = Mysql::opendb();
-        $result = mysqli_query($db, $sql);
-        Mysql::closedb($db);
-        mysqli_free_result($result);
-    }
-    
-    public static function getUtilisateursParVille($idVille) {
 
+            mysqli_free_result($result);
+            Mysql::closedb($db);
+        }            
+        
+        return $utilisateur;
+    }
+    
+    public static function getUtilisateurByLoginPassword($login, $password)
+    {
+        $utilisateur = null;
+        
+        if ($login != "" && $password != "") {
+            $db = Mysql::opendb();
+            $login = mysqli_real_escape_string($db, $login);
+            $sql = "SELECT * "
+                 . "FROM `tab_user` "
+                 . "WHERE `login_user` = '" . $login ."' "
+                 . "AND `pass_user` = '" . md5($password) . "'";
+            $result = mysqli_query($db,$sql);
+            Mysql::closedb($db);
+            
+            if (mysqli_num_rows($result) == 1) {
+                $utilisateur = new Utilisateur(mysqli_fetch_assoc($result));
+            }
+
+            mysqli_free_result($result);
+        }
+        
+        return $utilisateur;
+    }
+    
+    
+    public static function getUtilisateursByVille($idVille) {
+
+        $utilisateurs = null;
+        
         $db = Mysql::opendb();
 
         $sql = "SELECT * "
@@ -406,7 +346,8 @@ class Utilisateur
             while($row = mysqli_fetch_assoc($result)) {
                 $utilisateurs[] = new Utilisateur($row);
             }
-            return $utilisateurs ;
         }
+        
+        return $utilisateurs ;
     }
 }

@@ -19,7 +19,7 @@
     Original work : cybermin / 2006-2008 Namont Nicolas
 */
 
-$rowprinscription=getPreinsmode();
+$rowprinscription = getPreinsmode();
 
 ?>
 <html>

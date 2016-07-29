@@ -30,9 +30,9 @@ $passwd = $_POST["pass"];
 //include ("include/fonction.php");
 include_once("include/class/Utilisateur.class.php");
 
-$utilisateur = new Utilisateur($login,$passwd);
+$utilisateur = Utilisateur::getUtilisateurByLoginPassword($login,$passwd);
 
-if ($utilisateur->getId() === 0) {
+if ($utilisateur == null) {
     header("Location: ./index.php?error=3");
 }
 else {

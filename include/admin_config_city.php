@@ -45,13 +45,14 @@ if (isset($_GET["act"])) {
                $mess = getError(4);
             }
             else {   
-                $ville = new Ville($nom, $codepost, $pays);
+                $ville = Ville::creerVille($nom, $codepost, $pays);
                 
-                if ($ville->getId() == 0) {
+                if ($ville == null) {
                     echo getError(0);
                 }
                 else {
-                    header("Location:index.php?a=41&mesno=14") ;
+                    //header("Location:index.php?a=41&mesno=14") ;
+                    echo getError(14);
                 }
             }
             break;
@@ -65,31 +66,39 @@ if (isset($_GET["act"])) {
                 $mess = getError(4);
             }
             else {
-                $ville = new Ville(intval($idcity));
-                if ($ville->getId() != 0) {
+                $ville = Ville::getVilleById(intval($idcity));
+                
+                if ($ville != null) {
                         
                     if (FALSE == $ville->modifier($nom, $codepost, $pays)) {
                         echo getError(0);
                     }
                     else {
-                        header("Location:index.php?a=41&mesno=14") ;
+                        // header("Location:index.php?a=41&mesno=14") ;
+                        echo getError(14);
                     }
                 }
             }
             break;
             
         case 3: // suppression
-            $ville = new Ville(intval($idcity));
-            $errno = $ville->supprimer();
-            switch ($errno)
-            {
-                case 0: // impossible de joindre la base
-                    echo getError(0);
-                    break;
-                case 1: // la liste des adherents n'est pas vide
-                    echo getError(11);
-                    break;
+            $ville = Ville::getVilleById(intval($idcity));
+            if ($ville != null) {
+                $errno = $ville->supprimer();
+                switch ($errno)
+                {
+                    case 0: // impossible de joindre la base
+                        echo getError(0);
+                        break;
+                    case 1: // la liste des adherents n'est pas vide
+                        echo getError(11);
+                        break;
+                } 
             }
+            else {
+                echo getError(0);
+            }
+            
             break; 
     }
 }
@@ -99,7 +108,7 @@ if (isset($_GET["act"])) {
 $mesno = isset($_GET['mesno']) ? $_GET['mesno'] : '';
 if ($mesno != "")
 {
-  echo getError($mesno);
+    echo getError($mesno);
 }
 
 
@@ -108,16 +117,16 @@ if ($mesno != "")
 
 <!-- DIV accès direct aux autres paramètres-->
  <div class="box">
-		<div class="box-header"><h3 class="box-title">Param&eacute;trages</h3></div>
-		<div class="box-body">
-			
-			<?php 
-			//debug($_GET["a"]);
-			echo configBut($_GET["a"]) ;
-		
-			?>
-			
-		</div><!-- /.box-body -->
+    <div class="box-header"><h3 class="box-title">Param&eacute;trages</h3></div>
+    <div class="box-body">
+        
+        <?php 
+        //debug($_GET["a"]);
+        echo configBut($_GET["a"]) ;
+    
+        ?>
+        
+    </div><!-- /.box-body -->
 </div><!-- /.box -->
 
 
@@ -126,19 +135,19 @@ if ($mesno != "")
 
 
 <div class="box box-solid box-warning">
-	<div class="box-header"><h3 class="box-title">Les villes de vos EPN</h3></div>
-	<div class="box-body"> 
-	<h4>Enregistrer une nouvelle ville</h4>
-	<form method="post" action="index.php?a=41&act=1">
-	<div class="row">
-		<div class="col-xs-4"><input type="text" class="form-control" name="newcity" placeholder="Nom"></div>
-		<div class="col-xs-3"><input type="text" class="form-control" name="newcodepost" placeholder="Code Postal" maxlength="10"></div>
-		<div class="col-xs-3"><input type="text" name="newpays" class="form-control"  placeholder="Pays"></div>
-		<a type="submit" value="Cr&eacute;er"><button class="btn btn-primary">Cr&eacute;er</button></a>
-	</div>
-	</form>
+    <div class="box-header"><h3 class="box-title">Les villes de vos EPN</h3></div>
+    <div class="box-body"> 
+    <h4>Enregistrer une nouvelle ville</h4>
+    <form method="post" action="index.php?a=41&act=1">
+    <div class="row">
+        <div class="col-xs-4"><input type="text" class="form-control" name="newcity" placeholder="Nom"></div>
+        <div class="col-xs-3"><input type="text" class="form-control" name="newcodepost" placeholder="Code Postal" maxlength="10"></div>
+        <div class="col-xs-3"><input type="text" name="newpays" class="form-control"  placeholder="Pays"></div>
+        <a type="submit" value="Cr&eacute;er"><button class="btn btn-primary">Cr&eacute;er</button></a>
+    </div>
+    </form>
 </div>
-		   
+           
 <?php
 $villes   = Ville::getVilles();
 $nbVilles = count($villes);
@@ -148,7 +157,7 @@ if ($nbVilles > 0) {
 
     foreach($villes as $ville) {
 ?>
-	<form action="index.php?a=41&act=2&idcity=<?php echo $ville->getId(); ?>" method="post" role="form">
+    <form action="index.php?a=41&act=2&idcity=<?php echo $ville->getId(); ?>" method="post" role="form">
         <tr>
             <td><input class="form-control" type="text" name="city" value="<?php echo $ville->getNom(); ?>"></td>
             <td><input class="form-control" type="text" name="codepost" value="<?php echo $ville->getCodePostal(); ?>" maxlength="10"></td>
@@ -158,12 +167,12 @@ if ($nbVilles > 0) {
             <td><a href="index.php?a=41&act=4&idcity=<?php echo $ville->getId(); ?>#liste"><?php echo $ville->nbAdherents(); ?> Adh.</a></td>
         </tr>
     </form>
-	<?php	
-	}
-	echo '</table>';
+    <?php   
+    }
+    echo '</table>';
 } else {
 ?>
-	<div class="alert alert-info alert-dismissable">
+    <div class="alert alert-info alert-dismissable">
         <i class="fa fa-info"></i><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><b>Pas de villes encore !</b>
     </div>
 <?php } ?>
@@ -173,7 +182,7 @@ if ($nbVilles > 0) {
 
 <?php
 if ($act == 4) {
-    $utilisateurs = Utilisateur::getUtilisateursParVille($idcity);
+    $utilisateurs = Utilisateur::getUtilisateursByVille($idcity);
 
     if (FALSE == $utilisateurs)
     {
