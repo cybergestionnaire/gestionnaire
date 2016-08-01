@@ -180,7 +180,7 @@ class Utilisateur
         $utilisateur = null;
         
         if (date_create_from_format('Y-m-d', $dateInscription) !== FALSE 
-            && nom != ""
+            && $nom != ""
             && $prenom != ""
             && ($sexe == "H" || $sexe == "F")
             && date_create_from_format('Y-m-d', $dateNaissance) !== FALSE

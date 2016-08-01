@@ -159,12 +159,12 @@ if ($nbVilles > 0) {
 ?>
     <form action="index.php?a=41&act=2&idcity=<?php echo $ville->getId(); ?>" method="post" role="form">
         <tr>
-            <td><input class="form-control" type="text" name="city" value="<?php echo $ville->getNom(); ?>"></td>
-            <td><input class="form-control" type="text" name="codepost" value="<?php echo $ville->getCodePostal(); ?>" maxlength="10"></td>
-            <td><input class="form-control" type="text" name="pays" value="<?php echo $ville->getPays(); ?>"></td>
+            <td><input class="form-control" type="text" name="city" value="<?php echo htmlentities($ville->getNom()) ; ?>"></td>
+            <td><input class="form-control" type="text" name="codepost" value="<?php echo htmlentities($ville->getCodePostal()); ?>" maxlength="10"></td>
+            <td><input class="form-control" type="text" name="pays" value="<?php echo htmlentities($ville->getPays()) ; ?>"></td>
             <td><button class="btn btn-success"  type="submit" value="modifier"><i class="fa fa-edit"></i></button>&nbsp;
-            <a href="index.php?a=41&act=3&idcity=<?php echo $ville->getId(); ?>"><button type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></a></td>
-            <td><a href="index.php?a=41&act=4&idcity=<?php echo $ville->getId(); ?>#liste"><?php echo $ville->nbAdherents(); ?> Adh.</a></td>
+            <a href="index.php?a=41&act=3&idcity=<?php echo htmlentities($ville->getId()); ?>"><button type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></a></td>
+            <td><a href="index.php?a=41&act=4&idcity=<?php echo htmlentities($ville->getId()); ?>#liste"><?php echo htmlentities($ville->nbAdherents()); ?> Adh.</a></td>
         </tr>
     </form>
     <?php   
@@ -204,10 +204,10 @@ if ($act == 4) {
         foreach ($utilisateurs as $utilisateur) {
 ?>
                 <tr>
-                    <td><?php echo $utilisateur->getNom() ?></td>
-                    <td><?php echo $utilisateur->getPrenom() ?></td>
-                    <td><span class="badge <?php echo $arraycolor[$utilisateur->getStatut()] ?>"><?php echo $arraystatus[$utilisateur->getStatut()] ?></span></td>
-                    <td><a href="index.php?a=1&b=2&iduser=<?php echo $utilisateur->getId() ?>">Voir</a></td>
+                    <td><?php echo htmlentities($utilisateur->getNom()) ; ?></td>
+                    <td><?php echo htmlentities($utilisateur->getPrenom()) ; ?></td>
+                    <td><span class="badge <?php echo htmlentities($arraycolor[$utilisateur->getStatut()]) ; ?>"><?php echo htmlentities($arraystatus[$utilisateur->getStatut()]) ; ?></span></td>
+                    <td><a href="index.php?a=1&b=2&iduser=<?php echo htmlentities($utilisateur->getId()) ; ?>">Voir</a></td>
                 </tr>
 <?php   } ?>
             </table>
