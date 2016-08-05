@@ -43,8 +43,7 @@ class Ville
      * @param ArrayObject $array Tableau associatif contenant les données d'initialisation de l'objet
      *                           les clés utilisées dépendent du nommage des champs dans la table "tab_city"
      */
-    private function __construct($array)
-    {
+    private function __construct($array) {
         $this->_id         = $array["id_city"];
         $this->_nom        = $array["nom_city"];
         $this->_codePostal = $array["code_postale_city"];
@@ -165,7 +164,7 @@ class Ville
             Mysql::closedb($db);
             
             if (mysqli_num_rows($result) == 1) {
-                $ville = new Ville(mysqli_fetch_array($result));
+                $ville = new Ville(mysqli_fetch_assoc($result));
             }
         }
         

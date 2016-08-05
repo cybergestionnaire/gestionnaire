@@ -24,29 +24,24 @@
 
 // Configuration de l'espace
 
-if ($_GET["mess"] == "ok")
+if (isset($_GET["mess"]) && $_GET["mess"] == "ok")
 {
   echo '<div class="alert alert-success alert-dismissable"><i class="fa fa-check"></i>
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Mise &agrave; jour effectu&eacute;e</div>';
   
 }
 // chargement des valeurs pour l'epn par d&eacute;faut
-$epn=$_SESSION['idepn'];
-//si changment d'epn
-$epn_r=$_GET['epnr'];
-if (isset($epn_r)){
-	$epn=$epn_r;
-}
+
+$idEspace = isset($_GET['epnr']) ? $_GET['epnr'] : $_SESSION['idepn'];
 
 // Choix de l'epn   -------------------------------------
-$espaces=getAllEPN();
-//debug($epn);
-$dureearray=array("30"=>"30 min", "60"=>"1 heure", "90"=>"1h30", "120"=>"2 heures");
+$espaces = Espace::getEspaces();
+//debug($idEspace);
+$dureearray = array("30" => "30 min", "60" => "1 heure", "90" => "1h30", "120" => "2 heures");
 
 
-$mesno= $_GET["mesno"];
-if ($mesno !="")
-{
+$mesno = isset($_GET["mesno"]) ? $_GET["mesno"] : '' ;
+if ($mesno != "") {
   echo getError($mesno);
 }
 
@@ -54,192 +49,206 @@ if ($mesno !="")
 
 <!-- DIV acc&egrave;s direct aux autres param&egrave;tres-->
  <div class="box">
-		<div class="box-header">
-			<h3 class="box-title">Param&eacute;trages</h3>
-		</div>
-		<div class="box-body">
-			
-			<?php 
-			//debug($_GET["a"]);
-			echo configBut($_GET["a"]) ;
-		
-			?>
-			
-		</div><!-- /.box-body -->
+    <div class="box-header">
+        <h3 class="box-title">Param&eacute;trages</h3>
+    </div>
+    <div class="box-body">
+<?php 
+    //debug($_GET["a"]);
+    echo configBut($_GET["a"]) ;
+
+?>
+    </div><!-- /.box-body -->
 </div><!-- /.box -->
 
 <div class="row">
-	<!-- Colonne de gauche -->
-	<div class="col-md-6">
-	
-<!-- NOM ESPACE -->	
-<form action="index.php?a=42" method="post" role="form">	
- <div class="box box-warning"><div class="box-header"><h3 class="box-title">Les horaires de l'espace choisi</h3></div>
-	<div class="box-body">
-	<div class="form-group"><label>Choisissez l'espace :</label>
-		<select name="epn_r" class="form-control" >
-			<?php
-				foreach ($espaces AS $key=>$value)
-				{
-					if ($epn == $key)
-					{
-						echo "<option value=\"".$key."\" selected>".$value."</option>";
-					}
-					else
-					{
-						echo "<option value=\"".$key."\">".$value."</option>";
-					}
-				}
-				
-			?>
-			</select></div>
-		<div class="box-footer">
-			<input type="hidden" name="form" value="1">
-			<button type="submit" name="submit" value="Valider" class="btn btn-primary">Changer</div>
-		
-	</div>
-</form></div>
+    <!-- Colonne de gauche -->
+    <div class="col-md-6">
+        
+        <!-- NOM ESPACE -->	
+        <form action="index.php?a=42" method="post" role="form">
+            <div class="box box-warning">
+                <div class="box-header"><h3 class="box-title">Les horaires de l'espace choisi</h3></div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Choisissez l'espace :</label>
+                        <select name="epn_r" class="form-control" >
+<?php
+    foreach ($espaces AS $espace) {
+        if ($idEspace == $espace->getId()) {
+            echo "<option value=\"" . $espace->getId() . "\" selected>" . $espace->getNom() . "</option>";
+        }
+        else {
+            echo "<option value=\"" . $espace->getId() . "\">" . $espace->getNom() . "</option>";
+        }
+    }
+?>
+                        </select>
+                    </div>
+                    <div class="box-footer">
+                        <input type="hidden" name="form" value="1">
+                        <button type="submit" name="submit" value="Valider" class="btn btn-primary">Changer</button>
+                    </div>
+                </div><!-- .box-body -->
+            </div><!-- .box -->
+        </form>
 
 
+        <!-- MODULE HORAIRES-->
 
-
-
-<!-- MODULE HORAIRES-->
-
- <div class="box box-warning">
-	<div class="box-header">
-		<h3 class="box-title">Horaires d'ouverture</h3></div>
-	<div class="box-body no-padding">
+        <div class="box box-warning">
+            <div class="box-header"><h3 class="box-title">Horaires d'ouverture</h3></div>
+            <div class="box-body no-padding">
 
 <?php
 
-  $dayArray = array("","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche") ;
+
   
-  if ($_GET["mess"] == "Hwrong")
-   {
-     echo getError(15) ;
-   }
-  $table =" <table class=\"table\">
-  <form method=\"post\" action=\"index.php?a=42\">\r\n
-          <tr>\r\n
-              <th style=\"width: 10px\">&nbsp;</th>
-			  <th>TRANCHE 1 (Matin)</th>
-			  <th>TRANCHE 2 (Apres-midi)</th></tr>\r\n" ;
+    if (isset($_GET["mess"]) && $_GET["mess"] == "Hwrong") {
+        echo getError(15) ;
+    } 
 
-  // affichage
-  for ($i = 1 ; $i < 8 ; $i++)
-  {
-    if ($i!=$_GET["dayline"])
-      $color = "#EEEEEE";
-    else
-      $color = "#CC9999";
-    $row = getHoraire($i,$epn) ;
-    $table .= "<tr><td>".$dayArray[$i]."</td>";
-    $table .= "<td>de " ;
-    // H1 begin
+
+
+    if (isset($_GET["dayline"]) && $i != $_GET["dayline"]) {
+        $color = "#EEEEEE";
+    }
+    else {
+        $color = "#CC9999";
+    }
+
+    $horaires = Espace::getEspaceById($idEspace)->getHoraires();
+    
+    $table = "<form method=\"post\" action=\"index.php?a=42\">\r\n
+        <table class=\"table\">\r\n
+            <tr>\r\n
+                <th style=\"width: 10px\">&nbsp;</th>
+                <th>TRANCHE 1 (Matin)</th>
+                <th>TRANCHE 2 (Apres-midi)</th>
+            </tr>\r\n" ;
+
+    // affichage
+    
+    //for ($i = 1 ; $i < 8 ; $i++) {
+        
+        //$row = getHoraire($i,$idEspace) ;
+      
+    foreach($horaires as $horaire) {
+        $table .= "<tr><td>" . $horaire->getJour() . "</td>\r\n";
+        $table .= "<td>de " ;
+    // H1 Matin begin
     // tableau des heures
-       $H = "" ;
-       $H .= "<option value=\"\"></option>\r\n" ;
+        $H = "" ;
+        $H .= "<option value=\"\"></option>\r\n" ;
      // $H .= "<option value=\"0\">Ferm&eacute;</option>\r\n" ;
-       for ($a = 6 ; $a <= 23 ; $a++)
-       {
-           if (strlen($a)<2)
-           $a = "0".$a ;
-           $M = "";
-           for ($b = 0 ; $b <= 59 ;$b=$b+15)
-           {
-               if ($row["hor1_begin_horaire"] == convertHoraire($a."h".$b))
-                  $select="selected" ;
+        for ($heure = 6 ; $heure <= 23 ; $heure++) {
+            if (strlen($heure)<2) {
+                $heure = "0".$heure ;
+            }
+            for ($minutes = 0 ; $minutes <= 59 ; $minutes = $minutes + 15) {
+               if ($horaire->getHoraire1Debut() == Horaire::convertHoraire($heure."h".$minutes))
+                  $select = "selected" ;
                else
-                  $select="";
+                  $select = "";
 
-               if ($b == 0 )
-                  $b  ="00" ;
-               $H .= "<option value=\"".convertHoraire($a."h".$b)."\" ".$select.">".$a."h".$b."</option>\r\n" ;
+               if ($minutes == 0 ) {
+                  $minutes = "00" ;
+               }
+               $H .= "<option value=\"" . Horaire::convertHoraire($heure."h".$minutes) . "\" " . $select . ">" . $heure . "h" . $minutes . "</option>\r\n" ;
            }
        }
 
-    $table .= "<select  name=\"".$i."-h1begin\">".$H."</select> <b>&agrave;</b> " ;
-    // H1 end
-    // tableau des heures
-       $H = "" ;
-       $H .= "<option value=\"\"></option>\r\n" ;
+        $table .= "<select  name=\"" . $horaire->getIdJour() . "-h1begin\">" . $H ."</select> <b>&agrave;</b> " ;
+    // H1 Matin end
+        
+        
+    // H1 Apres-midi begin
+        $H = "" ;
+        $H .= "<option value=\"\"></option>\r\n" ;
+        // $H .= "<option value=\"0\">Ferm&eacute;</option>\r\n" ;
+        for ($heure = 6 ; $heure <= 23 ; $heure++) {
+            if (strlen($heure)<2) {
+                $heure = "0".$heure ;
+            }
+            for ($minutes = 0 ; $minutes <= 59 ;$minutes = $minutes + 15) {
+                if ($horaire->getHoraire1Fin() == Horaire::convertHoraire($heure."h".$minutes)) {
+                    $select = "selected" ;
+                }
+                else {
+                    $select = "";
+                }
+
+                if ($minutes == 0) {
+                    $minutes = "00" ;
+                }
+                $H .= "<option value=\"" . Horaire::convertHoraire($heure."h".$minutes) . "\" " . $select . ">" . $heure . "h" . $minutes . "</option>\r\n" ;
+            }
+        }
+
+        $table .= "<select name=\"" . $horaire->getIdJour() . "-h1end\">".$H."</select>" ;
+    // H1 Apres-midi end
+        
+        $table .= "</td><td class=\"selH\"><b>de</b> " ;
+    
+    // H2 Matin begin
+        $H = "" ;
+        $H .= "<option value=\"\"></option>\r\n" ;
       // $H .= "<option value=\"0\">Ferm&eacute;</option>\r\n" ;
-       for ($a = 6 ; $a <= 23 ; $a++)
-       {
-           if (strlen($a)<2)
-           $a = "0".$a ;
-           $M = "";
-           for ($b = 0 ; $b <= 59 ;$b=$b+15)
-           {
-               if ($row["hor1_end_horaire"] == convertHoraire($a."h".$b))
-                  $select="selected" ;
-               else
-                  $select="";
+        for ($heure = 6 ; $heure <= 23 ; $heure++) {
+            if (strlen($heure) < 2) {
+                $heure = "0".$heure ;
+            }
+            for ($minutes = 0 ; $minutes <= 59 ;$minutes = $minutes + 15) {
+                if ($horaire->getHoraire2Debut() == Horaire::convertHoraire($heure."h".$minutes)) {
+                    $select = "selected" ;
+                }
+                else {
+                    $select = "";
+                }
 
-               if ($b == 0 )
-                  $b  ="00" ;
-               $H .= "<option value=\"".convertHoraire($a."h".$b)."\" ".$select.">".$a."h".$b."</option>\r\n" ;
-           }
-       }
+                if ($minutes == 0 ) {
+                    $minutes  ="00" ;
+                }
+                $H .= "<option value=\"" . Horaire::convertHoraire($heure."h".$minutes) . "\" " . $select . ">" . $heure . "h" . $minutes . "</option>\r\n" ;
+            }
+        }
 
-    $table .= "<select name=\"".$i."-h1end\">".$H."</select>" ;
-    $table .= "</td><td class=\"selH\"><b>de</b> " ;
-    // H2 begin
-    // tableau des heures
-       $H = "" ;
-       $H .= "<option value=\"\"></option>\r\n" ;
-      // $H .= "<option value=\"0\">Ferm&eacute;</option>\r\n" ;
-       for ($a = 6 ; $a <= 23 ; $a++)
-       {
-           if (strlen($a)<2)
-           $a = "0".$a ;
-           $M = "";
-           for ($b = 0 ; $b <= 59 ;$b=$b+15)
-           {
-               if ($row["hor2_begin_horaire"] == convertHoraire($a."h".$b))
-                  $select="selected" ;
-               else
-                  $select="";
-
-               if ($b == 0 )
-                  $b  ="00" ;
-               $H .= "<option value=\"".convertHoraire($a."h".$b)."\" ".$select.">".$a."h".$b."</option>\r\n" ;
-           }
-       }
-
-    $table .= "<select name=\"".$i."-h2begin\">".$H."</select> <b>&agrave;</b> " ;
-    // H2 end
-    // tableau des heures
-       $H = "" ;
-       $H .= "<option value=\"\"></option>\r\n" ;
+        $table .= "<select name=\"" . $horaire->getIdJour() . "-h2begin\">".$H."</select> <b>&agrave;</b> " ;
+    // H2 Matin end
+    
+    // H2 Apres-midi begin    
+        $H = "" ;
+        $H .= "<option value=\"\"></option>\r\n" ;
 //            $H .= "<option value=\"\">Ferm&eacute;</option>\r\n" ;
-       for ($a = 6 ; $a <= 23 ; $a++)
-       {
-           if (strlen($a)<2)
-           $a = "0".$a ;
-           $M = "";
-           for ($b = 0 ; $b <= 59 ;$b=$b+15)
-           {
-               if ($row["hor2_end_horaire"] == convertHoraire($a."h".$b))
-                  $select="selected" ;
-               else
-                  $select="";
+        for ($heure = 6 ; $heure <= 23 ; $heure++) {
+            if (strlen($heure) < 2) {
+                $heure = "0".$heure ;
+            }
+            for ($minutes = 0 ; $minutes <= 59 ;$minutes=$minutes+15) {
+                if ($horaire->getHoraire2Fin() == Horaire::convertHoraire($heure."h".$minutes)) {
+                    $select = "selected" ;
+                }
+                else {
+                    $select = "";
+                }
 
-               if ($b == 0 )
-                  $b  ="00" ;
-               $H .= "<option value=\"".convertHoraire($a."h".$b)."\" ".$select.">".$a."h".$b."</option>\r\n" ;
-           }
-       }
+                if ($minutes == 0 ) {
+                    $minutes  ="00" ;
+                }
+                $H .= "<option value=\"" . Horaire::convertHoraire($heure."h".$minutes) . "\" " . $select . ">" . $heure . "h" . $minutes . "</option>\r\n" ;
+            }
+        }
 
-    $table .= "<select name=\"".$i."-h2end\">".$H."</select>" ;
-    $table .= "</td></tr>" ;
-  }
-  $table .= "<tr><td colspan=\"3\"><span style=\"font-size:10px;\">* La modification des horaires peut entrainer des probl&egrave;mes au niveau des reservations de machines et des statistiques d'occupation.</span>  <div class=\"box-footer\">
-				<input type=\"hidden\" name=\"form\" value=\"2\">
-				<input type=\"hidden\" name=\"epn_r\" value=\"".$epn."\">
-				<button type=\"submit\" value=\"Valider * \" name=\"submit\" class=\"btn btn-primary\">Valider *
-  </div></form></td></tr>" ;
+        $table .= "<select name=\"" . $horaire->getIdJour() . "-h2end\">".$H."</select>\r\n" ;
+    // H2 Apres-midi end
+    
+        $table .= "</td></tr>\r\n" ;
+    }
+    $table .= "<tr><td colspan=\"3\"><span style=\"font-size:10px;\">* La modification des horaires peut entrainer des probl&egrave;mes au niveau des reservations de machines et des statistiques d'occupation.</span>  <div class=\"box-footer\">
+                <input type=\"hidden\" name=\"form\" value=\"2\">
+                <input type=\"hidden\" name=\"epn_r\" value=\"".$idEspace."\">
+                <button type=\"submit\" value=\"Valider * \" name=\"submit\" class=\"btn btn-primary\">Valider *
+            </div></form></td></tr>" ;
   $table .= "</table></div>" ;
 
   echo $table ;
@@ -261,17 +270,17 @@ if ($mesno !="")
 		<!-- Param&eacute;trages du planning des r&eacute;servations -->
 		<div class="form-group">
 			<label>Unit&eacute; de temps (min): <small class="badge bg-blue" data-toggle="tooltip" title="Pour le planning des r&eacute;servations, la plus petite portion de temps &agrave; accorder par tranche de 5, 10, x minutes..."><i class="fa fa-info"></i></small></label>
-				<input type="text" value="<?php echo getConfig("unit_config","unit_default_config",$epn) ;?>" name="unit" class="form-control" placeholder="Min">
+				<input type="text" value="<?php echo getConfig("unit_config","unit_default_config",$idEspace) ;?>" name="unit" class="form-control" placeholder="Min">
 			<label>Dur&eacute;e maximum (min): <small class="badge bg-blue" data-toggle="tooltip" title="Dur&eacute;e maximum de la r&eacute;servation d'un poste par personne "><i class="fa fa-info"></i></small></label>
-				<input type="text" value="<?php echo getConfig("maxtime_config","maxtime_default_config",$epn) ;?>" name="maxtime" class="form-control" placeholder="Min">
+				<input type="text" value="<?php echo getConfig("maxtime_config","maxtime_default_config",$idEspace) ;?>" name="maxtime" class="form-control" placeholder="Min">
 			</div>
 			
 		<!-- Param&eacute;trages de la r&eacute;servation rapide -->
 			<div class="form-group">
 			<label>Activer la r&eacute;servation rapide ?</label>
 				<?php
-				$resamode=getConfigConsole($epn,"resarapide");
-				$dureerr=getConfig("duree_resarapide","unit_default_config",$epn);
+				$resamode=getConfigConsole($idEspace,"resarapide");
+				$dureerr=getConfig("duree_resarapide","unit_default_config",$idEspace);
 			
 				switch ($resamode)
 								{
@@ -313,7 +322,7 @@ if ($mesno !="")
 		</div>
 		<div class="box-footer">
 				<input type="hidden" name="form" value="3">
-				<input type="hidden" name="epn_r" value="<?php echo $epn; ?>">
+				<input type="hidden" name="epn_r" value="<?php echo $idEspace; ?>">
 				<button type="submit" value="Valider" name="submit" class="btn btn-primary">Valider</div>
 		</form>
 	
@@ -330,7 +339,7 @@ if ($mesno !="")
 
 <form method="get" action="index.php?a=42" role="form">
 <input type="hidden" name="a" value="42">
-<input type="hidden" name="epnr" value="<?php echo $epn; ?>">
+<input type="hidden" name="epnr" value="<?php echo $idEspace; ?>">
      <div class="form-group"><label>S&eacute;lectionnez la p&eacute;riode &agrave; afficher:</label>
      <select name="display" class="form-control">                               
          <option value="">Mois en cours</option>
@@ -357,34 +366,35 @@ if ($mesno !="")
 <?php
 if(FALSE!=isset($_GET["idday"]))         // mise a jour d'un jour
 {
-$check=checkDayOpen(intval($_GET["idday"]),intval(date("Y")),$epn);
+$check=checkDayOpen(intval($_GET["idday"]),intval(date("Y")),$idEspace);
   // debug(is_int(intval($_GET["idday"])));
- //debug(updateDay(intval($_GET["idday"]),intval(date("Y")),$epn)) ;
+ //debug(updateDay(intval($_GET["idday"]),intval(date("Y")),$idEspace)) ;
  
 
  if ($check==0){
-	insertJourFerie(intval($_GET["idday"]),intval(date("Y")),$epn);
+	insertJourFerie(intval($_GET["idday"]),intval(date("Y")),$idEspace);
  }else{
 	deleteJourFerie($check);
  }
 
 }
 
-switch ($_GET["display"])
-{
-  case "all": // affichage par an
-       for ($i=1 ; $i<13 ;$i++)
-       {
-         echo "<span style=\"float:left;width:32%;height:300px;\">".getCalendarClose(date("Y"),$i,$epn)."&nbsp;&nbsp;&nbsp;</span>" ;
-       }
-  break;
-  default: //affichage du mois
-      if ($_GET["display"]!="")
-         $month = $_GET["display"] ;
-      else
-         $month = date("n");
-         echo getCalendarClose(date("Y"),$month,$epn) ;
-  break;
+$display = isset($_GET["display"]) ? $_GET["display"] : '';
+switch ($display) {
+    case "all": // affichage par an
+        for ($i = 1 ; $i < 13 ; $i++) {
+            echo "<span style=\"float:left;width:32%;height:300px;\">".getCalendarClose(date("Y"),$i,$idEspace)."&nbsp;&nbsp;&nbsp;</span>" ;
+        }
+    break;
+    default: //affichage du mois
+        if ($display != "") {
+            $month = $display;
+        }
+        else {
+            $month = date("n");
+        }
+        echo getCalendarClose(date("Y"),$month,$idEspace) ;
+    break;
 }
 ?>
 

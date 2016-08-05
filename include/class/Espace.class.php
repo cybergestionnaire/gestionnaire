@@ -19,6 +19,7 @@
 
 include_once("Mysql.class.php");
 include_once("Ville.class.php");
+include_once("Horaire.class.php");
 
 /**
  * La classe Espace permer "d'abstraire" les données venant de la table tab_espace.
@@ -109,6 +110,12 @@ class Espace
         return $this->_mail;
     }
     
+    public function getHoraires() {
+        return Horaire::getHorairesByIdEspace(intval($this->_id));
+    }
+    
+    
+    
     public static function creerEspace($nom, $adresse, $idVille, $telephone, $fax, $logo, $couleur, $mail) {
         $espace = null;
 
@@ -197,9 +204,9 @@ class Espace
             else {
                 // Suppression de l'espace
                 $sql1    = "DELETE FROM `tab_espace` WHERE `id_espace` = " . $this->_id;
-                $sql2    = "DELETE FROM `tab_config` WHERE `id_espace` = ". $this->_id." LIMIT 1" ;
-                $sql3    = "DELETE FROM `tab_config_logiciel` WHERE `id_espace` = ". $this->_id. " LIMIT 1" ;
-                $sql4    = "DELETE FROM `tab_horaire` WHERE `id_epn` = ". $this->_id." LIMIT 1" ;
+                $sql2    = "DELETE FROM `tab_config` WHERE `id_espace` = ". $this->_id."" ;
+                $sql3    = "DELETE FROM `tab_config_logiciel` WHERE `id_espace` = ". $this->_id. "" ;
+                $sql4    = "DELETE FROM `tab_horaire` WHERE `id_epn` = ". $this->_id."" ;
 
                 $result1 = mysqli_query($db, $sql1);
                 $result2 = mysqli_query($db, $sql2);
@@ -218,7 +225,7 @@ class Espace
     }
 
     //insertion des horaires du nouvel epn en copy de celui par défaut
-    public function copyhoraires() {
+    public function copyHoraires() {
         $db  = Mysql::opendb();        
         $sql = " INSERT INTO `tab_horaire`(`id_horaire`, `jour_horaire`, `hor1_begin_horaire`, `hor1_end_horaire`, `hor2_begin_horaire`, `hor2_end_horaire`, `unit_horaire`, `id_epn`) 
                 SELECT '', `jour_horaire`, `hor1_begin_horaire`, `hor1_end_horaire`, `hor2_begin_horaire`, `hor2_end_horaire`, `unit_horaire`, '" . $this->_id . "' FROM `tab_horaire` WHERE `id_epn`=1
@@ -229,7 +236,7 @@ class Espace
         return $result;
     }
 
-    public function copyconfig($forfait) {
+    public function copyConfig($forfait) {
         $db  = Mysql::opendb(); 
         $sql = "INSERT INTO `tab_config`(`id_config`, `activer_console`, `name_config`, `unit_default_config`, `unit_config`, `maxtime_config`, `maxtime_default_config`, `id_espace`, `inscription_usagers_auto`, `message_inscription`, `activation_forfait`, `nom_espace`,`resarapide`, `duree_resarapide`)
                 SELECT '',`activer_console`, `name_config`, `unit_default_config`, `unit_config`, `maxtime_config`, `maxtime_default_config`,'" . $this->_id . "', `inscription_usagers_auto`, `message_inscription`,'".$forfait."',`nom_espace`,`resarapide`, `duree_resarapide` FROM `tab_config` WHERE `id_espace`=1
@@ -241,7 +248,7 @@ class Espace
         return $result;
     }
 
-    public function copyconfiglogiciel() {
+    public function copyConfigLogiciel() {
         $db  = Mysql::opendb(); 
         $sql = "INSERT INTO `tab_config_logiciel`(`id_config_logiciel`, `id_espace`, `config_menu_logiciel`, `page_inscription_logiciel`, `page_renseignement_logiciel`, `connexion_anim_logiciel`, `bloquage_touche_logiciel`, `affichage_temps_logiciel`, `deconnexion_auto_logiciel`, `fermeture_session_auto`) VALUES ('','" . $this->_id . "','1','0','1','1','1','1','1','0')";
         $result = mysqli_query($db, $sql);

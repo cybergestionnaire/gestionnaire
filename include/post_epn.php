@@ -65,9 +65,9 @@ if ($act != "" AND $act != 3) { // verife si non vide
                     header("Location: ./index.php?a=43&mesno=0");
                 }
                 else {
-                    $nouvelEspace->copyhoraires();
-                    $nouvelEspace->copyconfig('0');
-                    $nouvelEspace->copyconfiglogiciel();
+                    $nouvelEspace->copyHoraires();
+                    $nouvelEspace->copyConfig('0');
+                    $nouvelEspace->copyConfigLogiciel();
 
                     header("Location: ./index.php?a=43&mesno=14");
                 }
