@@ -18,7 +18,7 @@
 */
 
 
-include_once("Mysql.class.php");
+require_once("Mysql.class.php");
 
 /**
  * La classe Ville permer "d'abstraire" les données venant de la table tab_city.

@@ -23,7 +23,7 @@
 */
 
 // Fichier de gestion des salles ...
-include_once("include/class/Salle.class.php")
+require_once("include/class/Salle.class.php")
 ?>
 <div class="row">
 <!-- DIV accès direct aux autres paramètres-->

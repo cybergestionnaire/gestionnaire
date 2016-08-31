@@ -26,7 +26,7 @@
 // Gestion des villes
 //
 
-include_once("include/class/Ville.class.php");
+require_once("include/class/Ville.class.php");
 
 // traitement des post
 $act    = isset($_GET['act'])    ? $_GET['act']    : '';

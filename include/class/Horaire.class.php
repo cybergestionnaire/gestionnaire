@@ -17,7 +17,7 @@
 
 */
 
-include_once("Mysql.class.php");
+require_once("Mysql.class.php");
 
 
 class Horaire
@@ -44,30 +44,6 @@ class Horaire
         $this->_typeUniteHoraire    = $array["unit_horaire"];
     }
 
-    
-    
-    public function getHorairesById($id) {
-        $horaire = null;
-        
-        if ($id != 0) {
-            $db = Mysql::opendb();
-            $id = mysqli_real_escape_string($db, $id);
-            $sql = "SELECT * "
-                 . "FROM `tab_horaire` "
-                 . "WHERE `id_horaire` = " . $id . "";
-            $result = mysqli_query($db,$sql);
-            Mysql::closedb($db);
-            
-            if (mysqli_num_rows($result) == 1) {
-                $horaire = new Horaire(mysqli_fetch_assoc($result));
-            }
-        }
-        
-        return $horaire;
-
-        
-    }
-    
     public function getHoraire1Debut() {
         return $this->_horaire1Debut;
     }
@@ -89,7 +65,57 @@ class Horaire
         return $this->_jours[$this->_idJour];
     }
     
+    public function modifier($h1begin, $h1end, $h2begin, $h2end ) {
+        $success = FALSE;
+
+        if ( Horaire::checkHoraire($h1begin, $h1end, $h2begin, $h2end ) ) {
+            $db = Mysql::opendb();
+            
+            $h1begin = mysqli_real_escape_string($db, $h1begin);
+            $h1end   = mysqli_real_escape_string($db, $h1end);
+            $h2begin = mysqli_real_escape_string($db, $h2begin);
+            $h2end   = mysqli_real_escape_string($db, $h2end);
+
+            $sql = "UPDATE `tab_horaire` "
+                . "SET `hor1_begin_horaire`='" . $h1begin . "', `hor1_end_horaire`='" . $h1end . "', `hor2_begin_horaire`='" . $h2begin . "', `hor2_end_horaire`='" . $h2end . "' "
+                . "WHERE `id_horaire`=" . $this->_id;
+
+            $result = mysqli_query($db,$sql);
+            Mysql::closedb($db);
+            if ($result) {
+                $this->_horaire1Debut = $h1begin;
+                $this->_horaire1Fin   = $h1end;
+                $this->_horaire2Debut = $h2begin;
+                $this->_horaire2Fin   = $h2end;
+            
+                $success = TRUE;
+            }
+        }
+        
+        return $success;
+    }
     
+    public static function getHorairesById($id) {
+        $horaire = null;
+        
+        if ($id != 0) {
+            $db = Mysql::opendb();
+            $id = mysqli_real_escape_string($db, $id);
+            $sql = "SELECT * "
+                 . "FROM `tab_horaire` "
+                 . "WHERE `id_horaire` = " . $id . "";
+            $result = mysqli_query($db,$sql);
+            Mysql::closedb($db);
+            
+            if (mysqli_num_rows($result) == 1) {
+                $horaire = new Horaire(mysqli_fetch_assoc($result));
+            }
+        }
+        
+        return $horaire;
+        
+    }
+
     public static function getHorairesByIdEspace($idEspace) {
         $horaires = null;
         if ( is_int($idEspace)  && $idEspace != 0) {
@@ -118,5 +144,36 @@ class Horaire
         return $conv ;
     }
     
+    public static function checkHoraire($h1begin, $h1end, $h2begin, $h2end) {
+        $success = TRUE;
+
+        if (($h1begin == "" AND $h1end != "") OR ($h1begin != "" AND $h1end == ""))     // Seulement un coté de rempli
+            $success = FALSE;
+
+        if (($h2begin == "" AND $h2end != "") OR ($h2begin != "" AND $h2end == ""))     // Seulement un coté de rempli
+            $success = FALSE;
+            
+        if ($h1begin != "" AND $h1end != "") {
+            // les heures du matin sont remplies
+            if ($h1end < $h1begin)  //l'heure de fin inferieur a l'heure de debut
+                $success = FALSE ;
+            
+        }
+        
+        if ($h2begin != "" AND $h2end != "") {
+            // les heures de l'après-midi sont remplies
+            if ($h2end < $h2begin)  // l'heure de fin inferieur a l'heure de debut
+                $success = FALSE ;
+            
+        }
+            
+        if ($h1begin != "" AND $h1end != "" AND $h2begin != "" AND $h2end != "") {
+             // tous les horaires sont remplis
+            if ($h1end > $h2begin OR $h1end > $h2end OR $h1begin > $h2begin OR $h1begin > $h2end)
+                $success = FALSE;
+        }
+        
+        return $success;
+    }
     
 }

@@ -32,6 +32,7 @@ session_start();
 $m = isset($_GET['m']) ? $_GET['m'] : '';
 $a = isset($_GET['a']) ? $_GET['a'] : '';
 $b = isset($_GET['b']) ? $_GET['b'] : '';
+
 // Recuperation des variable de fonctionnement
 $error  = isset($_GET['error']) ? $_GET['error'] : '';
 $logout = isset($_GET['logout']) ? $_GET['logout'] : '';
@@ -40,6 +41,7 @@ $logout = isset($_GET['logout']) ? $_GET['logout'] : '';
 include("include/fonction.php");
 include("include/fonction2.php");
 include("include/conf.php");
+
 // deconnexion
 if ($logout != '') {
     //log des donnees de navigation pour la deconnexion
@@ -58,8 +60,8 @@ if (FALSE == isset($_SESSION["login"])) {
 }
 else {
     // Acces autorise
-    include_once("include/class/Espace.class.php");
-    include_once("include/class/Utilisateur.class.php");
+    require_once("include/class/Espace.class.php");
+    require_once("include/class/Utilisateur.class.php");
 
     //Variables de l'epn
     $espace = Espace::getEspacebyId(intval($_SESSION["idepn"]));
@@ -260,8 +262,8 @@ else {
         <div class="pull-right hidden-xs">
           <b>CyberGestionnaire </b>V.<?php echo getVersion($_SESSION["idepn"]); ?>
         </div>
-        <strong><a href="index.php?a=60">Cr&eacute;dits </strong>
-      </footer>
+        <strong><a href="index.php?a=60">Cr&eacute;dits </a></strong>
+    </footer>
 
 
 		
@@ -293,10 +295,12 @@ else {
     <script src="template/dist/js/app.min.js" type="text/javascript"></script>
 		 <!-- iCheck -->
 		 
-		<?php if($a==1 OR $a==43){ 
-			"nothing";
-		}else{
-		?>
+<?php 
+    if ($a == 1 OR $a == 43) { 
+        "nothing";
+    }
+    else {
+?>
     <script src="template/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
     <script>
       $(function () {
@@ -306,14 +310,10 @@ else {
           increaseArea: '20%' // optional
         });
       });
-   
-      
-			</script>
-	<?php	} ?>
+    </script>
+<?php } ?>
 
 </body>
 
 </html>
-	<?php
-	}
-	?>
+<?php } ?>

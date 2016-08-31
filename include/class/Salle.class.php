@@ -17,8 +17,8 @@
 
 */
 
-include_once("Mysql.class.php");
-include_once("Espace.class.php");
+require_once("Mysql.class.php");
+require_once("Espace.class.php");
 
 /**
  * La classe Espace permer "d'abstraire" les données venant de la table tab_espace.
