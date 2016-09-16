@@ -42,26 +42,11 @@ $espaces = Espace::getEspaces();
 $dureearray = array("30" => "30 min", "60" => "1 heure", "90" => "1h30", "120" => "2 heures");
 
 
-$mesno = isset($_GET["mesno"]) ? $_GET["mesno"] : '' ;
-if ($mesno != "") {
-    echo getError($mesno);
-}
+include("include/boites/menu-parametres.php");
 
 ?>
 
-<!-- DIV acc&egrave;s direct aux autres param&egrave;tres-->
- <div class="box">
-    <div class="box-header">
-        <h3 class="box-title">Param&eacute;trages</h3>
-    </div>
-    <div class="box-body">
-<?php 
-    //debug($_GET["a"]);
-    echo configBut($_GET["a"]) ;
 
-?>
-    </div><!-- /.box-body -->
-</div><!-- /.box -->
 
 <div class="row">
     <!-- Colonne de gauche -->

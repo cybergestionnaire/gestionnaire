@@ -24,33 +24,8 @@
 
 // Fichier de gestion des espaces ...
 
-
+include("include/boites/menu-parametres.php");
 ?>
-<div class="row">
-    <!-- DIV accès direct aux autres paramètres-->
-    <div class="col-lg-12">
-        <div class="box">
-            <div class="box-header">
-                <h3 class="box-title">Param&eacute;trages</h3>
-            </div>
-            <div class="box-body">
-<?php 
-    //debug($_GET["a"]);
-    echo configBut($_GET["a"]) ;
-?>
-        
-            </div><!-- /.box-body -->
-        </div><!-- /.box -->
-
-<?php
-    $mesno = isset($_GET["mesno"]) ? $_GET["mesno"] : '';
-    if ($mesno != "") {
-        echo getError($mesno);
-    }
-?>
-
-    </div><!-- /.col-lg-12 -->
-</div><!-- /.row -->
 
 <div class="row">
     <section class="col-lg-3 connectedSortable"> 
