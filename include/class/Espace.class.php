@@ -18,6 +18,7 @@
 */
 
 require_once("Mysql.class.php");
+require_once("Config.class.php");
 require_once("Ville.class.php");
 require_once("Horaire.class.php");
 
@@ -114,7 +115,9 @@ class Espace
         return Horaire::getHorairesByIdEspace(intval($this->_id));
     }
     
-    
+    public function getConfig() {
+        return Config::getConfig($this->_id);
+    }
     
     public static function creerEspace($nom, $adresse, $idVille, $telephone, $fax, $logo, $couleur, $mail) {
         $espace = null;

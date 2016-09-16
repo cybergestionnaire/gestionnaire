@@ -85,7 +85,7 @@ function configBut($page)
 
 
 ///******RESERVATIONS ***///
-//Donne la dernière réservation d'un adhérent (page liste user)
+//Donne la derniÃ¨re rÃ©servation d'un adhÃ©rent (page liste user)
 function getLastResaUser($id){
 	$sql="SELECT  MAX(`dateresa_resa`) as last_resa FROM `tab_resa` WHERE `id_user_resa`=".$id;
 	 $db=opendb();
@@ -212,7 +212,7 @@ function numToDate($quant, $annee)
 
 
 
-//////FONCTIONS SUR les paramétrages des ateliers//////
+//////FONCTIONS SUR les paramÃ©trages des ateliers//////
 //
 function addCategorie($nom)
 {
@@ -432,7 +432,7 @@ function searchUserAtelier($exp)
         return $result ;
     }
 }
-// chercher tous les adhérents inscrits aux ateliers.
+// chercher tous les adhÃ©rents inscrits aux ateliers.
 function getAllUserAtelier($epn)
 {
 
@@ -581,7 +581,7 @@ $db=opendb();
 
 ///////////***********Transaction sur les ateliers, gestion des forfaits ***************///
 ///
-///les 50 dernières transactions
+///les 50 derniÃ¨res transactions
 function getLastTransactions()
 {
 
@@ -641,7 +641,7 @@ $db=opendb();
 }
 
 
-//nombre d'atelier inscrit par l'adhérent
+//nombre d'atelier inscrit par l'adhÃ©rent
 function getInscriptionUser($iduser,$statut)
 {
 $sql="SELECT COUNT(`id_forfait`) as totalf FROM `rel_user_forfait` WHERE `id_user`='".$iduser."' and `statut_forfait` =".$status;
@@ -698,7 +698,7 @@ AND tab_transactions.id_tarif = tab_tarifs.id_tarif";
 $db=opendb();
 $result = mysqli_query($db,$sql);
 closedb($db);
-///rappel statut transaction, encaissé=1, en attente=0, terminé=2
+///rappel statut transaction, encaissÃ©=1, en attente=0, terminÃ©=2
   if (FALSE == $result)
 	  {
 		  return FALSE ;
@@ -718,7 +718,7 @@ closedb($db);
 }
 //////*****
 
-//getnbASUserEncours  calcule le nombre d'atelier et de session dont l'inscription est en cours ou validée
+//getnbASUserEncours  calcule le nombre d'atelier et de session dont l'inscription est en cours ou validÃ©e
 function getnbASUserEncours($iduser,$statut)
 {
 $sql="SELECT count(`id_rel_atelier_user`)as atelier FROM `rel_atelier_user` WHERE `status_rel_atelier_user`=".$statut." AND `id_user`=".$iduser;
@@ -742,7 +742,7 @@ $db=opendb();
 
 }
 
-//getnbASUserEncours  calcule le nombre d'atelier et de session dont l'inscription est validée
+//getnbASUserEncours  calcule le nombre d'atelier et de session dont l'inscription est validÃ©e
 function getnbASUservalidees($iduser)
 {
 $sql="SELECT count(`id_rel_atelier_user`) as atelier FROM `rel_atelier_user` WHERE `status_rel_atelier_user`=1 AND `id_user`=".$iduser;
@@ -765,7 +765,7 @@ $db=opendb();
 	  }
 
 }
-//retourne le nombre d'ateliers issus de forfaits déjà archivés
+//retourne le nombre d'ateliers issus de forfaits dÃ©jÃ  archivÃ©s
 function getFUserArchiv($iduser)
 {
 $sql="SELECT SUM(`total_atelier`) as nb FROM `rel_user_forfait` WHERE `statut_forfait`=2 AND `id_user`=".$iduser;
@@ -804,7 +804,7 @@ $db=opendb();
 }
 
 
-//Forfait à modifier
+//Forfait Ã  modifier
 function getForfait($id)
 {
 $sql="SELECT * from `tab_transactions` WHERE   id_transac='".$id."'  LIMIT 1";
@@ -905,7 +905,7 @@ return TRUE;
 }
 }
 
-// insérer le forfait acheté, et la relation pour le décompte des ateliers du forfait
+// insÃ©rer le forfait achetÃ©, et la relation pour le dÃ©compte des ateliers du forfait
 function addForfaitUser($type_transac,$id_user,$tarif_forfait,$nbreforfait,$date,$statutp)
 {
 
@@ -968,7 +968,7 @@ $db=opendb();
 
 }
 
-//retourner le nombre d'atelier dépensés sur le forfait
+//retourner le nombre d'atelier dÃ©pensÃ©s sur le forfait
 function getForfaitdepense($iduser,$tarif,$status)
 {
 $sql="SELECT COUNT( `id_forfait` ) AS total
@@ -1113,54 +1113,6 @@ $db=opendb();
 
 }
 
-
-///***** FORFAITS POUR EPN CONNECT ****/////
-//
-// addForfait()
-// ajoute un forfait
-function addForfait($date_creat_forfait, $type_forfait, $nom_forfait, $prix_forfait, $critere_forfait, $comment_forfait,  $nombre_duree_forfait, $unite_duree_forfait, $temps_forfait_illimite, $date_debut_forfait,$status_forfait,$nombre_temps_affectation, $unite_temps_affectation, $frequence_temps_affectation, $temps_affectation_occasionnel,$nombre_atelier_forfait )
-{
-	$date_creat_forfait=convertDate($date_creat_forfait);
-	$date_debut_forfait=convertDate($date_debut_forfait);
-	//$type_forfait=addslashes($type_forfait);
-	
-  $sql="INSERT INTO `tab_forfait`(`id_forfait`, `date_creation_forfait`, `type_forfait`, `nom_forfait`, `prix_forfait`, `critere_forfait`, `commentaire_forfait`, `nombre_duree_forfait`, `unite_duree_forfait`, `temps_forfait_illimite`, `date_debut_forfait`, `status_forfait`, `nombre_temps_affectation`, `unite_temps_affectation`, `frequence_temps_affectation`, `temps_affectation_occasionnel`, `nombre_atelier_forfait`)
-        VALUES ('', '".$date_creat_forfait."', '".$type_forfait."', '".$nom_forfait."', '".$prix_forfait."', '".$critere_forfait."', '".$comment_forfait."', '".$nombre_duree_forfait."', '".$unite_duree_forfait."', '".$temps_forfait_illimite."', '".$date_debut_forfait."', '".$status_forfait."', '".$nombre_temps_affectation."', '".$unite_temps_affectation."', '".$frequence_temps_affectation."', '".$temps_affectation_occasionnel."', '".$nombre_atelier_forfait."' ) 
-        ";
-    $db=opendb();
-  	$result = mysqli_query($db, $sql);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-  		$ides=mysqli_insert_id($db);
-      	return $ides;
-      	//return TRUE;
-  }
-    closedb($db);
-}
-
-//recupere les infos des tarifs consultation
-function getTarifConsult()
-{
-	
-$sql="SELECT * FROM `tab_forfait`";
-	$db=opendb();
-$result = mysqli_query($db,$sql);
-closedb($db);
-if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return $result;
-  }
-		
-}
-
 //recupere la liste des tarifs de consultation
 function getTarifsTemps()
 {
@@ -1185,164 +1137,6 @@ function getTarifsTemps()
     }
 	
 }
-//
-// delForfait()
-// supprime un atelier
-function deletarifConsult($idforfait)
-{
-  	$sql = "DELETE FROM `tab_forfait` WHERE `id_forfait`=".$idforfait ;
-    $db=opendb();
-  	$result = mysqli_query($db, $sql);
-    closedb($db);
-	if (FALSE == $result)
-	{
-		return FALSE ;
-  	}
-  	else
-  	{
-	  	$sql = "DELETE FROM `rel_forfait_espace` WHERE `id_forfait`=".$idforfait ;
-		$db=opendb();
-		$result = mysqli_query($db, $sql);
-		closedb($db);
-		if (FALSE == $result)
-		{
-			return FALSE ;
-		}
-		else
-		{
-			return TRUE ;
-		}
-	}
-}
-// modConfigForfaitEsp()
-//
-function modConfigForfaitEsp($status_config, $id_espace)
-{
-    $sql="UPDATE `tab_config` 
-			SET `activation_forfait`='".$status_config."'
-			WHERE `id_espace`='".$id_espace."';";
-    $db=opendb();
-  	$result = mysqli_query($db, $sql);
-    closedb($db);
-  	if (FALSE == $result)
-  	{
-      	return FALSE;
-  	}
-  	else
-  	{
-      	return $result;
-  	}
-}
-//
-// addForfaitEspace()
-// ajoute un espace lié au forfait
-function addForfaitEspace($id_forfait, $id_espace)
-{
-  $sql="INSERT INTO `rel_forfait_espace` ( `id_forfait_espace` , `id_forfait`, `id_espace` )
-        VALUES ('', '".$id_forfait."', '".$id_espace."' ) ";
-    $db=opendb();
-  	$result = mysqli_query($db, $sql);
-    closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      	return TRUE;
-  }
-}
-
-//
-//getAllRelForfaitEspace($id_forfait)$temps_illimite
-//retrouve les espaces pour les forfaits consultation
-function getAllRelForfaitEspace($id)
-{
-$sql="SELECT `id_espace` FROM `rel_forfait_espace` WHERE `id_forfait`='".$id."' ";
- $db=opendb();
-  	$result = mysqli_query($db, $sql);
-    closedb($db);
-  	if (FALSE == $result)
-  	{
-      	return FALSE;
-  	}
-  	else
-  	{
-      	$epn = array();
-        $nb= mysqli_num_rows($result);
-        for ($i=0;$i<$nb;$i++)
-        {
-            $row = mysqli_fetch_array($result);
-            $epn[$i] = $row["id_espace"] ;
-        }
-        return $epn ;
-  	}
-	
-}
-
-
-// modForfait(), $status_forfait
-// modifie un forfait
-function modForfait($idforfait,$type_forfait, $nom_forfait, $prix_forfait,$comment_forfait, $nombre_duree_forfait, $unite_duree_forfait, $temps_forfait_illimite, $nombre_temps_affectation, $unite_temps_affectation, $frequence_temps_affectation, $nombre_atelier_forfait, $temps_affectation_occasionnel)
-
-
-{
-  $sql="UPDATE `tab_forfait`
-  SET `type_forfait`='".$type_forfait."',
-      `nom_forfait`='".$nom_forfait."',
-      `prix_forfait`='".$prix_forfait."',
-     
-      `commentaire_forfait`='".$comment_forfait."',
-      
-      `nombre_duree_forfait`='".$nombre_duree_forfait."',
-      `unite_duree_forfait`='".$unite_duree_forfait."',
-      `temps_forfait_illimite`='".$temps_forfait_illimite."',
-      `nombre_temps_affectation`='".$nombre_temps_affectation."',
-      `unite_temps_affectation`='".$unite_temps_affectation."',
-      `frequence_temps_affectation`='".$frequence_temps_affectation."',
-      `nombre_atelier_forfait`='".$nombre_atelier_forfait."',
-      `temps_affectation_occasionnel`='".$temps_affectation_occasionnel."'
-      
-      WHERE `id_forfait` =".$idforfait." LIMIT 1 ";
-    $db=opendb();
-  	$result = mysqli_query($db, $sql);
-    closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return TRUE;
-  }
-}
-
-//Suite à modification de forfait
-//deleteAllEspaceForfait
-
-function deleteAllEspaceForfait($id)
-{
-  	//supprimer le lien dans la table de relation
-  	$sql = "DELETE FROM `rel_forfait_espace` WHERE `id_forfait`='".$id."' " ;
-	//remettre a 0 dans la table config
-		$sql1="UPDATE `tab_config` 	SET `activation_forfait`=0 ";
-  
-  $db=opendb();
-  	$result = mysqli_query($db, $sql);
-  	$result1 = mysqli_query($db, $sql1);
-    closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      	return TRUE;
-  }
-}
-
-
-
 
 
 //
@@ -1483,7 +1277,7 @@ $sql=" SELECT id_session_sujet, nom_session, session_titre, session_detail
 }
  
  
-// Affichage des sessions programmées dans l futur + les session qui n'ont pas été validées Statut=0
+// Affichage des sessions programmÃ©es dans l futur + les session qui n'ont pas Ã©tÃ© validÃ©es Statut=0
 function getFutsessions($epn)
 {
 //tout le reseau
@@ -1537,7 +1331,7 @@ if (FALSE == $result)
 }
 
 
-// retourne les sessions anciennement programmés et archivées
+// retourne les sessions anciennement programmÃ©s et archivÃ©es
 function getAncSession($epn,$date)
 {
 $sql= "SELECT tab_session.id_session AS idsession, tab_session.date_session AS datep, session_titre, nbplace_session, nbre_dates_sessions, id_anim, tab_session.id_salle, id_tarif
@@ -1610,7 +1404,7 @@ function getSessionUser($idsession,$statut)
   }
 }
 
-///renvoie les participants à un atelier validé absents ou présents
+///renvoie les participants Ã  un atelier validÃ© absents ou prÃ©sents
 
 function getSessionValidpresences($idsession,$iddate)
 {
@@ -1754,7 +1548,7 @@ function delUserSession($idsession,$iduser)
     }
 }
 //
-//retourne le test si une des dates de la session a déjà ete validée ou pas
+//retourne le test si une des dates de la session a dÃ©jÃ  ete validÃ©e ou pas
 // 
 function getSessionvalidees($idsession)
 {
@@ -1778,7 +1572,7 @@ $sql="SELECT count( `statut_datesession` ) AS nb FROM `tab_session_dates` WHERE 
 
 
 //
-// modification du statut, passer de la liste d'attente à inscription
+// modification du statut, passer de la liste d'attente Ã  inscription
 function ModifyUserSession($idsession,$iduser,$statut)
 {
     $sql = "UPDATE `rel_session_user` 
@@ -1897,7 +1691,7 @@ $db=opendb();
   }
 }
 
-// Insérer une date dans une session
+// InsÃ©rer une date dans une session
 function insertDateSessions($id,$date_s,$statut)
 {
 $sql="INSERT INTO `tab_session_dates`(`id_datesession`, `id_session`, `date_session`, `statut_datesession`)
@@ -1936,7 +1730,7 @@ $db=opendb();
   }	
 
 }
-//retourne le test de présence des dates dans la table de relation user/datessession
+//retourne le test de prÃ©sence des dates dans la table de relation user/datessession
 function testrelsessiondate($idsession)
 {
 $sql="SELECT `id_rel_session` FROM `rel_session_user` WHERE `id_session`=".$idsession ;
@@ -1974,7 +1768,7 @@ $db=opendb();
   }	
 
 }
-//supprimer de la table de relation les valuers des dates precedemment modifiées
+//supprimer de la table de relation les valuers des dates precedemment modifiÃ©es
 function deleteRelsessionUser($idsession,$num)
 {
 $sql="DELETE FROM `rel_session_user` WHERE `id_session`=".$idsession." AND `id_datesession`=".$num." ";
@@ -2055,7 +1849,7 @@ $db=opendb();
 	  return $row['nb'];
   }	
 }
-//retroune le nombre de date avec ateliers validés par session pour comparaison avec  le nombre ci-dessus
+//retroune le nombre de date avec ateliers validÃ©s par session pour comparaison avec  le nombre ci-dessus
 function getDatesValidesbysession($idsession)
 {
 $sql="SELECT COUNT(  `id_datesession` ) as nb
@@ -2098,7 +1892,7 @@ $db=opendb();
 
 }
 
-//retourne le nombre de dates annulées das une sesison
+//retourne le nombre de dates annulÃ©es das une sesison
 function getDatesAnnulebysession($idsession)
 {
 $sql="SELECT count( `id_datesession` ) AS nb
@@ -2122,7 +1916,7 @@ $db=opendb();
 
 }
 
-//function retourne le nombre de dates enregistrées dans tab_session
+//function retourne le nombre de dates enregistrÃ©es dans tab_session
 function getSessionNbreDates($idsession)
 {
 $sql="SELECT `nbre_dates_sessions` FROM `tab_session` WHERE `id_session`=".$idsession."";
@@ -2141,7 +1935,7 @@ $db=opendb();
   }	
 
 }
-// changer le statut d'une date d'une session 0= en cours 1= validée
+// changer le statut d'une date d'une session 0= en cours 1= validÃ©e
 function updateDatesessionStatut($iddate)
 {
 $sql="UPDATE `tab_session_dates` SET `statut_datesession`=1 WHERE `id_datesession`=".$iddate;
@@ -2180,7 +1974,7 @@ $db=opendb();
 }
 
 // Modifsession()
-// Modifie les paramètres de la session
+// Modifie les paramÃ¨tres de la session
 function modifSession($id,$dates,$nom,$nbplace,$nbre_dates_sessions,$anim,$salle,$tarif)
 {
  //echo $id,$dates,$nom,$heure,$nbplace,$nbre_dates_sessions,$session_dates ;
@@ -2201,7 +1995,7 @@ function modifSession($id,$dates,$nom,$nbplace,$nbre_dates_sessions,$anim,$salle
   closedb($db);
   if (FALSE == $result)
   {
- // echo "modif dans la table operation echouée";
+ // echo "modif dans la table operation echouÃ©e";
       return FALSE ;
   }
   else
@@ -2296,7 +2090,7 @@ function getDaySemaine($d,$weekday,$dayYear)
 	if ($d>$weekday){
 		$day=$dayYear+($d-$weekday); //jour suivants
 	}elseif ($d == $weekday){
-		$day=$dayYear ; //jour choisi même jour qu'aujourd'hui
+		$day=$dayYear ; //jour choisi mÃªme jour qu'aujourd'hui
 	}else{
 		$day=$dayYear-($weekday-$d); // jour precedents
 	}
@@ -2307,12 +2101,12 @@ function numero_semaine($jour,$mois,$annee)
 {
     /*
      * Norme ISO-8601:
-     * - La semaine 1 de toute année est celle qui contient le 4 janvier ou que la semaine 1 de toute année est celle qui contient le 1er jeudi de janvier.
-     * - La majorité des années ont 52 semaines mais les années qui commence un jeudi et les années bissextiles commençant un mercredi en possède 53.
+     * - La semaine 1 de toute annÃ©e est celle qui contient le 4 janvier ou que la semaine 1 de toute annÃ©e est celle qui contient le 1er jeudi de janvier.
+     * - La majoritÃ© des annÃ©es ont 52 semaines mais les annÃ©es qui commence un jeudi et les annÃ©es bissextiles commenÃ§ant un mercredi en possÃ¨de 53.
      * - Le 1er jour de la semaine est le Lundi
      */ 
     
-    // Définition du Jeudi de la semaine
+    // DÃ©finition du Jeudi de la semaine
     if (date("w",mktime(12,0,0,$mois,$jour,$annee))==0) // Dimanche
         $jeudiSemaine = mktime(12,0,0,$mois,$jour,$annee)-3*24*60*60;
     else if (date("w",mktime(12,0,0,$mois,$jour,$annee))<4) // du Lundi au Mercredi
@@ -2322,7 +2116,7 @@ function numero_semaine($jour,$mois,$annee)
     else // Jeudi
         $jeudiSemaine = mktime(12,0,0,$mois,$jour,$annee);
     
-    // Définition du premier Jeudi de l'année
+    // DÃ©finition du premier Jeudi de l'annÃ©e
     if (date("w",mktime(12,0,0,1,1,date("Y",$jeudiSemaine)))==0) // Dimanche
     {
         $premierJeudiAnnee = mktime(12,0,0,1,1,date("Y",$jeudiSemaine))+4*24*60*60;
@@ -2340,7 +2134,7 @@ function numero_semaine($jour,$mois,$annee)
         $premierJeudiAnnee = mktime(12,0,0,1,1,date("Y",$jeudiSemaine));
     }
         
-    // Définition du numéro de semaine: nb de jours entre "premier Jeudi de l'année" et "Jeudi de la semaine";
+    // DÃ©finition du numÃ©ro de semaine: nb de jours entre "premier Jeudi de l'annÃ©e" et "Jeudi de la semaine";
     $numeroSemaine =     ( 
                     ( 
                         date("z",mktime(12,0,0,date("m",$jeudiSemaine),date("d",$jeudiSemaine),date("Y",$jeudiSemaine))) 
@@ -2352,7 +2146,7 @@ function numero_semaine($jour,$mois,$annee)
     // Cas particulier de la semaine 53
     if ($numeroSemaine==53)
     {
-        // Les années qui commence un Jeudi et les années bissextiles commençant un Mercredi en possède 53
+        // Les annÃ©es qui commence un Jeudi et les annÃ©es bissextiles commenÃ§ant un Mercredi en possÃ¨de 53
         if (date("w",mktime(12,0,0,1,1,date("Y",$jeudiSemaine)))==4 || (date("w",mktime(12,0,0,1,1,date("Y",$jeudiSemaine)))==3 && date("z",mktime(12,0,0,12,31,date("Y",$jeudiSemaine)))==365))
         {
             $numeroSemaine = 53;
@@ -2373,7 +2167,7 @@ function numero_semaine($jour,$mois,$annee)
 
 /// ***********FONCTIONS SUR LES IMPRESSIONS ****************///
 
-/// retourne l'id de l'utilisateur externe utilisé pour encaisser les impressions sans adhesion MAJ 0.95
+/// retourne l'id de l'utilisateur externe utilisÃ© pour encaisser les impressions sans adhesion MAJ 0.95
 function getIduserexterne()
 {
 $sql="SELECT `id_user` FROM `tab_user` WHERE `nom_user`='Externe' AND `login_user`='compte_imprim' ";
@@ -2434,7 +2228,7 @@ if ($result==FALSE)
 
 }
 
-//selectionner les adhérents dont le solde est créditeur
+//selectionner les adhÃ©rents dont le solde est crÃ©diteur
 function getPrintingUserswithcredit()
 {
 $sql="SELECT  `print_user` , SUM(`print_credit`) AS credit, SUM(  `print_debit` *  `donnee_tarif` ) AS donnee
@@ -2525,7 +2319,7 @@ $db=opendb();
   }
 
 }
-/// retourne les utilisateurs qui n'ont pas payé'
+/// retourne les utilisateurs qui n'ont pas payÃ©'
 function getPrintingUserswithdebt()
 {
 $sql="SELECT `print_user`,`print_statut`,`print_debit`,`print_tarif`,`print_date`, (`print_debit`*donnee_tarif) AS debit 
@@ -2739,7 +2533,7 @@ function checkDayAtelier($j,$m,$year)
 
 //fonction qui affiche les dates des sessions.  ---> a faire
 
-//renvoi la liste des mois où les ateliers sont programmés pour le calendrier
+//renvoi la liste des mois oÃ¹ les ateliers sont programmÃ©s pour le calendrier
 
 function ListMoisAtelier()
 {
@@ -2781,7 +2575,7 @@ $sql="SELECT `id_programmation` FROM `tab_session_stat` WHERE `id_session`='".$i
 
 }
 
-//Pour les stat, validation des présents
+//Pour les stat, validation des prÃ©sents
 function InsertStatAS($type,$id,$date,$inscrits,$presents,$absents,$attente,$nbplace,$categorie,$statut,$anim,$epn)
 {
 $sql="INSERT INTO `tab_as_stat`(`id_stat`, `type_AS`, `id_AS`, `date_AS`, `inscrits`, `presents`, `absents`, `attente`, `nbplace`, `id_categorie`, `statut_programmation`, `id_anim`, `id_epn`) 
@@ -2800,7 +2594,7 @@ VALUES ('','".$type."','".$id."','".$date."','".$inscrits."','".$presents."', '"
   }
 }
 
-//modifier les nombres statistiuques, après modif par les archives
+//modifier les nombres statistiuques, aprÃ¨s modif par les archives
 function ModifStatAS($inscrit,$present,$absents,$idatelier,$type)
 {
 $sql="UPDATE `tab_as_stat` SET `inscrits`=".$inscrit.",`presents`=".$present.",`absents`=".$absents." WHERE `type_AS`='".$type."' AND`id_AS`=".$idatelier;
@@ -2869,26 +2663,6 @@ $sql = "DELETE FROM `tab_atelier_sujet` WHERE `id_sujet`='".$id."'
 /// Gestion des tarifs //////
 
 
-/// tarifs impressions
-
-function newTarif($nomtarif, $prixtarif, $comment,$nbatelier,$categoryTarif, $duree, $epn)
-{
-
-$sql = "INSERT INTO `tab_tarifs`(`id_tarif`, `nom_tarif`, `donnee_tarif`, `comment_tarif`, `nb_atelier_forfait`, `categorie_tarif`, `duree_tarif`, `epn_tarif`)
-		VALUES ('','".$nomtarif."','".$prixtarif."','".$comment."','".$nbatelier."','".$categoryTarif."','".$duree."','".$epn."')" ;
-
-	$db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return True;
-  }
-}
 // renvoie le test sur l'existence de tarifs pour les ateliers
 function TestTarifs()
 {
@@ -2907,30 +2681,6 @@ closedb($db);
   }	
 	
 }
-function modifTarif($id,$nomtarif, $prixtarif, $descriptiontarif,$forfait,$categorieTarif,$duree,$epn)
-{
-$sql="UPDATE `tab_tarifs` 
-	SET  nom_tarif= '".$nomtarif."',
-	donnee_tarif='".$prixtarif."',
-	comment_tarif='".$descriptiontarif."',
-	nb_atelier_forfait='".$forfait."',
-	categorie_tarif='".$categorieTarif."',
-	duree_tarif= '".$duree."',
-	epn_tarif='".$epn."'
-	WHERE id_tarif='".$id."' LIMIT 1 ";
-$db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return True;
-  }
-
-}
 
 function deletarif($id)
 {
@@ -2948,7 +2698,7 @@ $db=opendb();
   }
 }
 
-// retourne le prix et le nom du tarif à partir du tarif sélectionné
+// retourne le prix et le nom du tarif Ã  partir du tarif sÃ©lectionnÃ©
 function getPrixFromTarif($id)
 {
 
@@ -3125,7 +2875,7 @@ $result = mysqli_query($db,$sql);
 ////
 
 /**
-//Modification de la situation de l'adhérent après renouvellement adhésion
+//Modification de la situation de l'adhÃ©rent aprÃ¨s renouvellement adhÃ©sion
 */
 function modifUserStatut($iduser,$statut, $daterenouv, $adhesiontarif)
 {
@@ -3337,7 +3087,7 @@ function getActivationForfaitEpn($id)
 }
 
 
-//les paramètres config supplementaires dans tab_config pour la console
+//les paramÃ¨tres config supplementaires dans tab_config pour la console
 //
 function updateConfigForfait($epn,$activerforfait,$inscription_auto,$message_inscrip)
 {
@@ -3452,7 +3202,7 @@ function getAllSallesbyepn($epn)
 
 
 //
-//modif config liée à l'espace
+//modif config liÃ©e Ã  l'espace
 //
 
 function modifconfigespace($id,$nom,$forfait,$inscripauto,$message)
@@ -3855,7 +3605,7 @@ $sql="SELECT `nom_user`, `prenom_user`, `mail_user`, `epn_user` FROM `tab_user` 
 
 ///***** GESTION DES PROFILS ANIMATEURS ***** ///
 
-//enregistrer les paramètres d'un animateur
+//enregistrer les paramÃ¨tres d'un animateur
 function paramAnim($idanim,$epn_r,$salle_r,$avatar){
 $sql="INSERT INTO `rel_user_anim`(`id_useranim`, `id_animateur`, `id_epn`, `id_salle`, `anim_avatar`) VALUES ('','".$idanim."', '".$epn_r."', '".$salle_r."', '".$avatar."')";
 
@@ -4080,7 +3830,7 @@ else
  
  //*************************************************************///
  
- //********Gestion des préinscriptions *********************/////
+ //********Gestion des prÃ©inscriptions *********************/////
  
  //****preinscriptions automatiques par internet
  
@@ -4513,7 +4263,7 @@ closedb($db);
 	
 }
 
-///Ajouter la relation atelier-commputer pour quEPN cpnnect libère la salle !
+///Ajouter la relation atelier-commputer pour quEPN cpnnect libÃ¨re la salle !
 function connectAtelierComputer($salle,$idatelier)
 {
 	$sql="INSERT INTO `rel_atelier_computer` ( `id_atelier_computer` , `id_atelier_rel` , `id_computer_rel` )
@@ -4622,7 +4372,7 @@ closedb($db);
 
 }
 
-// retourne l'id d'un log du jour pour la mose à jour du statut des adherents
+// retourne l'id d'un log du jour pour la mose Ã  jour du statut des adherents
 function getLogUser($type)
 {
 $sql="SELECT `id_log`,`log_date` FROM `tab_logs` WHERE date(`log_date`)=date(NOW()) AND `log_type`='".$type."'  ";
@@ -4680,7 +4430,7 @@ closedb($db);
 	
 }
 
-// test si la base a été sauvegardée
+// test si la base a Ã©tÃ© sauvegardÃ©e
 function getLogBackup()
 {
 	$sql="SELECT `id_log` FROM `tab_logs` WHERE MONTH(`log_date`)=MONTH(NOW())  AND `log_type`='bac' AND DATE(`log_date`)>DATE(`log_date`)-15 ";

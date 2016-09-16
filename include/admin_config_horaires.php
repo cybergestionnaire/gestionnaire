@@ -44,7 +44,7 @@ $dureearray = array("30" => "30 min", "60" => "1 heure", "90" => "1h30", "120" =
 
 $mesno = isset($_GET["mesno"]) ? $_GET["mesno"] : '' ;
 if ($mesno != "") {
-  echo getError($mesno);
+    echo getError($mesno);
 }
 
 ?>
@@ -78,10 +78,10 @@ if ($mesno != "") {
 <?php
     foreach ($espaces AS $espace) {
         if ($idEspace == $espace->getId()) {
-            echo "<option value=\"" . $espace->getId() . "\" selected>" . $espace->getNom() . "</option>";
+            echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
         }
         else {
-            echo "<option value=\"" . $espace->getId() . "\">" . $espace->getNom() . "</option>";
+            echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
         }
     }
 ?>
@@ -284,9 +284,9 @@ if ($mesno != "") {
                 <!-- Param&eacute;trages du planning des r&eacute;servations -->
                     <div class="form-group">
                         <label>Unit&eacute; de temps (min): <small class="badge bg-blue" data-toggle="tooltip" title="Pour le planning des r&eacute;servations, la plus petite portion de temps &agrave; accorder par tranche de 5, 10, x minutes..."><i class="fa fa-info"></i></small></label>
-                        <input type="text" value="<?php echo $config->getTimeUnit(); ?>" name="unit" class="form-control" placeholder="Min">
+                        <input type="text" value="<?php echo htmlentities($config->getTimeUnit()); ?>" name="unit" class="form-control" placeholder="Min">
                         <label>Dur&eacute;e maximum (min): <small class="badge bg-blue" data-toggle="tooltip" title="Dur&eacute;e maximum de la r&eacute;servation d'un poste par personne "><i class="fa fa-info"></i></small></label>
-                        <input type="text" value="<?php echo $config->getMaxTime(); ?>" name="maxtime" class="form-control" placeholder="Min">
+                        <input type="text" value="<?php echo htmlentities($config->getMaxTime()); ?>" name="maxtime" class="form-control" placeholder="Min">
                     </div>
                 
                 <!-- Param&eacute;trages de la r&eacute;servation rapide -->
@@ -317,10 +317,10 @@ if ($mesno != "") {
 
     foreach ($dureearray as $key=>$value) {
         if ($dureerr == $key) {
-            echo "                        <option value=\"".$key."\" selected>".$value."</option>";
+            echo "                        <option value=\"" . $key . "\" selected>" . $value . "</option>";
         }
         else {
-            echo "                        <option value=\"".$key."\">".$value."</option>";
+            echo "                        <option value=\"" . $key . "\">" . $value . "</option>";
         }
     }
     

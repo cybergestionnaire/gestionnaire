@@ -95,7 +95,67 @@ class Config
         return $this->_unitDefault;
     }
     
+    public function activerForfait() {
+        $success = false;
+
+        $db = Mysql::opendb();
+
+        $sql = "UPDATE `tab_config` "
+            . " SET `activation_forfait` = '1' "
+            . " WHERE `id_espace`='" . $this->_idEspace . "';";
+        
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $this->_activationForfait = '1';
+            $success = true;
+        }
+        
+        return $success;
+    }
+    public function desactiverForfait() {
+        $success = false;
+
+        $db = Mysql::opendb();
+
+        $sql = "UPDATE `tab_config` "
+            . " SET `activation_forfait` = '0' "
+            . " WHERE `id_espace`='" . $this->_idEspace . "';";
+        
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $this->_activationForfait = '0';
+            $success = true;
+        }
+        
+        return $success;
+    }
     
+    public function updateActivationForfait() {
+        $success = false;
+
+        $db = Mysql::opendb();
+
+        $sql = "SELECT id_forfait_espace from rel_forfait_espace where id_espace = " . $this->_idEspace ."";
+        
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $nbForfaitsAttaches = mysqli_num_rows($result);
+            if ($nbForfaitsAttaches > 0 )
+                $success = $this->activerForfait();
+            else 
+                $success = $this->desactiverForfait();
+
+        }
+        
+        return $success;
+        
+    }
 
     public static function getConfig($idEspace) {
         $config = null;
