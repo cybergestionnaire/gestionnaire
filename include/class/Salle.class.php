@@ -149,8 +149,8 @@ class Salle
             $commentaire = mysqli_real_escape_string($db, $commentaire);
 
 
-            $sql = "INSERT INTO `tab_salle` (`id_salle`,`nom_salle`,`id_espace`,`comment_salle`) "
-                 . "VALUES ('','" . $nom . "', '" . $idEspace."', '" . $commentaire . "') " ;       
+            $sql = "INSERT INTO `tab_salle` (`nom_salle`,`id_espace`,`comment_salle`) "
+                 . "VALUES ('" . $nom . "', '" . $idEspace."', '" . $commentaire . "') " ;       
             $result = mysqli_query($db,$sql);
             
             if ($result)

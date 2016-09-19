@@ -1704,39 +1704,6 @@ function addMateriel($nom,$os,$comment,$usage, $fonction,$salle,$adresseIP,$adre
   }
 }
 
-
-
-//
-// modMateriel()
-// modifie un materiel, poste dans la table computer
-function modMateriel($id,$nom, $os, $comment,$usage,$fonction, $salle, $adresseIP, $adresseMAC, $nomhote)
-{
-    $sql="UPDATE `tab_computer`
-    SET `nom_computer` ='".$nom."',
-        `comment_computer` ='".$comment."',
-        `os_computer` ='".$os."',
-        `usage_computer` ='".$usage."',
-		`fonction_computer` ='".$fonction."',
-		`id_salle`='".$salle."',
-		`adresse_ip_computer`='".$adresseIP."',
-		`adresse_mac_computer`='".$adresseMAC."',
-		`nom_hote_computer`='".$nomhote."'
-	
-     WHERE `id_computer` =".$id." LIMIT 1 ";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return TRUE;
-  }
-}
-
-
 //
 // supMateriel ()
 // supprime un poste de la table computer
@@ -1763,26 +1730,6 @@ function supMateriel($id)
   }
 }
 
-
-//
-// addMaterielUsage()
-// ajoute un usage pour un materiel
-function addMaterielUsage($idmat,$usage)
-{
-  $sql="INSERT INTO `rel_usage_computer` (`id_usage_computer`,`id_computer`,`id_usage`)
-        VALUES ('',".$idmat.",".$usage.") " ;
-  opendb ();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return TRUE ;
-  }
-}
 
 //
 // supMaterielUsage()

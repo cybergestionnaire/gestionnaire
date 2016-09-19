@@ -85,6 +85,9 @@ class Materiel
     public function getAdresseIP() {
         return $this->_adresseIP;
     }
+    public function getNomHote() {
+        return $this->_nomHote;
+    }
     public function getDateDernierEtat() {
         return $this->_dateDernierEtat;
     }
@@ -95,88 +98,140 @@ class Materiel
         return $this->_configurationEPNConnect;
     }
 
-/*    public function modifier($nom, $idEspace, $commentaire) {
-        $success = FALSE;
+    public function addUsageById($idUsage) {
+        $success = false;
+        
         $db = Mysql::opendb();
-        
-        $nom         = mysqli_real_escape_string($db, $nom);
-        $idEspace    = mysqli_real_escape_string($db, $idEspace);
-        $commentaire = mysqli_real_escape_string($db, $commentaire);
 
-        $sql = "UPDATE `tab_salle` "
-            . "SET `nom_salle` = '" . $nom . "', `id_espace` = '" . $idEspace . "', `comment_salle` = '" . $commentaire . "' "
-            . "WHERE `id_salle` = " . $this->_id;
+        $sql = "INSERT INTO `rel_usage_computer` (`id_computer`,`id_usage`) "
+            . "VALUES ('" . $this->_id . "', '" . $idUsage . "' ) ";
 
-        $result = mysqli_query($db,$sql);
-        Mysql::closedb($db);
-        if ($result) {
-            $this->_nom         = $nom;
-            $this->_idEspace    = $idEspace;
-            $this->_commentaire = $commentaire;
-            
-            $success = TRUE;
-        }
-
-        return $success;
-    }*/
-    
-/*    public function supprimer() {
-
-        // Verification avant suppression si il n'y a plus d'ordinateur attachés à la salle
-        $db     = Mysql::opendb();
-        $sql    = "SELECT `id_computer` FROM `tab_computer` WHERE `id_salle` = '" . $this->_id . "' ";
         $result = mysqli_query($db, $sql);
-
-
-        if ($result == FALSE) {
-            return 0; // echec de la requete
-        }
-        else {
-            if (mysqli_num_rows($result) > 0 ) {
-                return 1; // il reste des ordinateurs lies a la salle
-            }
-            else {
-                // Suppression de la salle
-                $sql2   = "DELETE FROM `tab_salle` WHERE `id_salle`=" . $this->_id;
-                $result = mysqli_query($db, $sql2);
-                if ($result == FALSE ) {
-                    return 0;
-                }
-                else {
-                    return 2;
-                }
-            }
-        }
         Mysql::closedb($db);
-    }*/
-   
-    
-/*    public static function creerSalle($nom, $idEspace, $commentaire) {
-        $salle = null;
         
+        if ($result) {
+            $success = true;
+        }
+        
+        return $success;
+    }
+    
+    public function modifier($nom, $os, $commentaire, $usage, $fonction, $idSalle, $adresseIP, $adresseMAC ,$nomHote) {
+        $success = FALSE;
         if ( $nom != ""
-            && (is_int($idEspace) && $idEspace != 0)
+            && (is_int($idSalle) && $idSalle != 0)
         ) {
             $db = Mysql::opendb();
             
             $nom         = mysqli_real_escape_string($db, $nom);
-            $idEspace    = mysqli_real_escape_string($db, $idEspace);
+            $os          = mysqli_real_escape_string($db, $os);
             $commentaire = mysqli_real_escape_string($db, $commentaire);
+            $usage       = mysqli_real_escape_string($db, $usage);
+            $fonction    = mysqli_real_escape_string($db, $fonction);
+            $idSalle     = mysqli_real_escape_string($db, $idSalle);
+            $adresseIP   = mysqli_real_escape_string($db, $adresseIP);
+            $adresseMAC  = mysqli_real_escape_string($db, $adresseMAC);
+            $nomHote     = mysqli_real_escape_string($db, $nomHote);
+
+            $sql = "UPDATE `tab_computer` "
+                . "SET `nom_computer`     = '" . $nom . "', "
+                . "`comment_computer`     = '" . $commentaire . "', "
+                . "`os_computer`          = '" . $os . "', "
+                . "`usage_computer`       = '" . $usage . "', "
+                . "`fonction_computer`    = '" . $fonction . "', "
+                . "`id_salle`             = '" . $idSalle . "', "
+                . "`adresse_ip_computer`  = '" . $adresseIP . "', "
+                . "`adresse_mac_computer` = '" . $adresseMAC . "', "
+                . "`nom_hote_computer`    = '" . $nomHote . "' "
+                . "WHERE `id_computer`    = " . $this->_id . "";
+
+            $result = mysqli_query($db,$sql);
+            Mysql::closedb($db);
+            if ($result) {
+                $this->_nom                     = $nom;
+                $this->_commentaire             = $commentaire;
+                $this->_os                      = $os;
+                $this->_usage                   = $usage;
+                $this->_fonction                = $fonction;
+                $this->_idSalle                 = $idSalle;
+                $this->_adresseMAC              = $adresseMAC;
+                $this->_adresseIP               = $adresseIP;
+                $this->_nomHote                 = $nomHote;
+                    
+                $success = TRUE;
+            }
+        }
+        return $success;
+    }
+    
+    public function supprimer() {
+        $success = FALSE;
+        
+        $db     = Mysql::opendb();
+        
+        //effacement des usages liés
+        $sql    = "DELETE FROM `rel_usage_computer` WHERE `id_computer`=" . $this->_id ;
+        $result = mysqli_query($db, $sql);
+        
+        if ($result) {
+            $sql2    = "DELETE FROM `tab_computer` WHERE `id_computer` = " . $this->_id . "" ;
+            $result2 = mysqli_query($db, $sql2);
+            if ($result2) {
+                $success = TRUE;
+            }
+        }
+        
+        Mysql::closedb($db);
+        
+        return $success;
+    }
+   
+    
+    public static function creerMateriel($nom, $os, $commentaire, $usage, $fonction, $idSalle, $adresseIP, $adresseMAC, $nomhote) {
+        $materiel = null;
+        
+        if ( $nom != ""
+            && (is_int($idSalle) && $idSalle != 0)
+        ) {
+            $db = Mysql::opendb();
+            
+            $nom         = mysqli_real_escape_string($db, $nom);
+            $os          = mysqli_real_escape_string($db, $os);
+            $commentaire = mysqli_real_escape_string($db, $commentaire);
+            $usage       = mysqli_real_escape_string($db, $usage);
+            $fonction    = mysqli_real_escape_string($db, $fonction);
+            $idSalle     = mysqli_real_escape_string($db, $idSalle);
+            $adresseIP   = mysqli_real_escape_string($db, $adresseIP);
+            $adresseMAC  = mysqli_real_escape_string($db, $adresseMAC);
+            $nomhote     = mysqli_real_escape_string($db, $nomhote);
 
 
-            $sql = "INSERT INTO `tab_salle` (`id_salle`,`nom_salle`,`id_espace`,`comment_salle`) "
-                 . "VALUES ('','" . $nom . "', '" . $idEspace."', '" . $commentaire . "') " ;       
+            $sql = "INSERT INTO `tab_computer` (`nom_computer`,`comment_computer`,`os_computer`,`usage_computer`,`fonction_computer`,`id_salle`,`adresse_mac_computer`,`adresse_ip_computer`,`nom_hote_computer`,`date_lastetat_computer`,`lastetat_computer`,`configurer_epnconnect_computer`) "
+                 . "VALUES ('" . $nom . "', '" . $commentaire . "', '" . $os . "', '" . $usage . "', '" . $fonction . "', '" . $idSalle . "', '" . $adresseMAC . "', '" . $adresseIP . "', '" . $nomhote . "', '', '', '0') " ;       
             $result = mysqli_query($db,$sql);
             
             if ($result)
             {
-                $salle = new Salle(array("id_salle" => mysqli_insert_id($db), "nom_salle" => $nom, "id_espace" => $idEspace, "comment_salle" => $commentaire));
+                $materiel = new Materiel(array(
+                        "id_computer"                    => mysqli_insert_id($db),
+                        "nom_computer"                   => $nom,
+                        "comment_computer"               => $commentaire,
+                        "os_computer"                    => $os,
+                        "usage_computer"                 => $usage,
+                        "fonction_computer"              => $fonction,
+                        "id_salle"                       => $idSalle,
+                        "adresse_mac_computer"           => $adresseMAC,
+                        "adresse_ip_computer"            => $adresseIP,
+                        "nom_hote_computer"              => $nomhote,
+                        "date_lastetat_computer"         => '',
+                        "lastetat_computer"              => '',
+                        "configurer_epnconnect_computer" => '0'));
             }
             
             Mysql::closedb($db);
         }
-        return $salle;
-    }*/
+        return $materiel;
+    }
     
     public static function getMaterielById($id) {
         $materiel = null;
