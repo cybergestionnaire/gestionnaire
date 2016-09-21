@@ -45,7 +45,7 @@ class Usage
         return $this->_type;
     }
     
-    public function modifier($nom, $type) {
+    public function modifier($nom, $type = "public") {
         $success = FALSE;
         $db = Mysql::opendb();
         
@@ -72,19 +72,20 @@ class Usage
         $db     = Mysql::opendb();
 
         $sql    = "DELETE FROM `tab_usage` WHERE `id_usage`=" . $this->_id;
-        $result = mysqli_query($db, $sql2);
+        $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
         
         return $result;
     }
    
     
-    public static function creerUsage($nom, $type) {
+    public static function creerUsage($nom, $type = "public") {
         $usage = null;
         
         if ( $nom != ""
             && $type != ""
         ) {
+            error_log("debut création ! nom = {$nom} / type = {$type}");
             $db = Mysql::opendb();
             
             $nom  = mysqli_real_escape_string($db, $nom);
@@ -92,7 +93,7 @@ class Usage
 
 
             $sql = "INSERT INTO `tab_usage` (`nom_usage`,`type_usage`) "
-                 . "VALUES ('','" . $nom . "', '" . $type . "') " ;
+                 . "VALUES ('" . $nom . "', '" . $type . "') " ;
             $result = mysqli_query($db,$sql);
             
             if ($result)
