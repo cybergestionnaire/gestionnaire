@@ -93,7 +93,7 @@
                 <form method="post" action="<?php echo $post_url; ?>" role="form">
                     <div class="form-group">
                         <label >Nom du poste *: </label>
-                        <input type="text" name="nom" value="<?php echo $nom;?>" class="form-control">
+                        <input type="text" name="nom" value="<?php echo htmlentities($nom);?>" class="form-control">
                     </div>
                     <div class="form-group">
                         <label >Syst&egrave;me :</label>
@@ -130,7 +130,7 @@
     
                     <div class="form-group">
                         <label >Commentaires : </label>
-                        <textarea name="comment" class="form-control"><?php echo $comment;?></textarea>
+                        <textarea name="comment" class="form-control"><?php echo htmlentities($comment);?></textarea>
                     </div>
                     <div class="form-group">
                         <label >Accessible &agrave; la r&eacute;servation : </label>
@@ -193,7 +193,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-laptop"></i>
                             </div>
-                            <input type="text" name="adresseIP" class="form-control" value="<?php echo $adresseIP;?>" placeholder="192.168.0.1" data-inputmask="'alias': 'ip'" data-mask/>
+                            <input type="text" name="adresseIP" class="form-control" value="<?php echo htmlentities($adresseIP);?>" placeholder="192.168.0.1" data-inputmask="'alias': 'ip'" data-mask/>
                         </div><!-- /.input group -->
                     </div><!-- /.form group -->
 
@@ -203,7 +203,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-laptop"></i>
                             </div>
-                            <input type="text" name="adresseMAC" class="form-control" value="<?php echo $adresseMAC;?>" placeholder="AA-00-B2-12...."/>
+                            <input type="text" name="adresseMAC" class="form-control" value="<?php echo htmlentities($adresseMAC);?>" placeholder="AA-00-B2-12...."/>
                         </div><!-- /.input group -->
                     </div><!-- /.form group -->
     
@@ -214,7 +214,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-laptop"></i>
                             </div>
-                            <input type="text" name="nomhotecomputer" class="form-control" value="<?php echo $nomhote;?>" placeholder="\\Poste..." />
+                            <input type="text" name="nomhotecomputer" class="form-control" value="<?php echo htmlentities($nomhote);?>" placeholder="\\Poste..." />
                         </div><!-- /.input group -->
                     </div><!-- /.form group -->
     

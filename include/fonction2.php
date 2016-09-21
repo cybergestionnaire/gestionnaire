@@ -2682,22 +2682,6 @@ closedb($db);
 	
 }
 
-function deletarif($id)
-{
-$sql="DELETE FROM `tab_tarifs` WHERE `id_tarif`='".$id."' ";
-$db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return True;
-  }
-}
-
 // retourne le prix et le nom du tarif à partir du tarif sélectionné
 function getPrixFromTarif($id)
 {
@@ -2718,33 +2702,7 @@ $result = mysqli_query($db,$sql);
 	
     return $result ;
   }
-
-
-
 }
-
-
-function getAllTarifs()
-{
-
-$sql=" SELECT * 
-FROM  `tab_tarifs` 
-WHERE id_tarif > 1
-ORDER BY `categorie_tarif` ASC";
-$db=opendb();
-$result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-     
-        return $result ;
-  }
-}
-
 
 function getTarifs($cat)
 {
@@ -3240,35 +3198,7 @@ $db=opendb();
 	
 }
 
-//
-// utilisation ----------------------------------------------------------------------
-//
-//
-// getAllUtilisation()
-// recupere les utilisations de la table utilisation pour l'utilisation d'un poste
-function getAllUtilisation()
-{
-  $sql ="SELECT `id_utilisation`,`nom_utilisation`,`type_menu`, `visible` FROM `tab_utilisation` ORDER BY `id_utilisation` " ;
-  $db=opendb();
- $result = mysqli_query($db,$sql);
-   closedb($db);
-  if ($result ==FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      /*$nb = mysql_num_rows($result);
-      $tableau = array();
-      for ($i=1;$i<=$nb;$i++)
-      {
-          $row=mysqli_fetch_array($result);
-          $tableau[$row["id_utilisation"]] = $row["nom_utilisation"] ;
-      }*/
-      //return $tableau ;
-      return $result ;
-  }
-}/*
+/*
 
 //
 // getUsage()
@@ -3355,94 +3285,6 @@ function getUsageName($usage)
     }
 }*/
 
-//
-// addUtilisation()
-// ajoute une nouvelle utilisation au materiel
-function addUtilisation($utilisation, $type, $visible)
-{
-  $sql="INSERT INTO `tab_utilisation` (`id_utilisation`,`nom_utilisation`, `type_menu`, `visible`) VALUES ('','".$utilisation."', '".$type."', '".$visible."')";
-  $db=opendb();
- $result = mysqli_query($db,$sql);
-   closedb($db);
-  if($result == FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return TRUE ;
-  }
-}
-
-
-//
-// modUtilisation()
-// modifie une utilisation au materiel
-function modUtilisation($id,$utilisation,$type, $visible)
-{
-  $sql="UPDATE `tab_utilisation`
-        SET `nom_utilisation`='".$utilisation."',
-        `type_menu`='".$type."',
-        `visible`='".$visible."'
-        WHERE `id_utilisation`=".$id." LIMIT 1 ";
-  $db=opendb();
- $result = mysqli_query($db,$sql);
-   closedb($db);
-  if($result == FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return TRUE ;
-  }
-}
-
-//
-// supUtilisation()
-// suppression d'une utilisation
-function supUtilisation($id)
-{
-  $sql = "DELETE FROM `tab_utilisation` WHERE `id_utilisation`=".$id." LIMIT 1";
-  $db=opendb();
- $result = mysqli_query($db,$sql);
-   closedb($db);
-  if($result == FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      $sql = "SELECT `id_utilisation_user` FROM `rel_utilisation_user` WHERE `id_utilisation`=".$id ;
-      $db=opendb();
-     $result = mysqli_query($db,$sql);
-       closedb($db);
-      if($result == FALSE)
-      {
-          return FALSE ;
-      }
-      else
-      {
-          $nb = mysqli_num_rows($result);
-          if ($nb >0)
-          {
-            for ($i=1;$i<=$nb;$i++)
-            {
-                $row = mysqli_fetch_array($result);
-                $sql = "DELETE FROM `rel_utilisation_user` WHERE `id_utilisation_user`=".$row["id_utilisation_user"];
-                $db=opendb();
-               $result = mysqli_query($db,$sql);
-                 closedb($db);
-                if($result == FALSE)
-                {
-                    return FALSE ;
-                }
-            }
-          }
-          return TRUE;
-      }
-  }
-}
 
 ///***** GESTION DES COURRIERS ***** ///
 function createCourrier($titre,$texte,$name,$type){
