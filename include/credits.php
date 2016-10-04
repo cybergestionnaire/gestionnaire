@@ -32,7 +32,7 @@
 		<div class="box-body">
 		 <div class="callout callout-info">
                                         <h4>AnimEpn</h4>
-                                        <p><a href="http://www.cybermin.org/" target="_self" >http://www.cybermin.org/</a></p>
+                                        <p><a href="http://www.CyberGestionnaire.org/" target="_self" >http://www.CyberGestionnaire.org/</a></p>
 					<p>Licence GNU GPL</p>
                                     </div>
 		</div>
@@ -41,7 +41,7 @@
 	 <div class="box box-info"> <div class="box-header"><i class="fa fa-bullhorn"></i> <h3 class="box-title">Aide bénévole</h3> </div><!-- /.box-header -->
 		<div class="box-body">
 		 
-                                        <h4>Cybermin</h4>
+                                        <h4>CyberGestionnaire</h4>
                                         <p>Je remercie chaleureusement les membres du <a href="http://animepn.openphpbb.com" target="_self" >Forum Animepn</a> pour leur patience et leur contributions en tant que beta-testeurs et suggestions de tout ordre.</p>
                  <p>Un grand merci à  Clément (pour m'avoir débroussaillé le code pour l'export avec Fpdf), à Arno (notre maître à tous), ) Chubert, Emmanuel, Laurent et Christelle de Pouzauges, Daulny, et tous les autres !!  </div>
 	

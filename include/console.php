@@ -16,8 +16,8 @@
     along with CyberGestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-    Original work : cybermin / 2006 Namont Nicolas
-    revamped by : cybermin-martigues / 2014 SAINT MARTIN Brice
+    Original work : CyberGestionnaire / 2006 Namont Nicolas
+    revamped by : CyberGestionnaire-martigues / 2014 SAINT MARTIN Brice
     
 */
 header("Content-Type: text/html; charset=UTF-8");

@@ -18,6 +18,7 @@
 */
 
 require_once("Mysql.class.php");
+require_once("Forfait.class.php");
 
 class Utilisateur
 {
@@ -31,7 +32,7 @@ class Utilisateur
     private $_idVille;
     private $_telephone;
     private $_mail;
-    private $_temps;
+    private $_idTarif;
     private $_login;
     private $_motDePasse;
     private $_statut;
@@ -43,7 +44,7 @@ class Utilisateur
     private $_info;
     private $_tarif;
     private $_dateRenouvellement;
-    private $_idEpn;
+    private $_idEspace;
     private $_newsletter;
     
     public function __construct($array)
@@ -63,7 +64,7 @@ class Utilisateur
         $this->_idVille             = $array["ville_user"];
         $this->_telephone           = $array["tel_user"];
         $this->_mail                = $array["mail_user"];
-        $this->_temps               = $array["temps_user"];
+        $this->_idTarifConsultation = $array["temps_user"];
         $this->_login               = $array["login_user"];
         $this->_motDePasse          = $array["pass_user"];
         $this->_statut              = $array["status_user"];
@@ -73,9 +74,9 @@ class Utilisateur
         $this->_utilisation         = $array["utilisation_user"];
         $this->_connaissance        = $array["connaissance_user"];
         $this->_info                = $array["info_user"];
-        $this->_tarif               = $array["tarif_user"];
+        $this->_idTarifAdhesion     = $array["tarif_user"];
         $this->_dateRenouvellement  = $array["dateRen_user"];
-        $this->_idEpn               = $array["epn_user"];
+        $this->_idEspace            = $array["epn_user"];
         $this->_newsletter          = $array["newsletter_user"];
     }
 
@@ -86,26 +87,136 @@ class Utilisateur
         return $this->_id;
     }
     
-    public function getLogin() {
-        return $this->_login;
+    public function getDateInscription() {
+        return $this->_dateInscription;
     }
     
     public function getNom() {
         return $this->_nom;
     }
+
     public function getPrenom() {
         return $this->_prenom;
+    }
+    
+    public function getSexe() {
+        return $this->_sexe;
+    }
+    
+    public function getJourNaissance() {
+        return date_format($this->_dateNaissance, 'd');
+    }
+    
+    public function getMoisNaissance() {
+        return date_format($this->_dateNaissance, 'n');
+    }
+    
+    public function getAnneeNaissance() {
+        return date_format($this->_dateNaissance, 'Y');
+    }
+    
+    public function getAdresse() {
+        return $this->_adresse;
+    }
+    
+    public function getIdVille() {
+        return $this->_idVille;
+    }
+    
+    public function getTelephone() {
+        return $this->_telephone;
+    }
+    
+    public function getMail() {
+        return $this->_mail;
+    }
+    
+    public function getIdTarifConsultation() {
+        return $this->_idTarifConsultation;
+    }
+    
+    public function getLogin() {
+        return $this->_login;
+    }
+
+    public function getMotDePasse() {
+        return $this->_motDePasse;
     }
     
     public function getStatut() {
         return $this->_statut;
     }
+
+    public function getDerniereVisite() {
+        return $this->_derniereVisite;
+    }
+
+    public function getCSP() {
+        return $this->_csp;
+    }
+
+    public function getEquipement() {
+        return $this->_equipement;
+    }
+
+    public function getUtilisation() {
+        return $this->_utilisation;
+    }
+
+    public function getConnaissance() {
+        return $this->_connaissance;
+    }
+
+    public function getInfo() {
+        return $this->_info;
+    }
+
+    public function getIdTarifAdhesion() {
+        return $this->_idTarifAdhesion;
+    }
+
+    public function getDateRenouvellement() {
+        return $this->_dateRenouvellement;
+    }
+
+    public function getidEspace() {
+        return $this->_idEspace;
+    }
+
+    public function getNewsletter() {
+        return $this->_newsletter;
+    }
+    
+    public function getAge() {
+
+        $annee = date_format($this->_dateNaissance, 'Y');
+        $mois = date_format($this->_dateNaissance, 'n');
+        $jour = date_format($this->_dateNaissance, 'd');
+
+        $today['mois'] = date('n');
+        $today['jour'] = date('d');
+        $today['annee'] = date('Y');
+
+        $annees = $today['annee'] - $annee;
+        if ($today['mois'] <= $mois) {
+            if ($mois == $today['mois']) {
+                if ($jour > $today['jour'])
+                    $annees--;
+            }
+            else
+              $annees--;
+        }
+        return $annees;
+    }
+
+    //public function getSalles() {}
+
     
     /**
      * Fonction de récupération des avatars.
      * A retravailler pour aller chercher les photos des usagers
      * OU
-     * adapter la base de données pour plus de cohérence (mettre l'avatar dans l'enregitrement utlisateur...)
+     * adapter la base de données pour plus de cohérence (mettre l'avatar dans l'enregistrement utilisateur...)
      */
      
     public function getAvatar() {
@@ -128,31 +239,38 @@ class Utilisateur
         mysqli_free_result($result);
         return $avatar;
     }
-    
-    public function getDateInscription() {
-        return $this->_dateInscription;
-    }
-    
-    public function getIdEpn() {
-        return $this->_idEpn;
-    }
+
     
     public function MAJVisite() {
+        $success = FALSE;
         $sql    = "UPDATE tab_user SET lastvisit_user='" . date("Y-m-d") . "' WHERE `id_user`=" . $this->_id ;
         $db     = Mysql::opendb();
         $result = mysqli_query($db, $sql);
-        if (result) {
-            mysqli_free_result($result);
+        if ($result) {
+            $success = TRUE;
         }
         Mysql::closedb($db);
+        
+        return $success;
+    }
+    
+    public function canUpdateLogin($login) {
+        $success = false;
+        if ($login == $this->_login || !self::existsLogin($login)) {
+            //si le login ne change pas OU si le login n'existe pas déjà
+            $success = true;
+        }
+        
+        return $success;
+    }
+    
+    public function getForfaitConsultation() {
+
+        return Forfait::getForfaitById($this->_idTarifConsultation);
+
     }
 
-    /*
-     * Fonctions statiques
-     */
-     
-    public static function creerUtilisateur(
-                            $dateInscription,
+    public function modifier( $dateInscription,
                             $nom,
                             $prenom,
                             $sexe,
@@ -161,7 +279,7 @@ class Utilisateur
                             $idVille,
                             $telephone,
                             $mail,
-                            $temps,
+                            $idTarifConsultation,
                             $login,
                             $motDePasse,
                             $statut,
@@ -171,9 +289,186 @@ class Utilisateur
                             $utilisation,
                             $connaissance,
                             $info,
-                            $tarif,
+                            $idTarifAdhesion,
                             $dateRenouvellement,
-                            $idEpn,
+                            $idEspace,
+                            $newsletter
+                        )
+    {
+        $success = FALSE;
+        error_log("debut modif -----------------------------------------------");
+        
+        error_log("dateinscription = {$dateInscription} /  test : " . (date_create_from_format('Y-m-d', $dateInscription) !== FALSE));
+        error_log("nom = {$nom}");
+        error_log("prenom = {$prenom}");
+        error_log("sexe = {$sexe}");
+        error_log("dateNaissance = {$dateNaissance} / test : " . (date_create_from_format('Y-m-d', $dateNaissance) !== FALSE));
+        error_log("adresse = {$adresse}");
+        error_log("idVille = {$idVille}");
+        error_log("mail = {$mail}");
+        error_log("login = {$login}");
+        error_log("motDePasse = {$motDePasse}");
+        error_log("statut = {$statut}");
+        error_log("idEspace = {$idEspace}");
+
+        
+        if (date_create_from_format('Y-m-d', $dateInscription) !== FALSE 
+            && $nom != ""
+            && $prenom != ""
+            && ($sexe == "H" || $sexe == "F")
+            && date_create_from_format('Y-m-d', $dateNaissance) !== FALSE
+            && $adresse != ""
+            && (is_int($idVille) && $idVille != 0)
+            && (filter_var($mail, FILTER_VALIDATE_EMAIL) || $mail == "")
+            && $login != ""
+            && $motDePasse != ""
+            && (is_int($statut) && $statut > 0 && $statut < 5)
+            && (is_int($idEspace) && $idEspace > 0)
+        ) {
+            error_log("tests ok !");
+            // vérification des champs ok
+            $db = Mysql::opendb();
+            
+            $dateInscription    = mysqli_real_escape_string($db, $dateInscription);
+            $nom                = mysqli_real_escape_string($db, $nom);
+            $prenom             = mysqli_real_escape_string($db, $prenom);
+            $sexe               = mysqli_real_escape_string($db, $sexe);
+            // $dateNaissance      = mysqli_real_escape_string($db, $dateNaissance);
+            $dateNaissance      = date_create($dateNaissance);
+            $jourNaissance      = date_format($dateNaissance,'d');
+            $moisNaissance      = date_format($dateNaissance,'n');
+            $anneeNaissance     = date_format($dateNaissance,'Y');
+            $adresse            = mysqli_real_escape_string($db, $adresse);
+            $idVille            = mysqli_real_escape_string($db, $idVille);
+            $telephone          = mysqli_real_escape_string($db, $telephone);
+            $mail               = mysqli_real_escape_string($db, $mail);
+            $idTarifConsultation = mysqli_real_escape_string($db, $idTarifConsultation);
+            $login              = mysqli_real_escape_string($db, $login);
+            $motDePasse         = mysqli_real_escape_string($db, $motDePasse);
+            $statut             = mysqli_real_escape_string($db, $statut);
+            $derniereVisite     = mysqli_real_escape_string($db, $derniereVisite);
+            $csp                = mysqli_real_escape_string($db, $csp);
+            $equipement         = mysqli_real_escape_string($db, $equipement);
+            $utilisation        = mysqli_real_escape_string($db, $utilisation);
+            $connaissance       = mysqli_real_escape_string($db, $connaissance);
+            $info               = mysqli_real_escape_string($db, $info);
+            $idTarifAdhesion    = mysqli_real_escape_string($db, $idTarifAdhesion);
+            $dateRenouvellement = mysqli_real_escape_string($db, $dateRenouvellement);
+            $idEspace           = mysqli_real_escape_string($db, $idEspace);
+            $newsletter         = mysqli_real_escape_string($db, $newsletter);
+
+            if (self::canUpdateLogin($login)) {
+                //si le login ne change pas OU si le login n'existe pas déjà
+                error_log("login peut evoluer !");
+                $sql = "UPDATE `tab_user` "
+                . "SET `date_insc_user`='" . $dateInscription . "', "
+                . "`nom_user`='" . $nom . "', "
+                . "`prenom_user`='" . $prenom . "', "
+                . "`sexe_user`='" . $sexe . "', "
+                . "`jour_naissance_user`='" . $jourNaissance . "', "
+                . "`mois_naissance_user`='" . $moisNaissance . "', "
+                . "`annee_naissance_user`='" . $anneeNaissance . "', "
+                . "`adresse_user`='" . $adresse . "', "
+                . "`ville_user`='" . $idVille . "', "
+                . "`tel_user`='" . $telephone . "', "
+                . "`mail_user`='" . $mail . "', "
+                . "`temps_user`='" . $idTarifConsultation . "', "
+                . "`login_user`='" . $login . "', "
+                . "`pass_user`='" . $motDePasse . "', "
+                . "`status_user`='" . $statut . "', "
+                . "`lastvisit_user`='" . $derniereVisite . "', "
+                . "`csp_user`='" . $csp . "', "
+                . "`equipement_user`='" . $equipement . "', "
+                . "`utilisation_user`='" . $utilisation . "', "
+                . "`connaissance_user`='" . $connaissance . "', "
+                . "`info_user`='" . $info . "', "
+                . "`tarif_user`='" . $idTarifAdhesion . "', "
+                . "`dateRen_user`='" . $dateRenouvellement . "', "
+                . "`epn_user`='" . $idEspace . "', "
+                . "`newsletter_user`='" . $newsletter . "' "
+                . "WHERE `id_user` = " . $this->_id . " ";
+
+                error_log("sql = {$sql}");
+
+                $result = mysqli_query($db,$sql);
+                Mysql::closedb($db);
+                
+                
+                if ($result) {
+                    $this->_dateInscription     = $dateInscription;
+                    $this->_nom                 = $nom;
+                    $this->_prenom              = $prenom;
+                    $this->_sexe                = $sexe;
+                    $this->_dateNaissance       = $dateNaissance;
+                    $this->_adresse             = $adresse;
+                    $this->_idVille             = $idVille;
+                    $this->_telephone           = $telephone;
+                    $this->_mail                = $mail;
+                    $this->_idTarifConsultation = $idTarifConsultation;
+                    $this->_login               = $login;
+                    $this->_motDePasse          = $motDePasse;
+                    $this->_statut              = $statut;
+                    $this->_derniereVisite      = $derniereVisite;
+                    $this->_csp                 = $csp;
+                    $this->_equipement          = $equipement;
+                    $this->_utilisation         = $utilisation;
+                    $this->_connaissance        = $connaissance;
+                    $this->_info                = $info;
+                    $this->_idTarifAdhesion     = $idTarifAdhesion;
+                    $this->_dateRenouvellement  = $dateRenouvellement;
+                    $this->_idEspace            = $idEspace;
+                    $this->_newsletter          = $newsletter;
+                    
+                    $success = TRUE;
+                }  
+            }       
+        }
+        return $success;
+    }
+    
+    public function supprimer() {
+        $success = false;
+        // aucune vérification de cohérence ???????
+        $db = Mysql::opendb();
+        $sql    = "DELETE FROM `tab_user` WHERE `id_user`=" . $this->_id . " LIMIT 1 " ;
+        $result = mysqli_query($db,$sql);
+
+        if ($result) {
+            $success = true;
+        }
+
+        Mysql::closedb($db);
+        
+        return $success;
+    }
+    
+    /*
+     * Fonctions statiques
+     */
+     
+    public static function creerUtilisateur(
+                            $dateInscription,   // format Y-m-d
+                            $nom,
+                            $prenom,
+                            $sexe,
+                            $dateNaissance,   // format Y-m-d
+                            $adresse,
+                            $idVille,
+                            $telephone,
+                            $mail,
+                            $idTarifConsultation,
+                            $login,
+                            $motDePasse,
+                            $statut,
+                            $derniereVisite,
+                            $csp,
+                            $equipement,
+                            $utilisation,
+                            $connaissance,
+                            $info,
+                            $idTarifAdhesion,
+                            $dateRenouvellement,
+                            $idEspace,
                             $newsletter
                         )
     {
@@ -190,7 +485,7 @@ class Utilisateur
             && $login != ""
             && $motDePasse != ""
             && (is_int($statut) && $statut > 0 && $statut < 5)
-            && (is_int($idEpn) && $idEpn > 0)
+            && (is_int($idEspace) && $idEspace > 0)
         ) {
             // vérification des champs ok
             $db = Mysql::opendb();
@@ -202,13 +497,13 @@ class Utilisateur
             // $dateNaissance      = mysqli_real_escape_string($db, $dateNaissance);
             $dateNaissance      = date_create($dateNaissance);
             $jourNaissance      = date_format($dateNaissance,'d');
-            $moisNaissance      = date_format($dateNaissance,'m');
+            $moisNaissance      = date_format($dateNaissance,'n');
             $anneeNaissance     = date_format($dateNaissance,'Y');
             $adresse            = mysqli_real_escape_string($db, $adresse);
             $idVille            = mysqli_real_escape_string($db, $idVille);
             $telephone          = mysqli_real_escape_string($db, $telephone);
             $mail               = mysqli_real_escape_string($db, $mail);
-            $temps              = mysqli_real_escape_string($db, $temps);
+            $idTarifConsultation = mysqli_real_escape_string($db, $idTarifConsultation);
             $login              = mysqli_real_escape_string($db, $login);
             $motDePasse         = mysqli_real_escape_string($db, $motDePasse);
             $statut             = mysqli_real_escape_string($db, $statut);
@@ -218,26 +513,28 @@ class Utilisateur
             $utilisation        = mysqli_real_escape_string($db, $utilisation);
             $connaissance       = mysqli_real_escape_string($db, $connaissance);
             $info               = mysqli_real_escape_string($db, $info);
-            $tarif              = mysqli_real_escape_string($db, $tarif);
+            $idTarifAdhesion    = mysqli_real_escape_string($db, $idTarifAdhesion);
             $dateRenouvellement = mysqli_real_escape_string($db, $dateRenouvellement);
-            $idEpn              = mysqli_real_escape_string($db, $idEpn);
+            $idEspace           = mysqli_real_escape_string($db, $idEspace);
             $newsletter         = mysqli_real_escape_string($db, $newsletter);
             
             
             // vérification de l'unicité du login
-            $sql = "select id_user from tab_user where login_user = " . $login;
-            $result = mysqli_query($db,$sql);
-            if ($result && mysqli_num_rows($result) == 0) {
+            //$sql = "select id_user from tab_user where login_user = " . $login;
+            //$result = mysqli_query($db,$sql);
+            if (!self::existsLogin($login)) {
                 // ok, pas de login déjà existant
                 
                 // devrait on vérifier la présence du même nom, même prénom, même adresse ?
                 // je crois que c'est le rôle de l'admin, pas du programme...
 
-                $sql = "INSERT INTO `tab_user`( `id_user`, `date_insc_user`,  `nom_user`,   `prenom_user`,   `sexe_user`,   `jour_naissance_user`,  `mois_naissance_user`,  `annee_naissance_user`,  `adresse_user`,   `ville_user`,     `tel_user`,         `mail_user`,   `temps_user`,   `login_user`,   `pass_user`,              `status_user`,   `lastvisit_user`,        `csp_user`,   `equipement_user`,   `utilisation_user`,   `connaissance_user`,   `info_user`,   `tarif_user`,   `dateRen_user`,              `epn_user`,   `newsletter_user`) 
-                                       VALUES ( '', " . $dateInscription . ", " . $nom . ", " . $prenom . ", " . $sexe . ", " . $jourNaissance . ", " . $moisNaissance . ", " . $anneeNaissance . ", " . $adresse . ", " . $idVille . ", " . $telephone . ", " . $mail . ", " . $temps . ", " . $login . ", " . md5($motDePasse) . ", " . $statut . ", " . $derniereVisite . ", " . $csp . ", " . $equipement . ", " . $utilisation . ", " . $connaissance . ", " . $info . ", " . $tarif . ", " . $dateRenouvellement . ", " . $idEpn . ", " . $newsletter . "') ";
-                $result2 = mysqli_query($db,$sql);
+                $sql = "INSERT INTO `tab_user`( `date_insc_user`,  `nom_user`,   `prenom_user`,   `sexe_user`,   `jour_naissance_user`,  `mois_naissance_user`,  `annee_naissance_user`,  `adresse_user`,   `ville_user`,     `tel_user`,         `mail_user`,   `temps_user`,   `login_user`,   `pass_user`,              `status_user`,   `lastvisit_user`,        `csp_user`,   `equipement_user`,   `utilisation_user`,   `connaissance_user`,   `info_user`,   `tarif_user`,   `dateRen_user`,              `epn_user`,   `newsletter_user`) 
+                                       VALUES ( '" . $dateInscription . "', '" . $nom . "', '" . $prenom . "', '" . $sexe . "', '" . $jourNaissance . "', '" . $moisNaissance . "', '" . $anneeNaissance . "', '" . $adresse . "', '" . $idVille . "', '" . $telephone . "', '" . $mail . "', '" . $idTarifConsultation . "', '" . $login . "', '" . md5($motDePasse) . "', '" . $statut . "', '" . $derniereVisite . "', '" . $csp . "', '" . $equipement . "', '" . $utilisation . "', '" . $connaissance . "', '" . $info . "', '" . $idTarifAdhesion . "', '" . $dateRenouvellement . "', '" . $idEspace . "', '" . $newsletter . "') ";
+                                       
+                error_log("sql = {$sql}");
+                $result = mysqli_query($db,$sql);
  
-                if ($result2) {
+                if ($result) {
                     $utilisateur = new Utilisateur(
                         array(
                             "id_user"               => mysqli_insert_id($db),
@@ -252,7 +549,7 @@ class Utilisateur
                             "ville_user"            => $idVille,
                             "tel_user"              => $telephone,
                             "mail_user"             => $mail,
-                            "temps_user"            => $temps,
+                            "temps_user"            => $idTarifConsultation,
                             "login_user"            => $login,
                             "pass_user"             => $motDePasse,
                             "status_user"           => $statut,
@@ -262,18 +559,19 @@ class Utilisateur
                             "utilisation_user"      => $utilisation,
                             "connaissance_user"     => $connaissance,
                             "info_user"             => $info,
-                            "tarif_user"            => $tarif,
+                            "tarif_user"            => $idTarifAdhesion,
                             "dateRen_user"          => $dateRenouvellement,
-                            "epn_user"              => $idEpn,
+                            "epn_user"              => $idEspace,
                             "newsletter_user"       => $newsletter
                         )
                     );
                 }  
-                mysqli_free_result($result2);
-            }       
-            mysqli_free_result($result);
+            }
+            //mysqli_free_result($result);
             Mysql::closedb($db);
         }
+        
+        return $utilisateur;
     }
     
     public static function getUtilisateurById($id)
@@ -349,5 +647,119 @@ class Utilisateur
         }
         
         return $utilisateurs ;
+    }
+    
+    public static function getAnimateurs() {
+        $utilisateurs = null;
+        
+        $db = Mysql::opendb();
+
+        $sql = "SELECT * "
+             . "FROM `tab_user` "
+             . "WHERE  status_user = 3 "
+             . "ORDER BY `nom_user` ASC ";
+             
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        if ($result == FALSE ) {
+            return FALSE ;
+        }
+        else {
+            $utilisateurs = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+        
+        return $utilisateurs ;
+    }
+    
+    public static function getAdministrateurs() {
+        $utilisateurs = null;
+        
+        $db = Mysql::opendb();
+
+        $sql = "SELECT * "
+             . "FROM `tab_user` "
+             . "WHERE  status_user = 4 "
+             . "ORDER BY `nom_user` ASC ";
+             
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        if ($result) {
+            $utilisateurs = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+        
+        return $utilisateurs ;
+    }
+    
+    public static function getUtilisateursByStatut($statut) {
+        $utilisateurs = null;
+        
+        $db = Mysql::opendb();
+
+        $sql = "SELECT * "
+             . "FROM `tab_user` "
+             . "WHERE  status_user = " . $statut. " "
+             . "ORDER BY `nom_user` ASC ";
+             
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        if ($result) {
+            $utilisateurs = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+        
+        return $utilisateurs ;
+    }
+    
+    public static function searchUtilisateurs($exp) {
+        $utilisateurs = null;
+        
+        $db = Mysql::opendb();
+
+        $sql = "SELECT *
+                FROM `tab_user`
+                WHERE  `status_user`< 3 
+                AND ( `nom_user` LIKE '%" . $exp . "%'
+                OR `prenom_user` LIKE '%" . $exp . "%'
+                OR `login_user` LIKE '%" . $exp . "%' )
+                ORDER BY `status_user` ASC, `nom_user` ASC";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $utilisateurs = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+        
+        return $utilisateurs ;
+    }
+    
+    
+    public static function existsLogin($login) {
+        $exists = FALSE;
+        $db = Mysql::opendb();
+        
+        $login = mysqli_real_escape_string($db, $login);
+        $sql = "SELECT `id_user` FROM tab_user WHERE `login_user`='" . $login . "'" ;
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        
+        $nb = mysqli_num_rows($result);
+        if ($nb > 0) {
+            $exists = TRUE;
+        }
+        
+        return $exists;
     }
 }

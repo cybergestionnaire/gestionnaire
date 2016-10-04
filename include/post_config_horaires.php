@@ -16,7 +16,7 @@
     along with CyberGestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
- 2006 Namont Nicolas (Cybermin)
+ 2006 Namont Nicolas (CyberGestionnaire)
  
 */
 

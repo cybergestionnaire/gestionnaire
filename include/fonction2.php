@@ -4357,7 +4357,7 @@ function paginate_two($reload, $page, $tpages, $adjacents) {
 	$pmax = ($page<($tpages-$adjacents)) ? ($page+$adjacents) : $tpages;
 	for($i=$pmin; $i<=$pmax; $i++) {
 		if($i==$page) {
-			$out.= "<li class=\"btn active\"><span >" . $i . "</span></li>\n";
+			$out.= "<li><span class=\"btn active\">" . $i . "</span></li>\n";
 		}
 		elseif($i==1) {
 			$out.= "<li><a href=\"" . $reload . "\">" . $i . "</a></li>\n";
