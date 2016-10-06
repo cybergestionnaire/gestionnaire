@@ -16,16 +16,16 @@
     along with CyberGestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
- 2006 Namont Nicolas (CyberGestionnaire)
+ 2006 Namont Nicolas (CyberMin)
  
 */
     require_once("include/class/Utilisateur.class.php");
     require_once("include/class/Transaction.class.php");
 
-    $act    =  isset($_GET["act"]) ? $_GET["act"] : '';
-    $idUser =  isset($_GET["iduser"]) ? $_GET["iduser"] : '';
-    //error_log(print_r($_POST, true));
-    //error_log(print_r($_GET, true));
+    $act    = isset($_GET["act"]) ? $_GET["act"] : '';
+    $idUser = isset($_GET["iduser"]) ? $_GET["iduser"] : '';
+    $type   = isset($_POST["type"]) ? $_POST["type"] : (isset($_GET["type"]) ? $_GET["type"] : '');
+
     
     // Choix de la fonction a utiliser
     if ($act != "") {
@@ -51,14 +51,11 @@
         $utilisation    = isset($_POST["utilisation"])  ? $_POST["utilisation"] : '';
         $connaissance   = isset($_POST["connaissance"]) ? $_POST["connaissance"] : '';
         $info           = isset($_POST["info"])         ? $_POST["info"] : '';
-        $tarif          = isset($_POST["tarif"])        ? $_POST["tarif"] : '';
+        $idTarif          = isset($_POST["tarif"])        ? $_POST["tarif"] : '';
      
         $equipement     = isset($_POST["equipement"])   ? implode("-", $_POST["equipement"]) : '';
     
         $newsletter     = isset($_POST["newsletter"])   ? $_POST["newsletter"] : '';
-        if (isset($newsletter)) {
-            $newsletter = 1; 
-        }
         $idEspace       = isset($_POST["epn"])          ? $_POST["epn"] : '';
      
         //date de renouvellement adhesion automatiquement crée
@@ -69,18 +66,19 @@
         $urlRedirect = "./index.php?a=1" ;
                 
         // redirige sur la page animateur ou adherent selon l'origine du lien
-        /*
-        if ($_POST['type']=='anim' OR $_POST['type']=='admin'){
+        
+        if ($type =='anim'){
             $urlRedirect = "./index.php?a=23" ;
             
         } else{
-            $urlRedirect = "./index.php?a=1" ;
+            $urlRedirect = "./index.php?a=1&b=3" ;
         }
-        */
+        
         // suppression d'un user
         if ($act=='del' AND $_SESSION['status'] == 4) {
             $utilisateur = Utilisateur::getutilisateurById($idUser);
             $utilisateur->supprimer();
+            $idUser = '';
             //deluser($_GET['iduser']);
             header("Location:" . $urlRedirect . "");
         }
@@ -89,18 +87,22 @@
         //error_log("nom = {$nom} / prenom = {$prenom} / annee = {$annee} / mois = {$mois} / adresse = {$adresse} / login = {$loginn} / sexe = {$sexe}");
         // Traitement des champs a insérer
         if ($nom == '' || $prenom == '' || $annee == '' || $adresse == '' || $loginn == '' || $sexe == '') {
+            error_log("----- Champs mal remplis !! -----");
             $mess = getError(4);
         }
         else {
             switch($act) {
                 case 1:   // ajout d'un adherent
                     //  $urlRedirect = "./index.php?a=1&b=2" ;
+                    error_log("----- Création de l'adhérent -----");
                                 
                     if (Utilisateur::existsLogin($loginn)) {
                         $mess = getError(5);
                     }
                     else {
-                        if (checkDate($mois, $jour, $annee)) {
+                        error_log("----- login ok -----");
+                        if (checkDate($mois, $jour, $annee) && $pass != '') {
+                            error_log("----- date ok -----");
                             $dateNaissance = $annee . "-" . $mois . "-" . $jour;
                             
                             $utilisateur = Utilisateur::creerUtilisateur(
@@ -123,20 +125,23 @@
                                     $utilisation,
                                     $connaissance,
                                     $info,
-                                    $tarif,
+                                    $idTarif,
                                     $daterenouv,
                                     intval($idEspace),
                                     $newsletter);
                         
                             if ($utilisateur == null) {
-                                header("Location:" . $urlRedirect . "&mesno=0");
+                                error_log("----- création échouée ! -----");
+
+                               $mess = getError(4);
                             }
                             else {
+                                error_log("----- création réussie ! -----");
                                 //enregistrement des transactions choisies
                                 //addForfaitUser("temps", $utilisateur->getId(), $temps, 1, date('Y-m-d'), 1); //forfait temps
                                 //addForfaitUser("adh", $utilisateur->getId(), $tarif, 1, date('Y-m-d'), 1); //adhésion
                                 $transac1 = Transaction::creerTransaction("temps", intval($utilisateur->getId()), $temps, 1, date('Y-m-d'), 1); //forfait temps
-                                $transac2 = Transaction::creerTransaction("adh", intval($utilisateur->getId()), $tarif, 1, date('Y-m-d'), 1); //adhésion
+                                $transac2 = Transaction::creerTransaction("adh", intval($utilisateur->getId()), $idTarif, 1, date('Y-m-d'), 1); //adhésion
     
                                 // if ($transac1 == null OR $transac2 == null) {
                                     // error_log("---- erreur lors de la création des transactions ! ----");
@@ -144,13 +149,15 @@
                                 
                                  //ajout de la relation forfait-consultation dans rel_forfait_user
                                 if (FALSE == addrelconsultationuser(1, $temps, $utilisateur->getId())) {
-                                    error_log("---- erreur lors de la création de la relation ! ----");
                                     header("Location:" . $urlRedirect . "&mesno=0");
                                 }
                                 else {
-                                    header("Location:./index.php?a=1&b=3&mesno=18");
+                                    header("Location:" . $urlRedirect . "&mesno=18");
                                 }
                             }
+                        }
+                        else {
+                            $mess = getError(4);
                         }
                     }
                 break;
@@ -166,7 +173,7 @@
                     }
                     
                     $utilisateur = Utilisateur::getutilisateurById($idUser);
-                    error_log("date = {$utilisateur->getDateInscription()}");
+
                     if ($utilisateur->canUpdateLogin($loginn)) {
                         if ($pass == '' ) {
                             $pass = $utilisateur->getMotDePasse();

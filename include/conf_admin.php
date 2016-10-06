@@ -42,10 +42,10 @@ if ($_SESSION["status"]==4)
                   include ("include/post_user.php");
                   $inc="admin_form_user.php";
              break;
-						case 3:
-									$titre="Liste des deniers adh&eacute;rents";
-                  $aide="pour une recherche plus rapide vous pouvez utiliser le moteur de recherche, attention 3 lettres minimum sinon pas de recherche !"  ;
-                 $inc="admin_list_user.php";
+                case 3:
+                    $titre="Liste des deniers adh&eacute;rents";
+                    $aide="pour une recherche plus rapide vous pouvez utiliser le moteur de recherche, attention 3 lettres minimum sinon pas de recherche !"  ;
+                    $inc="admin_list_user.php";
              break;
 	     
 	     
@@ -506,10 +506,10 @@ if ($_SESSION["status"]==4)
 	
 	
 	case 50:
-	$titre="Gestion des profils animateurs";
-	$aide="indiquez l'epn de rattachement de l'animateur et ses salles";
-	$inc="admin_form_configanim.php";
-	include ("include/post_animateurs.php");
+        $titre = "Gestion des profils animateurs";
+        $aide  = "indiquez l'epn de rattachement de l'animateur et ses salles";
+        $inc   = "admin_form_configanim.php";
+        include ("include/post_animateurs.php");
     break;
     
     case 51: //cr&eacute;ation d'un animateur form simplifi&eacute; // modification des profils anim

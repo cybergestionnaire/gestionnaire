@@ -510,9 +510,9 @@
 ?>
                         
                         </td>
-                        <td><?php echo $utilisateur->getNom() ?></td>
-                        <td><?php echo $utilisateur->getPrenom() ?></td>
-                        <td><?php echo $utilisateur->getLogin() ?></td>
+                        <td><?php echo htmlentities($utilisateur->getNom()) ?></td>
+                        <td><?php echo htmlentities($utilisateur->getPrenom()) ?></td>
+                        <td><?php echo htmlentities($utilisateur->getLogin()) ?></td>
                         <td><?php echo $age ?> ans</td>
                         <td><?php echo $lasteresa ?></td>
                         <td><span class="<?php echo $classadh ?>"><?php echo $adhesion ?></span></td>
@@ -522,7 +522,7 @@
                     if ($utilisateur->getStatut() == 1) { 
                         if ($forfaitConsultation != null) {
 ?>
-                            <span class="badge bg-blue"><?php echo $forfaitConsultation->getNom() ?></span> <?php echo getTime($restant) ?>
+                            <span class="badge bg-blue"><?php echo htmlentities($forfaitConsultation->getNom()) ?></span> <?php echo getTime($restant) ?>
                             <div class="progress">
                                 <div class="progress progress-sm active">
                                     <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="<?php echo $rapport ?>" aria-valuemin="0" aria-valuemax="100" style="<?php echo "width:".$rapport."%"; ?>"></div>

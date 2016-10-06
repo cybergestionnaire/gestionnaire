@@ -16,7 +16,7 @@
     along with Cybergestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
- 2006 Namont Nicolas (CyberGestionnaire)
+ 2006 Namont Nicolas (CyberMin)
  
 
  include/post_epn.php V0.1

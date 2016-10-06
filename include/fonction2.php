@@ -3471,27 +3471,6 @@ $sql2="UPDATE tab_user SET epn_user='".$epn_r."' WHERE id_user='".$idanim."' ";
 
 }
 
-
-
-function getAnimateur($id_user)
-{
-$sql="SELECT `id_epn`, `id_salle`, `anim_avatar` FROM `rel_user_anim` WHERE `id_animateur`='".$id_user."' ";
-$db=opendb();
- $result = mysqli_query($db,$sql);
-   closedb($db);
-  if($result == FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      $row=mysqli_fetch_array($result) ;
-      return $row;
-  }
-
-}
-
-
 function Ptestanim($id)
 {
 $sql="SELECT `id_useranim` FROM `rel_user_anim` WHERE `id_animateur`='".$id."' ";

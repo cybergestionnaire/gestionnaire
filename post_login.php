@@ -17,8 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
     
-    Original work : cybermin / 2006-2008 Namont Nicolas
-    2016 Tariel Christophe
+    Original work : Cybermin / 2006-2008 Namont Nicolas
 
 */
 
@@ -28,7 +27,7 @@ $login  = $_POST["log"];
 $passwd = $_POST["pass"];
 
 //include ("include/fonction.php");
-include_once("include/class/Utilisateur.class.php");
+require_once("include/class/Utilisateur.class.php");
 
 $utilisateur = Utilisateur::getUtilisateurByLoginPassword($login,$passwd);
 
@@ -40,7 +39,7 @@ else {
     $_SESSION["login"]  = $utilisateur->getLogin();
     $_SESSION["status"] = $utilisateur->getStatut();
     $_SESSION["iduser"] = $utilisateur->getId();
-    $_SESSION["idepn"]  = $utilisateur->getIdEpn();
+    $_SESSION["idepn"]  = $utilisateur->getIdEspace();
     $utilisateur->MAJVisite();
     header("Location: ./index.php");
 }

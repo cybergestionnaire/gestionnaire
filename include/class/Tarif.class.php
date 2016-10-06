@@ -237,7 +237,7 @@ class Tarif
         $db      = Mysql::opendb();
         
         // pourquoi enlever le tarif avec l'id 1 ???
-        $sql     = "SELECT * FROM `tab_tarifs` WHERE `categorie_tarif`='" . $categorie . "' AND `id_tarif`>1 ORDER BY `id_tarif` ASC";
+        $sql     = "SELECT * FROM `tab_tarifs` WHERE `categorie_tarif`='" . $categorie . "' AND `id_tarif` > 1 ORDER BY `id_tarif` ASC";
         $result  = mysqli_query($db,$sql);
         Mysql::closedb($db);
         

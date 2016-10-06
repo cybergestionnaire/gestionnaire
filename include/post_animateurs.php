@@ -21,61 +21,39 @@
 
  include/post_animateur.php V0.1
 */
-  $b      =  $_GET["b"];
-  $idanim  =  $_GET["idanim"];
+    require_once("include/class/Utilisateur.class.php");
+    // error_log("----- POST -----");
+    // error_log(print_r($_POST, true));
+    // error_log("----- GET -----");
+    // error_log(print_r($_GET, true));
+    
+    
+    // $b       =  $_GET["b"];
+    $idAnim      = isset($_GET["idanim"]) ? $_GET["idanim"] : '';
   
     //recuperation et traitement des variables
-	$avatar_r    = $_POST["avatar_r"];
-    $epn_r      =  $_POST["epn_r"];
-	$salles_r=array();
-    $salles_r=  $_POST["salle_r"];
-	$salles=implode(";",$salles_r );
+    $avatar_r    = isset($_POST["avatar_r"]) ? $_POST["avatar_r"] : '';
+    $idEspace    = isset($_POST["epn_r"]) ? $_POST["epn_r"] : '';
+    $salles_r    = array();
+    $salles_r    = isset($_POST["salle_r"]) ? $_POST["salle_r"] : array();
+    $salles      = implode(";", $salles_r );
 
-    
-if ($b==1) // creation
- {
-   // les salles et l'epn de rattachement
-		  
-		  if (!$epn_r || !$salles )
-		  {
-			 $mess = getError(50);
-		  }
-		  else
-		  {
-		 
-			if (FALSE == paramAnim($idanim,$epn_r,$salles,$avatar_r))
-					  {
-						header("Location:index.php?a=50&idanim=".$idanim."&mesno=50");
-					  }
-					  else
-					  {
-						  header("Location:index.php?a=50&b=2&mess=ok&idanim=".$idanim);
-					  }
-				  
-				 
-			}
-				
-        
-} else { // Modification
-	
-	if (!$epn_r || !$salles )
-		  {
-			 $mess = getError(13);
-		  }
-		  else
-		  {
-			if (FALSE == modifparamAnim($idanim,$epn_r,$salles,$avatar_r))
-					  {
-						header("Location:index.php?a=50&idanim=".$idanim."&mesno=0");
-					  }
-					  else
-					  {
-						  header("Location:index.php?a=50&b=2&mess=ok&idanim=".$idanim);
-					  }
-				   
-				 
-			}
+    $animateur   = Utilisateur::getUtilisateurById($idAnim);
+    // les salles et l'epn de rattachement
+    if ($idEspace != '') {
+        // on a un POST
+        if ($salles == '') {
+            //erreur : pas de salle sélectionnée
+            $mess = getError(13);
+        }
+        else {
+            if ($animateur->setParametresAnim($idEspace, $salles, $avatar_r)) {
+                header("Location:index.php?a=50&b=2&mess=ok&idanim=" . $idAnim);
+            }
+            else {
+                header("Location:index.php?a=50&idanim=" . $idAnim . "&mesno=50");
+            }
+        }
+    }
 
-
-}
 ?>

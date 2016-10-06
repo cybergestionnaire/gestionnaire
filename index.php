@@ -16,7 +16,7 @@
     along with CyberGestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-    Original work : cybermin / 2006-2008 Namont Nicolas
+    Original work : Cybermin / 2006-2008 Namont Nicolas
 */
 
 // Desactivation du rapport d'erreur

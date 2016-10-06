@@ -16,7 +16,7 @@
     along with CyberGestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
- 2006 Namont Nicolas (CyberGestionnaire)
+ 2006 Namont Nicolas (CyberMin)
  2012 Florence DAUVERGNE
 
 */
@@ -24,60 +24,40 @@
     // Formulaire de creation ou de modification d'un adherent
 
     $id_user = isset($_GET["iduser"]) ? $_GET["iduser"] : '' ;
-    $type    = isset($_GET["type"])   ? $_GET["type"] : '' ;
+    $type   =  isset($_POST["type"]) ? $_POST["type"] : (isset($_GET["type"]) ? $_GET["type"] : '');
     $b       = isset($_GET["b"])      ? $_GET["b"] : '' ;
 
     if ($id_user == '') {   // Parametre du formulaire pour la CREATION
         
-            $post_url     = "index.php?a=51&b=1&act=1";
-            $temps        = "999"; //illimite
-            $date         = date("Y-m-d");
-            $label_bouton = "Cr&eacute;er" ;
-            $nom          = "";
-            $prenom       = "";
-            $sexe         = "";
-            $jour         = "";
-            $mois         = "";
-            $annee        = "";
-            $adresse      = "";
-            $idVille      = "";
-            $tel          = "";
-            $mail         = "";
-            $loginn       = "";
-            $statuss      = "";
-            $info         = "";
-            $avatar       = "";
-            $loginn       = "";
-        //$testb=1;
-            
-        }
-        else {
-            // Parametre du formulaire pour la MODIFICATION
-            $post_url     = "index.php?a=51&b=2&act=2&iduser=" . $id_user;
-            $label_bouton = "Modifier" ;
-            //$row          = getUser($id_user);
-            $utilisateur  = Utilisateur::getUtilisateurById($id_user);
-    // Information Utilisateur
-    /*        $date         = $row["date_insc_user"];
-            $nom          = stripslashes( $row["nom_user"]);
-            $prenom       = stripslashes( $row["prenom_user"]);
-            $sexe         = $row["sexe_user"];
-            $jour         = $row["jour_naissance_user"];
-            $mois         = $row["mois_naissance_user"];
-            $annee        = $row["annee_naissance_user"];
-            $adresse      = stripslashes($row["adresse_user"]);
-            $ville        = $row["ville_user"];
-            $tel          = $row["tel_user"];
-            $mail         = $row["mail_user"];
-            
-            $loginn       = stripslashes( $row["login_user"]);
-            $statuss      = $row["status_user"]; 
+        $post_url     = "index.php?a=51&b=1&act=1";
+        $temps        = "999"; //illimite
+        $date         = date("Y-m-d");
+        $label_bouton = "Cr&eacute;er" ;
+        $nom          = "";
+        $prenom       = "";
+        $sexe         = "";
+        $jour         = "";
+        $mois         = "";
+        $annee        = "";
+        $adresse      = "";
+        $idVille      = "";
+        $tel          = "";
+        $mail         = "";
+        $loginn       = "";
+        $statuss      = "";
+        $info         = "";
+        $avatar       = "";
+        $loginn       = "";
+    //$testb=1;
         
-            $info         =  stripslashes($row["info_user"]);
-          //avatar
-            $rowa = getAvatar($id_user);
-            $avatar=$rowa["anim_avatar"];
-        */
+    }
+    else {
+        // Parametre du formulaire pour la MODIFICATION
+        $post_url     = "index.php?a=51&b=2&act=2&iduser=" . $id_user;
+        $label_bouton = "Modifier" ;
+        //$row          = getUser($id_user);
+        $utilisateur  = Utilisateur::getUtilisateurById($id_user);
+
         if ($utilisateur != null) {
             $date       = $utilisateur->getDateInscription();
             $nom        = $utilisateur->getNom();
@@ -174,8 +154,8 @@
                             <td>
 <?php 
     if ($id_user != '') {
-        if ($statuss == 3) {
-            echo '<img src="img/avatar/'.$avatar.'" width="80%">' ;
+        if ($statuss == 3 || $statuss == 4) {
+            echo '<img src="img/avatar/' . $avatar . '" width="50%">' ;
         }
         else {
             if ($sexe =="F") {
@@ -373,7 +353,7 @@
                         <input type="hidden" name="connaissance" value="0" >
                         <input type="hidden" name="csp" value="2" >
                         <input type="hidden" name="tarif" value="0"> 
-                        <input type="hidden" name="equipement" value="0">
+                        <input type="hidden" name="equipement[]" value="0">
                         <input type="hidden" name="epn" value="1"> <!--- ????????????? -->
                         <input type="hidden" name="newsletter" value="0">
                     </div>
@@ -386,11 +366,7 @@
                 </div><!--/box body -->
 
                 <div class="box-footer">
-<?php 
-    if ($_GET['type'] == 'anim' OR $_POST['type'] == 'anim') {
-        echo '<input type="hidden" name="type" value="anim" />';
-    }       
-?>
+                    <input type="hidden" name="type" value="anim" />
         
                     <input type="submit" value="<?php echo $label_bouton ;?>" name="submit" class="btn btn-success">
         <!-- Bouton annuler revient aux resas direct-->

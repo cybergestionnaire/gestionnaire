@@ -16,7 +16,7 @@
     along with CyberGestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
- 2006 Namont Nicolas (CyberGestionnaire)
+ 2006 Namont Nicolas (CyberMin)
  
 */
 
@@ -67,14 +67,6 @@
                     <tbody>
 <?php
         foreach ($administrateurs as $administrateur) {
-            $testAnim = Ptestanim($administrateur->getId());
-            // je refais le test pour correspondre au code initial, mais pour moi, "b" ne sert à rien dans ce cas là (pas de "b" avec "a" = 50, cf conf_admin.php)
-            if ($testAnim == TRUE) {
-                $btest = 2;
-            }
-            else {
-                $btest = 1;
-            }  
             $statut   = $state[$administrateur->getStatut()];
 ?>                    
                         <tr>
@@ -96,7 +88,7 @@
 <?php
             if ($_SESSION['status'] == 4) {
 ?>
-                            <a href="index.php?a=50&b=<?php echo $btest; ?>&idanim=<?php echo $administrateur->getId(); ?>"><button type="button" class="btn btn-primary sm" data-toggle="tooltip" title="Param&egrave;tres"><i class="fa fa-gear"></i></button></a>
+                            <a href="index.php?a=50&idanim=<?php echo $administrateur->getId(); ?>"><button type="button" class="btn btn-primary sm" data-toggle="tooltip" title="Param&egrave;tres"><i class="fa fa-gear"></i></button></a>
 <?php
             }
 ?>
@@ -132,14 +124,6 @@
 <?php
         
         foreach ($animateurs as $animateur) {
-            $testAnim = Ptestanim($animateur->getId()); // ??? qu'est ce que c'est ??
-            // je refais le test pour correspondre au code initial, mais pour moi, "b" ne sert à rien dans ce cas là (pas de "b" avec "a" = 50, cf conf_admin.php)
-            if ($testAnim == TRUE) {
-                $btest = 2;
-            }
-            else {
-                $btest = 1;
-            }            
             
             $statut   = $state[$animateur->getStatut()];
 
@@ -162,7 +146,7 @@
 <?php
 
 ?>
-                            <td><a href="index.php?a=50&b=<?php echo $btest; ?>&idanim=<?php echo $animateur->getId(); ?>"><button type="button" class="btn btn-primary sm" data-toggle="tooltip" title="Param&egrave;tres"><i class="fa fa-gear"></i></button></a></td>
+                            <td><a href="index.php?a=50&idanim=<?php echo $animateur->getId(); ?>"><button type="button" class="btn btn-primary sm" data-toggle="tooltip" title="Param&egrave;tres"><i class="fa fa-gear"></i></button></a></td>
                         </tr>
 <?php
         }

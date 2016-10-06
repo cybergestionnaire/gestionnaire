@@ -432,7 +432,7 @@ $sql_create['tab_forfait'] = "CREATE TABLE `tab_forfait` (
   `date_creation_forfait` date NOT NULL,
   `type_forfait` int(11) NOT NULL,
   `nom_forfait` varchar(50) NOT NULL,
-  `prix_forfait` int(11) NOT NULL,
+  `prix_forfait` float NOT NULL,
   `critere_forfait` varchar(100) NOT NULL,
   `commentaire_forfait` text NOT NULL,
   `nombre_duree_forfait` int(11) NOT NULL,

@@ -235,16 +235,16 @@ class Utilisateur
             if (!isset($avatar) || $avatar == "") {
                 $avatar = "default.png";
             }
+            mysqli_free_result($result);
         }
-        mysqli_free_result($result);
         return $avatar;
     }
 
     
     public function MAJVisite() {
         $success = FALSE;
-        $sql    = "UPDATE tab_user SET lastvisit_user='" . date("Y-m-d") . "' WHERE `id_user`=" . $this->_id ;
         $db     = Mysql::opendb();
+        $sql    = "UPDATE tab_user SET lastvisit_user='" . date("Y-m-d") . "' WHERE `id_user`=" . $this->_id ;
         $result = mysqli_query($db, $sql);
         if ($result) {
             $success = TRUE;
@@ -263,6 +263,94 @@ class Utilisateur
         
         return $success;
     }
+    
+    public function hasParametresAnim() {
+        $success = FALSE;
+        
+        $db     = Mysql::opendb();
+        $sql    = "SELECT `id_useranim` FROM `rel_user_anim` WHERE `id_animateur`='" . $this->_id . "' ";
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if(mysqli_num_rows($result) == 1) {
+            $success = TRUE ;
+        }
+        
+        return $success;
+    }
+    
+    public function getIdEspaceAnim() {
+        $idEspaceAnim = '';
+        
+        $db     = Mysql::opendb();
+        $sql    = "SELECT `id_epn` FROM `rel_user_anim` WHERE `id_animateur`='" . $this->_id . "' ";
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if($result == FALSE)
+        {
+        }
+        else
+        {
+            $row = mysqli_fetch_array($result) ;
+            
+            $idEspaceAnim = $row["id_epn"];
+            mysqli_free_result($result);
+        }
+        return $idEspaceAnim;
+    }
+    
+    public function getIdSallesAnim() {
+        $idEspaceAnim = '';
+        
+        $db     = Mysql::opendb();
+        $sql    = "SELECT `id_salle` FROM `rel_user_anim` WHERE `id_animateur`='" . $this->_id . "' ";
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if($result == FALSE)
+        {
+        }
+        else
+        {
+            $row = mysqli_fetch_array($result) ;
+            
+            $idEspaceAnim = $row["id_salle"];
+            mysqli_free_result($result);
+        }
+        return $idEspaceAnim;
+    }
+    
+    function setParametresAnim($idEspace, $salles, $avatar) {
+        $success = false;
+        
+        $db       = Mysql::opendb();
+        
+        $idEspace = mysqli_real_escape_string($db, $idEspace);
+        $salles   = mysqli_real_escape_string($db, $salles);
+        $avatar   = mysqli_real_escape_string($db, $avatar);
+        
+        if ($this->hasParametresAnim()) {
+            $sql  = "UPDATE `rel_user_anim` SET `id_epn`='" . $idEspace . "', `id_salle`='" . $salles . "', `anim_avatar`='" . $avatar . "' WHERE id_animateur='" . $this->_id . "' ";
+        }
+        else {
+            $sql  = "INSERT INTO `rel_user_anim`(`id_animateur`, `id_epn`, `id_salle`, `anim_avatar`) VALUES ('" . $this->_id . "', '" . $idEspace . "', '" . $salles . "', '" . $avatar . "')";
+        }
+        //mettre l'epn dans la tab user aussi
+        $sql2     = "UPDATE tab_user SET epn_user='" . $idEspace . "' WHERE id_user='" . $this->_id . "' ";
+
+        $result = mysqli_query($db, $sql);
+
+        if ($result != FALSE) {
+            $result2 = mysqli_query($db, $sql2);
+            $success = TRUE ;
+        }
+        
+        Mysql::closedb($db);
+
+        return $success;
+    }
+    
     
     public function getForfaitConsultation() {
 
@@ -296,20 +384,20 @@ class Utilisateur
                         )
     {
         $success = FALSE;
-        error_log("debut modif -----------------------------------------------");
+        // error_log("debut modif -----------------------------------------------");
         
-        error_log("dateinscription = {$dateInscription} /  test : " . (date_create_from_format('Y-m-d', $dateInscription) !== FALSE));
-        error_log("nom = {$nom}");
-        error_log("prenom = {$prenom}");
-        error_log("sexe = {$sexe}");
-        error_log("dateNaissance = {$dateNaissance} / test : " . (date_create_from_format('Y-m-d', $dateNaissance) !== FALSE));
-        error_log("adresse = {$adresse}");
-        error_log("idVille = {$idVille}");
-        error_log("mail = {$mail}");
-        error_log("login = {$login}");
-        error_log("motDePasse = {$motDePasse}");
-        error_log("statut = {$statut}");
-        error_log("idEspace = {$idEspace}");
+        // error_log("dateinscription = {$dateInscription} /  test : " . (date_create_from_format('Y-m-d', $dateInscription) !== FALSE));
+        // error_log("nom = {$nom}");
+        // error_log("prenom = {$prenom}");
+        // error_log("sexe = {$sexe}");
+        // error_log("dateNaissance = {$dateNaissance} / test : " . (date_create_from_format('Y-m-d', $dateNaissance) !== FALSE));
+        // error_log("adresse = {$adresse}");
+        // error_log("idVille = {$idVille}");
+        // error_log("mail = {$mail}");
+        // error_log("login = {$login}");
+        // error_log("motDePasse = {$motDePasse}");
+        // error_log("statut = {$statut}");
+        // error_log("idEspace = {$idEspace}");
 
         
         if (date_create_from_format('Y-m-d', $dateInscription) !== FALSE 
@@ -325,7 +413,7 @@ class Utilisateur
             && (is_int($statut) && $statut > 0 && $statut < 5)
             && (is_int($idEspace) && $idEspace > 0)
         ) {
-            error_log("tests ok !");
+            // error_log("tests ok !");
             // vérification des champs ok
             $db = Mysql::opendb();
             
@@ -481,7 +569,7 @@ class Utilisateur
             && date_create_from_format('Y-m-d', $dateNaissance) !== FALSE
             && $adresse != ""
             && (is_int($idVille) && $idVille != 0)
-            && filter_var($mail, FILTER_VALIDATE_EMAIL)
+            && (filter_var($mail, FILTER_VALIDATE_EMAIL) || $mail == "")
             && $login != ""
             && $motDePasse != ""
             && (is_int($statut) && $statut > 0 && $statut < 5)
@@ -531,7 +619,7 @@ class Utilisateur
                 $sql = "INSERT INTO `tab_user`( `date_insc_user`,  `nom_user`,   `prenom_user`,   `sexe_user`,   `jour_naissance_user`,  `mois_naissance_user`,  `annee_naissance_user`,  `adresse_user`,   `ville_user`,     `tel_user`,         `mail_user`,   `temps_user`,   `login_user`,   `pass_user`,              `status_user`,   `lastvisit_user`,        `csp_user`,   `equipement_user`,   `utilisation_user`,   `connaissance_user`,   `info_user`,   `tarif_user`,   `dateRen_user`,              `epn_user`,   `newsletter_user`) 
                                        VALUES ( '" . $dateInscription . "', '" . $nom . "', '" . $prenom . "', '" . $sexe . "', '" . $jourNaissance . "', '" . $moisNaissance . "', '" . $anneeNaissance . "', '" . $adresse . "', '" . $idVille . "', '" . $telephone . "', '" . $mail . "', '" . $idTarifConsultation . "', '" . $login . "', '" . md5($motDePasse) . "', '" . $statut . "', '" . $derniereVisite . "', '" . $csp . "', '" . $equipement . "', '" . $utilisation . "', '" . $connaissance . "', '" . $info . "', '" . $idTarifAdhesion . "', '" . $dateRenouvellement . "', '" . $idEspace . "', '" . $newsletter . "') ";
                                        
-                error_log("sql = {$sql}");
+
                 $result = mysqli_query($db,$sql);
  
                 if ($result) {

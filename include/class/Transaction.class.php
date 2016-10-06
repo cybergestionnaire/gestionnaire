@@ -134,7 +134,6 @@ class Transaction
             
             if ($result)
             {
-                error_log("création de l'objet");
                 $transaction = new Transaction(array("id_transac" => mysqli_insert_id($db), "type_transac" => $type, "id_user" => $idUtilisateur, "id_tarif" => $idTarif, "nbr_forfait" => $nombreForfait, "date_transac" => $date, "status_transac" => $statut));
             }
             
