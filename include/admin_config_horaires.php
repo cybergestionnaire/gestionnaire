@@ -271,7 +271,7 @@ include("include/boites/menu-parametres.php");
                         <label>Unit&eacute; de temps (min): <small class="badge bg-blue" data-toggle="tooltip" title="Pour le planning des r&eacute;servations, la plus petite portion de temps &agrave; accorder par tranche de 5, 10, x minutes..."><i class="fa fa-info"></i></small></label>
                         <input type="text" value="<?php echo htmlentities($config->getTimeUnit()); ?>" name="unit" class="form-control" placeholder="Min">
                         <label>Dur&eacute;e maximum (min): <small class="badge bg-blue" data-toggle="tooltip" title="Dur&eacute;e maximum de la r&eacute;servation d'un poste par personne "><i class="fa fa-info"></i></small></label>
-                        <input type="text" value="<?php echo htmlentities($config->getMaxTime()); ?>" name="maxtime" class="form-control" placeholder="Min">
+                        <input type="text" value="<?php echo htmlentities($config->getMaxTimeOrDefaultMaxTime()); ?>" name="maxtime" class="form-control" placeholder="Min">
                     </div>
                 
                 <!-- Param&eacute;trages de la r&eacute;servation rapide -->
@@ -297,7 +297,7 @@ include("include/boites/menu-parametres.php");
                         <label>S&eacute;lectionnez la dur&eacute;e par d&eacute;faut pour la r&eacute;servation rapide</label>
                         <select class="form-control" name="duree_resarapide">
 <?php
-    $dureerr  = $config->getDureeResaRapide();
+    $dureerr  = $config->getDureeResaRapideOrUnitDefault();
 //    $dureerr  = getConfig("duree_resarapide", "unit_default_config", $idEspace);  // <--- ????? pourquoi revenir sur unit_default en cas d'échec ?
 
     foreach ($dureearray as $key=>$value) {

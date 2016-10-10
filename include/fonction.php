@@ -3808,44 +3808,6 @@ function updateConfig($table,$array,$field,$idvalue,$epn)
     }
 }
 
-// modifie le champ nom_espace correspondant au resau des epn
-function modconfig($nom)
-{
-	$sql="UPDATE `tab_config` SET `nom_espace`='".$nom."' ";
-	
-	$db=opendb();
-    $result = mysqli_query($db,$sql);
-    closedb($db);
-    if (FALSE == $result)
-    {
-        return FALSE ;
-    }
-    else
-    {
-        return TRUE ;
-    }
-	
-	
-}
-
-//desactive ou active le mode console pour epnconnect
-function updateconsolemode($epn,$console){
-	$sql="UPDATE `tab_config` SET `activer_console`='".$console."' WHERE `id_espace`=".$epn;
-	 $db=opendb();
-    $result = mysqli_query($db,$sql);
-    closedb($db);
-    if (FALSE == $result)
-    {
-        return FALSE ;
-    }
-    else
-    {
-        return TRUE ;
-    }
-	
-}
-
-
 function updateresaconfig($epnr, $unitconfig, $maxtime_config,$resarapide, $duree_resarapide){
 	$sql="UPDATE `tab_config` SET 
 `unit_config`='".$unitconfig."',

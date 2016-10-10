@@ -19,6 +19,7 @@
 
 require_once("Mysql.class.php");
 require_once("Config.class.php");
+require_once("ConfigLogiciel.class.php");
 require_once("Ville.class.php");
 require_once("Horaire.class.php");
 
@@ -116,7 +117,26 @@ class Espace
     }
     
     public function getConfig() {
-        return Config::getConfig($this->_id);
+            return Config::getConfig($this->_id);
+    }
+    
+    public function getConfigLogiciel() {
+            return ConfigLogiciel::getConfigLogiciel($this->_id);
+    }
+    
+    public function hasConfigLogiciel() {
+        $success = FALSE;
+        
+        $db     = Mysql::opendb();
+        $sql    = "SELECT  `id_config_logiciel` FROM  `tab_config_logiciel` WHERE  `id_espace` ='" . $this->_id . "' ";
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if(mysqli_num_rows($result) == 1) {
+            $success = TRUE ;
+        }
+        
+        return $success;
     }
     
     public static function creerEspace($nom, $adresse, $idVille, $telephone, $fax, $logo, $couleur, $mail) {
@@ -139,7 +159,7 @@ class Espace
 
 
             $sql = "INSERT INTO `tab_espace` (`id_espace`,`nom_espace`,`id_city`,`adresse`,`tel_espace`, `fax_espace`,`logo_espace`,`couleur_espace`,`mail_espace`) "
-                 . "VALUES ('','" . $nom . "', '" . $idVille."', '" . $adresse . "', '" .$telephone. "','" . $fax . "','" . $logo . "', '" . $couleur . "','" . $mail . "') " ;       
+                 . "VALUES ('','" . $nom . "', '" . $idVille . "', '" . $adresse . "', '" .$telephone. "','" . $fax . "','" . $logo . "', '" . $couleur . "','" . $mail . "') " ;       
             $result = mysqli_query($db,$sql);
             
             if ($result)
@@ -193,7 +213,7 @@ class Espace
 
         // Verification avant suppression si il n'y a plus de salle
         $db     = Mysql::opendb();
-        $sql    = "SELECT `id_salle` FROM `tab_salle` WHERE `id_espace`=".$this->_id;
+        $sql    = "SELECT `id_salle` FROM `tab_salle` WHERE `id_espace`=" . $this->_id;
         $result = mysqli_query($db, $sql);
 
 
@@ -207,9 +227,9 @@ class Espace
             else {
                 // Suppression de l'espace
                 $sql1    = "DELETE FROM `tab_espace` WHERE `id_espace` = " . $this->_id;
-                $sql2    = "DELETE FROM `tab_config` WHERE `id_espace` = ". $this->_id."" ;
-                $sql3    = "DELETE FROM `tab_config_logiciel` WHERE `id_espace` = ". $this->_id. "" ;
-                $sql4    = "DELETE FROM `tab_horaire` WHERE `id_epn` = ". $this->_id."" ;
+                $sql2    = "DELETE FROM `tab_config` WHERE `id_espace` = " . $this->_id . "" ;
+                $sql3    = "DELETE FROM `tab_config_logiciel` WHERE `id_espace` = " . $this->_id . "" ;
+                $sql4    = "DELETE FROM `tab_horaire` WHERE `id_epn` = " . $this->_id . "" ;
 
                 $result1 = mysqli_query($db, $sql1);
                 $result2 = mysqli_query($db, $sql2);
@@ -242,7 +262,7 @@ class Espace
     public function copyConfig($forfait) {
         $db  = Mysql::opendb(); 
         $sql = "INSERT INTO `tab_config`(`id_config`, `activer_console`, `name_config`, `unit_default_config`, `unit_config`, `maxtime_config`, `maxtime_default_config`, `id_espace`, `inscription_usagers_auto`, `message_inscription`, `activation_forfait`, `nom_espace`,`resarapide`, `duree_resarapide`)
-                SELECT '',`activer_console`, `name_config`, `unit_default_config`, `unit_config`, `maxtime_config`, `maxtime_default_config`,'" . $this->_id . "', `inscription_usagers_auto`, `message_inscription`,'".$forfait."',`nom_espace`,`resarapide`, `duree_resarapide` FROM `tab_config` WHERE `id_espace`=1
+                SELECT '',`activer_console`, `name_config`, `unit_default_config`, `unit_config`, `maxtime_config`, `maxtime_default_config`,'" . $this->_id . "', `inscription_usagers_auto`, `message_inscription`,'" . $forfait . "',`nom_espace`,`resarapide`, `duree_resarapide` FROM `tab_config` WHERE `id_espace`=1
                 ";
 
         $result = mysqli_query($db, $sql);

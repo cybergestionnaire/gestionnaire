@@ -24,7 +24,7 @@
 
 // Fichier de post, sauvegarde des données
 
-$act=$_GET["act"];
+$act = isset($_GET["act"]) ? $_GET["act"] : '';
 
 
 switch($act)

@@ -447,7 +447,6 @@ class Utilisateur
 
             if (self::canUpdateLogin($login)) {
                 //si le login ne change pas OU si le login n'existe pas déjà
-                error_log("login peut evoluer !");
                 $sql = "UPDATE `tab_user` "
                 . "SET `date_insc_user`='" . $dateInscription . "', "
                 . "`nom_user`='" . $nom . "', "
