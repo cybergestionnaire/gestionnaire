@@ -22,133 +22,116 @@
   include/admin_materiel.php V0.1
 */
 
-// Configuration de la preinscription en ligne par utilisateur
+    // Configuration de la preinscription en ligne par utilisateur
 
-if(isset($_POST["submit"])){
+    require_once("include/class/Captcha.class.php");
+    
+    $captcha = Captcha::getCaptcha();
+    
+    if (isset($_POST["submit"])) {
+        
 
+        $valid = isset($_POST["preinc"]) ? $_POST["preinc"] : '';
+        $code  = isset($_POST["code"])   ? $_POST["code"] : '';
+    
+        switch ($valid) {
+            case "N":
+                if ( $captcha->modifier($valid, '') ) {
+                    echo getError(14);
+                }
+                else {
+                    echo getError(0);
+                }
+            break;
+            
+            case "Y":
+                if ($code == '') {
+                    echo getError(4);
+                }
+                else {
+                    if ( $captcha->modifier($valid, $code) ) {
+                        echo getError(14);
+                    }
+                    else {
+                        echo getError(0);
+                    }
+                }
+            break;
+        }
+    
+    }
 
-	$valid=$_POST["preinc"];
-	$code=$_POST["code"];
-	
-	switch($_POST["preinc"])
-	{
-		
-	case "N":
-		
-		if(FALSE==updatePreinsmode($valid,'')){
-				 echo getError(0);
-			}else{
-				 echo getError(14);
-     }
-	break;
-		
-	case "Y":
-    if (!$code)
-      {
-         echo getError(4);
-      }
-      else
-      {
-	
-			if(FALSE==updatePreinsmode($valid,$code)){
-					 echo getError(0);
-				}else{
-					 echo getError(14);
-				}
-		
-			}
-	break;
-	
-	}
-	
-}
+    //$rowprinscription = getPreinsmode();
 
-$rowprinscription=getPreinsmode();
-if($rowprinscription==FALSE){
-	$preinscmode ='N';
-	$capt_code="";
-	}else{
-		$preinscmode=$rowprinscription["capt_activation"];
-		$capt_code=$rowprinscription["capt_code"];
-	}
+    if ($captcha == null) {
+        $preinscmode = 'N';
+        $capt_code   = "";
+    }
+    else {
+        $preinscmode = $captcha->getActivation();
+        $capt_code   = $captcha->getCode();
+    }
 
+    include("include/boites/menu-parametres.php");
 ?>
 
+
 <div class="row">
-<!-- DIV accès direct aux autres paramètres-->
-<div class="col-lg-12">
- <div class="box">
-		<div class="box-header">
-			<h3 class="box-title">Param&eacute;trages</h3>
-		</div>
-		<div class="box-body">
-			
-			<?php 
-			//debug($_GET["a"]);
-			echo configBut($_GET["a"]) ;
-		
-			?>
-			
-		</div><!-- /.box-body -->
-</div><!-- /.box -->
-</div>
-<div class="col-lg-6">
-<div class="box box-info"><div class="box-header"><h3 class="box-title">Activation des pr&eacute;inscriptions</h3></div>
-<form role="form" method="POST"  action="">
-	 <div class="box-body">
-	<div class="form-group">
-			<label>Activer la pr&eacute;inscription par les utilisateurs ?</label>
-				<?php
-				
-				
-				switch ($preinscmode)
-								{
-										case 'N':
-												 $sel1="checked=\"checked\"" ;
-												 $sel2="";
-								
-										break;
-										case 'Y':       
-												 $sel1="" ;
-												 $sel2="checked=\"checked\"";
-								 
-										break;
-						}
-					?>
-				<input type="radio"  value="N" name="preinc" <?php echo $sel1; ?>> Non &nbsp;
-				<input type="radio"  value="Y" name="preinc" <?php echo $sel2; ?>> Oui
-				</div>
-		
-		<p class="text-blue">En cas d'activation, les utilisateurs peuvent se pr&eacute;inscrire en ligne, vous serez averti par une notification de la demande en cours. Après validation de l'inscription par un animateur ou un administrateur, il sera possible d'envoyer un mail avec les identifiants et mots de passe &agrave; l'utilisateur.</p>
-		<p class="text-blue">Pour v&eacute;rifier que l'inscription est bien faite par un &ecirc;tre humain vous devrez ins&eacute;rer le code Recaptcha fourni par Google lors de votre inscription sur leur service.</p>
-		<p><a href="doc/index.php"><strong>Plus sur la doc !</strong><a></p>
+    <form role="form" method="POST"  action="">
+        <div class="col-lg-6">
+            <div class="box box-info">
+                <div class="box-header"><h3 class="box-title">Activation des pr&eacute;inscriptions</h3></div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Activer la pr&eacute;inscription par les utilisateurs ?</label>
+<?php
+    switch ($preinscmode) {
+        case 'N':
+            $sel1 = "checked=\"checked\"" ;
+            $sel2 = "";
+            break;
 
-	</div></div>
-</div>
+        case 'Y':       
+            $sel1 = "" ;
+            $sel2 = "checked=\"checked\"";
+            break;
+    }
+?>
+                        <input type="radio"  value="N" name="preinc" <?php echo $sel1; ?>> Non &nbsp;
+                        <input type="radio"  value="Y" name="preinc" <?php echo $sel2; ?>> Oui
+                    </div>
+        
+                    <p class="text-blue">En cas d'activation, les utilisateurs peuvent se pr&eacute;inscrire en ligne, vous serez averti par une notification de la demande en cours. AprÃ¨s validation de l'inscription par un animateur ou un administrateur, il sera possible d'envoyer un mail avec les identifiants et mots de passe &agrave; l'utilisateur.</p>
+                    <p class="text-blue">Pour v&eacute;rifier que l'inscription est bien faite par un &ecirc;tre humain vous devrez ins&eacute;rer le code Recaptcha fourni par Google lors de votre inscription sur leur service.</p>
+                    <p><a href="doc/index.php"><strong>Plus sur la doc !</strong></a></p>
+
+                </div><!-- .box-body -->
+            </div><!-- .box -->
+        </div><!-- .col-lg-6 -->
 
 
 
 
 
-<div class="col-lg-6">
-<!-- liste des categories existantantes pour modification-->
- <div class="box box-warning"><div class="box-header"><h3 class="box-title">Gestion du captcha</h3></div>
- 
-	 <div class="box-body">
-		<div class="form-group"><label>Ins&eacute;rez le code *:</label>
-			<input name="code" value="<?php echo $capt_code ;?>" class="form-control">
-			<p class="help-block">Entrez le code contenu dans la balise <code>div</code> le sitekey, sans les "" <code> data-sitekey="lecodesuperlongetsansespaces" </code> <br>donc :<code>lecodesuperlongetsansespaces</code></p>
-			
-			</div>
+        <div class="col-lg-6">
+            <!-- liste des categories existantantes pour modification-->
+            <div class="box box-warning">
+                <div class="box-header"><h3 class="box-title">Gestion du captcha</h3></div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Ins&eacute;rez le code *:</label>
+                        <input name="code" value="<?php echo $capt_code ;?>" class="form-control">
+                        <p class="help-block">Entrez le code contenu dans la balise <code>div</code> le sitekey, sans les "" <code> data-sitekey="lecodesuperlongetsansespaces" </code> <br>donc :<code>lecodesuperlongetsansespaces</code></p>
+                    </div>
 
-</div><div class="box-footer">
-		<input type="submit" name="submit" class="btn btn-success" value="valider">
-	</div>
-	</form>
-	</div>
-	
-
-</div></div>
+                </div>
+                <div class="box-footer">
+                    <input type="submit" name="submit" class="btn btn-success" value="valider">
+                </div>
+            </div><!-- .box -->
+        </div><!-- .col-lg-6 -->
+    </form>
+</div><!-- .row -->
 
 
 

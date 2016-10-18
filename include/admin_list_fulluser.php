@@ -283,13 +283,13 @@
                 $other     = 'actifs';
                 $numOther  = 1;
                 $othera    = 'archiv&eacute;s';
-                $numOthera = 6;                     
+                $numOthera = 6;
                 // $_SESSION['page']=1;
                 break;
-            case 6:                                     
+            case 6:
                 $titleAdh  = "Adh&eacute;rents archiv&eacute;s" ;
                 $typeAdh   = 6;
-                $num       = 4;   
+                $num       = 4;
                 $other     = 'actifs';
                 $numOther  = 1; 
                 $othera    = 'inactifs';

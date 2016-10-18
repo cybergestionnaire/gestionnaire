@@ -117,11 +117,11 @@ class Espace
     }
     
     public function getConfig() {
-            return Config::getConfig($this->_id);
+        return Config::getConfig($this->_id);
     }
     
     public function getConfigLogiciel() {
-            return ConfigLogiciel::getConfigLogiciel($this->_id);
+        return ConfigLogiciel::getConfigLogiciel($this->_id);
     }
     
     public function hasConfigLogiciel() {
