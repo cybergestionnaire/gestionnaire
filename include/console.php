@@ -194,7 +194,7 @@ header("Content-Type: text/html; charset=UTF-8");
                     $debutresa = date("G")*60 + intval(date("i"));    
                     mysqli_close ($db) ;
 ?>
-                <a class="btn btn-success" href="index.php?m=7&idepn=<?php echo $epn ?>&idcomp=<?php echo $id_poste ?>&nomcomp=<?php echo $nomcomp ?>&date=<?php echo $dateresa ?>&debut=<?php echo $debutresa ?>">Affectation</button>
+                <a class="btn btn-success" href="index.php?m=7&idepn=<?php echo $epn ?>&idcomp=<?php echo $id_poste ?>&nomcomp=<?php echo $nomcomp ?>&date=<?php echo $dateresa ?>&debut=<?php echo $debutresa ?>">Affectation</a>
             <?php } ?>
             </td>
         </tr>

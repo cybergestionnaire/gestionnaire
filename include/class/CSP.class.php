@@ -129,8 +129,7 @@ class CSP
         
             $result = mysqli_query($db,$sql);
         
-            if ($result)
-            {
+            if ($result) {
                 $csp = new CSP(array("id_csp" => mysqli_insert_id($db), "csp" => $nom));
             }
         }

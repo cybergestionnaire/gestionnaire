@@ -105,63 +105,79 @@ else {
     <!-- ajout console -->
     <script type="text/javascript" src="js/fonction.js"></script>
     <script src="js/ckeditor/ckeditor.js"></script>
-
+    <style>
+        DIV.table {
+            display:table;
+        }
+        FORM.tr, DIV.tr {
+            display:table-row;
+        }
+        SPAN.td {
+            display:table-cell;
+            padding: 5px;
+            vertical-align: middle;
+        }
+    </style>
 </head>
 
 
 <body class="hold-transition sidebar-mini skin-<?php echo $espace->getCouleur(); ?>">
     <div class="wrapper">
         <header class="main-header">
-        <?php if($_SESSION["status"]=="3" OR $_SESSION["status"]=="4") {?>
+<?php
+    if($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
+?>
             <!-- section pour les administrateurs -->
-            <a href="index.php?m=1" class="logo"><img src="img/logo/<?php echo $espace->getLogo(); ?>" class="logo"></a>
+            <a href="index.php?m=1" class="logo"><img src="img/logo/<?php echo $espace->getLogo(); ?>" class="logo" alt="Logo"></a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
                 <!-- Sidebar toggle button-->
                 <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                     <span class="sr-only">Navigation</span>
                 </a>
-            <span class="navbar-brand"><?php echo $espace->getNom() ; ?></span>
+                <span class="navbar-brand"><?php echo $espace->getNom() ; ?></span>
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-                    <!-- Notifications, preinsciptions en attente -->
+                        <!-- Notifications, preinsciptions en attente -->
                     
-             <?php
-              //retrouve le nombre de preinscriptions en attente
-              $newinscritsar = getAllUserInsc();
-              $nbinscrits = mysqli_num_rows( $newinscritsar);
-              if($nbinscrits>0){
-              ?>
-              <li class="dropdown notifications-menu">
-             
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-bell-o"></i>
-                  <span class="label label-warning"><?php echo $nbinscrits; ?></span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="header"><?php echo $nbinscrits; ?> pr&eacute;insciption(s) en attente !</li>
-                  <li>
-                    <!-- inner menu: contains the actual data -->
-                    <ul class="menu">
-                    <?php
-                    for($i=0;$i<$nbinscrits;$i++){
-                        $newinscrits=mysqli_fetch_array($newinscritsar);
-                        echo '<li><a href="index.php?a=24&b=1&iduser='.$newinscrits["id_inscription_user"].'"><i class="fa fa-users text-aqua"></i>
-                      '.$newinscrits["nom_inscription_user"].'&nbsp;'.$newinscrits["prenom_inscription_user"].'&nbsp;('.$newinscrits["date_inscription_user"].')</a></li>';
-                     
-                     }
-                     ?>
-                      
-                    </ul>
-                  </li>
-                  <li class="footer"><a href="index.php?a=24">Toutes les inscriptions en attente</a></li>
-                </ul>
-              </li>
-              <?php } ?>
-              
-							
-
-				<li class="dropdown user user-menu">
+<?php
+        //retrouve le nombre de preinscriptions en attente
+        $newinscritsar = getAllUserInsc();
+        $nbinscrits    = mysqli_num_rows( $newinscritsar);
+        if ($nbinscrits > 0){
+?>
+                        <li class="dropdown notifications-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-bell-o"></i>
+                                <span class="label label-warning"><?php echo $nbinscrits; ?></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header"><?php echo $nbinscrits; ?> pr&eacute;insciption(s) en attente !</li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+<?php
+            for ($i = 0 ; $i < $nbinscrits ; $i++) {
+                $newinscrits = mysqli_fetch_array($newinscritsar);
+?>
+                                        <li>
+                                            <a href="index.php?a=24&b=1&iduser='<?php echo $newinscrits["id_inscription_user"]; ?>'">
+                                                <i class="fa fa-users text-aqua"></i>
+                                                <?php echo $newinscrits["nom_inscription_user"]; ?>&nbsp;<?php echo $newinscrits["prenom_inscription_user"] ?>&nbsp;(<?php echo $newinscrits["date_inscription_user"] ?>)
+                                            </a>
+                                        </li>
+<?php                     
+            }
+?>
+                                    </ul>
+                                </li>
+                                <li class="footer"><a href="index.php?a=24">Toutes les inscriptions en attente</a></li>
+                            </ul>
+                        </li>
+<?php
+        }
+?>
+                        <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="ion ion-person"></i>
                                 <span><?php echo $utilisateur->getPrenom(); ?>&nbsp;<?php echo $utilisateur->getNom(); ?><i class="caret"></i></span>
@@ -170,131 +186,130 @@ else {
                                 <!-- User image -->
                                 <li class="user-header bg-light-blue">
                                     <img src="img/avatar/<?php echo $utilisateur->getAvatar(); ?>" class="img-circle" alt="" />
-				 
-                                    <p><?php echo $utilisateur->getPrenom(); ?>&nbsp;<?php echo $utilisateur->getNom(); ?>
+                                    <p>
+                                        <?php echo $utilisateur->getPrenom(); ?>&nbsp;<?php echo $utilisateur->getNom(); ?>
                                         <small>inscrit depuis <?php echo $utilisateur->getDateInscription(); ?></small>
                                     </p>
                                 </li>
-								<!-- Menu Footer-->
+                                <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
                                         <a href="index.php?a=51&b=2&iduser=<?php echo $utilisateur->getId(); ?>" class="btn btn-default btn-flat">Profil</a>
                                     </div>
                                     <div class="pull-right">
-					<a href="lockscreen.php?iduser=<?php echo $utilisateur->getId(); ?>" class="btn btn-default btn-flat">Veille</a>
+                                        <a href="lockscreen.php?iduser=<?php echo $utilisateur->getId(); ?>" class="btn btn-default btn-flat">Veille</a>
                                         <a href="index.php?logout=yes" class="btn btn-default btn-flat">D&eacute;connexion</a>
                                     </div>
                                 </li>
                             </ul>
-						</li>
-						</ul>
-					</div>
-				</nav>
-		</header>
-		
-	<?php
-	}else{
-	
-	///*** section pour les utilisateurs *** ////
-	?>
-	
-	<!-- Header Navbar: style can be found in header.less -->
-  <nav class="navbar navbar-static-top" role="navigation">
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+<?php
+    }
+    else {
+    
+    ///*** section pour les utilisateurs *** ////
+?>
+    
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top" role="navigation">
                 <!-- Sidebar toggle button-->
                 <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                     <span class="sr-only">Navigation</span>
-                  
                 </a>
                 <!-- Sidebar toggle button-->
-		 <span class="navbar-brand"><?php echo getnomreseau(); ?></span>
-     <div class="navbar-custom-menu">
-			<ul class="nav navbar-nav"><li class="dropdown user user-menu">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="ion ion-person"></i>
-           <span><?php echo $utilisateur->getPrenom(); ?>&nbsp;<?php echo $utilisateur->getNom(); ?><i class="caret"></i></span> </a>
+                <span class="navbar-brand"><?php echo getnomreseau(); ?></span>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="ion ion-person"></i>
+                                <span><?php echo $utilisateur->getPrenom(); ?>&nbsp;<?php echo $utilisateur->getNom(); ?><i class="caret"></i></span>
+                            </a>
                            
-         <ul class="dropdown-menu"><li class="user-header bg-light-blue"><p><?php echo $utilisateur->getPrenom(); ?>&nbsp;<?php echo $utilisateur->getNom(); ?><small>inscrit depuis <?php echo $utilisateur->getDateInscription(); ?></small></p> </li>
-								<!-- Menu Footer-->
-            <li class="user-footer">
-                  <div class="pull-left"><a href="#" class="btn btn-default btn-flat">Profil</a>  </div>
-                  <div class="pull-right"><a href="index.php?logout=yes" class="btn btn-default btn-flat">D&eacute;connexion</a></div>
-            </li>
-         </ul>
-			</li>
-			</ul>
-			</div>
-		</nav>
-	</header>
-	<!-- end of section utilisateur -->
+                            <ul class="dropdown-menu">
+                                <li class="user-header bg-light-blue">
+                                    <p><?php echo $utilisateur->getPrenom(); ?>&nbsp;<?php echo $utilisateur->getNom(); ?><small>inscrit depuis <?php echo $utilisateur->getDateInscription(); ?></small></p>
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                      <div class="pull-left"><a href="#" class="btn btn-default btn-flat">Profil</a>  </div>
+                                      <div class="pull-right"><a href="index.php?logout=yes" class="btn btn-default btn-flat">D&eacute;connexion</a></div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!-- end of section utilisateur -->
+<?php
+    } /// Fin section utilisateur ///
+?>
+        </header>
 
-	<?php
-	} /// Fin section utilisateur ///
-	?>
+        <!-- navigation par le menu a gauche -->
 
-<!-- navigation par le menu a gauche -->
-
-     <div class="main-sidebar">            
-	<?php
-		 // menu de l'utilisateur , de l'admin et de l'animateur
-		 include("include/menu.php");
-	?>	
-	</div><!-- end of sidebar -->
-		
-	<!-- Debut du pave central des includes -->	
-	  <div class="content-wrapper">
-	 <!-- Content Header (Page header) -->
-		<section class="content-header">
-			<h1><?php echo $titre ; ?></h1>
-			<ol class="breadcrumb">
-				<li><a href="index.php?m=1"><i class="fa fa-dashboard"></i> Accueil</a></li>
-				<li class="active"><?php echo $titre ; ?></li>
-			</ol>
-		</section>
-		
-	 <!-- Main content -->
-     <section class="content">
-	<?php
-	  include("include/".$inc);
-	?>
-	</section>
-	</div>
-	
-	<footer class="main-footer">
-        <div class="pull-right hidden-xs">
-          <b>CyberGestionnaire </b>V.<?php echo getVersion($_SESSION["idepn"]); ?>
+        <div class="main-sidebar">            
+<?php
+    // menu de l'utilisateur , de l'admin et de l'animateur
+    include("include/menu.php");
+?>  
+        </div><!-- end of sidebar -->
+            
+        <!-- Debut du pave central des includes --> 
+        <div class="content-wrapper">
+         <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1><?php echo $titre ; ?></h1>
+                <ol class="breadcrumb">
+                    <li><a href="index.php?m=1"><i class="fa fa-dashboard"></i> Accueil</a></li>
+                    <li class="active"><?php echo $titre ; ?></li>
+                </ol>
+            </section>
+            
+            <!-- Main content -->
+            <section class="content">
+<?php
+    include("include/".$inc);
+?>
+            </section>
         </div>
-        <strong><a href="index.php?a=60">Cr&eacute;dits </a></strong>
-    </footer>
 
-
-		
-	
-</div>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+              <b>CyberGestionnaire </b>V.<?php echo getVersion($_SESSION["idepn"]); ?>
+            </div>
+            <strong><a href="index.php?a=60">Cr&eacute;dits </a></strong>
+        </footer>
+    </div>
     <!-- jQuery 2.1.3 -->
     <script src="template/plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <!-- jQuery UI 1.11.2 -->
-   <!-- <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.min.js" type="text/javascript"></script>-->
+    <!-- <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.min.js" type="text/javascript"></script>-->
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
- <!--   <script>
+    <!--   <script>
       $.widget.bridge('uibutton', $.ui.button);
     </script>-->
     <script src="template/plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
     <script src="template/plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
    
-	 
+     
     <script src="template/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>    
   
     <!-- datepicker -->
     <script src="template/plugins/datepicker/bootstrap-datepicker.js" type="text/javascript"></script>
     
-		<script src="template/plugins/select2/select2.full.min.js"></script>
+        <script src="template/plugins/select2/select2.full.min.js"></script>
     <!-- Slimscroll -->
     <script src="template/plugins/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>
     <!-- FastClick -->
     <script src='template/plugins/fastclick/fastclick.min.js'></script>
     <!-- AdminLTE App -->
     <script src="template/dist/js/app.min.js" type="text/javascript"></script>
-		 <!-- iCheck -->
-		 
+         <!-- iCheck -->
+         
 <?php 
     if ($a == 1 OR $a == 43) { 
         "nothing";

@@ -748,16 +748,12 @@ class Utilisateur
              
         $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
-        if ($result == FALSE ) {
-            return FALSE ;
-        }
-        else {
+        if ($result) {
             $utilisateurs = array();
             while($row = mysqli_fetch_assoc($result)) {
                 $utilisateurs[] = new Utilisateur($row);
             }
         }
-        
         return $utilisateurs ;
     }
     
@@ -805,6 +801,28 @@ class Utilisateur
         return $utilisateurs ;
     }
     
+    public static function getUtilisateursByDateInsc($nb) {
+        $utilisateurs = null;
+        
+        $db  = Mysql::opendb();
+
+        $sql = "SELECT * "
+             . "FROM tab_user "
+             . "WHERE status_user < 3 "
+             . "ORDER BY `date_insc_user` DESC LIMIT " . $nb . "";
+             
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        if ($result) {
+            $utilisateurs = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+        
+        return $utilisateurs ;
+    }
+
     public static function searchUtilisateurs($exp) {
         $utilisateurs = null;
         

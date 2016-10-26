@@ -66,83 +66,6 @@ function passwd($pass)
 }
 
 //
-// getAllUser()
-// recupere les utilisateurs
-
-function getAllUserbyPage($nb=1,$nbpager=25,$page=1)
-{
-  if ($nbpager==0)
-  {
-    $sql="SELECT `id_user`, `date_insc_user`, `nom_user`, `prenom_user`, `sexe_user`, `jour_naissance_user`, `mois_naissance_user`, `annee_naissance_user`, `temps_user`, `login_user`,`lastvisit_user`, `status_user`
-        FROM tab_user WHERE `status_user`=".$nb."  ORDER BY `nom_user`";
-  }
-  else
-  {
-
-    $sql="SELECT `id_user`, `date_insc_user`, `nom_user`, `prenom_user`, `sexe_user`, `jour_naissance_user`, `mois_naissance_user`, `annee_naissance_user`, `temps_user`, `login_user`, `lastvisit_user`, `status_user`
-        FROM tab_user WHERE `status_user`=".$nb."  ORDER BY `nom_user` LIMIT ".((($page-1)*$nbpager)).",".$nbpager ;
-  }
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return $result;
-  }
-}
-
-
-
-//function getAllUser remplacée
-
-function getAllUser($nb){
-if($nb==3){
-$sql="SELECT * FROM tab_user WHERE `status_user`=3 OR  `status_user`=5 ORDER BY `nom_user`";
-}else{
- $sql="SELECT * FROM tab_user WHERE `status_user`=".$nb."  ORDER BY `nom_user` ";
- }
- $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return $result;
-  }
-
-
-}
-
-///récupère les x derniers inscrits pour la page d'accueil des abonnés AJOUT 2012
-function getLastUser($i)
-{
-$an=date('Y')."-01-01";
-$sql=" SELECT *
-	FROM tab_user
-	WHERE `date_insc_user`> ".$an."
-	AND status_user<3
-	ORDER BY `date_insc_user` DESC LIMIT ".$i."
-	";
-$db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return $result;
-  }
-}
-//
 // getUser()
 // recupere un utilisateur
 function getUser($id)
@@ -197,29 +120,6 @@ function searchUserRapid($exp)
         ORDER BY `status_user` ASC, `nom_user` ASC LIMIT 10";
     $db=opendb();
     $result=mysqli_query($db,$sql);
-    closedb($db);
-    if ($result == FALSE )
-    {
-        return FALSE ;
-    }
-    else
-    {
-        return $result ;
-    }
-}
-
-//
-// searchUserByCity()
-// recherche des utilisateurs dans une ville et renvoi le resultat de la recherche
-function searchUserByCity($id)
-{
-    $sql="SELECT `id_user` , `nom_user` , `prenom_user`,`status_user`
-        FROM `tab_user`
-        WHERE `ville_user` =".$id."
-        AND `status_user`<3
-        ORDER BY `nom_user` ASC ";
-    $db=opendb();
-    $result = mysqli_query($db, $sql);
     closedb($db);
     if ($result == FALSE )
     {
@@ -1682,79 +1582,6 @@ function getMateriel($id)
   }
 }
 
-
-//
-// addMateriel()
-// ajoute un poste dans la table computer
-function addMateriel($nom,$os,$comment,$usage, $fonction,$salle,$adresseIP,$adresseMAC,$nomhote)
-{
- $sql = "INSERT INTO `tab_computer`(`id_computer`, `nom_computer`, `comment_computer`, `os_computer`, `usage_computer`, `fonction_computer`, `id_salle`, `adresse_mac_computer`, `adresse_ip_computer`, `nom_hote_computer`, `date_lastetat_computer`, `lastetat_computer`, `configurer_epnconnect_computer`) 
- VALUES ('','".$nom."', '".$comment."', '".$os."','".$usage."', '".$fonction."','".$salle."', '".$adresseMAC."','".$adresseIP."', '".$nomhote."', '','','') " ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  $lastid = mysqli_insert_id($db);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return $lastid;
-  }
-}
-
-//
-// supMateriel ()
-// supprime un poste de la table computer
-function supMateriel($id)
-{
-  $sql = "DELETE FROM `tab_computer` WHERE `id_computer` = ".$id." LIMIT 1" ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      if (FALSE == supMaterielUsage($id))
-      {
-          return FALSE ;
-      }
-      else
-      {
-          return TRUE;
-      }
-  }
-}
-
-
-//
-// supMaterielUsage()
-// supprime tous les usages d'un poste
-function supMaterielUsage($id)
-{
-  $sql = "DELETE FROM `rel_usage_computer` WHERE `id_computer`=".$id ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return TRUE ;
-  }
-
-}
-
-
-
-
-
 //
 // reservation & planning ------------------------------------------------------
 //
@@ -2259,9 +2086,6 @@ function getConfig($field,$default_field,$epn)
       return $row[$default_field];
   }
 }
-
-
-
 
 
 function getConfigConsole($epn,$field){
@@ -2887,60 +2711,7 @@ $db=opendb();
 //
 // usages ----------------------------------------------------------------------
 //
-//
-// getAllUsage()
-// recupere les usage de la table usage pour l'utilisation d'un poste
-function getAllUsage()
-{
-  $sql ="SELECT `id_usage`,`nom_usage` FROM `tab_usage` ORDER BY `type_usage` DESC, `nom_usage` " ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if ($result ==FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      $nb = mysqli_num_rows($result);
-      $tableau = array();
-      for ($i=1;$i<=$nb;$i++)
-      {
-          $row=mysqli_fetch_array($result);
-          $tableau[$row["id_usage"]] = $row["nom_usage"] ;
-      }
-      return $tableau ;
-  }
-}
 
-//
-// getUsage()
-// recupere les codes de l'usage de la table usage pour l'utilisation d'un poste
-function getUsage($id)
-{
-  $sql="SELECT `id_usage`
-        FROM `rel_usage_computer` AS rel, `tab_computer` AS computer
-        WHERE rel.id_computer = computer.id_computer
-        AND computer.id_computer=".$id;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if ($result == FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      $nb=mysqli_num_rows($result);
-      $tableau = array();
-      for ($i=1;$i<=$nb;$i++)
-      {
-      $row = mysqli_fetch_array($result);
-      $tableau[$i] = $row["id_usage"] ; 
-      }
-      return $tableau ;
-  }
-}
 
 //renvoi le nom des usages d'une machine
 function getUsageNameById($idcomp)
@@ -2963,127 +2734,6 @@ function getUsageNameById($idcomp)
     }
 }
 
-//renvoi les noms des usages a partir d'un tableau d'ID
-function getUsageName($usage)
-{
-    $nb = COUNT($usage) ;
-    $i = 1;
-    $sql = "SELECT nom_usage FROM tab_usage
-            WHERE ";
-            
-    foreach($usage AS $key=>$value)
-    {
-      if ($nb == $i)
-          $sql .="id_usage=".$key." " ;
-      else
-          $sql .="id_usage=".$key." OR " ;
-          ++$i ;
-    }
-    $sql .='ORDER BY nom_usage ASC' ;
-    $db=opendb();
-    $result = mysqli_query($db,$sql);
-    closedb($db);
-    if ($result == FALSE)
-    {
-         return FALSE ;
-    }
-    else
-    {
-        $return =array() ;
-        while ($row = mysqli_fetch_array($result))
-        {
-            $return[]= $row['nom_usage'] ;
-        }
-        return $return ;        
-    }
-}
-
-//
-// addUsage()
-// ajoute un nouvel usage au materiel
-function addUsage($usage)
-{
-  $sql="INSERT INTO `tab_usage` (`id_usage`,`nom_usage`) VALUES ('','".$usage."')";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if($result == FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return TRUE ;
-  }
-}
-
-
-//
-// modUsage()
-// ajoute un nouvel usage au materiel
-function modUsage($id,$usage)
-{
-  $sql="UPDATE `tab_usage`
-        SET `nom_usage`='".$usage."'
-        WHERE `id_usage`=".$id." LIMIT 1 ";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if($result == FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return TRUE ;
-  }
-}
-
-//
-// supUsage()
-// suppression d'un usage
-function supUsage($id)
-{
-  $sql = "DELETE FROM `tab_usage` WHERE `id_usage`=".$id." LIMIT 1";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if($result == FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      $sql = "SELECT `id_usage_computer` FROM `rel_usage_computer` WHERE `id_usage`=".$id ;
-      $db=opendb();
-      $result = mysqli_query($db,$sql);
-      closedb($db);
-      if($result == FALSE)
-      {
-          return FALSE ;
-      }
-      else
-      {
-          $nb = mysqli_num_rows($result);
-          if ($nb >0)
-          {
-            for ($i=1;$i<=$nb;$i++)
-            {
-                $row = mysqli_fetch_array($result);
-                $sql = "DELETE FROM `rel_usage_computer` WHERE `id_usage_computer`=".$row["id_usage_computer"];
-                $db=opendb();
-                $result = mysqli_query($db,$sql);
-                closedb($db);
-                if($result == FALSE)
-                {
-                    return FALSE ;
-                }
-            }
-          }
-          return TRUE;
-      }
-  }
-}
 //
 // Ajout de la CSP-----------------------------------
 //

@@ -20,11 +20,11 @@
  2012 florence DAUVERGNE
 
  include/user_accueil.php V0.1
- Formulaire de mise ‡ jour de version, dÈtection et modifications dans la base de donnees
+ Formulaire de mise √† jour de version, d√©tection et modifications dans la base de donnees
 */
  //declencher les MAJ, verifier la version dans la tab_config
- $versionactuelle=getMajConfigVersion($_SESSION["idepn"]);
- $versionew="1.3";
+ $versionactuelle = getMajConfigVersion($_SESSION["idepn"]);
+ $versionew       = "1.3";
 
  
 ?>
@@ -46,10 +46,10 @@ if($testbdd==FALSE){
 		?>
 		<div class="col-md-6">
  <div class="box box-danger"><div class="box-header"> 
-	<i class="fa fa-warning"></i><h3 class="box-title">Mise ‡ jour de version depuis la version <?php echo $versionactuelle; ?> vers la <?php echo $versionew; ?></h3></div>
+	<i class="fa fa-warning"></i><h3 class="box-title">Mise √† jour de version depuis la version <?php echo $versionactuelle; ?> vers la <?php echo $versionew; ?></h3></div>
 
 	<div class="box-body">
-		<p>Cela fait un mois que la base de donnÈe n'a pas ÈtÈ sauvegardÈe, cliquez sur le bouton pour la lancer avant de faire toute mise ‡ jour !</p>
+		<p>Cela fait un mois que la base de donn√©e n'a pas √©t√© sauvegard√©e, cliquez sur le bouton pour la lancer avant de faire toute mise √† jour !</p>
 	</div>
 	 
 	<div class="box-footer"><a href="index.php?a=62&maj=1"><input type="submit" name="sauvegarde" value="Lancer la sauvegarde" class="btn btn-danger"></a></div>
@@ -60,8 +60,8 @@ if($testbdd==FALSE){
 	?>
 	<div class="col-md-6">
  <div class="box box-danger"><div class="box-header"> 
-	<i class="fa fa-warning"></i><h3 class="box-title">Mise ‡ jour de version depuis la version <?php echo $versionactuelle; ?> vers la <?php echo $versionew; ?></h3></div>
-		<div class="box-body"><p class="text-blue"><b>Modifications de la base de donnÈes</b></p>
+	<i class="fa fa-warning"></i><h3 class="box-title">Mise √† jour de version depuis la version <?php echo $versionactuelle; ?> vers la <?php echo $versionew; ?></h3></div>
+		<div class="box-body"><p class="text-blue"><b>Modifications de la base de donn√©es</b></p>
 <?php 
 //1. ajout des tables
 
@@ -129,9 +129,9 @@ if($testbdd==FALSE){
 	?>
 <div class="col-md-6">
  <div class="box box-danger"><div class="box-header"> 
-	<i class="fa fa-warning"></i><h3 class="box-title">Mise ‡ jour termin&eacute;e !</h3></div>
+	<i class="fa fa-warning"></i><h3 class="box-title">Mise √† jour termin&eacute;e !</h3></div>
 		<div class="box-body">
-		<p>Dans cette mise ‡ jour :</p>
+		<p>Dans cette mise √† jour :</p>
 		<ul><li>Modification et optimisation des pr&eacute;sincriptions : par epnconnect comme par la page de login via internet ou sans epnconnect</li>
 			<li>Activation de la pr&eacute;inscription par la page login et mise en place du Recaptcha de google, voir l'aide pour plus de d&eacute;tail !</li>
 			<li>Modification du syst&egrave;me de messagerie instantan&eacute;e : les adh&eacute;rents peuvent s&eacute;lectionner l'animateur et lui envoyer un message; les animateurs peuvent r&eacute;pondre directement (mais ils ne voient pas les messages envoy&eacute;s aux autres animateurs); les administrateurs voient tous les messages envoy&eacute;s.</li>
@@ -147,9 +147,9 @@ if($testbdd==FALSE){
 				
 	if($version==TRUE){	
 		echo '<p class="text-blue"><b>Modification du numero de version </b></p>';
-		$finale=InsertLogMAJ('maj',$versionew,date('Y-m-d H:i'),"Mise ‡ jour de version 1.2 effectuee");
+		$finale=InsertLogMAJ('maj',$versionew,date('Y-m-d H:i'),"Mise √† jour de version 1.3 effectu√©e");
 		}else{
-			echo '<p>Mise ‡ jour partielle ou impossible, veuillez contacter votre responsable rÈseau ! Un fichier de log est disponible dans le dossier monapplication/logs </p>';
+			echo '<p>Mise √† jour partielle ou impossible, veuillez contacter votre responsable r√©seau ! Un fichier de log est disponible dans le dossier monapplication/logs </p>';
 		}
 	//****ecriture du fichier de log
 	if ($finale==FALSE){ 
@@ -163,7 +163,7 @@ if($testbdd==FALSE){
 		$error='';
 		?>
 		</div>
-	<div class="box-footer"><a href="index.php"><button class="btn btn-default"> <i class="fa fa-arrow-circle-left"></i> Retour ‡ l'accueil</button></a></div>
+	<div class="box-footer"><a href="index.php"><button class="btn btn-default"> <i class="fa fa-arrow-circle-left"></i> Retour √† l'accueil</button></a></div>
 	</div></div>
 <?php
 	} //fin finale

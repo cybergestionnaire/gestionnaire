@@ -22,7 +22,7 @@
  include/post_bdd.php V0.1
 */
 
-// Fichier de post, sauvegarde des donnÈes
+// Fichier de post, sauvegarde des donn√©es
 
 $act = isset($_GET["act"]) ? $_GET["act"] : '';
 
@@ -62,46 +62,46 @@ break;
   
 case "restore":  //restauration de la base
 	
-	//recuperation des variables envoiyÈes depuis le formulaire
+	//recuperation des variables envoiy√©es depuis le formulaire
 	if(isset($_POST["mdp"])){$type_mdp=$_POST["mdp"]; }else{$type_mdp=1;}
 	
 	if(isset($_POST["tarif"])){$tarif=$_POST["tarif"]; }else{$tarif=1;}
 	
 	if(isset($_POST["temps_user"]) AND $_POST["temps_user"]!=""){$temps=$_POST["temps_user"]; }
 		//parametre des entrees de tables numeriques
-	// type de csp dÈfini
+	// type de csp d√©fini
 	$profession = array (
-	1=> "RetraitÈ",
-	2=> "EmployÈ",
+	1=> "Retrait√©",
+	2=> "Employ√©",
 	3=> "Scolaire",
 	4=> "Demandeur d''emploi",
-	5=> "MËre/PËre au foyer",
-	6=> "LycÈen",
+	5=> "M√®re/P√®re au foyer",
+	6=> "Lyc√©en",
 	7=> "Etudiant",
 	8=> "Artisans/Prof. Lib",
 	9=> "Instituteurs",
 	10=> "Agriculteur",
 	11=> "Fonctionnaires",
 	12=> "Divers",
-	13=> "CollÈgien",
-	14=> "Non renseignÈe",
-	15=> "Professions intermÈdiaires",
+	13=> "Coll√©gien",
+	14=> "Non renseign√©e",
+	15=> "Professions interm√©diaires",
 	16=> "Ouvrier",
 	17=> "Cadres"
 	);
 	
 	
-	// type d'utilisation dÈfini
+	// type d'utilisation d√©fini
 	$utilisationarray = array (
 			 0 => "Aucun",
 			 1 => "A la maison",   
-			 2 => "Au bureau ou ‡ l''Ècole",
+			 2 => "Au bureau ou √† l''√©cole",
 			 3 => "Maison et Bureau/Ecole"
 	);
 	$connaissancearray = array (
-		 0 => "DÈbutant",   
-		 1 => "IntermÈdiaire",
-		 2 => "ConfirmÈ"
+		 0 => "D√©butant",   
+		 1 => "Interm√©diaire",
+		 2 => "Confirm√©"
 	);
 
 if ($_FILES["restore_file"]["name"] !="")
@@ -117,7 +117,7 @@ if ($_FILES["restore_file"]["name"] !="")
 		//debug($filename);
 		$arrayimport=array();
 		$delimiter=';';
-		//transformerle csv en array multiple pour traiter les donnÈes
+		//transformerle csv en array multiple pour traiter les donn√©es
 		$arrayimport=csv_to_array($filename, $delimiter);
 		//debug($arrayimport);
 	//***TRAITEMENT DES DONNEES*****///
@@ -133,17 +133,17 @@ if ($_FILES["restore_file"]["name"] !="")
 		//assignation des variables pour la table
 		$nom=stripslashes($ligne['Nom*']);
 		
-		$prenom=stripslashes($ligne['PrÈnom*']);
+		$prenom=stripslashes($ligne['Pr√©nom*']);
 		
 		if($ligne['Statut*']=="actif"){$status=1;} else {$status=2;}
-		if($ligne['ArchivÈ*']=="oui") { $status=6;} 
+		if($ligne['Archiv√©*']=="oui") { $status=6;} 
 		if($ligne['Login*']==""){$loginn="loginvide";} else {$loginn=$ligne['Login*'];}
 		
 		$passs="1";
 		
-		if($ligne['CivilitÈ* (M Mme Mlle)']=="M"){	$sexe="H";} else {$sexe="F";} 
+		if($ligne['Civilit√©* (M Mme Mlle)']=="M"){	$sexe="H";} else {$sexe="F";} 
 		
-		//CSP transformÈ en chiffre
+		//CSP transform√© en chiffre
 		if (in_array($ligne['CSP'],$profession))  { 
 			$csp=array_search($ligne['CSP'], $profession);
 			}else{
@@ -166,7 +166,7 @@ if ($_FILES["restore_file"]["name"] !="")
 			}
 		
 		
-		//date de naissance ‡ splitter		
+		//date de naissance √† splitter		
 		$date_naissance=$ligne['Date de naissance*'];
 		$tmp = explode("/",$date_naissance) ;
 			$jour=$tmp[0];
@@ -193,7 +193,7 @@ if ($_FILES["restore_file"]["name"] !="")
 	
 		
 		$mail=$ligne['Mail'];
-		$tel=$ligne['TÈlÈphone fixe']." / ".$ligne['TÈlÈphone portable'];
+		$tel=$ligne['T√©l√©phone fixe']." / ".$ligne['T√©l√©phone portable'];
 		
 		$date_inscription=$ligne['inscription'];
 		$tempdate =  explode("/",$date_inscription) ;
@@ -203,7 +203,7 @@ if ($_FILES["restore_file"]["name"] !="")
 		
 		//  les espaces
 		$espaces = getAllepn();
-		//EPN transformÈ en chiffre
+		//EPN transform√© en chiffre
 		if(in_array($ligne['Espace'], $espaces))
 			{
 				$epn=array_search($ligne['Espace'], $espaces);
@@ -229,7 +229,7 @@ if ($_FILES["restore_file"]["name"] !="")
 			$utilisation=0;
 		}
 		
-		if($ligne['Equipement']=="Aucun Èquipement")
+		if($ligne['Equipement']=="Aucun √©quipement")
 		{
 			$equipement=0;
 		}else if ($ligne['Equipement']=="Ordinateur et Internet"){
@@ -242,12 +242,12 @@ if ($_FILES["restore_file"]["name"] !="")
 			
 		$info=stripslashes($ligne['Commentaires Cybanim']."\n".$ligne['Autres informations']);
 			
-		$lastvisit0=$ligne['Date derniËre visite (non modifiable)'];
+		$lastvisit0=$ligne['Date derni√®re visite (non modifiable)'];
 		$tempdate =  explode("/",$lastvisit0) ;
 		$lastvisit=$tempdate[2]."-".$tempdate[1]."-".$tempdate[0];
 		$tempdate ="";
 		
-		//date de renouvellement adhesion automatiquement crÈe
+		//date de renouvellement adhesion automatiquement cr√©e
 		$tempdate =  explode("/",$date_inscription) ;
 		if($status=1){
 			$daterenouv =date('Y')."-".$tempdate[1]."-".$tempdate[0];
@@ -255,7 +255,7 @@ if ($_FILES["restore_file"]["name"] !="")
 			$daterenouv =$tempdate[2].$tempdate[1]."-".$tempdate[0];
 		}
 	
-		if($ligne['Inscrit ‡ la liste de diffusion']=="oui"){$newsletter=1; }else{ $newsletter=0;}
+		if($ligne['Inscrit √† la liste de diffusion']=="oui"){$newsletter=1; }else{ $newsletter=0;}
 		
 		
 		
@@ -263,7 +263,7 @@ if ($_FILES["restore_file"]["name"] !="")
 		///*** fin d'assignation des variables**///
 				
 	
-	//dialogue avec la base insertion des donnÈes
+	//dialogue avec la base insertion des donn√©es
 		  if (!$nom || !$prenom || !$annee || !$date || !$loginn)
 			{
 			 //il manque trop de parametres on n'insert pas et entre une erreur

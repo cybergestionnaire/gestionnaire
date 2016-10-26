@@ -92,6 +92,12 @@ function update_champs($pdo, $champs, $table) {
                     echo "<p> -- probleme de codage, a reconvertir !</p>";
                     $toconvert = TRUE;
                 }
+                if ($column['COLUMN_TYPE'] != $champ["type"]) {
+                    // pas le bon type...
+                    $statement3 = $pdo->query("ALTER TABLE {$table} CHANGE {$champ["name"]} {$champ["name"]} {$champ["type"]} {$champ["options"]}");
+                    $result3 = $statement3->fetchAll(PDO::FETCH_ASSOC);
+                }
+                
             }
         } else { // si non, on le créé
             $statement2 = $pdo->query("ALTER TABLE {$table} ADD {$champ["name"]} {$champ["type"]} {$champ["options"]}");
@@ -718,7 +724,7 @@ $sql_create['tab_utilisation'] = "CREATE TABLE `tab_utilisation` (
 foreach ($sql_create as $table => $sql) {
     echo "<h2>Table  {$table}</h2>";
     $champs = get_champs($sql);
-
+    //print_r($champs);
     if (check_table($pdo, $table, $sql)) {
         echo "<p style='color:green'><b>check_table :</b> Table $table ok - pas de mise à jour</font><p>";
     } else {

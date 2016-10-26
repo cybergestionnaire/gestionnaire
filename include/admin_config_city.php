@@ -34,8 +34,7 @@ $idcity = isset($_GET['idcity']) ? $_GET['idcity'] : '';
 
 if (isset($_GET["act"])) {
 
-    switch ($act)
-    {
+    switch ($act) {
         case 1: // creation
             $nom      = $_POST["newcity"];
             $codepost = $_POST["newcodepost"];
@@ -109,46 +108,51 @@ include("include/boites/menu-parametres.php");
 <div class="box box-solid box-warning">
     <div class="box-header"><h3 class="box-title">Les villes de vos EPN</h3></div>
     <div class="box-body"> 
-    <h4>Enregistrer une nouvelle ville</h4>
-    <form method="post" action="index.php?a=41&act=1">
-    <div class="row">
-        <div class="col-xs-4"><input type="text" class="form-control" name="newcity" placeholder="Nom"></div>
-        <div class="col-xs-3"><input type="text" class="form-control" name="newcodepost" placeholder="Code Postal" maxlength="10"></div>
-        <div class="col-xs-3"><input type="text" name="newpays" class="form-control"  placeholder="Pays"></div>
-        <a type="submit" value="Cr&eacute;er"><button class="btn btn-primary">Cr&eacute;er</button></a>
+        <h4>Enregistrer une nouvelle ville</h4>
+        <div class="table">
+            <form class="tr" method="post" action="index.php?a=41&act=1">
+                <span class="td"><input type="text" class="form-control" name="newcity" placeholder="Nom"></span>
+                <span class="td"><input type="text" class="form-control" name="newcodepost" placeholder="Code Postal" maxlength="10"></span>
+                <span class="td"><input type="text" name="newpays" class="form-control"  placeholder="Pays"></span>
+                <span class="td"><button type="submit" class="btn btn-primary">Cr&eacute;er</button></span>
+            </form>
+        </div>
     </div>
-    </form>
-</div>
-           
+
+
 <?php
 $villes   = Ville::getVilles();
 $nbVilles = count($villes);
 
-if ($nbVilles > 0) {
-    echo '<div class="box-body"><table class="table">';
+if ($nbVilles > 0) { ?>
 
+    <div class="box-body">
+        <div class="table">
+<?php
     foreach($villes as $ville) {
 ?>
-    <form action="index.php?a=41&act=2&idcity=<?php echo $ville->getId(); ?>" method="post" role="form">
-        <tr>
-            <td><input class="form-control" type="text" name="city" value="<?php echo htmlentities($ville->getNom()) ; ?>"></td>
-            <td><input class="form-control" type="text" name="codepost" value="<?php echo htmlentities($ville->getCodePostal()); ?>" maxlength="10"></td>
-            <td><input class="form-control" type="text" name="pays" value="<?php echo htmlentities($ville->getPays()) ; ?>"></td>
-            <td><button class="btn btn-success"  type="submit" value="modifier"><i class="fa fa-edit"></i></button>&nbsp;
-            <a href="index.php?a=41&act=3&idcity=<?php echo htmlentities($ville->getId()); ?>"><button type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></a></td>
-            <td><a href="index.php?a=41&act=4&idcity=<?php echo htmlentities($ville->getId()); ?>#liste"><?php echo htmlentities($ville->nbAdherents()); ?> Adh.</a></td>
-        </tr>
-    </form>
-    <?php   
+            <form class="tr" action="index.php?a=41&act=2&idcity=<?php echo $ville->getId(); ?>" method="post">
+                <span class="td"><input class="form-control" type="text" name="city" value="<?php echo htmlentities($ville->getNom()) ; ?>"></span>
+                <span class="td"><input class="form-control" type="text" name="codepost" value="<?php echo htmlentities($ville->getCodePostal()); ?>" maxlength="10"></span>
+                <span class="td"><input class="form-control" type="text" name="pays" value="<?php echo htmlentities($ville->getPays()) ; ?>"></span>
+                <span class="td">
+                    <button class="btn btn-success"  type="submit" value="modifier"><i class="fa fa-edit"></i></button>&nbsp;
+                    <a href="index.php?a=41&act=3&idcity=<?php echo htmlentities($ville->getId()); ?>" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
+                </span>
+                <span class="td"><a href="index.php?a=41&act=4&idcity=<?php echo htmlentities($ville->getId()); ?>#liste"><?php echo htmlentities($ville->nbAdherents()); ?> Adh.</a></span>
+            </form>
+<?php   
     }
-    echo '</table>';
+?>    
+        </div>
+<?php
 } else {
 ?>
-    <div class="alert alert-info alert-dismissable">
-        <i class="fa fa-info"></i><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><b>Pas de villes encore !</b>
-    </div>
+        <div class="alert alert-info alert-dismissable">
+            <i class="fa fa-info"></i><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><b>Pas de villes encore !</b>
+        </div>
 <?php } ?>
-</div>
+    </div>
 
 </div>
 
@@ -167,7 +171,6 @@ if ($act == 4) {
     <div class="box box-primary">
         <div class="box-header">
             <h3 class="box-title">Liste des adh&eacute;rents inscrits dans la commune</h3>
-            <a name="liste"></a>
         </div>
         <div class="box-body no-padding">
             <table class="table">

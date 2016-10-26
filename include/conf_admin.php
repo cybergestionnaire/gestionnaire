@@ -317,15 +317,15 @@ if ($_SESSION["status"]==4)
          switch ($b)
          {
              case 1:  // Creation d'un adh&eacute;rent
-                  $titre="Validation d'une pr&eacute;-inscription" ;
-                  $aide="Cr&eacute;ation d'un adh&eacute;rent, n'oubliez pas de pr&eacute;cisez le statut afin de permettre a l'utilisateur de r&eacute;servez une machine";
+                  $titre = "Validation d'une pr&eacute;-inscription" ;
+                  $aide  = "Cr&eacute;ation d'un adh&eacute;rent, n'oubliez pas de pr&eacute;cisez le statut afin de permettre a l'utilisateur de r&eacute;servez une machine";
                   include ("include/post_inscription.php");
-                  $inc="admin_form_inscription.php";
+                  $inc   = "admin_form_inscription.php";
              break;
              default: // Liste des pr&eacute;inscription
-                  $titre="Liste des pr&eacute;-inscriptions";
-                  $aide="pour une recherche plus rapide vous pouvez utiliser le moteur de recherche, attention 3 lettres minimum sinon pas de recherche !"  ;
-                  $inc="admin_inscription.php";
+                  $titre = "Liste des pr&eacute;-inscriptions";
+                  $aide  = "pour une recherche plus rapide vous pouvez utiliser le moteur de recherche, attention 3 lettres minimum sinon pas de recherche !"  ;
+                  $inc   = "admin_inscription.php";
              break;
          }
     break;

@@ -21,7 +21,7 @@
 
   include/admin_form_espace.php V0.1
 */
-
+require_once("include/class/Ville.class.php");
 // formulaire de creation / modification d'espace
                             
 
@@ -34,24 +34,24 @@ $label_bouton = "Modifier le r&eacute;seau" ;
 $rowreseau = getReseau();
 
 //Informations matos
-$nom     = $rowreseau["res_nom"];
-$adresse  = $rowreseau["res_adresse"];
-$ville = $rowreseau["res_ville"];
-$telephone=$rowreseau["res_tel"];
-$logo=$rowreseau["res_logo"];
-$mail=$rowreseau["res_mail"];
-$courrier=$rowreseau["res_courrier"];
-$activation=$rowreseau["res_activation"];
+$nom        = $rowreseau["res_nom"];
+$adresse    = $rowreseau["res_adresse"];
+$idVille    = $rowreseau["res_ville"];
+$telephone  = $rowreseau["res_tel"];
+$logo       = $rowreseau["res_logo"];
+$mail       = $rowreseau["res_mail"];
+$courrier   = $rowreseau["res_courrier"];
+$activation = $rowreseau["res_activation"];
 
 	// recupere les villes
-$town = getAllCityname();
+$villes = Ville::getVilles();
 
 //array logos
-$filesLogoarray=array();
-$filedir="./img/logo/";
+$filesLogoarray = array();
+$filedir        = "./img/logo/";
 $filesLogoarray = array_diff(scandir($filedir), array('..', '.')); //lister les logos dans le dossier
 $filesLogoarray = array_values($filesLogoarray); //r&eacute;indexer le tableau après avoir enlever lignes vides
-$nblogo=count($filesLogoarray);
+$nblogo         = count($filesLogoarray);
 
 
 //Affichage -----
@@ -74,15 +74,15 @@ echo $mess ;
     		<label >Ville *:</label>
    		 <select name="villereseau" class="form-control" >
 		<?php
-			foreach ($town AS $key=>$value)
+			foreach ($villes AS $ville)
 			{
-				if ($ville == $key)
+				if ($idVille == $ville->getid())
 				{
-					echo "<option value=\"".$key."\" selected>".$value."</option>";
+					echo "<option value=\"".$ville->getId()."\" selected>".$ville->getNom()."</option>";
 				}
 				else
 				{
-					echo "<option value=\"".$key."\">".$value."</option>";
+					echo "<option value=\"".$ville->getId()."\">".$ville->getNom()."</option>";
 				}
 			}
 		?>

@@ -121,7 +121,7 @@
             <div class="box-body no-padding">
                 <table class="table">
                     <thead>
-                        <th></th><th>Nom</th><th>Pr&eacute;nom</th><th>login</th><th>Age</th><th>Visite r&eacute;cente(r&eacute;sa)</th><th>Statut</th><th>Adh&eacute;sion</th><th>Temps Utilis&eacute;</th>
+                        <tr><th></th><th>Nom</th><th>Pr&eacute;nom</th><th>login</th><th>Age</th><th>Visite r&eacute;cente(r&eacute;sa)</th><th>Statut</th><th>Adh&eacute;sion</th><th>Temps Utilis&eacute;</th></tr>
                     </thead>
                     <tbody> 
 <?php
@@ -424,42 +424,30 @@
                 $count = 0;
                 $i = ($page - 1) * $rpp;
                 while(($count < $rpp) && ($i < $tcount)) {
-                    //mysqli_data_seek($result, $i);
-                    //$row = mysqli_fetch_array($result) ;
-                    /* dernière connexion au portail
-                        if ($row["lastvisit_user"] != "0000-00-00"){
-                            $dateusa = DateTime::createFromFormat('Y-m-d', $row["lastvisit_user"]);
-                            $datefr = $dateusa->format('d/m/Y');
-                        }else{
-                            $datefr="NC";
-                        }
-                        */
+
                     $utilisateur = $utilisateurs[$i];
-                    //$age = date('Y') - $row["annee_naissance_user"];
                     $age = $utilisateur->getAge();
                     //ADHESION
-                    $adhesion = getNomTarif($utilisateur->getIdTarifAdhesion());
-                    $aujourdhui = date_create(date('Y-m-d'));
+                    // $adhesion = getNomTarif($utilisateur->getIdTarifAdhesion());
+                    $tarif              = Tarif::getTarifById($utilisateur->getIdTarifAdhesion());
+                    $adhesion           = $tarif != null ? $tarif->getNom() : '' ;
+                    $aujourdhui         = date_create(date('Y-m-d'));
                     $daterenouvellement = date_create($utilisateur->getDateRenouvellement());
                     //$interval = date_diff($aujourdhui,$daterenouvellement);
                     //debug($interval->format('%R%a'));
                     if ($utilisateur->getStatut() == 1) {
                         if ($daterenouvellement <= $aujourdhui) {
-                            $classadh='label label-warning';
+                            $classadh = 'label label-warning';
                         }
                         elseif ($daterenouvellement > $aujourdhui) {
-                            $classadh='label label-success';
+                            $classadh = 'label label-success';
                         }
                     }
                     elseif($utilisateur->getStatut() == 2) {
-                        $classadh='label label-danger';
+                        $classadh = 'label label-danger';
                     }
                     
                     //TARIF CONSULTATION
-                    // $tarifTemps = getForfaitConsult($row["id_user"]);
-                    // $min = $tab_unite_temps_affectation[$tarifTemps["unite_temps_affectation"]];
-                    // $tarifreferencetemps = $tarifTemps["nombre_temps_affectation"]*$min;
-
                     $forfaitConsultation   = $utilisateur->getForfaitConsultation();
                     $min                   = $tab_unite_temps_affectation[$forfaitConsultation->getUniteConsultation()];
                     $tarifreferencetemps   = $forfaitConsultation->getDureeConsultation() * $min;

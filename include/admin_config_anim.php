@@ -45,6 +45,8 @@
             <li class="active"><a href="#tab2" data-toggle="tab">Animateur</a></li>
             <li class="pull-left header"></li>
         </ul>
+        <div class="tab-content">
+            <div class="tab-pane" id="tab1">
 <?php
 
     // Les administrateurs ......
@@ -56,8 +58,6 @@
         //seuls les admins ont le droit de modifier un profil admin
                 //echo "<div class=soustitre>Administrateurs: ".$nb."</div>";
 ?>
-        <div class="tab-content">
-            <div class="tab-pane" id="tab1">
                 <table class="table">
                     <thead>
                         <tr>
@@ -99,26 +99,27 @@
 ?>
                     </tbody>
                 </table>
-            </div><!-- end of #tab1 -->
 <?php
     }
-   
+?>    
+            </div><!-- end of #tab1 -->
+ 
+            <div class="tab-pane active" id="tab2">
+<?php
    
     // Les animateurs ......
     $animateurs = Utilisateur::getAnimateurs();
-    
-    if ($animateurs == null) {
+
+    if ($animateurs === null) {
         echo getError(1);
     }
     else {
         $nb  = count($animateurs);
             //echo "<div class=soustitre>Animateurs: ".$nb."</div>";
 ?>
- 
-            <div class="tab-pane active" id="tab2">
                 <table class="table">
                     <thead>
-                        <th>Nom</th><th>Pr&eacute;nom</th><th>Statut</th><!--<th>salles attribu&eacute;es</th>--><th>Fiche</th><th>Param&egrave;tres</th>
+                        <tr><th>Nom</th><th>Pr&eacute;nom</th><th>Statut</th><!--<th>salles attribu&eacute;es</th>--><th>Fiche</th><th>Param&egrave;tres</th></tr>
                     </thead>
                     <tbody>
 <?php
@@ -153,11 +154,12 @@
 ?>
                     </tbody>
                 </table>
-            </div><!-- /.tab-pane -->
-
 <?php
     }
 ?>
+            </div><!-- /.tab-pane -->
+
+
         </div><!-- /.tab-content -->
     </div><!-- nav-tabs-custom -->
     <div class="box-footer clearfix"><a href="index.php?a=51&b=1&type=anim"><input value="Cr&eacute;er un nouvel animateur/administrateur" type="submit" class="btn btn-primary"></a></div>

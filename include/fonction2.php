@@ -4098,7 +4098,7 @@ function operating_system_detection(){
 			}
     }
     $ros[] = array('Windows XP', 'Windows XP');
-    $ros[] = array('Windows NT 5.1|Windows NT5.1)', 'Windows XP');
+    $ros[] = array('Windows NT 5.1|Windows NT5.1', 'Windows XP');
     $ros[] = array('Windows 2000', 'Windows 2000');
     $ros[] = array('Windows NT 5.0', 'Windows 2000');
     $ros[] = array('Windows NT 4.0|WinNT4.0', 'Windows NT');
@@ -4129,7 +4129,7 @@ function operating_system_detection(){
     $ros[] = array('(sunos)([0-9]{1,2}\.[0-9]{1,2}){0,1}', 'SunOS');
     $ros[] = array('(beos)([0-9]{1,2}\.[0-9]{1,2}){0,1}', 'BeOS');
     $ros[] = array('(risc os)([0-9]{1,2}\.[0-9]{1,2})', 'RISC OS');
-    $ros[] = array('os/2', 'OS/2');
+    // $ros[] = array('os/2', 'OS/2');
     $ros[] = array('freebsd', 'FreeBSD');
     $ros[] = array('openbsd', 'OpenBSD');
     $ros[] = array('netbsd', 'NetBSD');
@@ -4156,8 +4156,8 @@ function operating_system_detection(){
     $ros[] = array('amiga-aweb', 'AmigaOS');
     $ros[] = array('amiga', 'Amiga');
     $ros[] = array('AvantGo', 'PalmOS');
-       $ros[] = array('[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,3})', 'Linux');
-    $ros[] = array('(webtv)/([0-9]{1,2}\.[0-9]{1,2})', 'WebTV');
+    // $ros[] = array('[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,3})', 'Linux');
+    // $ros[] = array('(webtv)/([0-9]{1,2}\.[0-9]{1,2})', 'WebTV');
     $ros[] = array('Dreamcast', 'Dreamcast OS');
     $ros[] = array('GetRight', 'Windows');
     $ros[] = array('go!zilla', 'Windows');
@@ -4181,7 +4181,7 @@ function operating_system_detection(){
     // delete next line if the script show not the right OS
     //$ros[] = array('(PHP)/([0-9]{1,2}.[0-9]{1,2})', 'PHP');
     $ros[] = array('MS FrontPage', 'Windows');
-    $ros[] = array('(msproxy)/([0-9]{1,2}.[0-9]{1,2})', 'Windows');
+    //$ros[] = array('(msproxy)/([0-9]{1,2}.[0-9]{1,2})', 'Windows');
     $ros[] = array('(msie)([0-9]{1,2}.[0-9]{1,2})', 'Windows');
     $ros[] = array('libwww-perl', 'Unix');
     $ros[] = array('UP.Browser', 'Windows CE');
@@ -4189,6 +4189,7 @@ function operating_system_detection(){
     $file = count ( $ros );
     $os = '';
     for ( $n=0 ; $n<$file ; $n++ ){
+        //error_log("preg = " . $ros[$n][0]);
 			if ( preg_match('/'.$ros[$n][0].'/i' , $agent, $name)){
 			$os = @$ros[$n][1].' '.@$name[2];
 			break;
