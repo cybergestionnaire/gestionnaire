@@ -87,22 +87,18 @@
         //error_log("nom = {$nom} / prenom = {$prenom} / annee = {$annee} / mois = {$mois} / adresse = {$adresse} / login = {$loginn} / sexe = {$sexe}");
         // Traitement des champs a insérer
         if ($nom == '' || $prenom == '' || $annee == '' || $adresse == '' || $loginn == '' || $sexe == '') {
-            error_log("----- Champs mal remplis !! -----");
             $mess = getError(4);
         }
         else {
             switch($act) {
                 case 1:   // ajout d'un adherent
                     //  $urlRedirect = "./index.php?a=1&b=2" ;
-                    error_log("----- Création de l'adhérent -----");
                                 
                     if (Utilisateur::existsLogin($loginn)) {
                         $mess = getError(5);
                     }
                     else {
-                        error_log("----- login ok -----");
                         if (checkDate($mois, $jour, $annee) && $pass != '') {
-                            error_log("----- date ok -----");
                             $dateNaissance = $annee . "-" . $mois . "-" . $jour;
                             
                             $utilisateur = Utilisateur::creerUtilisateur(
@@ -131,12 +127,9 @@
                                     $newsletter);
                         
                             if ($utilisateur == null) {
-                                error_log("----- création échouée ! -----");
-
-                               $mess = getError(4);
+                                $mess = getError(4);
                             }
                             else {
-                                error_log("----- création réussie ! -----");
                                 //enregistrement des transactions choisies
                                 //addForfaitUser("temps", $utilisateur->getId(), $temps, 1, date('Y-m-d'), 1); //forfait temps
                                 //addForfaitUser("adh", $utilisateur->getId(), $tarif, 1, date('Y-m-d'), 1); //adhésion

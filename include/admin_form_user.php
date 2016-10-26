@@ -126,20 +126,20 @@
             $mois           = $utilisateur->getMoisNaissance();
             $annee          = $utilisateur->getAnneeNaissance();
             $adresse        = $utilisateur->getAdresse();
-            $idVille          = $utilisateur->getIdVille();
+            $idVille        = $utilisateur->getIdVille();
             $tel            = $utilisateur->getTelephone();
             $mail           = $utilisateur->getMail();
             $rowtemps       = getTransactemps($idUser);
             $temps          = $rowtemps["id_tarif"];
             $loginn         = $utilisateur->getLogin();
-            $status        = $utilisateur->getStatut(); 
+            $status         = $utilisateur->getStatut(); 
             $csp            = $utilisateur->getCSP();
             $equipementarr  = $utilisateur->getEquipement();
             $equipement     = array_map('intval', explode("-", $equipementarr));
             $utilisation    = $utilisateur->getUtilisation();
             $connaissance   = $utilisateur->getConnaissance();
             $info           = $utilisateur->getInfo();
-            $idTarif          = $utilisateur->getIdTarifAdhesion();
+            $idTarif        = $utilisateur->getIdTarifAdhesion();
             $idEspace       = $utilisateur->getIdEspace();
             $newsletter     = $utilisateur->getNewsletter();
 

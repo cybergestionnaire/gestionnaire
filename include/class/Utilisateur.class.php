@@ -561,6 +561,10 @@ class Utilisateur
     {
         $utilisateur = null;
         
+//        error_log(print_r(func_get_args(), true));
+        
+        
+        
         if (date_create_from_format('Y-m-d', $dateInscription) !== FALSE 
             && $nom != ""
             && $prenom != ""
