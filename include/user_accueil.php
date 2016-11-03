@@ -569,8 +569,8 @@
                 <div class="direct-chat-messages">
                     <!-- chat item -->
 <?php
-        
-            $listeAnim    = getAllAnim();
+            $animateurs   = Utilisateur::getAnimateurs();
+            //$listeAnim    = getAllAnim();
             $listeMessage = readMyMessage($_SESSION["iduser"]);
             $nb           = mysqli_num_rows($listeMessage);
             $urlRedirect  = "index.php";
@@ -633,12 +633,12 @@
                         <label>A :
                             <select name="chatdestinataire" class="form-control">
 <?php
-            foreach ($listeAnim AS $key=>$value) {
-                if ($anim == $key) {
-                    echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
+            foreach ($animateurs AS $animateur) {
+                if ($anim == $animateur->getId()) {
+                    echo "<option value=\"" . $animateur->getId() . "\" selected>" . htmlentities($animateur->getNom()) ." ". htmlentities($animateur->getPrenom()) . "</option>";
                 }
                 else {
-                    echo "<option value=\"" . $key . "\">" . $value . "</option>";
+                    echo "<option value=\"" . $animateur->getId() . "\">" . htmlentities($animateur->getNom()) ." ". htmlentities($animateur->getPrenom()) . "</option>";
                 }
             }
         

@@ -61,11 +61,13 @@ if (FALSE == isset($_SESSION["login"])) {
 else {
     // Acces autorise
     require_once("include/class/Espace.class.php");
+    require_once("include/class/Config.class.php");
     require_once("include/class/Utilisateur.class.php");
 
     //Variables de l'epn
-    $espace = Espace::getEspacebyId(intval($_SESSION["idepn"]));
+    $espace      = Espace::getEspacebyId(intval($_SESSION["idepn"]));
     $utilisateur = Utilisateur::getUtilisateurById(intval($_SESSION["iduser"]));
+    $config      = Config::getConfig(intval($_SESSION["idepn"]));
 
 ?>
 <!doctype html>
@@ -279,7 +281,7 @@ else {
 
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
-              <b>CyberGestionnaire </b>V.<?php echo getVersion($_SESSION["idepn"]); ?>
+              <b>CyberGestionnaire </b>V.<?php echo $config->getname(); ?>
             </div>
             <strong><a href="index.php?a=60">Cr&eacute;dits </a></strong>
         </footer>

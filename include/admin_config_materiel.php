@@ -18,8 +18,6 @@
 
  2006 Namont Nicolas
  
-
-  include/admin_materiel.php V0.1
 */
     require_once("include/class/Materiel.class.php");
 // chargement des valeurs pour l'epn par défaut

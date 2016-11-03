@@ -18,8 +18,6 @@
 
  2006 Namont Nicolas
  
-
-  include/admin_materiel.php V0.1
 */
 
     // Configuration de la preinscription en ligne par utilisateur

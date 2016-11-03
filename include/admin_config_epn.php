@@ -17,9 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
  2006 Namont Nicolas
- 
 
-  include/admin_materiel.php V0.1
 */
 
 // Fichier de gestion des espaces ...

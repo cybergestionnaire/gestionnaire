@@ -19,6 +19,33 @@
  2006 Namont Nicolas
  
 */
+function getAllCityname($ordreAlpha = false)
+{
+    if ($ordreAlpha) {
+      $sql = "SELECT `id_city`,`nom_city` FROM `tab_city` ORDER BY `nom_city`" ;
+    } else {
+      $sql = "SELECT `id_city`,`nom_city` FROM `tab_city` ORDER BY `id_city`" ;
+    }
+    $db=opendb();
+    $result = mysqli_query($db,$sql);
+    closedb($db);
+    if (FALSE == $result)
+    {
+        return FALSE ;
+    }
+    else
+    {
+        $city = array();
+        $nb= mysqli_num_rows($result);
+        for ($i=1;$i<=$nb;$i++)
+        {
+            $row = mysqli_fetch_array($result);
+            $city[$row["id_city"]] = $row["nom_city"] ;
+        }
+        return $city ;
+    }
+}
+
     require_once("include/class/Ville.class.php");
     require_once("include/class/Forfait.class.php");
     require_once("include/class/Tarif.class.php");

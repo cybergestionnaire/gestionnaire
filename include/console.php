@@ -20,8 +20,8 @@
     revamped by : CyberGestionnaire-martigues / 2014 SAINT MARTIN Brice
     
 */
-header("Content-Type: text/html; charset=UTF-8");
-//header("Content-Type: text/plain");
+    header("Content-Type: text/html; charset=UTF-8");
+    //header("Content-Type: text/plain");
 
     date_default_timezone_set('Europe/Paris');
     include ("../connect_db.php");
@@ -101,22 +101,11 @@ header("Content-Type: text/html; charset=UTF-8");
                         }                                
                         $dateresa = date_create_from_format("Y-m-d H:i",$temp);
                         $diff = time() - date_timestamp_get($dateresa); // difference en secondes
-                        
+                        $now           = new DateTime();
+                        $interval      = date_diff($datelastetat, $now);
+                        $time          = $interval->format("%d j %hh%im");                       
                         if ($diff < 60) {
                             $time = "<1mm" ;
-                        }
-                        else if ($diff < 3600) {
-                            $minutes = floor($diff / 60);
-                            $time = $minutes."mn" ;
-                        }
-                        else {
-                            $heures = floor($diff / 3600);
-                            $minutes = floor(($diff - $heures * 3600) / 60);
-                            if ($minutes < 10) {
-                                $time = $heures."h0".$minutes ;
-                            } else {
-                                $time = $heures."h".$minutes ;
-                            }                                
                         }
 ?>
         <tr class="list_console_occup">
@@ -137,7 +126,7 @@ header("Content-Type: text/html; charset=UTF-8");
 ?>
             </td>
             <td>
-            <?php if($rowInfos["status_user"]==1) { ?>
+            <?php if($rowInfos["status_user"] == 1) { ?>
                 <a class="btn btn-danger" href="#" onClick="ActionConsole2(affichageAction,'action=2&id_poste=<?php echo $rowPostes["id_computer"] ?>')">Lib&eacute;ration</a>
             <?php } ?>
             </td>
@@ -149,29 +138,17 @@ header("Content-Type: text/html; charset=UTF-8");
                     {   
                         //poste libre
                         $heurelastetat = $rowPostes["lastetat_computer"]; // en secondes depuis 0:00:00
-                        $heure = floor($heurelastetat / 3600);
-                        $minute = floor(($heurelastetat - $heure * 3600) / 60 );
-                        $seconde = floor($heurelastetat - $heure * 3600 - $minute*60);
+                        $heure         = floor($heurelastetat / 3600);
+                        $minute        = floor(($heurelastetat - $heure * 3600) / 60 );
+                        $seconde       = floor($heurelastetat - $heure * 3600 - $minute*60);
                         
-                        $temp = $rowPostes["date_lastetat_computer"]." ".str_pad($heure, 2, "0",STR_PAD_LEFT).":".str_pad($minute, 2, "0",STR_PAD_LEFT).":".str_pad($seconde, 2, "0",STR_PAD_LEFT);
-                        $datelastetat = date_create_from_format("Y-m-d H:i:s",$temp);
-                        $diff = time() - date_timestamp_get($datelastetat); // difference en secondes
-                        if ($diff < 60) {
-                            $time = "<1mm" ;
-                        }
-                        else if ($diff < 3600) {
-                            $minutes = floor($diff / 60);
-                            $time = $minutes."mn" ;
-                        }
-                        else {
-                            $heures = floor($diff / 3600);
-                            $minutes = floor(($diff - $heures * 3600) / 60);
-                            if ($minutes < 10) {
-                                $time = $heures."h0".$minutes ;
-                            } else {
-                                $time = $heures."h".$minutes ;
-                            }                                
-                        }
+                        $temp          = $rowPostes["date_lastetat_computer"]." ".str_pad($heure, 2, "0",STR_PAD_LEFT).":".str_pad($minute, 2, "0",STR_PAD_LEFT).":".str_pad($seconde, 2, "0",STR_PAD_LEFT);
+                        $datelastetat  = date_create_from_format("Y-m-d H:i:s",$temp);
+                        $diff          = time() - date_timestamp_get($datelastetat); // difference en secondes
+                        $now           = new DateTime();
+                        $interval      = date_diff($datelastetat, $now);
+                        $time          = $interval->format("%d j %hh%im");
+
 ?>
         <tr class="list">
             <td><?php echo $rowPostes["nom_computer"] ?></td>

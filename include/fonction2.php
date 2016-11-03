@@ -36,26 +36,6 @@ fclose ($fp);
 
 }
 
-//Retourne le numero de version du cybergestionnaire
-function getVersion($id)
-{
-$sql="SELECT `name_config` FROM `tab_config` WHERE `id_espace`=".$id."";
-  $db=opendb();
-$result = mysqli_query($db,$sql);
-   closedb($db);	
-	 if(FALSE == $result)
-    {
-        return FALSE ;
-    }
-    else
-    {
-        $row=mysqli_fetch_array($result);
-		return $row["name_config"];
-    }
-
-
-}
-
 //affiche les boutons dans la config suivant la page desactivee
 function configBut($page)
 {
@@ -209,153 +189,6 @@ function numToDate($quant, $annee)
 	 $date = strtotime("+".($quant)." day", mktime(12, 0, 0, 01, 01, $annee));
 	return date("Y-m-d", $date);
 }
-
-
-
-//////FONCTIONS SUR les paramétrages des ateliers//////
-//
-function addCategorie($nom)
-{
-$sql="INSERT INTO `tab_atelier_categorie`(`id_atelier_categorie`, `label_categorie`) VALUES ('','".$nom."')";
-$db=opendb();
-$result = mysqli_query($db,$sql);
-closedb($db);
-if (FALSE==$result)
-{
-	return FALSE;
-}
-else{
-	return TRUE;
-	}
-	
-}
-function modCategorie($id,$nom)
-{
-$sql="UPDATE `tab_atelier_categorie` SET `label_categorie`='".$nom."' WHERE `id_atelier_categorie`='".$id."' ";
-$db=opendb();
-$result = mysqli_query($db,$sql);
-closedb($db);
-if (FALSE==$result)
-{
-	return FALSE;
-}
-else{
-	return TRUE;
-	}
-
-}
-
-function supCategorie($id)
-{
-$sql="DELETE FROM tab_atelier_categorie WHERE id_atelier_categorie='".$id."' ";
-$db=opendb();
-$result = mysqli_query($db,$sql);
-closedb($db);
-if (FALSE==$result)
-{
-	return FALSE;
-}
-else{
-	return TRUE;
-	}
-}
-
-///Niveaux d'ateliers
-function addNiveau($nom)
-{
-$sql="INSERT INTO `tab_level`(`id_level`, `code_level`,`nom_level`) VALUES ('','','".$nom."')";
-$db=opendb();
-$result = mysqli_query($db,$sql);
-closedb($db);
-if (FALSE==$result)
-{
-	return FALSE;
-}
-else{
-	return TRUE;
-	}
-	
-}
-function modNiveau($id,$nom)
-{
-$sql="UPDATE `tab_level` SET `nom_level`='".$nom."' WHERE `id_level`='".$id."' ";
-$db=opendb();
-$result = mysqli_query($db,$sql);
-closedb($db);
-if (FALSE==$result)
-{
-	return FALSE;
-}
-else{
-	return TRUE;
-	}
-
-}
-
-function supNiveau($id)
-{
-$sql="DELETE FROM `tab_level` WHERE id_level='".$id."' ";
-$db=opendb();
-$result = mysqli_query($db,$sql);
-closedb($db);
-if (FALSE==$result)
-{
-	return FALSE;
-}
-else{
-	return TRUE;
-	}
-}
-
-///Categories socioprofessionnelles
-function addcsp($nom)
-{
-$sql="INSERT INTO `tab_csp`(`id_csp`, `csp`) VALUES ('','".$nom."')";
-$db=opendb();
-$result = mysqli_query($db,$sql);
-closedb($db);
-if (FALSE==$result)
-{
-	return FALSE;
-}
-else{
-	return TRUE;
-	}
-	
-}
-
-function modcsp($id,$nom)
-{
-$sql="UPDATE `tab_csp` SET `csp`='".$nom."' WHERE `id_csp`='".$id."' ";
-$db=opendb();
-$result = mysqli_query($db,$sql);
-closedb($db);
-if (FALSE==$result)
-{
-	return FALSE;
-}
-else{
-	return TRUE;
-	}
-
-}
-
-function supcsp($id)
-{
-$sql="DELETE FROM `tab_csp` WHERE `id_csp`='".$id."' ";
-$db=opendb();
-$result = mysqli_query($db,$sql);
-closedb($db);
-if (FALSE==$result)
-{
-	return FALSE;
-}
-else{
-	return TRUE;
-	}
-}
-
-
 
 ////
 //
@@ -3866,24 +3699,7 @@ closedb($db);
 
 
 }
-function getConfigVersion($idepn)
-{
-$sql="SELECT `name_config` FROM `tab_config` WHERE `id_espace`=".$idepn;
-$db=opendb();
-$result = mysqli_query($db, $sql);
-closedb($db);
-    if ($result == FALSE )
-    {
-        return FALSE ;
-    }
-    else
-    {
-	$row=mysqli_fetch_array($result);
-	return $row["name_config"] ;
-    }
 
-
-}
 
 // retourne l'id d'un log du jour pour la mose à jour du statut des adherents
 function getLogUser($type)

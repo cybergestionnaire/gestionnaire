@@ -220,32 +220,38 @@ class Utilisateur
      */
      
     public function getAvatar() {
+        $avatar = "";
+
         $sql = "SELECT `anim_avatar` FROM `rel_user_anim` WHERE `id_animateur`='" . $this->_id . "'";
         $db = Mysql::opendb();
         $result = mysqli_query($db,$sql);
         Mysql::closedb($db);
-        if($result == FALSE)
-        {
-            $avatar = "default.png";
-        }
-        else
+
+        if($result != FALSE)
         {
             $row = mysqli_fetch_array($result) ;
             $avatar = $row["anim_avatar"];
-            if (!isset($avatar) || $avatar == "") {
-                $avatar = "default.png";
-            }
             mysqli_free_result($result);
         }
+        
+        if ($avatar == "") {
+            if ($this->_sexe = "H") {
+                $avatar = "male.png";
+            }
+            else {
+                $avatar = "female.png";
+            }
+        }
+
         return $avatar;
     }
 
     
     public function MAJVisite() {
         $success = FALSE;
-        $db     = Mysql::opendb();
-        $sql    = "UPDATE tab_user SET lastvisit_user='" . date("Y-m-d") . "' WHERE `id_user`=" . $this->_id ;
-        $result = mysqli_query($db, $sql);
+        $db      = Mysql::opendb();
+        $sql     = "UPDATE tab_user SET lastvisit_user='" . date("Y-m-d") . "' WHERE `id_user`=" . $this->_id ;
+        $result  = mysqli_query($db, $sql);
         if ($result) {
             $success = TRUE;
         }
@@ -253,6 +259,21 @@ class Utilisateur
         
         return $success;
     }
+    
+    public function updateMotDePasse($motDePasse) {
+        $success = FALSE;
+        $db      = Mysql::opendb();
+
+        $sql     = "UPDATE `tab_user` SET `pass_user` ='" . md5($motDePasse) . "' WHERE `id_user` =" . $this->_id . " LIMIT 1 ;";
+        $result  = mysqli_query($db, $sql);
+        if ($result) {
+            $success = TRUE;
+        }
+        Mysql::closedb($db);
+        
+        return $success;
+    }
+    
     
     public function canUpdateLogin($login) {
         $success = false;
@@ -432,7 +453,7 @@ class Utilisateur
             $mail               = mysqli_real_escape_string($db, $mail);
             $idTarifConsultation = mysqli_real_escape_string($db, $idTarifConsultation);
             $login              = mysqli_real_escape_string($db, $login);
-            $motDePasse         = mysqli_real_escape_string($db, $motDePasse);
+            $motDePasse         = md5($motDePasse);
             $statut             = mysqli_real_escape_string($db, $statut);
             $derniereVisite     = mysqli_real_escape_string($db, $derniereVisite);
             $csp                = mysqli_real_escape_string($db, $csp);

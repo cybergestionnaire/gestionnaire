@@ -174,8 +174,9 @@ if ($_SESSION["status"]==4)
 	
 	//parametrages animateurs influant sur les stats : categories ateliers
 	case 7:
-	$titre="Param&eacute;trages annexes des ateliers et sessions";
-	$inc="admin_config_atelier.php";
+        $titre="Param&eacute;trages annexes des ateliers et sessions";
+        include("include/post_config_atelier.php") ;
+        $inc="admin_config_atelier.php";
 	break;
 	
 	

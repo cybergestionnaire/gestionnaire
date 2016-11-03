@@ -1,7 +1,10 @@
 <?php
-    $version = getConfigVersion($_SESSION["idepn"]);
+    require_once("include/class/Config.class.php");
+    
+    $config = Config::getConfig($_SESSION["idepn"]);
+    $version = $config->getName();
     $newversion = 1.3;
-    if ($version <> $newversion) {
+    if (floatval($version) < $newversion) {
 ?>
     <!--DIV Mises &agrave; jour -->
     <div class="col-md-4">

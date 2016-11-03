@@ -40,7 +40,7 @@
             $avatar = $filenamephoto;
         }
         else {
-            if ($resultuser["sexe_user"] == 'H') {
+            if ($utilisateur->getSexe() == 'H') {
                 $avatar = "img/avatar/male.png";
             }
             else {
@@ -74,19 +74,19 @@
 
     
     //include ("include/calendrier.php");
-
+    $m = isset($_GET["m"]) ? $_GET["m"] : '';
 
     switch($_SESSION['status']) {
         case 1:
             $statut = "Actif"; //Utilisateur standart
 ?>
     <ul class="sidebar-menu">
-        <li class="<?php if ($_GET["m"]=="") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php"><i class="fa fa-home"></i> <span>Tableau de bord</span></a></li>
-        <li class="<?php if ($_GET["m"]=="2") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php?m=2"><i class="fa fa-edit" ></i><span>Mon compte</span></a></li>
+        <li class="<?php if ($m == "") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php"><i class="fa fa-home"></i> <span>Tableau de bord</span></a></li>
+        <li class="<?php if ($m == "2") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php?m=2"><i class="fa fa-edit" ></i><span>Mon compte</span></a></li>
         <!--<li><a href="index.php?m=5"><i class="fa fa-bookmark-o" ></i><span>Mes liens favoris</span></a></li>-->
-        <li class="<?php if ($_GET["m"]=="20") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php?m=20"><i class="fa fa-print" ></i><span>Mes impressions</span></a></li>
-        <li class="<?php if ($_GET["m"]=="6") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php?m=6"><i class="fa fa-graduation-cap" ></i><span>Mes formations</span></a></li>
-        <li class="<?php if ($_GET["m"]=="3") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php?m=3"><i class="fa fa-calendar"></i><span>Mes r&eacute;servations</span></a></li>
+        <li class="<?php if ($m == "20") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php?m=20"><i class="fa fa-print" ></i><span>Mes impressions</span></a></li>
+        <li class="<?php if ($m == "6") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php?m=6"><i class="fa fa-graduation-cap" ></i><span>Mes formations</span></a></li>
+        <li class="<?php if ($m == "3") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php?m=3"><i class="fa fa-calendar"></i><span>Mes r&eacute;servations</span></a></li>
         <!--<li><a href="index.php?m=20"><span>Mes impressions</span></a></li>-->
     </ul>
         

@@ -65,6 +65,28 @@ class Config
         return $this->_name;
     }
     
+    public function setName($name) {
+        $success = false;
+
+        $db   = Mysql::opendb();
+        $name = mysqli_real_escape_string($db, $name);
+        
+        $sql  = "UPDATE `tab_config` "
+              . " SET `name_config` = ". $name ." ";
+              // note : on met la table à jour pour TOUS les espaces
+//              . " WHERE `id_espace`='" . $this->_idEspace . "';";
+        
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $this->_name = $name;
+            $success = true;
+        }
+        
+        return $success;        
+    }
+    
     public function getResaRapide() {
         return $this->_resaRapide;
     }

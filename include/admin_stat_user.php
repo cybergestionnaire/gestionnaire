@@ -19,6 +19,9 @@
  2006 Namont Nicolas
   include/admin_stat.php V0.1
 */
+    require_once("include/class/CSP.class.php");
+    require_once("include/class/Ville.class.php");
+
 if ($mess !="")
 {
   echo $mess;
@@ -26,18 +29,18 @@ if ($mess !="")
 
 // Fichier de statistiques de l'application
 
-// chargement des valeurs pour l'epn par défaut
+// chargement des valeurs pour l'epn par dÃ©faut
 $epn=$_SESSION['idepn'];
 //si changment d'epn
  if (TRUE == isset($_POST['modifepn']))
  {
      $epn=$_POST['Pepn'];
-	
+    
   }
 
 // Choix de l'epn   -------------------------------------
 $espaces=getAllEPN();
-	
+    
 
 // repartition homme/femme ------------
 $nbH = statSexe("H",$epn);
@@ -66,19 +69,19 @@ if(!is_dir($dossierimg)){
 // Affichage
 ?>
 
-<!-- NOM ESPACE -->	
+<!-- NOM ESPACE --> 
 
 
  <div class="row"><div class="col-md-6">
-<!-- DIV accès direct aux autres paramètres-->
+<!-- DIV accÃ¨s direct aux autres paramÃ¨tres-->
  <div class="box">
-		<div class="box-header">
-			<h3 class="box-title">Statistiques</h3>
-			<div class="box-tools"><form method="post" role="form">
-			<div class="input-group">
-			
-			 <select name="Pepn"  class="form-control pull-right" style="width: 200px;">
-       	<?php
+        <div class="box-header">
+            <h3 class="box-title">Statistiques</h3>
+            <div class="box-tools"><form method="post" role="form">
+            <div class="input-group">
+            
+             <select name="Pepn"  class="form-control pull-right" style="width: 200px;">
+        <?php
         foreach ($espaces AS $key=>$value)
         {
             if ($epn == $key)
@@ -90,21 +93,21 @@ if(!is_dir($dossierimg)){
                 echo "<option  value=\"".$key."\">".$value."</option>";
             }
         }
-		
+        
     ?></select>
-		<div class="input-group-btn"><button type="submit" value="Rafraichir"  name="modifepn" class="btn btn-default" style="height: 34px;"><i class="fa fa-repeat"></i></button></div>
-	</div></form>
-	</div>
-		</div>
-		<div class="box-body">
-			<a class="btn btn-app disabled" href="index.php?a=5&b=1"><i class="fa fa-users"></i>Adhérents<a>
-			<a class="btn btn-app" href="index.php?a=5&b=2" /><i class="fa fa-clock-o"></i>Réservations</a>
-			<a class="btn btn-app" href="index.php?a=5&b=3"><i class="fa fa-print"></i>Impressions</a>
-			<a class="btn btn-app" href="index.php?a=5&b=5" /><i class="fa fa-ticket" ></i>Sessions</a>
-			<a class="btn btn-app" href="index.php?a=5&b=4" /><i class="fa fa-keyboard-o" ></i>Ateliers</a>
-			
-			
-		</div><!-- /.box-body -->
+        <div class="input-group-btn"><button type="submit" value="Rafraichir"  name="modifepn" class="btn btn-default" style="height: 34px;"><i class="fa fa-repeat"></i></button></div>
+    </div></form>
+    </div>
+        </div>
+        <div class="box-body">
+            <a class="btn btn-app disabled" href="index.php?a=5&b=1"><i class="fa fa-users"></i>AdhÃ©rents<a>
+            <a class="btn btn-app" href="index.php?a=5&b=2" /><i class="fa fa-clock-o"></i>RÃ©servations</a>
+            <a class="btn btn-app" href="index.php?a=5&b=3"><i class="fa fa-print"></i>Impressions</a>
+            <a class="btn btn-app" href="index.php?a=5&b=5" /><i class="fa fa-ticket" ></i>Sessions</a>
+            <a class="btn btn-app" href="index.php?a=5&b=4" /><i class="fa fa-keyboard-o" ></i>Ateliers</a>
+            
+            
+        </div><!-- /.box-body -->
 </div><!-- /.box -->   
 
 <?php
@@ -113,26 +116,26 @@ if (getadherenttotal($epn)){ // condition pour affichage si pas d'adherents, mes
    
  <div class="box box-primary">
           <div class="box-header"><i class="fa fa-bar-chart-o"></i><h3 class="box-title">R&eacute;partition Homme / Femme (<?php echo getCyberName($epn);?>)</h3></div>
-	<div class="box-body"> <dl class="dl-horizontal">
-		
-		<dt>Actifs</dt><dd><span class="text-red"><?php echo countUser(2) ;?></span></dd>
-		<dt>Inactifs</dt><dd><?php echo countUser(3) ;?></dd>
-		<dt>Archivés</dt><dd><?php echo countUser(4) ;?></dd></dl>
-				
-				
-				
-		<div class="statBar">
-			<div class="statText">Hommes</div>
-			<div class="statBarContainPurple">
-				<div style="width:<?php echo getPourcent($nbH,$nbTotal); ?>;" class="statBarPourcentYellow">&nbsp;<?php echo getPourcent($nbH,$nbTotal); ?></div>
-			</div></div>
-			<div class="clear"></div>
-		<div class="statBar">
-			<div class="statText">Femmes</div>
-			<div class="statBarContainPurple">
-				<div style="width:<?php echo getPourcent($nbF,$nbTotal); ?>;" class="statBarPourcentYellow">&nbsp;<?php echo getPourcent($nbF,$nbTotal); ?></div>
-		</div></div><div class="clear"></div>
-		<div class="spacer"></div>	
+    <div class="box-body"> <dl class="dl-horizontal">
+        
+        <dt>Actifs</dt><dd><span class="text-red"><?php echo countUser(2) ;?></span></dd>
+        <dt>Inactifs</dt><dd><?php echo countUser(3) ;?></dd>
+        <dt>ArchivÃ©s</dt><dd><?php echo countUser(4) ;?></dd></dl>
+                
+                
+                
+        <div class="statBar">
+            <div class="statText">Hommes</div>
+            <div class="statBarContainPurple">
+                <div style="width:<?php echo getPourcent($nbH,$nbTotal); ?>;" class="statBarPourcentYellow">&nbsp;<?php echo getPourcent($nbH,$nbTotal); ?></div>
+            </div></div>
+            <div class="clear"></div>
+        <div class="statBar">
+            <div class="statText">Femmes</div>
+            <div class="statBarContainPurple">
+                <div style="width:<?php echo getPourcent($nbF,$nbTotal); ?>;" class="statBarPourcentYellow">&nbsp;<?php echo getPourcent($nbF,$nbTotal); ?></div>
+        </div></div><div class="clear"></div>
+        <div class="spacer"></div>  
 </div></div>
 
 
@@ -141,76 +144,76 @@ if (getadherenttotal($epn)){ // condition pour affichage si pas d'adherents, mes
                   
  <div class="box box-primary">
           <div class="box-header"><i class="fa fa-bar-chart-o"></i><h3 class="box-title">R&eacute;partition par tranche d'&acirc;ge (<?php echo getCyberName($epn)?>)</h3></div>
-	<div class="box-body">
-	
-		<div class="statBar">
-			<div class="statText">0  &agrave;   6 :</div><div class="statBarContainDBlue">
-			<div style="width:<?php echo getPourcent($nbTr1,$nbTotal); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr1,$nbTotal); ?></div></div>
-		</div>	<div class="clear"></div>
-		<div class="statBar">
-			<div class="statText">7  &agrave;  11 : </div><div class="statBarContainDBlue">
-			<div style="width:<?php echo getPourcent($nbTr2,$nbTotal); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr2,$nbTotal); ?></div></div>
-		</div>	<div class="clear"></div>
-		<div class="statBar">
-			<div class="statText">12  &agrave;  17 :  </div><div class="statBarContainDBlue">
-			<div style="width:<?php echo getPourcent($nbTr3,$nbTotal); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr3,$nbTotal); ?></div></div>
-		</div>	<div class="clear"></div>
-		<div class="statBar">
-			<div class="statText">18  &agrave;  25 : </div><div class="statBarContainDBlue">
-			<div style="width:<?php echo getPourcent($nbTr4,$nbTotal); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr4,$nbTotal); ?></div></div>
-		</div>	<div class="clear"></div>
-		<div class="statBar">
-			<div class="statText">25  &agrave;  45 :  </div><div class="statBarContainDBlue">
-			<div style="width:<?php echo getPourcent($nbTr5,$nbTotal); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr5,$nbTotal); ?></div></div>
-		</div>	<div class="clear"></div>
-		<div class="statBar">
-			<div class="statText">46  &agrave;  65 : </div><div class="statBarContainDBlue">
-			<div style="width:<?php echo getPourcent($nbTr6,$nbTotal); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr6,$nbTotal); ?></div></div>
-		</div>	<div class="clear"></div>
-		<div class="statBar">
-			<div class="statText">66  &agrave; 75 :  </div><div class="statBarContainDBlue">
-			<div style="width:<?php echo getPourcent($nbTr7,$nbTotal); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr7,$nbTotal); ?></div></div>
-		</div><div class="clear"></div>
-		<div class="statBar">
-			<div class="statText">75  et + :  </div><div class="statBarContainDBlue">
-			<div style="width:<?php echo getPourcent($nbTr7,$nbTotal); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr8,$nbTotal); ?></div></div>
-		</div><div class="clear"></div>
+    <div class="box-body">
+    
+        <div class="statBar">
+            <div class="statText">0  &agrave;   6 :</div><div class="statBarContainDBlue">
+            <div style="width:<?php echo getPourcent($nbTr1,$nbTotal); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr1,$nbTotal); ?></div></div>
+        </div>  <div class="clear"></div>
+        <div class="statBar">
+            <div class="statText">7  &agrave;  11 : </div><div class="statBarContainDBlue">
+            <div style="width:<?php echo getPourcent($nbTr2,$nbTotal); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr2,$nbTotal); ?></div></div>
+        </div>  <div class="clear"></div>
+        <div class="statBar">
+            <div class="statText">12  &agrave;  17 :  </div><div class="statBarContainDBlue">
+            <div style="width:<?php echo getPourcent($nbTr3,$nbTotal); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr3,$nbTotal); ?></div></div>
+        </div>  <div class="clear"></div>
+        <div class="statBar">
+            <div class="statText">18  &agrave;  25 : </div><div class="statBarContainDBlue">
+            <div style="width:<?php echo getPourcent($nbTr4,$nbTotal); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr4,$nbTotal); ?></div></div>
+        </div>  <div class="clear"></div>
+        <div class="statBar">
+            <div class="statText">25  &agrave;  45 :  </div><div class="statBarContainDBlue">
+            <div style="width:<?php echo getPourcent($nbTr5,$nbTotal); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr5,$nbTotal); ?></div></div>
+        </div>  <div class="clear"></div>
+        <div class="statBar">
+            <div class="statText">46  &agrave;  65 : </div><div class="statBarContainDBlue">
+            <div style="width:<?php echo getPourcent($nbTr6,$nbTotal); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr6,$nbTotal); ?></div></div>
+        </div>  <div class="clear"></div>
+        <div class="statBar">
+            <div class="statText">66  &agrave; 75 :  </div><div class="statBarContainDBlue">
+            <div style="width:<?php echo getPourcent($nbTr7,$nbTotal); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr7,$nbTotal); ?></div></div>
+        </div><div class="clear"></div>
+        <div class="statBar">
+            <div class="statText">75  et + :  </div><div class="statBarContainDBlue">
+            <div style="width:<?php echo getPourcent($nbTr7,$nbTotal); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr8,$nbTotal); ?></div></div>
+        </div><div class="clear"></div>
 </div></div>
 
 <!-- REPARTITION PAR VILLE-->
 <div class="nav-tabs-custom">
    <ul class="nav nav-tabs pull-right">
-			<li class="active"><a href="#tab_1-1" data-toggle="tab">Actifs / ville</a></li>
-			<li><a href="#tab_2-2" data-toggle="tab">Total adh / ville</a></li>
-			<li class="pull-left header">R&eacute;partition par ville</li>
+            <li class="active"><a href="#tab_1-1" data-toggle="tab">Actifs / ville</a></li>
+            <li><a href="#tab_2-2" data-toggle="tab">Total adh / ville</a></li>
+            <li class="pull-left header">R&eacute;partition par ville</li>
      </ul>
   
   <div class="tab-content">
-		<div class="tab-pane active" id="tab_1-1">
+        <div class="tab-pane active" id="tab_1-1">
 <?php
-$town = getAllCityname();
-$nbactifs=countUser(2);
-$nbinactifs=countUser(3);
-$nbtotalai=countUser(1);
+$villes     = Ville::getVilles();
+$nbactifs   = countUser(2);
+$nbinactifs = countUser(3);
+$nbtotalai  = countUser(1);
 //debug($nbtotalai);
-foreach ($town AS $key => $value)
+foreach ($villes AS $ville)
 {
-  $nbAdhCityactifs = statCity($key,1) ; // actifs
-	$nbAdhCityinactifs= statCity($key,2) ; //inactifs
-	$nbAdhCity=$nbAdhCityactifs+$nbAdhCityinactifs;
+    $nbAdhCityactifs   = statCity($ville->getId(),1) ; // actifs
+    $nbAdhCityinactifs = statCity($ville->getId(),2) ; //inactifs
+    $nbAdhCity         = $nbAdhCityactifs + $nbAdhCityinactifs;
 
-	//debug($nbAdhCity);
+    //debug($nbAdhCity);
   if ($nbAdhCity >0)
   {
   ?>
   
   <div class="statBar">
-			<div class="statTextVille"><?php echo $value ."  <small>(".$nbAdhCityactifs." adh)</small>";?> </div>
-			<div class="statBarContainBlue">
-					<div style="width:<?php echo getPourcent($nbAdhCityactifs,$nbtotalai); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbAdhCityactifs,$nbtotalai); ?></div>
-				
-			</div>
-  	</div><div class="clear"></div>
+            <div class="statTextVille"><?php echo htmlentities($ville->getNom()) ."  <small>(".$nbAdhCityactifs." adh)</small>";?> </div>
+            <div class="statBarContainBlue">
+                    <div style="width:<?php echo getPourcent($nbAdhCityactifs,$nbtotalai); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbAdhCityactifs,$nbtotalai); ?></div>
+                
+            </div>
+    </div><div class="clear"></div>
 <?php
     }
 }
@@ -222,29 +225,29 @@ foreach ($town AS $key => $value)
 </div>
 <div class="tab-pane active" id="tab_2-2">
 <?php
-$town = getAllCityname();
-$nbactifs=countUser(2);
-$nbinactifs=countUser(3);
-$nbtotalai=countUser(1);
+$villes     = Ville::getVilles();
+$nbactifs   = countUser(2);
+$nbinactifs = countUser(3);
+$nbtotalai  = countUser(1);
 //debug($nbtotalai);
-foreach ($town AS $key => $value)
+foreach ($villes AS $ville)
 {
-  $nbAdhCityactifs = statCity($key,1) ; // actifs
-	$nbAdhCityinactifs= statCity($key,2) ; //inactifs
-	$nbAdhCity=$nbAdhCityactifs+$nbAdhCityinactifs;
+    $nbAdhCityactifs   = statCity($ville->getId(),1) ; // actifs
+    $nbAdhCityinactifs = statCity($ville->getId(),2) ; //inactifs
+    $nbAdhCity         = $nbAdhCityactifs + $nbAdhCityinactifs;
 
-	//debug($nbAdhCity);
+    //debug($nbAdhCity);
   if ($nbAdhCity >0)
   {
   ?>
   
   <div class="statBar">
-			<div class="statTextVille"><?php echo $value ."  <small>(".$nbAdhCity." adh)</small>";?> </div>
-			<div class="statBarContainBlue">
-					<div style="width:<?php echo getPourcent($nbAdhCity,$nbtotalai); ?>" class="statBarPourcentYellow">&nbsp;<?php echo getPourcent($nbAdhCity,$nbtotalai); ?></div>
-				
-			</div>
-  	</div><div class="clear"></div>
+            <div class="statTextVille"><?php echo htmlentities($ville->getNom()) ."  <small>(".$nbAdhCity." adh)</small>";?> </div>
+            <div class="statBarContainBlue">
+                    <div style="width:<?php echo getPourcent($nbAdhCity,$nbtotalai); ?>" class="statBarPourcentYellow">&nbsp;<?php echo getPourcent($nbAdhCity,$nbtotalai); ?></div>
+                
+            </div>
+    </div><div class="clear"></div>
 <?php
     }
 }
@@ -273,20 +276,20 @@ foreach ($town AS $key => $value)
           <div class="box-header"><i class="fa fa-bar-chart-o"></i><h3 class="box-title">R&eacute;partition par CSP (<?php echo getCyberName($epn)?>)</h3></div>
 <div class="box-body">
 <?php
-$csp = getAllCsp();
-foreach ($csp AS $key => $value)
+$csps = CSP::getCSPs();
+foreach ($csps AS $csp)
 {
-  $nbAdhCsp = statCsp($key,$epn) ;
+  $nbAdhCsp = statCsp($csp->getId(),$epn) ;
   if ($nbAdhCsp >0)
   {
   ?>
  
   <div class="statBar">
-			<div class="statTextVille"><?php echo $value;?></div>
-			<div class="statBarContainPurple">
+            <div class="statTextVille"><?php echo htmlentities($csp->getCSP());?></div>
+            <div class="statBarContainPurple">
   <div style="width:<?php echo getPourcent($nbAdhCsp,$nbTotal); ?>" class="statBarPourcentYellow">&nbsp;<?php echo getPourcent($nbAdhCsp,$nbTotal); ?></div></div>
     </div><div class="clear"></div>
-	
+    
 <?php
     }
 }
@@ -298,20 +301,20 @@ foreach ($csp AS $key => $value)
 <div class="box box-primary">
           <div class="box-header"><i class="fa fa-bar-chart-o"></i><h3 class="box-title">Nouveaux inscrits par mois (<?php echo getCyberName($epn)?>)</h3></div>
 <div class="box-body"><table class="table"> 
-				<thead><tr>
-					<th></th>
-					<th>Nouveaux inscrits</th>
-					<th>Dont actifs</th></td></tr></thead></tbody>
+                <thead><tr>
+                    <th></th>
+                    <th>Nouveaux inscrits</th>
+                    <th>Dont actifs</th></td></tr></thead></tbody>
 <?php
 
 for ($i=1 ; $i<= $month;++$i)
 {
     $nbNewAdhActifs= statInscription($i,1,$epn);
-	$nbNewAdhInactifs = statInscription($i,2,$epn);
-	//debug($nbNewAdhInactifs);
-	$totalNewadh=$nbNewAdhActifs+$nbNewAdhInactifs;
-	//debug($nbNewAdh);
-	echo '<tr><td >'.getMonth($i).'</td>
+    $nbNewAdhInactifs = statInscription($i,2,$epn);
+    //debug($nbNewAdhInactifs);
+    $totalNewadh=$nbNewAdhActifs+$nbNewAdhInactifs;
+    //debug($nbNewAdh);
+    echo '<tr><td >'.getMonth($i).'</td>
               <td >'.$totalNewadh.'</td>
               <td >'.$nbNewAdhActifs.' ('.getPourcent($nbNewAdhActifs,$nbTotal).')</td></tr>';
 }
@@ -321,9 +324,9 @@ for ($i=1 ; $i<= $month;++$i)
 
 
 <?php 
-	}else{
-	 echo geterror(36);
-	}
+    }else{
+     echo geterror(36);
+    }
 ?>
 
 

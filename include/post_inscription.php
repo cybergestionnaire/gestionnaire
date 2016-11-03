@@ -132,8 +132,7 @@
                                         $daterenouv,
                                         intval($epn),
                                         $newsletter);
-                    // $iduser = addUser($date,$nom,$prenom,$sexe,$jour,$mois,$annee,$adresse,$idVille,$tel,$mail,$temps,$login,$pass,$status,$lastvisit,$csp,$equipement,$utilisation,$connaissance,$info,$tarif,$daterenouv,$epn,$newsletter);
-                    //enlever le preinscription
+                    //enlever la preinscription
                     if ($utilisateur == null) {
                         $mess = getError(0);
                     }
