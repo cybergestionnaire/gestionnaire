@@ -208,27 +208,27 @@ if ($_SESSION["status"]==4)
 	case 11:
          $titre="Liste des ateliers";
          $aide="Creer, et administrer des ateliers de formations pour vos adh&eacute;rents";
-         include ("include/post_atelier.php");
+         //include ("include/post_atelier.php");
 		 $inc="admin_atelier_liste.php";
     break;
-	 case 12:
-         $titre="Planification d'un atelier";
-         $aide="Creer, et administrer des ateliers de formations pour vos adh&eacute;rents";
-         include ("include/post_atelier.php");
-         $inc="admin_form_atelier.php";
+    case 12:
+        $titre="Planification d'un atelier";
+        $aide="Creer, et administrer des ateliers de formations pour vos adh&eacute;rents";
+        include ("include/post_atelier.php");
+        $inc="admin_form_atelier.php";
     break;
     case 13:
-         $titre="D&eacute;tail d'un atelier";
-         $aide="G&eacute;rer les participants &agrave; l'atelier";
-          include ("include/post_atelier_presence.php");
-		  $inc="admin_atelier.php";
+        $titre="D&eacute;tail d'un atelier";
+        $aide="G&eacute;rer les participants &agrave; l'atelier";
+        //include ("include/post_atelier_presence.php");
+        $inc="admin_atelier.php";
     break;
    
-   	case 14:
-         $titre="Modification la planification d'un atelier";
-         $aide="Modifier des ateliers de formations pour vos adh&eacute;rents";
-         include ("include/post_atelier.php");
-         $inc="admin_form_atelier.php";
+    case 14:
+        $titre="Modification la planification d'un atelier";
+        $aide="Modifier des ateliers de formations pour vos adh&eacute;rents";
+        include ("include/post_atelier.php");
+        $inc="admin_form_atelier.php";
     break;
 	case 15:
 	     $titre="Cr&eacute;ation d'un sujet d'atelier";
@@ -245,9 +245,9 @@ if ($_SESSION["status"]==4)
     break;
 	
 	case 17: 
-			$titre="Modification d'un sujet d'atelier ";
-			$aide="Modification des intitul&eacute;s";
-			$inc="admin_atelier_modif.php";
+			$titre = "Gestion des sujets d'atelier ";
+			$aide  = "Modification des intitul&eacute;s";
+			$inc   = "admin_atelier_sujets.php";
 			include ("include/post_sujetatelier.php");
 	break;
 		

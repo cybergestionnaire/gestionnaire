@@ -67,9 +67,6 @@ class AtelierCategorie
         return $success;
     }
     
-    /**
-     * la fonction "supprimer" ne devrait jamais être appelée !
-     */
     public function supprimer() {
         $db = Mysql::opendb();
         $sql    = "DELETE FROM `tab_atelier_categorie` WHERE `id_atelier_categorie`=" . $this->_id;
@@ -119,7 +116,7 @@ class AtelierCategorie
         $result = mysqli_query($db,$sql);
         
         if ($result) {
-            $atelierCategorie = new atelierCategorie(array("id_atelier_categorie" => mysqli_insert_id($db), "label_categorie" => $label));
+            $atelierCategorie = new AtelierCategorie(array("id_atelier_categorie" => mysqli_insert_id($db), "label_categorie" => $label));
         }
         
         Mysql::closedb($db);

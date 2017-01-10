@@ -126,9 +126,25 @@
             </ul>
         </li>
         
-        <li class="<?php if ($a == 11 OR $a == 12  OR $a == 18) { echo "active"; }else{ echo "treeview" ;} ?>">
+        <li class="<?php if ($a == 11 OR $a == 12  OR $a == 18 OR $a == 7 OR $a == 10 or $a == 15 OR $a == 17 or  $a == 34 OR $a == 35) { echo "active"; }else{ echo "treeview" ;} ?>">
             <a href="#"><i class="fa fa-keyboard-o"></i> <span>Ateliers</span><i class="fa fa-angle-left pull-right"></i></a>
             <ul class="treeview-menu">
+                <li class="<?php if ($a == 7 OR $a == 10 or $a == 15 OR $a == 17 or $a == 34 OR $a == 35) { echo "active"; }else{ echo "treeview" ;} ?>">
+                    <a href="#"><i class="fa fa-angle-double-right"></i> Param&egrave;tres atelier <i class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="index.php?a=7"><i class="fa fa-angle-double-right"></i> Cat&eacute;gories / Niveaux</a></li>
+                        <li class="<?php if ( $a == 15 OR $a == 17){ echo "active treeview"; }else{ echo "treeview" ;} ?>">
+                            <a href="index.php?a=17"><i class="fa fa-angle-double-right"></i> Sujets</i></a>
+                        </li>
+                        <li class="<?php if ( $a == 34 OR $a == 35){ echo "active treeview"; } else { echo "treeview" ;} ?>">
+                            <a href="#"><i class="fa fa-angle-double-right"></i> Sessions <i class="fa fa-angle-left pull-right"></i></a>
+                            <ul class="treeview-menu">
+                                <li><a href="index.php?a=34"><i class="fa fa-angle-double-right"></i> Cr&eacute;er un sujet</a></li>
+                                <li><a href="index.php?a=35"><i class="fa fa-angle-double-right"></i> Modifier un sujet</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
                 <li ><a href="index.php?a=11"><i class="fa fa-angle-double-right"></i>Programmation en cours</a></li>
                 <li ><a href="index.php?a=12"><i class="fa fa-angle-double-right"></i>Planifier un atelier</a></li>
                 <li ><a href="index.php?a=18"><i class="fa fa-angle-double-right"></i>Archives</a></li>
@@ -156,30 +172,9 @@
             </ul>
         </li>
         
-        <li class="<?php if ($a == 3 OR $a == 4 OR $a == 7 OR $a == 10 or $a == 15 OR $a == 17 or  $a == 34 OR $a == 35) { echo "active"; } else { echo "treeview" ;} ?>">
+        <li class="<?php if ($a == 3 OR $a == 4) { echo "active"; } else { echo "treeview" ;} ?>">
             <a href="#"><i class="fa fa-gear"></i> <span>Gestion de l'espace</span><i class="fa fa-angle-left pull-right"></i></a>
             <ul class="treeview-menu">
-                <li>
-                    <a href="#"><i class="fa fa-angle-double-right"></i> Param&egrave;tres atelier <i class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li><a href="index.php?a=7"><i class="fa fa-angle-double-right"></i> Cat&eacute;gories / Niveaux</a></li>
-                        <li class="<?php if ( $a == 15 OR $a == 17){ echo "active treeview"; }else{ echo "treeview" ;} ?>">
-                            <a href="#"><i class="fa fa-angle-double-right"></i> Ateliers <i class="fa fa-angle-left pull-right"></i></a>
-                            <ul class="treeview-menu active">
-                                <li><a href="index.php?a=15"><i class="fa fa-angle-double-right"></i> Cr&eacute;er un sujet</a></li>
-                                <li><a href="index.php?a=17"><i class="fa fa-angle-double-right"></i> Modifier un sujet</a></li>
-                            </ul>
-                        </li>
-                        <li class="<?php if ( $a == 34 OR $a == 35){ echo "active treeview"; } else { echo "treeview" ;} ?>">
-                            <a href="#"><i class="fa fa-angle-double-right"></i> Sessions <i class="fa fa-angle-left pull-right"></i></a>
-                            <ul class="treeview-menu">
-                                <li><a href="index.php?a=34"><i class="fa fa-angle-double-right"></i> Cr&eacute;er un sujet</a></li>
-                                <li><a href="index.php?a=35"><i class="fa fa-angle-double-right"></i> Modifier un sujet</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                
                 <li><a href="index.php?a=3"><i class="fa fa-angle-double-right"></i>Interventions</a></li>
                 <li><a href="index.php?a=4"><i class="fa fa-angle-double-right"></i>Br&egrave;ves</a></li>
                 <li><a href="index.php?a=52"><i class="fa fa-angle-double-right"></i>Courriers</a></li>
@@ -224,9 +219,17 @@
             </ul>
         </li>
         
-        <li class="<?php if ($a == 11 OR $a == 12  OR $a == 18) { echo "active"; } else { echo "treeview" ;} ?>">
+        <li class="<?php if ($a == 11 OR $a == 12  OR $a == 18 OR $a == 7 OR $a == 10 or $a == 15 OR $a == 17) { echo "active"; } else { echo "treeview" ;} ?>">
             <a href="#"><i class="fa fa-keyboard-o"></i> <span>Ateliers</span><i class="fa fa-angle-left pull-right"></i></a>
             <ul class="treeview-menu">
+                <li class="<?php if ($a == 7 OR $a == 10 or $a == 15 OR $a == 17) { echo "active"; }else{ echo "treeview" ;} ?>">
+                    <a href="#"><i class="fa fa-angle-double-right"></i> Param&egrave;tres <i class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="index.php?a=7"><i class="fa fa-angle-double-right"></i> Cat&eacute;gories / Niveaux</a></li>
+                        <li><a href="index.php?a=17"><i class="fa fa-angle-double-right"></i> Sujets</a></li>
+                 
+                    </ul>
+                </li>
                 <li><a href="index.php?a=11"><i class="fa fa-angle-double-right"></i>Programmation en cours</a></li>
                 <li><a href="index.php?a=12"><i class="fa fa-angle-double-right"></i>Planifier un atelier</a></li>
                 <li><a href="index.php?a=18"><i class="fa fa-angle-double-right"></i>Archives</a></li>
@@ -234,9 +237,16 @@
             </ul>
         </li>
         
-        <li class="<?php if ($a == 31 OR $a == 37  OR $a == 36) { echo "active"; } else { echo "treeview" ;} ?>">
+        <li class="<?php if ($a == 31 OR $a == 37  or $a == 34 OR $a == 35 OR $a == 36) { echo "active"; } else { echo "treeview" ;} ?>">
             <a href="#"><i class="fa fa-ticket"></i> <span>Sessions</span><i class="fa fa-angle-left pull-right"></i></a>
             <ul class="treeview-menu">
+                <li class="<?php if ( $a == 34 OR $a == 35) { echo "active treeview"; } else { echo "treeview" ;} ?>">
+                    <a href="#"><i class="fa fa-angle-double-right"></i> Param&egrave;tres <i class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="index.php?a=34"><i class="fa fa-angle-double-right"></i>sujets</a></li>
+<!--                        <li><a href="index.php?a=35"><i class="fa fa-angle-double-right"></i> Modifier un sujet</a></li>-->
+                    </ul>
+                </li>
                 <li ><a href="index.php?a=37"><i class="fa fa-angle-double-right"></i>Sessions en cours</a></li>
                 <li ><a href="index.php?a=31&m=1"><i class="fa fa-angle-double-right"></i>Planifier une session</a></li>
                 <li ><a href="index.php?a=36"><i class="fa fa-angle-double-right"></i>Archives</a></li>
@@ -255,31 +265,9 @@
         </li>
         
         <!-- Gestion -->    
-        <li class="<?php if ($a == 3 OR $a == 4 OR $a == 7 OR $a == 10 or $a == 15 OR $a == 17 or $a == 34 OR $a == 35) { echo "active"; }else{ echo "treeview" ;} ?>">
+        <li class="<?php if ($a == 3 OR $a == 4) { echo "active"; }else{ echo "treeview" ;} ?>">
             <a href="#"><i class="fa fa-gear"></i> <span>Gestion de l'espace</span><i class="fa fa-angle-left pull-right"></i></a>
             <ul class="treeview-menu">
-                <li>
-                    <a href="#"><i class="fa fa-angle-double-right"></i> Param&egrave;tres atelier <i class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li><a href="index.php?a=7"><i class="fa fa-angle-double-right"></i> Cat&eacute;gories / Niveaux</a></li>
-                   
-                        <li class="<?php if ( $a == 15 OR $a == 17) { echo "active treeview"; } else { echo "treeview" ;} ?>">
-                            <a href="#"><i class="fa fa-angle-double-right"></i> Ateliers <i class="fa fa-angle-left pull-right"></i></a>
-                            <ul class="treeview-menu active">
-                                <li><a href="index.php?a=15"><i class="fa fa-angle-double-right"></i> Cr&eacute;er un sujet</a></li>
-                                <li><a href="index.php?a=17"><i class="fa fa-angle-double-right"></i> Modifier un sujet</a></li>
-                            </ul>
-                        </li>
-                 
-                        <li class="<?php if ( $a == 34 OR $a == 35) { echo "active treeview"; } else { echo "treeview" ;} ?>">
-                            <a href="#"><i class="fa fa-angle-double-right"></i> Sessions <i class="fa fa-angle-left pull-right"></i></a>
-                            <ul class="treeview-menu">
-                                <li><a href="index.php?a=34"><i class="fa fa-angle-double-right"></i> Cr&eacute;er un sujet</a></li>
-                                <li><a href="index.php?a=35"><i class="fa fa-angle-double-right"></i> Modifier un sujet</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
 
                 <li ><a href="index.php?a=3"><i class="fa fa-angle-double-right"></i>Interventions</a></li>
                 <li ><a href="index.php?a=4"><i class="fa fa-angle-double-right"></i>Br&egrave;ves</a></li>

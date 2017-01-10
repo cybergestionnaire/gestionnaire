@@ -20,13 +20,6 @@
 require_once("Mysql.class.php");
 require_once("Espace.class.php");
 
-/**
- * La classe Espace permer "d'abstraire" les données venant de la table tab_espace.
- *
- * Toutes les manipulations sur la table tab_espace devrait passer par une fonction 
- * de cette classe.
- */
-
 class Salle
 {
     

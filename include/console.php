@@ -147,12 +147,12 @@
                         $diff          = time() - date_timestamp_get($datelastetat); // difference en secondes
                         $now           = new DateTime();
                         $interval      = date_diff($datelastetat, $now);
-                        $time          = $interval->format("%d j %hh%im");
+                        $time          = $interval->format("%d j %hh%Im");
 
 ?>
         <tr class="list">
             <td><?php echo $rowPostes["nom_computer"] ?></td>
-            <td><?php if ($diff < 15) { ?>Libre<?php } else { ?>&Eacute;teint (depuis  <?php echo $time ?> ) <?php } ?></td>
+            <td><?php if ($diff < 15) { ?>Libre<?php } else { ?>&Eacute;teint (depuis  <?php echo $time . " " . $diff ?> ) <?php } ?></td>
             <td>-</td>
             <td>
 <?php 

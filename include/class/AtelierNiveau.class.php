@@ -76,9 +76,6 @@ class AtelierNiveau
         return $success;
     }
     
-    /**
-     * la fonction "supprimer" ne devrait jamais être appelée !
-     */
     public function supprimer() {
         $db = Mysql::opendb();
         $sql    = "DELETE FROM `tab_level` WHERE `id_level`=" . $this->_id;

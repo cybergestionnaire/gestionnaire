@@ -347,19 +347,6 @@ $sql="SELECT DISTINCT id_user
   }
 }
 
-function getAttenteAtelier($idatelier)
-{
-   $sql = "SELECT `id_rel_atelier_user` FROM `rel_atelier_user` WHERE `id_atelier`=".$idatelier." 
-	AND `status_rel_atelier_user`= 2 ";
-   $db=opendb();
-   $result = mysqli_query($db,$sql);
-    closedb($db);
-   if (FALSE != $result)
-   {
-      return mysqli_num_rows($result) ;
-   }
-}
-
 //pages utilisateur les ateliers programmes
 function getMyFutAtelier($y, $m, $d)
 {
@@ -2496,25 +2483,6 @@ $sql = "DELETE FROM `tab_atelier_sujet` WHERE `id_sujet`='".$id."'
 /// Gestion des tarifs //////
 
 
-// renvoie le test sur l'existence de tarifs pour les ateliers
-function TestTarifs()
-{
-$sql="SELECT count(`id_tarif`) as nb FROM `tab_tarifs` WHERE `categorie_tarif`=5";
-$db=opendb();
-$result = mysqli_query($db,$sql);
-closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-	  $row=mysqli_fetch_array($result);
-      return $row["nb"];
-  }	
-	
-}
-
 // retourne le prix et le nom du tarif à partir du tarif sélectionné
 function getPrixFromTarif($id)
 {
@@ -3580,33 +3548,6 @@ function AffectationAtelierSocket($adresse)
 		
 		return TRUE;
 	}
-}
-
-///liberation de la salle pour l'atelier par epnconnect
-
-function ModifStatusAtelier($idatelier,$status)
-{
-if($status==2){
-	$sql="UPDATE `tab_atelier` SET `status_atelier`='2', 
-				`cloturer_atelier`= '1'
-				WHERE `id_atelier`='".$idatelier."'";
-}elseif ($status==1){
-	$sql="UPDATE `tab_atelier` SET `status_atelier`='1' WHERE `id_atelier`='".$idatelier."' ";
-	}
-	
-$db=opendb();
-$result = mysqli_query($db, $sql);
-closedb($db);
-    if ($result == FALSE )
-    {
-      return FALSE ;
-    }
-    else
-    {
-			return TRUE ;
-    }
-	
-	
 }
 
 ///Ajouter la relation atelier-commputer pour quEPN cpnnect libère la salle !

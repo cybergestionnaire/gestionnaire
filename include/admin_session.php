@@ -41,7 +41,8 @@ $enattente=countPlaceSession($idsession,2);
 $placesrestantes=$nbplace-$placesoccupee;
 
 //tester la présence de tarifs ateliers
-$testTarifAtelier=TestTarifs();
+//$testTarifAtelier=TestTarifs();
+        $testTarifAtelier = count(Tarif::getTarifsByCategorie('5'));
 
   if ($b == 2)
   {

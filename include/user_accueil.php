@@ -146,7 +146,10 @@
             <!-- The time line -->
             
 <?php
-        if ($nbTA > 0) {    
+        // temporaire pour debug
+        //if ($nbTA > 0) { 
+        if ($nbTA < 0) {    
+
             for ($g = 1 ; $g <= $nbTA ; $g++) {
                 $rowTA = mysqli_fetch_array($listeWeekAtelier);
                 if ($rowTA["tab_origine"] == "tab_atelier") {
