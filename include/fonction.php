@@ -430,49 +430,6 @@ function delBookmark($iduser,$idurl)
 //
 //
 
-Function createAtelier($sujet,$content,$ressource,$niveau,$categorie)
-{
-$sql = "INSERT INTO `tab_atelier_sujet`(`id_sujet`, `label_atelier`, `content_atelier`, `ressource_atelier`, `niveau_atelier`, `categorie_atelier`)
-		VALUES ('','".$sujet."','".$content."','".$ressource."','".$niveau."','".$categorie."')" ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return $result;
-  }
-}
-
-
-
-function modifSujetAtelier($id,$sujet,$content,$ressource,$niveau,$categorie)
-{
-$sql = " UPDATE `tab_atelier_sujet` 
-SET `label_atelier`='".$sujet."',
-	`content_atelier`='".$content."',
-	`ressource_atelier`='".$ressource."',
-	`niveau_atelier`='".$niveau."',
-	`categorie_atelier`='".$categorie."'
-	
-WHERE `id_sujet`='".$id."' " ;
-  
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return $result;
-  }
-}
-
 //tous les ateliers du réseau
 function getFutAtelier($year)
 {
@@ -593,42 +550,6 @@ $sql= "SELECT  *
   }
 }
 
-//retourne les ateliers archivés
-// pour rappel, statut 1= en programmation, 2= annule.
-function getArchivAtelier($y, $anim)
-{
-if ($anim==0){
-$sql="SELECT `id_AS` , `date_AS` , `inscrits` , `presents` , `absents` , `attente` , `nbplace` , `statut_programmation`
-FROM `tab_as_stat`
-WHERE `type_AS` = 'a'
-AND `statut_programmation` =1
-AND YEAR(`date_AS`)=".$y."
-ORDER BY `date_AS` DESC " ;
-} else{
-$sql="SELECT `id_AS` , `date_AS` , `inscrits` , `presents` , `absents` , `attente` , `nbplace` , `statut_programmation`
-FROM `tab_as_stat`
-WHERE `type_AS` = 'a'
-AND `statut_programmation` =1
-AND YEAR(`date_AS`)=".$y."
-AND `id_anim` =".$anim."
-ORDER BY `date_AS` DESC " ;
-}
-
-
-$db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-	return $result;
-  }
-
-
-}
 // renvoie les données sujets en fonction de l'id du sujet
 //INNER JOIN tab_atelier_categories AS tab_atelier_sujet.categorie_atelier=tab_atelier_categories.id_atelier_categorie
 
@@ -668,40 +589,6 @@ $db=opendb();
   {
   $row= mysqli_fetch_array($result) ;
 	return $row;
-  }
-}
-
-// getAllAtelier()
-// recupere la liste de tous les ateliers
-
-function getAllAtelier($id,$value=0)
-{
-  if($value==0)
-  { // a venir
-  $sql = "SELECT `sujet_atelier`, `date_atelier`, `heure_atelier`,`id_atelier`,`nbplace_atelier`
-          FROM `tab_atelier`
-          WHERE `niveau_atelier` =".$id."
-          AND `date_atelier`>= '".date('Y-m-d')."'
-          ORDER BY `date_atelier` ASC";
-  }
-  else //archive
-  {
-  $sql = "SELECT *
-          FROM `tab_atelier`
-		  WHERE `id_atelier` =".$id."
-          AND `date_atelier`< '".date('Y-m-d')."'
-          ORDER BY `date_atelier` ASC";
-  }
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return $result;
   }
 }
 
@@ -983,7 +870,7 @@ function delUserAtelier($idatelier,$iduser)
 }
 // delUserAtelier()
 // Desinscription d'un adherent a un atelier
-function ModifyUserAtelier($idatelier,$iduser,$statut)
+function ModifyUserAtelier($idatelier, $iduser, $statut)
 {
 
   $sql = "UPDATE `rel_atelier_user` 

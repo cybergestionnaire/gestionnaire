@@ -81,7 +81,6 @@
         }
     }
 
-    // $nba = mysqli_num_rows($result1);
     $nbAteliers = count($ateliers);
 ?>
 

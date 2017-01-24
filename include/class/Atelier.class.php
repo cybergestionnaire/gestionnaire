@@ -100,6 +100,27 @@ class Atelier
     public function getStatut() {
         return $this->_statut;
     }
+
+    public function archiver() {
+        self::setStatut(2);
+    }
+
+    public function setStatut($statut) {
+        $success = FALSE;
+
+        $db = Mysql::opendb();        
+        
+        $sql = "UPDATE `tab_atelier` SET `statut_atelier`='" . $statut. "' 
+                WHERE `id_atelier`='" . $this->_id. "'";
+
+        $result = mysqli_query($db, $sql);
+        if ($result) {
+            $this->_statut = $statut;
+            $success = TRUE;
+        }
+        
+        return $success;
+    }
     
     public function getIdSalle() {
         return $this->_idSalle;
@@ -171,7 +192,7 @@ class Atelier
 
         $sql = "SELECT `id_rel_atelier_user` FROM `rel_atelier_user`  "
              . "WHERE `id_atelier`=" . $this->_id. " "
-             . "AND `status_rel_atelier_user`= 0 ";
+             . "AND (`status_rel_atelier_user`= 0 OR `status_rel_atelier_user`= 1)";
              
         $result = mysqli_query($db,$sql);
         Mysql::closedb($db);
@@ -189,6 +210,26 @@ class Atelier
     function getUtilisateursInscrits() {
         return Utilisateur::getUtilisateursInscritsAtelier($this->_id);
     }
+    
+    function getNbUtilisateursInscrits() {
+        return count(self::getUtilisateursInscrits());
+    }    
+    
+    function getUtilisateursPresents() {
+        return Utilisateur::getUtilisateursPresentsAtelier($this->_id);
+    }
+    
+    function getNbUtilisateursPresents() {
+        return count(self::getUtilisateursPresents());
+    }  
+
+    function getUtilisateursInscritsOuPresents() {
+        return array_merge(Utilisateur::getUtilisateursInscritsAtelier($this->_id), Utilisateur::getUtilisateursPresentsAtelier($this->_id));
+    }
+    
+    function getNbUtilisateursInscritsOuPresents() {
+        return count(self::getUtilisateursInscritsOuPresents());
+    }    
     
     function getUtilisateursEnAttente() {
         return Utilisateur::getUtilisateursEnAttenteAtelier($this->_id);
@@ -223,24 +264,80 @@ class Atelier
         return $success;
     }
     
+    function inscrireUtilisateurInscrit($idUtilisateur) {
+        $success = FALSE;
+
+        $db  = Mysql::opendb();
+
+        if (!self::isUtilisateurInscrit($idUtilisateur)) {
+            $sql = "INSERT INTO `rel_atelier_user` (`id_atelier` , `id_user` , `status_rel_atelier_user` )
+                    VALUES ('" . $this->_id . "', '" . $idUtilisateur."', '0')";
+        }
+        else {
+            $sql = "UPDATE `rel_atelier_user` "
+                 . "SET status_rel_atelier_user='0'"
+                 . "WHERE `id_user`=" . $idUtilisateur . " AND `id_atelier`=" . $this->_id ;
+        }
+
+        $result = mysqli_query($db,$sql);
+    
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $success = TRUE;
+        }
+        return $success;
+    }
+
     function inscrireUtilisateurEnAttente($idUtilisateur) {
         $success = FALSE;
+
+        $db  = Mysql::opendb();
+
         if (!self::isUtilisateurInscrit($idUtilisateur)) {
-            $db  = Mysql::opendb();
             $sql = "INSERT INTO `rel_atelier_user` (`id_atelier` , `id_user` , `status_rel_atelier_user` )
                     VALUES ('" . $this->_id . "', '" . $idUtilisateur."', '2')";
+        }
+        else {
+            $sql = "UPDATE `rel_atelier_user` "
+                 . "SET status_rel_atelier_user='2'"
+                 . "WHERE `id_user`=" . $idUtilisateur . " AND `id_atelier`=" . $this->_id ;
+        }
 
-            $result = mysqli_query($db,$sql);
+        $result = mysqli_query($db,$sql);
+    
+        Mysql::closedb($db);
         
-            Mysql::closedb($db);
-        
-            if ($result) {
-                $success = TRUE;
-            }
+        if ($result) {
+            $success = TRUE;
         }
         return $success;
     }
     
+    function inscrireUtilisateurPresent($idUtilisateur) {
+        $success = FALSE;
+
+        $db  = Mysql::opendb();
+
+        if (!self::isUtilisateurInscrit($idUtilisateur)) {
+            $sql = "INSERT INTO `rel_atelier_user` (`id_atelier` , `id_user` , `status_rel_atelier_user` )
+                    VALUES ('" . $this->_id . "', '" . $idUtilisateur."', '1')";
+        }
+        else {
+            $sql = "UPDATE `rel_atelier_user` "
+                 . "SET status_rel_atelier_user='1'"
+                 . "WHERE `id_user`=" . $idUtilisateur . " AND `id_atelier`=" . $this->_id ;
+        }
+
+        $result = mysqli_query($db,$sql);
+    
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $success = TRUE;
+        }
+        return $success;
+    }
     
     function isUtilisateurInscrit($idUtilisateur) {
         // verifie si le user n'est pas deja inscrit
@@ -463,4 +560,82 @@ class Atelier
     
     }
     
+    public static function getAteliersParAnneeEtParAnimateur($annee, $idAnimateur) {
+
+        $ateliers = null;
+    
+        $db       = Mysql::opendb();
+        $sql      = "SELECT * "
+                  . "FROM `tab_atelier` "
+                  . "WHERE YEAR(`date_atelier`)=" . $annee . " "
+                  . "AND `id_anim` =" . $anim . " "
+                  . "ORDER BY `date_atelier` ASC";
+                    
+        $result   = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $ateliers = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $ateliers[] = new Atelier($row);
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $ateliers;
+    
+    }
+    
+    public static function getAteliersArchivesParAnnee($annee) {
+
+        $ateliers = null;
+    
+        $db       = Mysql::opendb();
+        $sql      = "SELECT * "
+                  . "FROM `tab_atelier` "
+                  . "WHERE YEAR(`date_atelier`)=" . $annee . " "
+                  . "AND statut_atelier = 2 "
+                  . "ORDER BY `date_atelier` ASC";
+                    
+        $result   = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $ateliers = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $ateliers[] = new Atelier($row);
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $ateliers;
+    
+    }
+    
+    public static function getAteliersArchivesParAnneeEtParAnimateur($annee, $idAnimateur) {
+
+        $ateliers = null;
+    
+        $db       = Mysql::opendb();
+        $sql      = "SELECT * "
+                  . "FROM `tab_atelier` "
+                  . "WHERE YEAR(`date_atelier`)=" . $annee . " "
+                  . "AND `id_anim` =" . $anim . " "
+                  . "AND statut_atelier = 2 "
+                  . "ORDER BY `date_atelier` ASC";
+                    
+        $result   = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $ateliers = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $ateliers[] = new Atelier($row);
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $ateliers;
+    
+    }    
 }

@@ -125,7 +125,7 @@
         
         //Cloture de l'atelier pour epnconnect
         if ($b == 12) {
-            if ($atelier->setStatus(2) AND $ateliers->setCloturer(1)) {
+            if ($atelier->setStatus(2) AND $atelier->setCloturer(1)) {
                 echo "<div class=\"alert alert-success alert-dismissable\"><i class=\"fa fa-info\"></i>
                 <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>&nbsp;Atelier cl&ocirc;tur&eacute;, EpnConnect reprends le contr&ocirc;le !</div>" ;
             }
@@ -209,7 +209,6 @@
             </div>
 <?php 
         //test activation epnconnect pour les ateliers + si date du jour OK 
-//        if (date('Y-m-d') >= $row["date_atelier"]) {
         if (date('Y-m-d') >= $atelier->getDate()) {
             if ($atelier->getStatus() > 0) {
                 $class  = "disabled";
@@ -245,17 +244,13 @@
 <!-- **********************liste des user inscrit a un atelier-->
 <?php
 
-        //$result = getAtelierUser($idAtelier,0) ; 
-        //$nb = mysqli_num_rows($result) ;
-        
-        $utilisateursInscrits = $atelier->getUtilisateursInscrits();
-        
-        
-        if (count($utilisateursInscrits) > 0) {      
+        $utilisateursinscritsOuPresents = $atelier->getUtilisateursInscritsOuPresents();
+    
+        if (count($utilisateursinscritsOuPresents) > 0) {
             //tester la présence de tarifs ateliers
     
             if ($testTarifAtelier > 1) { 
-                $tooltipinfo = "Inscriptions en cours / total d&eacute;pensé  sur total achet&eacute;";
+                $tooltipinfo = "Inscriptions en cours / total d&eacute;pens&eacute;  sur total achet&eacute;";
             }
             else {
                 $tooltipinfo = "Inscriptions en cours";
@@ -275,13 +270,8 @@
                     <thead><th>Fiche</th><th>Nom, pr&eacute;nom</th><th><span data-toggle="tooltip" title="<?php echo $tooltipinfo; ?>">Inscriptions/Forfait</span></th><th></th></thead>
 <?php
             $bccusers = "";
-            foreach ($utilisateursInscrits as $utilisateur) {
+            foreach ($utilisateursinscritsOuPresents as $utilisateur) {
             
-            
-            //for ($i = 1 ; $i <= $nb; $i++) {
-                //$row2 = mysqli_fetch_array($result) ;
-                // 0= inscription en cours non validée
-                //$nbASencours = getnbASUserEncours($row2['id_user'], 0) ; 
                 $nbASencours = getnbASUserEncours($utilisateur->getId(), 0) ; 
             
                 // construction des BCCmail
@@ -399,7 +389,6 @@
         //resultat de la recherche si -------------------------------------
         if ($searchuser != "" and strlen($searchuser) > 2) { // debut ifsearch
             // Recherche d'un adherent
-            // $result = searchUser($searchuser);
             
             $utilisateursRecherche = Utilisateur::searchUtilisateurs($searchuser);
             $nb = count($utilisateursRecherche);
@@ -414,8 +403,7 @@
                     <tbody>
 <?php
                 foreach ($utilisateursRecherche as $utilisateur) {
-                // for ($i = 1; $i <= $nb ; $i++) {
-                    // $row = mysqli_fetch_array($result) ;
+
                     $statutuser = $utilisateur->getStatut();
                     //mise en place tarification
                     if ($testTarifAtelier > 1) { 
@@ -461,7 +449,7 @@
                     }
                 
                     if ($atelier->getNbPlacesRestantes() > 0) {
-                        echo "<tr><td class=".$classstatut.">" . htmlentities($utilisateur->getNom() . " " . $utilisateur->getprenom()) . "</td>
+                        echo "<tr><td class=" . $classstatut . ">" . htmlentities($utilisateur->getNom() . " " . $utilisateur->getprenom()) . "</td>
                             <td>" . $affichage . "</td>
                             <td><a href=\"index.php?a=13&b=2&idstatut=0&idatelier=" . $idAtelier . "&iduser=" . $utilisateur->getId() . "\"><button type=\"button\" class=\"btn btn-success sm\"  data-toggle=\"tooltip\" title=\"Inscrire\"><i class=\"fa fa-check\"></i></button></a>
                             <a href=\"index.php?a=13&b=10&idstatut=2&idatelier=" . $idAtelier . "&iduser=" . $utilisateur->getId() . "\"><button type=\"button\" class=\"btn bg-purple sm\"   data-toggle=\"tooltip\" title=\"Mettre en liste d'attente\"><i class=\"fa fa-repeat\"></i></button></a></td>
@@ -490,8 +478,6 @@
 
 
         //******************* liste des user en liste d'attente
-        // $result = getAtelierUser($idAtelier,2) ; 
-        // $nb     = mysqli_num_rows($result) ;
         $utilisateursEnAttente = $atelier->getUtilisateursEnAttente();
         $nb = count ($utilisateursEnAttente);
         
@@ -508,9 +494,7 @@
                     </thead>
                     <tbody>
 <?php   
-            // for ($i = 1 ; $i<= $nb; $i++) {
             foreach ($utilisateursEnAttente as $utilisateur) {
-                // $row2 = mysqli_fetch_array($result) ;
 ?>
                         <tr>
                             <td>

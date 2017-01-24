@@ -381,24 +381,6 @@ if ($y==date('Y')){
 
 }
 
-/// Update du statut de l'atelier
-function UpdateAtelierStatut($id,$statut)
-{
-$sql="UPDATE `tab_atelier` SET `statut_atelier`=".$statut." WHERE `id_atelier`=".$id;
-$db=opendb();
-	  $result = mysqli_query($db,$sql);
-	  closedb($db);
-	  if (FALSE == $result)
-	  {
-		  return FALSE ;
-	  }
-	  else
-	  {
-		return $result;
-	  }
-
-}
-
 ///////////***********Transaction sur les ateliers, gestion des forfaits ***************///
 ///
 ///les 50 dernières transactions

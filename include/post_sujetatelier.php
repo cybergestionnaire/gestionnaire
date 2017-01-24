@@ -54,8 +54,6 @@
                 else {
                     $mesno = 0;
                 }
-                
-                // modifSujetAtelier($idSujet, $sujet, $content, $ressource, $idniveau, $idcategorie);
             }
         }
         
@@ -65,7 +63,6 @@
             }
             else {
                 $atelierSujet = AtelierSujet::creerAtelierSujet($sujet, $content, $ressource, $idniveau, $idcategorie);
-                // createAtelier($sujet, $content, $ressource, $idniveau, $idcategorie);
                 if ($atelierSujet !== null) {
                     header ("Location:index.php?a=17&mesno=20");
                 }

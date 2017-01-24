@@ -917,7 +917,31 @@ class Utilisateur
         
         return $utilisateurs ; 
     }
-    
+
+    public static function getUtilisateursPresentsAtelier($idAtelier) {
+        $utilisateurs = null;
+        
+        $db = Mysql::opendb();
+
+        $sql = "SELECT tab_user.*
+                FROM tab_user, rel_atelier_user
+                WHERE rel_atelier_user.id_user = tab_user.id_user
+                AND rel_atelier_user.id_atelier = " . $idAtelier ."
+                AND rel_atelier_user.status_rel_atelier_user = 1";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $utilisateurs = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+        
+        return $utilisateurs ; 
+    }
+
     public static function getUtilisateursEnAttenteAtelier($idAtelier) {
         $utilisateurs = null;
         
