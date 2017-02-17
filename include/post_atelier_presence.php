@@ -80,7 +80,7 @@
                 //entrer les stats
                 $absents = $inscritsAuDepart - $atelier->getNbUtilisateursPresents();
                 $statAtelier = StatAtelierSession::getStatAtelierByIdAtelier($atelier->getId());
-                if ($statAtelier == null) {
+                if ($statAtelier === null) {
                     $statAtelier = StatAtelierSession::creerStatAtelierSession('a', $idAtelier, $atelier->getDate(), $inscritsAuDepart, $atelier->getNbUtilisateursPresents(), $absents, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 1, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
                 }
                 else {
@@ -110,7 +110,7 @@
                 //modifier dans les stats !
                 $absents = $inscritsAuDepart - $atelier->getNbUtilisateursPresents();
                 $statAtelier = StatAtelierSession::getStatAtelierByIdAtelier($atelier->getId());
-                if ($statAtelier == null) {
+                if ($statAtelier === null) {
                     $statAtelier = StatAtelierSession::creerStatAtelierSession('a', $idAtelier, $atelier->getDate(), $inscritsAuDepart, $atelier->getNbUtilisateursPresents(), $absents, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 1, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
                 }
                 else {

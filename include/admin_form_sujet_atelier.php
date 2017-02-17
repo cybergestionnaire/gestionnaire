@@ -27,7 +27,7 @@
     $ressource   = '';
     $idNiveau    = '';
     $idCategorie = '';
-    $btnLabel    = "Cr&eacute;er l'atelier";
+    $btnLabel    = "Cr&eacute;er le sujet d'atelier";
     $action      = "12"; //création par défaut
     
     // $public    = "Tous Publics";
@@ -42,7 +42,7 @@
         $ressource   = $sujet->getRessource();
         $idNiveau    = $sujet->getIdNiveau();
         $idCategorie = $sujet->getIdCategorie();
-        $btnLabel    = "Modifier l'atelier";
+        $btnLabel    = "Modifier le sujet d'atelier";
         $action      = "11"; //modification
     }
     

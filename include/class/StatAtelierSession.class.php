@@ -384,4 +384,28 @@ class StatAtelierSession
         return $statAtelier;
     }
     
+        public static function getStatSessionByIdSession($idSession) {
+        $statSession = null;
+
+        if ($idSession != 0) {
+            $db = Mysql::opendb();
+            $idSession = mysqli_real_escape_string($db, $idSession);
+            $sql = "SELECT * "
+                 . "FROM `tab_as_stat` "
+                 . "WHERE `type_AS` = 's' "
+                 . "AND `id_AS` = " . $idSession . "";
+
+            $result = mysqli_query($db,$sql);
+            Mysql::closedb($db);
+            
+            if ($result && mysqli_num_rows($result) == 1) {
+                $statSession = new StatAtelierSession(mysqli_fetch_assoc($result));
+                mysqli_free_result($result);
+            }
+        }
+        
+        return $statSession;
+    }
+    
+    
 }

@@ -2418,14 +2418,14 @@ $sql="UPDATE `tab_as_stat` SET `inscrits`=".$inscrit.",`presents`=".$present.",`
 
 //
 //retourne le nombre d'inscrit et le nombre en attente pour une session
-function getInscritpersession($idsession,$iddate)
+function getInscritpersession($idsession, $iddate)
 {
-$sql="SELECT count( `id_user` ) AS nb1 FROM `rel_session_user`WHERE `status_rel_session` =0 AND `id_session` =".$idsession." AND `id_datesession` =".$iddate."";
-$sql1="SELECT count( `id_user` ) AS nb2 FROM `rel_session_user`WHERE `status_rel_session` =2 AND `id_session` =".$idsession." AND `id_datesession` =".$iddate."";
-$db=opendb();
- $result = mysqli_query($db,$sql);
-  $result1 = mysqli_query($db,$sql1);
-  closedb($db);
+    $sql  = "SELECT count( `id_user` ) AS nb1 FROM `rel_session_user`WHERE `status_rel_session` =0 AND `id_session` =".$idsession." AND `id_datesession` =".$iddate."";
+    $sql1 = "SELECT count( `id_user` ) AS nb2 FROM `rel_session_user`WHERE `status_rel_session` =2 AND `id_session` =".$idsession." AND `id_datesession` =".$iddate."";
+    $db   = opendb();
+    $result = mysqli_query($db,$sql);
+    $result1 = mysqli_query($db,$sql1);
+    closedb($db);
   if ((FALSE == $result) OR  (FALSE == $result1))
   {
       return FALSE ;

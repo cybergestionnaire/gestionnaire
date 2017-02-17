@@ -536,7 +536,9 @@ class Utilisateur
     
     public function supprimer() {
         $success = false;
-        // aucune vérification de cohérence ???????
+        // TODO : supprimer toutes les relations liées à l'utilisateur avant de le supprimer !!!
+        // néanmoins, garder les lignes tab_resa pour les statistiques
+        
         $db = Mysql::opendb();
         $sql    = "DELETE FROM `tab_user` WHERE `id_user`=" . $this->_id . " LIMIT 1 " ;
         $result = mysqli_query($db,$sql);
@@ -964,5 +966,177 @@ class Utilisateur
         }
         
         return $utilisateurs ; 
+    }
+
+    //  les mêmes pour les sessions
+    public static function getUtilisateursInscritsSession($idSession) {
+        $utilisateurs = null;
+        
+        $db = Mysql::opendb();
+
+        $sql = "SELECT DISTINCT tab_user.*
+                FROM tab_user, rel_session_user
+                WHERE rel_session_user.id_user = tab_user.id_user
+                AND rel_session_user.id_session = " . $idSession ."
+                AND rel_session_user.status_rel_session = 0";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $utilisateurs = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+        
+        return $utilisateurs ; 
+    }
+
+    public static function getUtilisateursPresentsSession($idSession) {
+        $utilisateurs = null;
+        
+        $db = Mysql::opendb();
+
+        $sql = "SELECT DISTINCT tab_user.*
+                FROM tab_user, rel_session_user
+                WHERE rel_session_user.id_user = tab_user.id_user
+                AND rel_session_user.id_session = " . $idSession ."
+                AND rel_session_user.status_rel_session = 1";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $utilisateurs = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+        
+        return $utilisateurs ; 
+    }
+    
+        public static function getUtilisateursInscritsOuPresentsSession($idSession) {
+        $utilisateurs = null;
+        
+        $db = Mysql::opendb();
+
+        $sql = "SELECT DISTINCT tab_user.*
+                FROM tab_user, rel_session_user
+                WHERE rel_session_user.id_user = tab_user.id_user
+                AND rel_session_user.id_session = " . $idSession ."
+                AND (rel_session_user.status_rel_session = 0 OR rel_session_user.status_rel_session = 1)";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $utilisateurs = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+        
+        return $utilisateurs ; 
+    }
+    
+
+    public static function getUtilisateursEnAttenteSession($idSession) {
+        $utilisateurs = null;
+        
+        $db = Mysql::opendb();
+
+        $sql = "SELECT DISTINCT tab_user.*
+                FROM tab_user, rel_session_user
+                WHERE rel_session_user.id_user = tab_user.id_user
+                AND rel_session_user.id_session = " . $idSession ."
+                AND rel_session_user.status_rel_session = 2";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $utilisateurs = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+        
+        return $utilisateurs ; 
     }    
+    //  encore les mêmes pour les dates de sessions
+    public static function getUtilisateursInscritsSessionDate($idSessionDate) {
+        $utilisateurs = null;
+        
+        $db = Mysql::opendb();
+
+        $sql = "SELECT tab_user.*
+                FROM tab_user, rel_session_user
+                WHERE rel_session_user.id_user = tab_user.id_user
+                AND rel_session_user.id_datesession = " . $idSessionDate ."
+                AND rel_session_user.status_rel_session = 0";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $utilisateurs = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+        
+        return $utilisateurs ; 
+    }
+
+    public static function getUtilisateursPresentsSessionDate($idSessionDate) {
+        $utilisateurs = null;
+        
+        $db = Mysql::opendb();
+
+        $sql = "SELECT tab_user.*
+                FROM tab_user, rel_session_user
+                WHERE rel_session_user.id_user = tab_user.id_user
+                AND rel_session_user.id_datesession = " . $idSessionDate ."
+                AND rel_session_user.status_rel_session = 1";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $utilisateurs = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+        
+        return $utilisateurs ; 
+    }
+
+    public static function getUtilisateursEnAttenteSessionDate($idSessionDate) {
+        $utilisateurs = null;
+        
+        $db = Mysql::opendb();
+
+        $sql = "SELECT tab_user.*
+                FROM tab_user, rel_session_user
+                WHERE rel_session_user.id_user = tab_user.id_user
+                AND rel_session_user.id_datesession = " . $idSessionDate ."
+                AND rel_session_user.status_rel_session = 2";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $utilisateurs = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+        
+        return $utilisateurs ; 
+    } 
+    
+    
 }

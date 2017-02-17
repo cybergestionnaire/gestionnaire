@@ -14,12 +14,11 @@
 
     You should have received a copy of the GNU General Public License
     along with CyberGestionnaire.  If not, see <http://www.gnu.org/licenses/>
-
-
-  
- Creation des ateliers dans la base
 */
-/*    require_once("include/class/AtelierSujet.class.php");
+
+    require_once("include/class/SessionSujet.class.php");
+/*
+    require_once("include/class/AtelierSujet.class.php");
     require_once("include/class/AtelierNiveau.class.php");
     require_once("include/class/AtelierCategorie.class.php");
 */
@@ -35,16 +34,16 @@
         <!-- liste des salles existants-->
         <div class="box box-solid box-warning">
             <div class="box-header">
-                <h3 class="box-title">Liste des Sujets</h3>
+                <h3 class="box-title">Liste des sujets de session</h3>
                 <div class="box-tools pull-right">
-                    <a href="index.php?a=15"><button class="btn btn-primary btn-sm"  data-toggle="tooltip" title="Ajouter"><i class="fa fa-plus"></i></button></a>
+                    <a href="index.php?a=34"><button class="btn btn-primary btn-sm"  data-toggle="tooltip" title="Ajouter"><i class="fa fa-plus"></i></button></a>
                 </div>
             </div>
 
             <div class="box-body no-padding">
                 <table class="table">
                     <thead> <tr> 
-                        <th>Sujet</th>
+                        <th>Titre</th>
                         <th>D&eacute;tails</th>
                         <th>Niveau</th>
                         <th>Categorie</th>
@@ -52,18 +51,17 @@
                     
                     <tbody>
 <?php
-    $atelierSujets = AtelierSujet::getAtelierSujets();
-    if ($atelierSujets !== null) {
-        foreach ($atelierSujets as $atelierSujet) {
+    $sessionSujets = SessionSujet::getSessionSujets();
+    if ($sessionSujets !== null) {
+        foreach ($sessionSujets as $sessionSujet) {
 ?>
                         <tr>
-                            <td><?php echo htmlentities($atelierSujet->getLabel()) ; ?></td>
-                            <td><?php echo htmlentities($atelierSujet->getContent()) ; ?></td>
-                            <td><?php echo htmlentities($atelierSujet->getRessource()) ; ?></td>
-                            <td><?php echo htmlentities($atelierSujet->getNiveau()->getNom()) ; ?></td>
-                            <td><?php echo htmlentities($atelierSujet->getCategorie()->getLabel()) ; ?></td>
-                            <td><a href="index.php?a=15&idSujet=<?php echo htmlentities($atelierSujet->getId()) ;?>"><button class="btn btn-success"  type="submit" value="modifier"><i class="fa fa-refresh"></i></button></a></td>
-                            <td><a href="index.php?a=17&b=13&idSujet=<?php echo htmlentities($atelierSujet->getId()) ;?>"><button type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></a></td>
+                            <td><?php echo htmlentities($sessionSujet->getTitre()) ; ?></td>
+                            <td><?php echo htmlentities($sessionSujet->getDetail()) ; ?></td>
+                            <td><?php echo htmlentities($sessionSujet->getNiveau()->getNom()) ; ?></td>
+                            <td><?php echo htmlentities($sessionSujet->getCategorie()->getLabel()) ; ?></td>
+                            <td><a href="index.php?a=34&s=mod&idSujet=<?php echo htmlentities($sessionSujet->getId()) ;?>"><button class="btn btn-success"  type="submit" value="modifier"><i class="fa fa-refresh"></i></button></a></td>
+                            <td><a href="index.php?a=34&s=del&idSujet=<?php echo htmlentities($sessionSujet->getId()) ;?>"><button type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></a></td>
                         </tr>
 <?php
         }

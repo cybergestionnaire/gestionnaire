@@ -237,19 +237,19 @@
             </ul>
         </li>
         
-        <li class="<?php if ($a == 31 OR $a == 37  or $a == 34 OR $a == 35 OR $a == 36) { echo "active"; } else { echo "treeview" ;} ?>">
+        <li class="<?php if ($a == 31 OR $a == 37 OR $a == 29 or $a == 34 OR $a == 35 OR $a == 36) { echo "active"; } else { echo "treeview" ;} ?>">
             <a href="#"><i class="fa fa-ticket"></i> <span>Sessions</span><i class="fa fa-angle-left pull-right"></i></a>
             <ul class="treeview-menu">
-                <li class="<?php if ( $a == 34 OR $a == 35) { echo "active treeview"; } else { echo "treeview" ;} ?>">
-                    <a href="#"><i class="fa fa-angle-double-right"></i> Param&egrave;tres <i class="fa fa-angle-left pull-right"></i></a>
+                <li class="<?php if ( $a == 29 OR $a == 34 OR $a == 35) { echo "active treeview"; } else { echo "treeview" ;} ?>">
+                    <a href="#"><i class="fa fa-angle-double-right"></i>Param&egrave;tres <i class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        <li><a href="index.php?a=34"><i class="fa fa-angle-double-right"></i>sujets</a></li>
+                        <li class="<?php if ( $a == 29 OR $a == 34 OR $a == 35) { echo "active"; } ?>"><a href="index.php?a=29"><i class="fa fa-angle-double-right"></i>sujets</a></li>
 <!--                        <li><a href="index.php?a=35"><i class="fa fa-angle-double-right"></i> Modifier un sujet</a></li>-->
                     </ul>
                 </li>
-                <li ><a href="index.php?a=37"><i class="fa fa-angle-double-right"></i>Sessions en cours</a></li>
-                <li ><a href="index.php?a=31&m=1"><i class="fa fa-angle-double-right"></i>Planifier une session</a></li>
-                <li ><a href="index.php?a=36"><i class="fa fa-angle-double-right"></i>Archives</a></li>
+                <li class="<?php if ( $a == 31) { echo "active"; } ?>"><a href="index.php?a=31&m=1"><i class="fa fa-angle-double-right"></i>Planifier une session</a></li>
+                <li class="<?php if ( $a == 37) { echo "active"; } ?>"><a href="index.php?a=37"><i class="fa fa-angle-double-right"></i>Sessions en cours</a></li>
+                <li class="<?php if ( $a == 36) { echo "active"; } ?>"><a href="index.php?a=36"><i class="fa fa-angle-double-right"></i>Archives</a></li>
             </ul>
         </li>
         

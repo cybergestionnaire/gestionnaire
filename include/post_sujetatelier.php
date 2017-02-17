@@ -40,12 +40,12 @@
         $ressource   = isset($_POST["ressource"]) ? $_POST["ressource"] : '' ;
 
         if ($b == 11) {
-            error_log("--- modification ! ");
+            //error_log("--- modification ! ");
             if ($sujet == "" || $content == "") {
                 $mesno = 4 ;
             }
             else {
-                error_log("--- modification : champs ok ! ");
+                //error_log("--- modification : champs ok ! ");
                 $atelierSujet = AtelierSujet::getAtelierSujetById($idSujet);
                 
                 if ($atelierSujet->modifier($sujet, $content, $ressource, $idniveau, $idcategorie)) {

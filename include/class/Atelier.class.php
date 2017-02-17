@@ -440,15 +440,40 @@ class Atelier
     public function supprimer() {
 
         $success = false;
-        
+
         $db     = Mysql::opendb();
-        $sql    = "DELETE FROM `tab_atelier` WHERE `id_atelier`='" . $this->_id . "' ";
+        // TODO : utiliser une transaction pour éviter une suppression partielle !
+        
+        // on supprime d'abord les relations dans rel_atelier_computer, rel_user_forfait et rel_atelier_user
+        
+        $sql    = "DELETE FROM rel_atelier_computer WHERE id_atelier_rel='" . $this->_id . "'";
         $result = mysqli_query($db, $sql);
+        
+        if ($result) {
+            
+            $sql    = "DELETE FROM rel_atelier_user WHERE id_atelier='" . $this->_id . "'";
+            $result = mysqli_query($db, $sql);
+            
+            if ($result) {
+
+                $sql    = "DELETE FROM `rel_user_forfait` WHERE id_atelier`='" . $this->_id . "'";
+                $result = mysqli_query($db, $sql);  
+                
+                if ($result) {
+                
+                    $sql    = "DELETE FROM `tab_atelier` WHERE `id_atelier`='" . $this->_id . "' ";
+                    $result = mysqli_query($db, $sql);  
+                    
+                    if ($result) {
+                        $success = true;
+                    }
+                }
+            }
+        }
+
         Mysql::closedb($db);
 
-        if ($result) {
-            $success = true;
-        }
+
         return $success;
     }
    

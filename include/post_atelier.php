@@ -26,7 +26,8 @@
     // error_log(print_r($_GET, true));
 
     include_once("include/class/Atelier.class.php");
-
+    include_once("include/class/StatAtelierSession.class.php");
+    
     $idAtelier = isset($_GET["idatelier"]) ? $_GET["idatelier"] : '';
     if (isset($_POST["submit_atelier"]) && $_POST["submit_atelier"] != "") {  // si le formulaire est posté
 
@@ -99,11 +100,19 @@
                         if ($atelier->modifier($date, $heure, $duree, $idAnim, $idSujet, $nbplace, $public, $stateAtelier, $idSalle, $idTarif, $atelier->getStatus(), $atelier->getCloturer())) {
                             // modifier la rel aussi !! duree/postes/heure/date
                             if ($stateAtelier == 3) { //en cas d'annulation d'atelier, l'inscrire dans les stats
-                                $inscrits = countPlace($idAtelier);
-                                //adherent en attente
-                                $rattente = getAtelierUser($idatelier,2) ; 
-                                $attente  = mysqli_num_rows($rattente);
-                                InsertStatAS('a', $idAtelier, $date, $inscrits, 0, 0, $attente, $nbplace, $stateAtelier);
+                            
+                                $statAtelier = StatAtelierSession::getStatAtelierByIdAtelier($atelier->getId());
+                                if ($statAtelier === null) {
+                                    $statAtelier = StatAtelierSession::creerStatAtelierSession('a', $idAtelier, $atelier->getDate(), $atelier-getNbUtilisateursInscritsOuPresents(), 0, 0, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 2, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
+                                }
+                                else {
+                                    $statAtelier->modifier('a', $idAtelier, $atelier->getDate(), $atelier-getNbUtilisateursInscritsOuPresents(), 0, 0, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 2, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
+                                }
+                                // $inscrits = countPlace($idAtelier);
+                                // //adherent en attente
+                                // $rattente = getAtelierUser($idatelier,2) ; 
+                                // $attente  = mysqli_num_rows($rattente);
+                                // InsertStatAS('a', $idAtelier, $date, $inscrits, 0, 0, $attente, $nbplace, $stateAtelier);
                             }
                             header("Location: ./index.php?a=11&mesno=14");
                         }
@@ -121,33 +130,36 @@
         $atelier = Atelier::getAtelierById($idAtelier);
 
         if ($atelier->supprimer()) {
+            
+            // la zone ci-dessous est désormais gérée par la classe Atelier
+            
             //supprimer les adherents inscrits
-            $result = getAtelierUser($idAtelier,0) ; 
-            $nb = mysqli_num_rows($result) ;
-            if ($nb > 0) {
-                for ($i = 0 ; $i < $nb; $i++) {
-                    $row = mysqli_fetch_array($result) ;
-                    delUserAtelier($idAtelier, $row["id_user"]);
-                }
-            }
-            //supprimer ceux en liste d'attente aussi !
-            $result2 = getAtelierUser($idAtelier, 2) ; 
-            $nb2 = mysqli_num_rows($result2) ;
-            if ($nb2 > 0) {
-                for ($i = 0 ; $i < $nb2; $i++) {
-                    $row2 = mysqli_fetch_array($result2) ;
-                    delUserAtelier($idAtelier, $row2["id_user"]);
-                }
-            }
+            // $result = getAtelierUser($idAtelier,0) ; 
+            // $nb = mysqli_num_rows($result) ;
+            // if ($nb > 0) {
+                // for ($i = 0 ; $i < $nb; $i++) {
+                    // $row = mysqli_fetch_array($result) ;
+                    // delUserAtelier($idAtelier, $row["id_user"]);
+                // }
+            // }
+            // //supprimer ceux en liste d'attente aussi !
+            // $result2 = getAtelierUser($idAtelier, 2) ; 
+            // $nb2 = mysqli_num_rows($result2) ;
+            // if ($nb2 > 0) {
+                // for ($i = 0 ; $i < $nb2; $i++) {
+                    // $row2 = mysqli_fetch_array($result2) ;
+                    // delUserAtelier($idAtelier, $row2["id_user"]);
+                // }
+            // }
         
-            //on supprimer aussi la relation computer pour epnconnect
-            $supprimRel = supprimComputerAtelier($idAtelier);
-            if (FALSE == $supprimRel) {
-                header("Location: ./index.php?a=11&mesno=0");
-            }
-            else {
+            // //on supprimer aussi la relation computer pour epnconnect
+            // $supprimRel = supprimComputerAtelier($idAtelier);
+            // if (FALSE == $supprimRel) {
+                // header("Location: ./index.php?a=11&mesno=0");
+            // }
+            // else {
                 header("Location: ./index.php?a=11&mesno=14");
-            }
+            // }
         }
         else {
             header("Location: ./index.php?a=11&mesno=0");

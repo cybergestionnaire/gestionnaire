@@ -270,7 +270,7 @@ Fichier servant à modifier/créer la programmation d'un atelier
                 echo "<option value=\"" . $tarif->getId() . "\" selected>" . htmlentities($tarif->getNom()) . "</option>";
             }
             else {
-                echo "<option value=\"" . $tarif->getId()."\">" . htmlentities($tarif->getNom()) . "</option>";
+                echo "<option value=\"" . $tarif->getId()."\">" . htmlentities($tarif->getNom() . " (" . $tarif->getDonnee(). "€)" ) . "</option>";
             }
         }
 ?>
