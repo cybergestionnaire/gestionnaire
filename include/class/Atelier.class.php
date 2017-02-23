@@ -239,7 +239,7 @@ class Atelier
         return count(self::getUtilisateursEnAttente());
     }
     
-    function inscrireUtilisateur($idUtilisateur, $idTarif) {
+    function inscrireUtilisateurAvecTarif($idUtilisateur, $idTarif) {
         $success = FALSE;
         if (!self::isUtilisateurInscrit($idUtilisateur) AND self::getNbPlacesRestantes() > 0) {
 
@@ -265,67 +265,29 @@ class Atelier
     }
     
     function inscrireUtilisateurInscrit($idUtilisateur) {
-        $success = FALSE;
+        return $this->inscrireUtilisateur($idUtilisateur, '0');
+    }
 
-        $db  = Mysql::opendb();
-
-        if (!self::isUtilisateurInscrit($idUtilisateur)) {
-            $sql = "INSERT INTO `rel_atelier_user` (`id_atelier` , `id_user` , `status_rel_atelier_user` )
-                    VALUES ('" . $this->_id . "', '" . $idUtilisateur."', '0')";
-        }
-        else {
-            $sql = "UPDATE `rel_atelier_user` "
-                 . "SET status_rel_atelier_user='0'"
-                 . "WHERE `id_user`=" . $idUtilisateur . " AND `id_atelier`=" . $this->_id ;
-        }
-
-        $result = mysqli_query($db,$sql);
-    
-        Mysql::closedb($db);
-        
-        if ($result) {
-            $success = TRUE;
-        }
-        return $success;
+    function inscrireUtilisateurPresent($idUtilisateur) {
+        return $this->inscrireUtilisateur($idUtilisateur, '1');
     }
 
     function inscrireUtilisateurEnAttente($idUtilisateur) {
-        $success = FALSE;
-
-        $db  = Mysql::opendb();
-
-        if (!self::isUtilisateurInscrit($idUtilisateur)) {
-            $sql = "INSERT INTO `rel_atelier_user` (`id_atelier` , `id_user` , `status_rel_atelier_user` )
-                    VALUES ('" . $this->_id . "', '" . $idUtilisateur."', '2')";
-        }
-        else {
-            $sql = "UPDATE `rel_atelier_user` "
-                 . "SET status_rel_atelier_user='2'"
-                 . "WHERE `id_user`=" . $idUtilisateur . " AND `id_atelier`=" . $this->_id ;
-        }
-
-        $result = mysqli_query($db,$sql);
-    
-        Mysql::closedb($db);
-        
-        if ($result) {
-            $success = TRUE;
-        }
-        return $success;
+        return $this->inscrireUtilisateur($idUtilisateur, '2');
     }
     
-    function inscrireUtilisateurPresent($idUtilisateur) {
+    function inscrireUtilisateur($idUtilisateur, $statut) {
         $success = FALSE;
 
         $db  = Mysql::opendb();
 
         if (!self::isUtilisateurInscrit($idUtilisateur)) {
             $sql = "INSERT INTO `rel_atelier_user` (`id_atelier` , `id_user` , `status_rel_atelier_user` )
-                    VALUES ('" . $this->_id . "', '" . $idUtilisateur."', '1')";
+                    VALUES ('" . $this->_id . "', '" . $idUtilisateur."', '" . $statut . "')";
         }
         else {
             $sql = "UPDATE `rel_atelier_user` "
-                 . "SET status_rel_atelier_user='1'"
+                 . "SET status_rel_atelier_user='" . $statut ."'"
                  . "WHERE `id_user`=" . $idUtilisateur . " AND `id_atelier`=" . $this->_id ;
         }
 

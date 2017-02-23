@@ -111,6 +111,14 @@ class Session
         
         $dateSession = SessionDate::creerSessionDate($this->_id, $date, $statut);
         if ($dateSession !== null) {
+            // ajout des utilisateurs pour cette date
+            // on n'inscrit les éventuels présents en inscrits : il ne peut y avoir de présents sur une nouvelle date !
+            foreach($this->getUtilisateursInscritsOuPresents() as $utilisateur) {
+                $dateSession->inscrireUtilisateurInscrit($utilisateur->getId());
+            }
+            foreach($this->getUtilisateursEnAttente() as $utilisateur) {
+                $dateSession->inscrireUtilisateurEnAttente($utilisateur->getId());
+            }
             $success = true;
         }
         
@@ -152,6 +160,64 @@ class Session
     public function getNbUtilisateursEnAttente() {
         return count(self::getUtilisateursEnAttente());
     }
+
+    public function isUtilisateurInscrit($idUtilisateur) {
+        // verifie si le user n'est pas deja inscrit
+        $success = FALSE;
+        
+        $db     = Mysql::opendb();
+        $sql    = "SELECT * FROM `rel_session_user` WHERE `id_session` =" . $this->_id . " AND `id_user` =" . $idUtilisateur ;
+        // attention, renvoi une ligne par datesession !!! Donc, plusieurs "row" !
+        
+        $result = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+
+        if (mysqli_num_rows($result) >= 1) {
+            $success = TRUE;
+        }
+        
+        return $success;
+    }
+    
+    public function inscrireUtilisateurInscrit($idUtilisateur) {
+        return $this->InscrireUtilisateur($idUtilisateur, '0');
+    }
+    
+    public function inscrireUtilisateurPresent($idUtilisateur) {
+        return $this->InscrireUtilisateur($idUtilisateur, '1');
+    }
+
+    public function inscrireUtilisateurEnAttente($idUtilisateur) {
+        return $this->InscrireUtilisateur($idUtilisateur, '2');
+    }
+    
+    public function InscrireUtilisateur($idUtilisateur, $statut) {
+        $success = TRUE;
+
+        foreach ($this->getSessionDates() as $dateSession) {
+            if (!$dateSession->inscrireUtilisateur($idUtilisateur, $statut)) {
+                $success = false;
+            }
+        }
+        return $success;
+    }
+    
+    public function desinscrireUtilisateur($idUtilisateur) {
+        $success = FALSE;
+        
+        $db      = Mysql::opendb();
+        $sql     = "DELETE FROM `rel_session_user` WHERE `id_user`=" . $idUtilisateur . " AND `id_session`=" . $this->_id ;
+        $result  = mysqli_query($db, $sql);
+
+        Mysql::closedb($db);
+
+        if ($result) { 
+
+            $success = TRUE;
+        }
+                
+        return $success;
+    }
     
     public function hasSessionDatesValidees() {
         // permet de savoir si des dates ont déjà été validées,
@@ -174,6 +240,43 @@ class Session
         }
         
         return $hasSessionDatesValidees;
+    }
+
+    public function hasSessionDatesNonValidees() {
+        // permet de savoir si des dates ont déjà été validées,
+        // auquel cas, on ne doit plus supprimer la session !
+
+        $hasSessionDatesNonValidees = FALSE;
+        $db = Mysql::opendb();
+
+        $sql = "SELECT count( `statut_datesession` ) AS nb FROM `tab_session_dates` WHERE `id_session` =" . $this->_id . " AND `statut_datesession` = 0";
+
+        $result = mysqli_query($db,$sql);
+
+        if ($result) {
+            $row = mysqli_fetch_array($result);
+            $nbDatesNonValidees = $row["nb"];
+            
+            if ($nbDatesNonValidees > 0) {
+                $hasSessionDatesNonValidees = TRUE;
+            }
+        }
+        
+        return $hasSessionDatesNonValidees;
+    }
+
+    public function cloturer() {
+        $success = FALSE;
+        
+        $db      = Mysql::opendb();
+        $sql     = "UPDATE `tab_session` SET `status_session`=1 WHERE `id_session`=" . $this->_id;
+        $result  = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $success = TRUE;
+        }
+        return $success;
     }
     
     /*

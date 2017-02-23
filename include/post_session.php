@@ -17,8 +17,8 @@
 
 */
 
-    error_log("GET : " . print_r($_GET, true));
-    error_log("POST : " . print_r($_POST, true));
+    // error_log("GET : " . print_r($_GET, true));
+    // error_log("POST : " . print_r($_POST, true));
     
     require_once("include/class/Session.class.php");
     require_once("include/class/SessionDate.class.php");
@@ -70,17 +70,11 @@
                 
                 $resultat = count($sessiondates); // variable pour comparaison nombre
                 
-                // error_log("--- sessionsdate --- " . print_r($sessiondates, true));
-                
                 //trier le tableau dates
                 $arraydate = $sessiondates;
                 usort($arraydate, "my_sort"); //de 0 à nbredates !
 
-                // error_log("--- arraydate --- " . print_r($arraydate, true));
-                //debug($arraydate);
-
                 $dates = $arraydate[$resultat - 1]; //donner la derniere date comme date reference
-                // error_log("--- dates --- " . print_r($dates, true));
         
             }
             else {
@@ -88,7 +82,6 @@
                 
                 $nbre_origin = $session->getNbDates();
                 
-                // $nbre_origin = getSessionNbreDates($idsession); //nombre initial entré lors de la premiere creation
                 //recompiler les dates mais sans les ranger
                 for ($i = 1 ; $i <= $nbre_dates ; $i++) {
                     $d = $_POST["date" . $i];
@@ -99,7 +92,6 @@
                 $resultat = count($sessiondates); // variable pour comparaison nombre
                 $dates = $sessiondates[1]; //variable la première pour la liste d'affichage
                 $arraydate = [];
-                //debug($sessiondates);
             }
             
             ///entrer les données dans la base     
@@ -125,12 +117,9 @@
                             if ($session !== null) {
                                 for ($i = 0 ; $i < $nbre_dates ; $i++) {
                                     $session->addSessionDate($arraydate[$i], 0);
-                                    
-                                    // insertDateSessions($idsession, $arraydate[$i], 0);
                                 }
                                 header("Location: ./index.php?a=37");
                             }                        
-                            // $idsession = addSession($dates, $idTitre, $nbplace, $nbre_dates, $idAnim, $idSalle, $idTarif);    
                             else {
                                 header("Location: ./index.php?a=37&mesno=0");
                             }
@@ -162,17 +151,20 @@
                                         // InsertStatAS('s', $idsession, $sessiondates[$i], $arrayresult[0], 0, 0, $arrayresult[1], $nbplace, 2, $idAnim, $_SESSION["idepn"]);
                                        sauf que la stat n'était pas enlevée si on remettait la date active !
                                        je reproduis pour le moment ce schéma, en attendant de mieux comprendre les tenants et aboutissants.
+                                       
+                                       MAJ : j'a traité le problème en n'ajoutant pas systématiquement une stat, mais en regardant d'abord s'il en existe une.
+                                       ATTENTION : Si on a 2 sessionDate à la même date (bizarre, mais possible dans le code...), ça ne va pas marcher
+                                       (la fonction getStatSessionByIdSessionAndDate attend une ligne unique dans la base)
                                     ******/
                                     
-                                    // ATTENTION !!! On ne peut pas ré-utiliser une seule stat, vu qu'il y a un seul idSession pour chaque date !
                                     
-                                    // $statSession = StatAtelierSession::getStatSessionByIdSession($sessionDates[$i - 1]->getId());
-                                    // if ($statSession === null) {
+                                    $statSession = StatAtelierSession::getStatSessionByIdSessionAndDate($session->getId(), $sessionDates[$i - 1]->getDate());
+                                    if ($statSession === null) {
                                         $statSession = StatAtelierSession::creerStatAtelierSession('s', $session->getId(), $sessionDates[$i - 1]->getDate(), $sessionDates[$i - 1]->getNbUtilisateursInscritsOuPresents(), 0, 0, $sessionDates[$i - 1]->getNbUtilisateursEnAttente(), $session->getNbPlaces(), $session->getSessionSujet()->getIdCategorie(), 2, $session->getIdAnimateur(), $session->getSalle()->getIdEspace());
-                                    // }
-                                    // else {
-                                        // $statSession->modifier('s', $sessionDates[$i - 1]->getId(), $sessionDates[$i - 1]->getDate(), $sessionSate->getNbUtilisateursInscritsOuPresents(), 0, 0, $sessionSate->getNbUtilisateursEnAttente(), $session->getNbPlaces(), $session->getSessionSujet()->getIdCategorie(), 2, $session->getIdAnimateur(), $session->getSalle()->getIdEspace());
-                                    // }
+                                    }
+                                    else {
+                                        $statSession->modifier('s', $sessionDates[$i - 1]->getId(), $sessionDates[$i - 1]->getDate(), $sessionSate->getNbUtilisateursInscritsOuPresents(), 0, 0, $sessionSate->getNbUtilisateursEnAttente(), $session->getNbPlaces(), $session->getSessionSujet()->getIdCategorie(), 2, $session->getIdAnimateur(), $session->getSalle()->getIdEspace());
+                                    }
 
                                     
                                 }
@@ -185,7 +177,7 @@
                             // s'il y a des dates supplémentaires
                             for ($i = $nbre_origin + 1 ; $i <= $nbre_dates ; $i++) {
                                 $session->addSessionDate($_POST["date" . $i], $_POST["statutdate" . $i]);
-                                // TODO : il faut inscrire à cette date les utilisateurs déjà inscrits à la session
+                                // les utilisateurs sont automatiquement ajoutés par la fonction addSessionDate
                                 
                             }
                             
@@ -203,84 +195,7 @@
                             }
                             
                             if ($session->modifier($dates, $idTitre, $nbplace, $nbre_dates, $status, $idAnim, $idSalle, $idTarif)) {
-                                
                                 header("Location: ./index.php?a=37&mesno=14");
-                                
-                                
-                                // if ($nbre_origin == $nbre_dates) {  ///en cas de suppression de dates ou modif
-                                    // $o = 0;
-                                    // //en cas de modification , modifier les nouvelles dates
-                                    // for ($i = 1 ; $i <= $nbre_dates ; $i++) {
-                                        // if (isset($_POST["statutdate" . $i])) {     
-                                
-                                            // //recuperer les status envoyés par les selects
-                                            // if ($_POST["statutdate" . $i] == "3") {//suppression de la date
-                                                // // $sup = deletedatesession($_POST["iddate" . $i]);
-                                                // // //cloturer la session si les dates precedentes sont déjà cloturées
-                                                // // if ($sup != FALSE) {
-                                                    // // $nbrrestant = $nbre_origin - 1;
-                                                    // // $nbrvalides = getDatesValidesbysession($idsession);
-                                                    // // if ($nbrrestant == $nbrvalides) { 
-                                                        // // updateSessionStatut($idsession);
-                                                    // // }
-                                                // // }
-                                                // // //tester s'il y a des inscrits, et supprimer la relation date en cas de resultat positif                            
-                                                // // if (FALSE != testrelsessiondate($idsession)) {
-                                                    // // deleteRelsessionUser($idsession, $_POST["iddate" . $i]);
-                                                // // }
-                                                // // $o = $o + 1;
-                                            // }
-                                            // else {//modification de date 
-                                                // modifDateSession($_POST["iddate" . $i], $sessiondates[$i], $_POST["statutdate" . $i]);
-                                                // //cloturer la session si les dates precedentes sont déjà cloturées en cas de modif ==2
-                                                // if ($_POST["statutdate" . $i] == "2") {//Annulation de la date
-                                                    // //en cas d'aucune date en attente, valider la session et l'inscrire 
-                                                    // $nbrrestant = $nbre_origin - 1;
-                                                    // $nbrvalides = getDatesValidesbysession($idsession);
-                                                    // if ($nbrrestant == $nbrvalides) {
-                                                        // updateSessionStatut($idsession);
-                                                    // }
-                                                    // //inserer les stats aussi !!
-                                                    // $arrayresult = getInscritpersession($idsession, $_POST["iddate" . $i]);
-                                                    // InsertStatAS('s', $idsession, $sessiondates[$i], $arrayresult[0], 0, 0, $arrayresult[1], $nbplace, 2, $idAnim, $_SESSION["idepn"]);
-                                                // }
-                                    
-                                    
-                                            // }
-                                        // }
-                                    // }
-                        
-                                    //remettre le bon nombre pour $nbre_dates dans tab_session
-                                    // if (($nbre_dates - $o) < $nbre_dates) {
-                                        // $nbre_dates = $nbre_dates - $o;
-                                        // updatenbredates($idsession, $nbre_dates);
-                                    // }
-                                    // $i = 0;
-                                    // header("Location: ./index.php?a=37&mesno=14");
-                        
-                                    // //en cas d'ajout de date    
-                                // }
-                                // elseif ($nbre_origin < $nbre_dates) {
-                                    // //changer le nombre de dates dans tab_session
-                                    // updatenbredates($idsession,$nbre_dates);
-                        
-                                    // //insérer les nouvelles dates avec le statut s'il ya a lieu
-                                    // for ($i = $nbre_origin + 1 ; $i <= $nbre_dates ; $i++) {
-                                        // $result = insertDateSessions($idsession, $sessiondates[$i], 0);
-                                        // //inserer la relation aussi
-                                        // //retrouver la liste des inscrits
-                                        // $listeu = getSessionUser($idsession, 0);
-                                        // $c      = mysqli_num_rows($listeu);
-                                        // $list   = mysqli_fetch_array($listeu);
-                                        // if ((FALSE != testrelsessiondate($idsession)) AND FALSE != $result) {
-                                            // for ($y = 0 ; $y < $c ; $y++) {
-                                                // addUserSession($idsession, $list["id_user"], 0, $result);
-                                            // }
-                                        // }
-                                    // }
-                                    // $i = 0;
-                                    // header("Location: ./index.php?a=37&mesno=14");
-                                // }
                             }
                             else {
                                 //modification echouée
@@ -300,27 +215,7 @@
         $session = Session::getSessionById($idsession);
         if ($session->supprimer()) {
             // les relations sont désormais gérées par la fonction supprimer
-            
-            //supprimer les relations user concernées
-            // $result = getSessionUser($idsession,0) ;
-            // $nb = mysqli_num_rows($result) ;
-            // if ($nb > 0) {
-                // for ($i = 0 ; $i <= $nb ; $i++) {
-                    // $row = mysqli_fetch_array($result) ;
-                    // delUserSession($idsession, $row["id_user"]);
-                // }
-            // }
-            // //supprimer les relations user concernées en liste d'attente aussi !
-            // $result2 = getSessionUser($idsession,2) ;
-            // $nb2 = mysqli_num_rows($result2) ;
-            // if ($nb2>0) {
-                // for ($i = 0 ; $i <= $nb2; $i++) {
-                    // $row2 = mysqli_fetch_array($result2) ;
-                    // delUserSession($idsession,$row2["id_user"]);
-                // }
-            // }
             header("Location: ./index.php?a=37&mesno=46");
-            
         }
         else {
             header("Location: ./index.php?a=37&mesno=0");

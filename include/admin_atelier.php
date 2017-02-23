@@ -63,7 +63,7 @@
         
         //actions du formulaire pour inscriptions
         if ($b == 2) {
-            if ($atelier->inscrireUtilisateur($idUser, $tarif->getId())) {
+            if ($atelier->inscrireUtilisateurAvecTarif($idUser, $tarif->getId())) {
                 echo geterror(25);
             }
         }

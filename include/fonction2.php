@@ -1180,31 +1180,6 @@ if($statut==0)
       return mysqli_num_rows($result) ;
    }
 }
-//
-// getSessionUser()
-// renvoi les users inscrits a une session
-function getSessionUser($idsession,$statut)
-{
-
-  $sql = "SELECT DISTINCT(rel.id_user), `nom_user` , `prenom_user`, `status_rel_session`
-          FROM `tab_user` AS user, `rel_session_user` AS rel
-          WHERE rel.id_user = user.id_user
-	AND rel.status_rel_session=".$statut."
-	  AND rel.id_session =".$idsession."  ORDER BY `nom_user` ASC
-		  ";
-
-  $db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return $result;
-  }
-}
 
 ///renvoie les participants à un atelier validé absents ou présents
 
@@ -1290,22 +1265,6 @@ function getNomSession($id)
   {
       $row = mysqli_fetch_array($result) ;
       return $row;
-  }
-}
-
-function updateSessionStatut($id)
-{
-$sql="UPDATE `tab_session` SET `status_session`=1 WHERE `id_session`=".$id;
-	$db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return True;
   }
 }
 
@@ -1470,50 +1429,6 @@ function checkUserSession($idsession,$iduser)
   }
 }
 
-//
-// addAtelier()
-// cree une session d' atelier de formation
-function addSession($dates,$nom,$nbplace,$nbre_dates_sessions,$anim,$salle,$tarif)
-{
-  $sql = "INSERT INTO `tab_session`(`id_session`, `date_session`, `nom_session`, `nbplace_session`, `nbre_dates_sessions`, `status_session`, `id_anim`, `id_salle`, `id_tarif`) 
-  VALUES ('','".$dates."','".$nom."','".$nbplace."','".$nbre_dates_sessions."',0,'".$anim."','".$salle."','".$tarif."')" ;
-$db=opendb();
- $result = mysqli_query($db,$sql);
- $id=mysqli_insert_id($db);
-
-  closedb($db);
-  if (FALSE == $result)
-  {
-	
-	  return FALSE ;
-  }
-  else
-  {
-      return $id;
-  }
-}
-
-// Insérer une date dans une session
-function insertDateSessions($id,$date_s,$statut)
-{
-$sql="INSERT INTO `tab_session_dates`(`id_datesession`, `id_session`, `date_session`, `statut_datesession`)
-		VALUES ('','".$id."','".$date_s."','".$statut."')";	
-$db=opendb();
- $result = mysqli_query($db,$sql);
-  $id=mysqli_insert_id($db);
-  closedb($db);
-  if (FALSE == $result)
-  {
-	
-	  return FALSE ;
-  }
-  else
-  {
-       return $id;
-  }	
-
-}
-
 //supprimer toutes les dates d'une session
 function deleteAllDatessession($idsession)
 {
@@ -1525,104 +1440,6 @@ $db=opendb();
   {
 	
 	  return FALSE ;
-  }
-  else
-  {
-      return True;
-  }	
-
-}
-//retourne le test de présence des dates dans la table de relation user/datessession
-function testrelsessiondate($idsession)
-{
-$sql="SELECT `id_rel_session` FROM `rel_session_user` WHERE `id_session`=".$idsession ;
-$db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-$rown=mysqli_num_rows($result);
-  if ($rown==0)
-  {
-	 return FALSE ;
-  }
-  else
-  {
-      return True;
-  }	
-}
-
-// supprimer une date faisant partie d'une session
-function deletedatesession($iddatesession)
-{
-$sql="DELETE FROM `tab_session_dates` WHERE `id_datesession`=".$iddatesession." ";
-
-$db=opendb();
- $result = mysqli_query($db,$sql);
- 
-  closedb($db);
-  if (FALSE == $result)
-  {
-	
-	  return FALSE ;
-  }
-  else
-  {
-      return TRUE;
-  }	
-
-}
-//supprimer de la table de relation les valuers des dates precedemment modifiées
-function deleteRelsessionUser($idsession,$num)
-{
-$sql="DELETE FROM `rel_session_user` WHERE `id_session`=".$idsession." AND `id_datesession`=".$num." ";
-
-$db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-	
-	  return FALSE ;
-  }
-  else
-  {
-      return True;
-  }	
-
-}
-// modification des dates d'une session == modifiationn du nombre de dates + ou - !!
-function updatenbredates($idsession,$nbre_dates)
-{
-$sql="UPDATE `tab_session` SET `nbre_dates_sessions`=".$nbre_dates." WHERE `id_session`=".$idsession." ";
-$db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-	
-	  return FALSE ;
-  }
-  else
-  {
-      return True;
-  }	
-
-
-}
-// Modifier une date faisant partie d'une session 
-function modifDateSession($iddatesession,$datesession,$statut)
-{
-$sql="UPDATE `tab_session_dates` 
-SET `date_session`='".$datesession."',
- `statut_datesession`='".$statut."'
-WHERE `id_datesession`=".$iddatesession."
-";
-$db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-	
-	return FALSE ;
   }
   else
   {
@@ -1651,29 +1468,6 @@ $db=opendb();
 	  return $row['nb'];
   }	
 }
-//retroune le nombre de date avec ateliers validés par session pour comparaison avec  le nombre ci-dessus
-function getDatesValidesbysession($idsession)
-{
-$sql="SELECT COUNT(  `id_datesession` ) as nb
-FROM  `tab_session_dates` 
-WHERE  `statut_datesession` =1
-AND  `id_session` =".$idsession." ";
-$db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-	
-	return FALSE ;
-  }
-  else
-  {
-      $row=mysqli_fetch_array($result);
-	  return $row['nb'];
-  }	
-
-
-}
 
 // retourne toutes les dates d'une session
 function getDatesSession($id)
@@ -1692,67 +1486,6 @@ $db=opendb();
       return $result;
   }	
 
-}
-
-//retourne le nombre de dates annulées das une sesison
-function getDatesAnnulebysession($idsession)
-{
-$sql="SELECT count( `id_datesession` ) AS nb
-FROM `tab_session_dates`
-WHERE `id_session` =".$idsession."
-AND `statut_datesession` =2";
-$db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-	
-	  return FALSE ;
-  }
-  else
-  {
-      $row=mysqli_fetch_array($result);
-      return $row["nb"];
-  }	
-
-
-}
-
-//function retourne le nombre de dates enregistrées dans tab_session
-function getSessionNbreDates($idsession)
-{
-$sql="SELECT `nbre_dates_sessions` FROM `tab_session` WHERE `id_session`=".$idsession."";
-$db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-	
-	  return FALSE ;
-  }
-  else
-  {
-      $row=mysqli_fetch_array($result);
-      return $row["nbre_dates_sessions"];
-  }	
-
-}
-// changer le statut d'une date d'une session 0= en cours 1= validée
-function updateDatesessionStatut($iddate)
-{
-$sql="UPDATE `tab_session_dates` SET `statut_datesession`=1 WHERE `id_datesession`=".$iddate;
-$db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-	
-	  return FALSE ;
-  }
-  else
-  {
-      return True;
-  }	
 }
 
 //Retourne une date d'une session par son numero
@@ -2377,25 +2110,6 @@ $sql="SELECT `id_programmation` FROM `tab_session_stat` WHERE `id_session`='".$i
 
 }
 
-//Pour les stat, validation des présents
-function InsertStatAS($type,$id,$date,$inscrits,$presents,$absents,$attente,$nbplace,$categorie,$statut,$anim,$epn)
-{
-$sql="INSERT INTO `tab_as_stat`(`id_stat`, `type_AS`, `id_AS`, `date_AS`, `inscrits`, `presents`, `absents`, `attente`, `nbplace`, `id_categorie`, `statut_programmation`, `id_anim`, `id_epn`) 
-VALUES ('','".$type."','".$id."','".$date."','".$inscrits."','".$presents."', '".$absents."','".$attente."','".$nbplace."','".$categorie."','".$statut."','".$anim."','".$epn."') ";
-
-	$db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return True;
-  }
-}
-
 //modifier les nombres statistiuques, après modif par les archives
 function ModifStatAS($inscrit,$present,$absents,$idatelier,$type)
 {
@@ -2413,52 +2127,6 @@ $sql="UPDATE `tab_as_stat` SET `inscrits`=".$inscrit.",`presents`=".$present.",`
   }
 
 
-}
-
-
-//
-//retourne le nombre d'inscrit et le nombre en attente pour une session
-function getInscritpersession($idsession, $iddate)
-{
-    $sql  = "SELECT count( `id_user` ) AS nb1 FROM `rel_session_user`WHERE `status_rel_session` =0 AND `id_session` =".$idsession." AND `id_datesession` =".$iddate."";
-    $sql1 = "SELECT count( `id_user` ) AS nb2 FROM `rel_session_user`WHERE `status_rel_session` =2 AND `id_session` =".$idsession." AND `id_datesession` =".$iddate."";
-    $db   = opendb();
-    $result = mysqli_query($db,$sql);
-    $result1 = mysqli_query($db,$sql1);
-    closedb($db);
-  if ((FALSE == $result) OR  (FALSE == $result1))
-  {
-      return FALSE ;
-  }
-  else
-  {
-	$row=mysqli_fetch_array($result);
-	$row1=mysqli_fetch_array($result1);
-	$res=array();
-	$res[0]=$row['nb1'];
-	$res[1]=$row1['nb2'];
-      return $res;
-  }
-
-}
-
-// supression d'un sujet d'atelier de la base
-function delSujetAtelier($id)
-{
-
-$sql = "DELETE FROM `tab_atelier_sujet` WHERE `id_sujet`='".$id."'
-	" ;
-    $db=opendb();
-   $result = mysqli_query($db,$sql);
-    closedb($db);
-    if (FALSE == $result)
-    {
-        return FALSE ;
-    }
-    else
-    {
-        return TRUE;
-    }
 }
 
 //////////

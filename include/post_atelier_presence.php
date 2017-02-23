@@ -44,15 +44,12 @@
         // puis on regarde le nouveau tableau des présents pour déterminer le nombre d'absents
         
         foreach ($utilisateursPresents as $utilisateur) {
-            // error_log("inscripion simple de " . $utilisateur->getNom());
             $atelier->inscrireUtilisateurInscrit($utilisateur->getId());
             $depense = getForfaitUserEncours($utilisateur->getId());
             DeleteOneFromForfait($depense["id_forfait"], $utilisateur->getId());
         }      
         
         $inscritsAuDepart = $atelier->getNbUtilisateursInscrits();
-        
-        // error_log("nb inscrits au depart = " .$inscritsAuDepart);
         
         $utilisateursAtelier = $atelier->getUtilisateursInscritsOuPresents();
         

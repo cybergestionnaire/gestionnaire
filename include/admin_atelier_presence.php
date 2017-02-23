@@ -28,29 +28,12 @@ renvoie le nombre d'inscrits, le nombre de présents et l'id des présents (pour
     $idAtelier = isset($_GET["idatelier"]) ? $_GET["idatelier"] : '';
     $act       = isset($_GET["act"]) ? $_GET["act"] : '';
 
-    //$idUser     = $_GET["iduser"]; // inutilisé
-
     $atelier   = Atelier::getAtelierById($idAtelier);
     $animateur = $atelier->getAnimateur();
     $sujet     = $atelier->getSujet();
     $salle     = $atelier->getSalle();
     $tarif     = $atelier->getTarif();
 
-
-    // $row = getAtelier($idAtelier);
-    // affichage d'un atelier classique---------------------------------------
-
-    // $result       = getSujetById($row["id_sujet"]);
-    // $rowsujet     = mysqli_fetch_array($result);
-    // $id_categorie = $rowsujet["categorie_atelier"];
-    // $date_atelier = $row["date_atelier"];
-    // $nom_atelier  = $rowsujet["label_atelier"];
-    // $anim         = getUserName($row["anim_atelier"]);
-
-     // //adherent en attente
-    // $rattente     = getAtelierUser($idAtelier,2) ; 
-    // $enattente    = mysqli_num_rows($rattente);  
-    // $datea        = $row['date_atelier'] . " " . str_replace("h", ":", $row['heure_atelier']);
 
 ?> 
 
@@ -97,13 +80,11 @@ renvoie le nombre d'inscrits, le nombre de présents et l'id des présents (pour
     if ($act == 0) {
 //        $utilisateursPresents
         
-//        $result = getAtelierUser($idAtelier, 0) ; 
         $action = "index.php?a=16&b=5&idatelier=" . $idAtelier . " ";
         $bouton = "Valider les pr&eacute;sences";
     
     }
     else if ($act == 1) { //venue depuis les archives pour modification
-//        $result = getAtelierArchivUser($idAtelier);
         $action = "index.php?a=16&b=4&act=1&idatelier=" . $idAtelier . " ";
         $bouton = "Modifier les pr&eacute;sences";
     }
@@ -125,7 +106,6 @@ renvoie le nombre d'inscrits, le nombre de présents et l'id des présents (pour
                         <tbody>
             
 <?php
-        //for ($i = 1 ; $i <= $nb ; $i++) {
         foreach ($utilisateursInscrits as $utilisateur) {
 ?>
                             <tr>
@@ -140,7 +120,6 @@ renvoie le nombre d'inscrits, le nombre de présents et l'id des présents (pour
 <?php
         }
 ?><?php
-        //for ($i = 1 ; $i <= $nb ; $i++) {
         foreach ($utilisateursPresents as $utilisateur) {
 ?>
                             <tr>

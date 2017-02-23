@@ -384,7 +384,7 @@ class StatAtelierSession
         return $statAtelier;
     }
     
-        public static function getStatSessionByIdSession($idSession) {
+    public static function getStatSessionByIdSessionAndDate($idSession, $date) {
         $statSession = null;
 
         if ($idSession != 0) {
@@ -393,8 +393,9 @@ class StatAtelierSession
             $sql = "SELECT * "
                  . "FROM `tab_as_stat` "
                  . "WHERE `type_AS` = 's' "
-                 . "AND `id_AS` = " . $idSession . "";
-
+                 . "AND `id_AS` = " . $idSession . " "
+                 . "AND `date_AS` = '" . $date . "'";
+            
             $result = mysqli_query($db,$sql);
             Mysql::closedb($db);
             

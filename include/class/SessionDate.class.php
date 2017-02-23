@@ -90,6 +90,74 @@ class SessionDate
     function getNbUtilisateursEnAttente() {
         return count(self::getUtilisateursEnAttente());
     }
+
+    function inscrireUtilisateurInscrit($idUtilisateur) {
+        return $this->inscrireUtilisateur($idUtilisateur, '0');
+    }
+
+    function inscrireUtilisateurPresent($idUtilisateur) {
+        return $this->inscrireUtilisateur($idUtilisateur, '1');
+    }
+    
+    function inscrireUtilisateurEnAttente($idUtilisateur) {
+        return $this->inscrireUtilisateur($idUtilisateur, '2');
+    }
+    
+    function inscrireUtilisateur($idUtilisateur, $statut) {
+        $success = FALSE;
+
+        $db  = Mysql::opendb();
+
+        if (!self::isUtilisateurInscrit($idUtilisateur)) {
+            $sql = "INSERT INTO `rel_session_user` (`id_session` , `id_datesession`, `id_user` , `status_rel_session` )
+                    VALUES ('" . $this->_idSession . "', '" . $this->_id . "', '" . $idUtilisateur."', '" . $statut . "')";
+        }
+        else {
+            $sql = "UPDATE `rel_session_user` "
+                 . "SET status_rel_session=" . $statut . " "
+                 . "WHERE `id_user`=" . $idUtilisateur . " AND `id_datesession`=" . $this->_id ;
+        }
+
+        $result = mysqli_query($db,$sql);
+    
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $success = TRUE;
+        }
+        return $success;
+    }
+    
+    function isUtilisateurInscrit($idUtilisateur) {
+        // verifie si le user n'est pas deja inscrit
+        $success = FALSE;
+        
+        $db     = Mysql::opendb();
+        $sql    = "SELECT * FROM `rel_session_user` WHERE `id_datesession` =" . $this->_id . " AND `id_user` =" . $idUtilisateur ;
+        $result = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+
+        if (mysqli_num_rows($result) == 1) {
+            $success = TRUE;
+        }
+        
+        return $success;
+    } 
+    
+    public function cloturer() {
+        $success = FALSE;
+        
+        $db      = Mysql::opendb();
+        $sql     = "UPDATE `tab_session_dates` SET `statut_datesession`=1 WHERE `id_datesession`=" . $this->_id;
+        $result  = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $success = TRUE;
+        }
+        return $success;
+    }
+    
     
     /*
      * Fonctions de l'objet
@@ -156,8 +224,8 @@ class SessionDate
             $db = Mysql::opendb();
             $id = mysqli_real_escape_string($db, $id);
             $sql = "SELECT * "
-                 . "FROM `tab_session_sujet` "
-                 . "WHERE `id_session_sujet` = " . $id . "";
+                 . "FROM `tab_session_dates` "
+                 . "WHERE `id_datesession` = " . $id . "";
             $result = mysqli_query($db,$sql);
             Mysql::closedb($db);
             

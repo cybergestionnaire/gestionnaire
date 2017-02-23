@@ -350,7 +350,7 @@ if ($_SESSION["status"]==4)
         $titre = "D&eacute;tail d'une session";
         $aide  = "gestion des inscriptions aux sessions";
         $inc   = "admin_session.php";
-        include ("include/post_session.php");
+        //include ("include/post_session.php");
     break;
     
     case 31:
