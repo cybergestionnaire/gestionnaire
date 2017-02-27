@@ -12,9 +12,7 @@ if (TRUE == isset($_GET['month']) AND TRUE==is_numeric($_GET['month']) AND $_GET
 	{
 		$month = $_GET['month'] ;
 		$year =$_GET['year'];
-	}
-	else
-	{
+	} else {
 	   $month = date('m');
 	   $year=date('Y');
 	}
@@ -55,9 +53,7 @@ if(!is_dir($dossierimg)){
 		    if ($epn == $key)
 		    {
 			echo "<option  value=\"".$key."\" selected>".$value."</option>";
-		    }
-		    else
-		    {
+		    } else {
 			echo "<option  value=\"".$key."\">".$value."</option>";
 		    }
 		}
@@ -339,9 +335,7 @@ for ($i=0 ; $i<2;++$i)
 	if ($y<$year)
 	{
 		$nombreSemaines=52;
-	}
-	else
-	{
+	} else {
 		$nombreSemaines=date('W');
 	}
 
@@ -395,7 +389,7 @@ for ($i=0 ; $i<2;++$i)
 	 echo ' <ul class="nav nav-tabs">';
 	
 	for ($d=2; $d<7;++$d){
-		if($d==2){ $class="active"; }else{ $class=""; }
+		if($d==2){ $class="active"; } else { $class=""; }
 		
 		echo '<li class="'.$class.'"><a href="#tab_'.$d.'" data-toggle="tab">'.getDay($d).'</a></li>';
 	}; ?>
@@ -406,7 +400,7 @@ for ($i=0 ; $i<2;++$i)
 								
 			<?php 			
 			 for ($d=2; $d<7;++$d){     
-				if($d==2){ $class="active"; }else{ $class=""; }
+				if($d==2){ $class="active"; } else { $class=""; }
 			 echo '
 						<div class="tab-pane '.$class.'" id="tab_'.$d.'">
 							<img src="img/chart/'.$year.'/resa-horaire-'.getDay($d).'.png" >

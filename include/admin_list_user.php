@@ -73,8 +73,7 @@
         </div>
 <?php            
             
-    }
-    else { // affichage du resultat 
+    } else { // affichage du resultat 
 ?>
     
         <div class="box box-info">
@@ -201,8 +200,7 @@
                                     </div>
                                 </div>
 <?php
-                }
-                else {
+                } else {
                     echo '<span class="badge bg-red">NC</span> 0h';
                 }
             }

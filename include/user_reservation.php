@@ -83,7 +83,7 @@ if($_SESSION["status"]==3){
 			
 	if(isset($salle)){
 	$salle=$salle;
-	}else{
+	} else {
 	$salle=$listesalles[0];
 	}
 	
@@ -94,7 +94,7 @@ $allsalles=getAllsalles();
 $epn=$_SESSION["idepn"];
 if(isset($salle)){
 	$salle=$salle;
-	}else{
+	} else {
 	$salle=1;
 	}
 }
@@ -196,9 +196,7 @@ if (strlen($term)>=2)
 		echo "<div class=\"col-md-6\">";
 		echo getError(6);
 		echo "</div>";
-    }
-    else
-    {
+    } else {
       $nb  = mysqli_num_rows($result);
       if ($nb > 0)
       {
@@ -219,7 +217,7 @@ if (strlen($term)>=2)
 					
 					if($row['status_user']==1){
 						$class="" ;
-					}else{
+					} else {
 						$class="inactif" ;}
 					//*****tarifs de consultation
 					$tarifTemps= getForfaitConsult($row["id_user"]);
@@ -293,9 +291,7 @@ if (strlen($term)>=2)
 							if ($num == $key)
 							{
 								echo "<option value=\"".$key."\" selected>".$value."</option>";
-							}
-							else
-							{
+							} else {
 								echo "<option value=\"".$key."\">".$value."</option>";
 							}
 						}
@@ -343,9 +339,7 @@ if (strlen($term)>=2)
             if ($salle == $key)
             {
                 echo "<option  value=\"".$key."\" selected>".$value."</option>";
-            }
-            else
-            {
+            } else {
                 echo "<option  value=\"".$key."\">".$value."</option>";
             }
         }
@@ -411,7 +405,7 @@ echo '</div></div>'; // fin du cadre avec les plages horaires et planning
 			if($statususer['status_user']==2){
              $class="text-muted" ;
 						$info="<span class=\"badge bg-primary\" title=\"Renouvellement de l'adh&eacute;sion depuis le ".dateFr($statususer['dateRen_user'])." au tarif : ".getNomTarif($statususer['tarif_user'])."\" data-toggle=\"tooltip\"><i class=\"fa fa-info\"></i></span>";
-          }else{
+          } else {
              $class="" ;
 						  $info="";
 							}

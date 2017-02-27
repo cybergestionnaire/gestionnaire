@@ -62,8 +62,7 @@ renvoie le nombre d'inscrits, le nombre de présents et l'id des présents (pour
 ?>
                 <a href="index.php?a=13&b=1&idatelier=<?php echo $idAtelier; ?>"><button class="btn btn-default"> <i class="fa fa-arrow-circle-left"></i> Retour &agrave; l'atelier</button></a>
 <?php 
-    }
-    else {
+    } else {
 ?>
                 <a href="index.php?a=18"><button class="btn btn-default"> <i class="fa fa-arrow-circle-left"></i> Retour aux archives</button></a>
 <?php

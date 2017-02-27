@@ -46,16 +46,14 @@
         // Traitement des champs a insérer
         if ($nom == '' || $salle == '') {
            $mess = getError(4);
-        }
-        else {
+        } else {
             switch($act) {
                 case 1:   // ajout d'un poste
                     $materiel = Materiel::creerMateriel($nom, $os, $comment, $usage, $fonctions, intval($salle), $adresseIP, $adresseMAC, $nomhote) ;
             
                     if ($materiel == null) {
                         header("Location: ./index.php?a=2&mesno=0");
-                    }
-                    else {
+                    } else {
                         $usages = Usage::getUsages();
                         if (isset($_POST["fonction"])) {
                             
@@ -73,8 +71,7 @@
                     $materiel = Materiel::getMaterielById($idMateriel);
                     if ($materiel->modifier($nom, $os, $comment, $usage, $fonctions, intval($salle), $adresseIP, $adresseMAC ,$nomhote)) {
                         header("Location: ./index.php?a=2&mesno=14");
-                    }
-                    else {
+                    } else {
                         header("Location: ./index.php?a=2&mesno=0");
                     }
                     break;
@@ -86,8 +83,7 @@
         $materiel = Materiel::getMaterielById($idMateriel);
         if ($materiel->supprimer()) {
             header("Location: ./index.php?a=2");
-        }
-        else {
+        } else {
             header("Location: ./index.php?a=2&mesno=");
         }
     }

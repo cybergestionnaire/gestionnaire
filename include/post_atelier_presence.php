@@ -65,8 +65,7 @@
                         $depense = getForfaitUserEncours($utilisateur->getId());
                         if ($depense["depense"]+1 == $depense["total_atelier"]) {
                             clotureforfaitUser($depense["total_atelier"], $depense["id_forfait"]);
-                        }
-                        else {
+                        } else {
                             updateForfaitdepense($depense["id_forfait"]);
                         }
                     }
@@ -78,10 +77,9 @@
                 $absents = $inscritsAuDepart - $atelier->getNbUtilisateursPresents();
                 $statAtelier = StatAtelierSession::getStatAtelierByIdAtelier($atelier->getId());
                 if ($statAtelier === null) {
-                    $statAtelier = StatAtelierSession::creerStatAtelierSession('a', $idAtelier, $atelier->getDate(), $inscritsAuDepart, $atelier->getNbUtilisateursPresents(), $absents, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 1, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
-                }
-                else {
-                    $statAtelier->modifier('a', $idAtelier, $atelier->getDate(), $inscritsAuDepart, $atelier->getNbUtilisateursPresents(), $absents, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 1, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
+                    $statAtelier = StatAtelierSession::creerStatAtelierSession('a', $idAtelier, $atelier->getDate() . " " . $atelier->getHeure() . ":00", $inscritsAuDepart, $atelier->getNbUtilisateursPresents(), $absents, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 1, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
+                } else {
+                    $statAtelier->modifier('a', $idAtelier, $atelier->getDate() . " " . $atelier->getHeure() . ":00", $inscritsAuDepart, $atelier->getNbUtilisateursPresents(), $absents, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 1, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
                 }
                 header("Location:index.php?a=13&b=1&idatelier=" . $idAtelier) ; //vers l'atelier pour reactiver epnconnect
             break;
@@ -98,8 +96,7 @@
                         $depense = getForfaitUserEncours($utilisateur->getId());
                         if($depense["depense"] + 1 == $depense["total_atelier"]) {
                             clotureforfaitUser($depense["total_atelier"], $depense["id_forfait"]);
-                        }
-                        else {
+                        } else {
                             updateForfaitdepense($depense["id_forfait"]);
                         }
                     }
@@ -108,10 +105,9 @@
                 $absents = $inscritsAuDepart - $atelier->getNbUtilisateursPresents();
                 $statAtelier = StatAtelierSession::getStatAtelierByIdAtelier($atelier->getId());
                 if ($statAtelier === null) {
-                    $statAtelier = StatAtelierSession::creerStatAtelierSession('a', $idAtelier, $atelier->getDate(), $inscritsAuDepart, $atelier->getNbUtilisateursPresents(), $absents, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 1, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
-                }
-                else {
-                    $statAtelier->modifier('a', $idAtelier, $atelier->getDate(), $inscritsAuDepart, $atelier->getNbUtilisateursPresents(), $absents, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 1, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
+                    $statAtelier = StatAtelierSession::creerStatAtelierSession('a', $idAtelier, $atelier->getDate() . " " . $atelier->getHeure() . ":00", $inscritsAuDepart, $atelier->getNbUtilisateursPresents(), $absents, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 1, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
+                } else {
+                    $statAtelier->modifier('a', $idAtelier, $atelier->getDate() . " " . $atelier->getHeure() . ":00", $inscritsAuDepart, $atelier->getNbUtilisateursPresents(), $absents, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 1, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
                 }
                 
                 header("Location:index.php?a=18&mesno=43"); //vers les archives 

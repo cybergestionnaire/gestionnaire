@@ -39,9 +39,7 @@ $result = getAllBreve(0);
 if ($result == FALSE)
 {
   echo getError(0);
-}
-else
-{
+} else {
   $nb = mysqli_num_rows($result);
   if ($nb==0)
   {
@@ -57,9 +55,7 @@ else
 </div></div>
 </div>';
    
-  }
-  else
-  {
+  } else {
      
      ?> 
   

@@ -32,9 +32,7 @@ function getAllCityname($ordreAlpha = false)
     if (FALSE == $result)
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         $city = array();
         $nb= mysqli_num_rows($result);
         for ($i=1;$i<=$nb;$i++)

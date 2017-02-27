@@ -213,8 +213,7 @@
                     <li><i class="fa fa-clock-o"></i></li>
                 </ul>
 <?php
-        }
-        else {
+        } else {
             echo "<p>aucun &eacute;v&eacute;nement enregistr&eacute; pour cette semaine !</p>"; 
         }
 ?>
@@ -261,8 +260,7 @@
                 $classchat3  = 'direct-chat-timestamp pull-left';
                 $rowa        = getAvatar($_SESSION["iduser"]);
                 $photoavatar ="img/avatar/".$rowa["anim_avatar"];
-            }
-            else {
+            } else {
                 //reponse &agrave; droite
                 $classchat1    = "direct-chat-msg";
                 $classchat2    = 'direct-chat-name pull-left';
@@ -270,12 +268,10 @@
                 $filenamephoto = "img/photos_profil/" . trim($rowauteur["nom_user"]) . "_" . trim($rowauteur["prenom_user"]) . ".jpg" ;
                 if (file_exists($filenamephoto)) {
                     $photoavatar = $filenamephoto;
-                }
-                else {
+                } else {
                     if ($rowauteur["sexe_user"] == 'M') {
                         $photoavatar = "img/avatar/male.png";
-                    }
-                    else {
+                    } else {
                         $photoavatar = "img/avatar/female.png";
                     }
                 }
@@ -308,8 +304,7 @@
 <?php
         if($_SESSION["status"] == 3) {
             $listeAdhreponse = getListReponse($_SESSION["iduser"]);
-        }
-        else {
+        } else {
             $listeAdhreponse = getListRepAdmin();
         }
             
@@ -372,13 +367,11 @@
         $result = getAllBreve(0);  
         if ($result == FALSE) {
             echo getError(0);
-        }
-        else {
+        } else {
             $nb = mysqli_num_rows($result);
             if ($nb == 0) {
                 //echo getError(10);
-            }
-            else {
+            } else {
                 for ($i = 1 ; $i <= $nb ; $i++) {
                     $row = mysqli_fetch_array($result);
 ?>
@@ -398,8 +391,7 @@
 <?php
     // *********************Page d'accueil sur le compte utilisateur
     //if ligne 43 !
-    }
-    else {
+    } else {
 
         //si inscrit -->vos prochains ateliers
         // bouton faire une reservation de postes
@@ -451,8 +443,7 @@
                             $urlAS       = "index.php?m=6&b=1&idatelier=" . $idatelier;
                             $boutoninscr = "s'inscrire";
                             $couleurb    = "btn btn-success btn-xs";
-                        }
-                        else{
+                        } else {
                             
                             $urlAS       = "";
                             $boutoninscr = $arrayinscrip[$testinscription["statut"]];
@@ -479,8 +470,7 @@
                             $urlAS       = "index.php?m=6&b=1&idsession=" . $idsession;
                             $boutoninscr = "s'inscrire";
                             $couleurb    = "btn btn-success btn-xs";
-                        }
-                        else {
+                        } else {
                             $urlAS       = "#";
                             $boutoninscr = $arrayinscrip[$testinscription["statut"]];
                             $couleurb    = "btn btn-warning btn-xs";
@@ -514,8 +504,7 @@
                     <li><i class="fa fa-clock-o"></i></li>
                 </ul>
 <?php 
-            }
-            else {
+            } else {
                 echo "<p>aucun &eacute;v&eacute;nement enregistr&eacute; pour cette semaine !</p>";
             }
 ?>
@@ -528,13 +517,11 @@
             $result = getAllBreve(1);  
             if ($result == FALSE) {
                 echo getError(0);
-            }
-            else {
+            } else {
                 $nb = mysqli_num_rows($result);
                 if ($nb == 0) {
                     echo getError(10);
-                }
-                else {
+                } else {
                     for ($i = 1 ; $i <= $nb ; $i++) {
                         $row = mysqli_fetch_array($result);
 ?>
@@ -592,18 +579,15 @@
                     $filenamephoto = "img/photos_profil/" . trim($rowauteur["nom_user"]) . "_" . trim($rowauteur["prenom_user"]) . ".jpg" ;
                     if (file_exists($filenamephoto)) {
                         $photoavatar = $filenamephoto;
-                    }
-                    else {
+                    } else {
                         if ($rowauteur["sexe_user"] == 'M') {
                             $photoavatar = "img/avatar/male.png";
-                        }
-                        else {
+                        } else {
                             $photoavatar = "img/avatar/female.png";
                         }
                     }
                     
-                }
-                else {
+                } else {
                     //reponse &agrave; droite
                     $classchat1  = "direct-chat-msg";
                     $classchat2  = 'direct-chat-name pull-left';
@@ -639,8 +623,7 @@
             foreach ($animateurs AS $animateur) {
                 if ($anim == $animateur->getId()) {
                     echo "<option value=\"" . $animateur->getId() . "\" selected>" . htmlentities($animateur->getNom()) ." ". htmlentities($animateur->getPrenom()) . "</option>";
-                }
-                else {
+                } else {
                     echo "<option value=\"" . $animateur->getId() . "\">" . htmlentities($animateur->getNom()) ." ". htmlentities($animateur->getPrenom()) . "</option>";
                 }
             }

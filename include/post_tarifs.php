@@ -47,12 +47,10 @@ switch ($actarif)
 
                 if ($nomtarif == '' || $prixtarif == '') {
                     $mess = getError(4) ; //autres champs manquants
-                }
-                else {
+                } else {
                     if (Tarif::creerTarif($nomtarif, $prixtarif, $comment, 0, $categoryTarif, $duree, $espaces) == null) {
                         echo getError(0);
-                    }
-                    else {
+                    } else {
                         header("Location:index.php?a=47&catTarif={$categoryTarif}&mesno=32") ;
                     }
                 }
@@ -75,13 +73,11 @@ switch ($actarif)
                 
                 if ($nomtarif == '' || $prixtarif == '' || $typeduree == '' || $nbatelier == '') {
                     $mess = getError(4) ; //autres champs manquants
-                }
-                else {
+                } else {
                  
                     if (Tarif::creerTarif($nomtarif, $prixtarif, $comment, $nbatelier, $categoryTarif, $duree, $espaces) == null) {
                         echo getError(0);
-                    }
-                    else {
+                    } else {
                         header("Location:index.php?a=47&catTarif=5&mesno=32") ;
                     }
                 }
@@ -113,7 +109,7 @@ switch ($actarif)
                     $unite_temps_affectation =0;
                 $frequence_temps_affectation= 0;
             
-            }else{
+            } else {
                 $type_forfait = 1; // type affectation normal
                 $temps_affectation_occasionnel=0;
                 $nombre_temps_affectation = $_POST["nombre_temps_affectation"];
@@ -129,8 +125,7 @@ switch ($actarif)
                 $temps_forfait_illimite = 1;
                 $nombre_duree_forfait   = 0;
                 $unite_duree_forfait    = 0;
-            }
-            else {
+            } else {
                 $temps_forfait_illimite = 0;
                 $nombre_duree_forfait   = isset($_POST["nombre_duree_forfait"]) ? $_POST["nombre_duree_forfait"] : '' ;
                 $unite_duree_forfait    = isset($_POST["unite_duree_forfait"]) ? $_POST["unite_duree_forfait"] : '' ;
@@ -144,8 +139,7 @@ switch ($actarif)
             // AJOUT DU FORFAIT
             if ($nom_forfait == '' || $nombre_temps_affectation == '') {
                 $mess = getError(4) ; //autres champs manquants
-            }
-            else {
+            } else {
                 $forfait = Forfait::creerForfait(
                         $date_creat_forfait,
                         $type_forfait,
@@ -167,8 +161,7 @@ switch ($actarif)
                         
                 if ($forfait == null) {
                     echo getError(0);
-                }
-                else {
+                } else {
                     $success = true;
                     //inserer la relation pour les epn
                     foreach($espacesselected as $key => $idEspace ){
@@ -179,8 +172,7 @@ switch ($actarif)
                     
                     if ($success) {
                         header("Location:index.php?a=47&catTarif=6&mesno=32") ;
-                    }
-                    else {
+                    } else {
                         echo getError(0);
                     }
                 }
@@ -211,20 +203,17 @@ switch ($actarif)
             
             if ($nomtarif == '' || $prixtarif == '') {
                 $mess= getError(4) ; //champs manquants
-            }
-            else {
+            } else {
                 $tarif = Tarif::getTarifbyId($idtarif);
                 if ($tarif->modifier($nomtarif, $prixtarif, $desctarif, $nbatelier, $categoryTarif, $duree, $espaces)) {
                     header("Location:index.php?a=47&catTarif=".$categoryTarif."&mesno=33") ;
-                }
-                else {
+                } else {
                     echo getError(0);
                 }
             }
             
                 
-        }
-        else {
+        } else {
             //categorie 6 : la consultation
             
             /* criteres non modifiés
@@ -247,8 +236,7 @@ switch ($actarif)
                 $nombre_temps_affectation       = 0;
                 $unite_temps_affectation        = 0;
                 $frequence_temps_affectation    = 0;
-            }
-            else {
+            } else {
                 $type_forfait                   = 1; // type affectation normal
                 $temps_affectation_occasionnel  =0;
                 $nombre_temps_affectation       = isset($_POST["nombre_temps_affectation"]) ? $_POST["nombre_temps_affectation"] : '';
@@ -263,8 +251,7 @@ switch ($actarif)
                 $temps_forfait_illimite = 1;
                 $nombre_duree_forfait   = 0;
                 $unite_duree_forfait    = 0;
-            }
-            else {
+            } else {
                 $temps_forfait_illimite = 0;
                 $nombre_duree_forfait   = isset($_POST["nombre_duree_forfait"]) ? $_POST["nombre_duree_forfait"] : '';
                 $unite_duree_forfait    = isset($_POST["unite_duree_forfait"]) ? $_POST["unite_duree_forfait"] : '';
@@ -276,8 +263,7 @@ switch ($actarif)
             ///Modification des données dans la base
             if ($idforfait == '' || $prix_forfait == '' || $type_forfait == '') {
                 $mess = getError(4) ; //champs manquants
-            }
-            else {
+            } else {
                 $success = true;
                 
                 $forfait = Forfait::getForfaitById($idforfait);
@@ -299,19 +285,16 @@ switch ($actarif)
                         foreach ($espacesAVerifier as $espaceAVerifier) {
                             $espaceAVerifier->getConfig()->updateActivationForfait();
                         }
-                    }
-                    else {
+                    } else {
                         $success = false;
                     }
-                }
-                else {
+                } else {
                     $success = false;
                 }
                 
                 if ($success) {
                     header("Location:index.php?a=47&catTarif=6&mesno=33") ;
-                }
-                else {
+                } else {
                     echo getError(0);
                 }
             }
@@ -325,12 +308,10 @@ switch ($actarif)
             $tarif = Tarif::getTarifbyId($idtarif);
             if ($tarif->supprimer()) {
                 header("Location:index.php?a=47&mesno=34") ;
-            }
-            else {
+            } else {
                 echo getError(0);
             }
-        }
-        else {
+        } else {
             $forfait = Forfait::getForfaitById($idtarif);
             if ($forfait->supprimer()) {
                 // remise en état de la configuration pour tous les espaces...
@@ -340,8 +321,7 @@ switch ($actarif)
                     $espaceAVerifier->getConfig()->updateActivationForfait();
                 }
                 header("Location:index.php?a=47&catTarif=6&mesno=34") ;
-            }
-            else {
+            } else {
                 echo getError(0);
             }
         }

@@ -39,8 +39,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] != "" ) {
                     
                     //updateConfig("tab_horaire", $update, "jour_horaire", $i, $epnr) ;
                     // header("Location:index.php?a=42&mess=ok&epnr=".$epnr) ;
-                }
-                else {
+                } else {
                     header("Location:index.php?a=42&mess=Hwrong&dayline=".$i) ;
                     exit;
                 }                
@@ -58,8 +57,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] != "" ) {
            
             if(TRUE == updateresaconfig($epnr, $unitconfig, $maxtime_config,$resarapide, $duree_resarapide)) {
                 header("Location:index.php?a=42&mess=ok&epnr=".$epnr) ;
-            }
-            else {
+            } else {
                 header("Location:index.php?a=42&mess=Hwrong&epnr=".$epnr) ;
             }
            

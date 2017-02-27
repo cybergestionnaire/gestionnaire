@@ -76,8 +76,7 @@
         
         delUserInsc($id);
         header("Location:index.php?a=24&mesno=27");
-    }    
-    else {
+    } else {
         
         if (isset($_POST["submit"])) {
 
@@ -87,24 +86,20 @@
                 if ($newcity == null) {
                     $mess = getError(0);
                     $idVille = 0;
-                }
-                else {
+                } else {
                     $idVille = $newcity->getId();
                 }
-            }
-            else {
+            } else {
                 $idVille    =  $_POST["ville"];
             }
           
             if (Utilisateur::existsLogin($login)) {
                 $mess = getError(5);
-            }
-            else {
+            } else {
                 if ($nom == '' || $prenom == '' || $annee == '' || $adresse == '' || $login == '' ) {
                     $mess = getError(4);
                     exit;
-                }
-                else {       
+                } else {       
                     //insertion du nouvel utilisateur
                     $dateNaissance = $annee . "-" . $mois . "-" . $jour;
 
@@ -135,8 +130,7 @@
                     //enlever la preinscription
                     if ($utilisateur == null) {
                         $mess = getError(0);
-                    }
-                    else {    
+                    } else {    
                         delUserInsc($id);
                         header("Location:index.php?a=1&b=2&iduser=" . $utilisateur->getId());
                     }

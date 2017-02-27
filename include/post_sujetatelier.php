@@ -43,15 +43,13 @@
             //error_log("--- modification ! ");
             if ($sujet == "" || $content == "") {
                 $mesno = 4 ;
-            }
-            else {
+            } else {
                 //error_log("--- modification : champs ok ! ");
                 $atelierSujet = AtelierSujet::getAtelierSujetById($idSujet);
                 
                 if ($atelierSujet->modifier($sujet, $content, $ressource, $idniveau, $idcategorie)) {
                     header ("Location:index.php?a=17&mesno=22");
-                }
-                else {
+                } else {
                     $mesno = 0;
                 }
             }
@@ -60,13 +58,11 @@
         if ($b == 12) {
             if ($sujet == "" || $content == "") {
                 $mesno = 4 ;
-            }
-            else {
+            } else {
                 $atelierSujet = AtelierSujet::creerAtelierSujet($sujet, $content, $ressource, $idniveau, $idcategorie);
                 if ($atelierSujet !== null) {
                     header ("Location:index.php?a=17&mesno=20");
-                }
-                else {
+                } else {
                     $mesno = 0;
                 }
             }
@@ -80,8 +76,7 @@
         // delSujetAtelier($idSujet);// suppression du sujet d'atelier dans la base
         if ($atelierSujet->supprimer()) {
             header ("Location:index.php?a=17&mesno=24");
-        }
-        else {
+        } else {
             $mesno = 0;
         }
     }

@@ -54,9 +54,7 @@ if (isset($epn_r)){
     if ($nbMateriels == 0)
     {
         echo getError(9);
-    }
-    else
-    {
+    } else {
         foreach($usagesMateriel as $usage=>$nom) {
 ?>
         <div class="box box-solid box-warning">
@@ -108,9 +106,7 @@ if (isset($epn_r)){
     {
         if ($idEspace == $espace->getId()) {
             echo "<option value=\"" . $espace->getId() . "\" selected>" . $espace->getNom() . "</option>";
-        }
-        else
-        {
+        } else {
             echo "<option value=\"" . $espace->getId() . "\">" . $espace->getNom() . "</option>";
         }
     }

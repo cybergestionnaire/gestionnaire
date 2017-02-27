@@ -70,7 +70,7 @@
         if ($type =='anim'){
             $urlRedirect = "./index.php?a=23" ;
             
-        } else{
+        } else {
             $urlRedirect = "./index.php?a=1&b=3" ;
         }
         
@@ -88,16 +88,14 @@
         // Traitement des champs a insérer
         if ($nom == '' || $prenom == '' || $annee == '' || $adresse == '' || $loginn == '' || $sexe == '') {
             $mess = getError(4);
-        }
-        else {
+        } else {
             switch($act) {
                 case 1:   // ajout d'un adherent
                     //  $urlRedirect = "./index.php?a=1&b=2" ;
                                 
                     if (Utilisateur::existsLogin($loginn)) {
                         $mess = getError(5);
-                    }
-                    else {
+                    } else {
                         if (checkDate($mois, $jour, $annee) && $pass != '') {
                             $dateNaissance = $annee . "-" . $mois . "-" . $jour;
                             
@@ -128,8 +126,7 @@
                         
                             if ($utilisateur == null) {
                                 $mess = getError(4);
-                            }
-                            else {
+                            } else {
                                 //enregistrement des transactions choisies
                                 //addForfaitUser("temps", $utilisateur->getId(), $temps, 1, date('Y-m-d'), 1); //forfait temps
                                 //addForfaitUser("adh", $utilisateur->getId(), $tarif, 1, date('Y-m-d'), 1); //adhésion
@@ -143,13 +140,11 @@
                                  //ajout de la relation forfait-consultation dans rel_forfait_user
                                 if (FALSE == addrelconsultationuser(1, $temps, $utilisateur->getId())) {
                                     header("Location:" . $urlRedirect . "&mesno=0");
-                                }
-                                else {
+                                } else {
                                     header("Location:" . $urlRedirect . "&mesno=18");
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             $mess = getError(4);
                         }
                     }
@@ -160,8 +155,7 @@
                     //Modification du status --> archivé, date de l'archivage==lastvisit_user
                     if ($status == 6) {
                         $lastvisit = date('Y-m-d');
-                    }
-                    else {
+                    } else {
                         $lastvisit = '';
                     }
                     
@@ -196,12 +190,10 @@
                                     intval($idEspace),
                                     $newsletter) ) {
                             header("Location:".$urlRedirect."&mesno=42");
-                        }
-                        else {
+                        } else {
                             header("Location:".$urlRedirect."&mesno=0");
                         }
-                    }
-                    else {
+                    } else {
                         $mess = getError(5);
                     }
             

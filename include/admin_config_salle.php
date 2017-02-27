@@ -55,9 +55,7 @@
     if ($salles == null or count($salles) == 0)
     {
         echo getError(31) ;
-    }
-    else
-    {
+    } else {
         foreach ($salles as $salle) {
 ?>
                     <tr>

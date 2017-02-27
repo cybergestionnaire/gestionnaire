@@ -45,12 +45,10 @@
         if ($salles == '') {
             //erreur : pas de salle sélectionnée
             $mess = getError(13);
-        }
-        else {
+        } else {
             if ($animateur->setParametresAnim($idEspace, $salles, $avatar_r)) {
                 header("Location:index.php?a=50&b=2&mess=ok&idanim=" . $idAnim);
-            }
-            else {
+            } else {
                 header("Location:index.php?a=50&idanim=" . $idAnim . "&mesno=50");
             }
         }

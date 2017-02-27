@@ -65,8 +65,7 @@
     </div>
     
 <?php   //modifications de la base
-        }
-        else {
+        } else {
 ?>
     <div class="col-md-6">
         <div class="box box-danger">
@@ -87,8 +86,7 @@
                     if ($row1 != "OK") {
                         $error .= "Echec impossible d'ajouter la table des courriers"." \r\n"; 
                         echo "<p>* Ajout de la table des courriers : Echec</p>";
-                    }
-                    else {
+                    } else {
                         echo '<p>Ajout de la table des courriers</p>';
                     }
         
@@ -96,8 +94,7 @@
                     if ($row2 != "OK") {
                         $error .= "Echec impossible d'ajouter un exemple à la table des courriers"." \r\n"; 
                         echo "<p>* Ajout d'exemples à table des courriers : Echec</p>";
-                    }
-                    else {
+                    } else {
                         echo '<p>Ajout exemples à la table des courriers</p>';
                     }
     
@@ -105,8 +102,7 @@
                     if ($row3 != "OK") {
                         $error .= "Echec impossible de modifier la tab_espace"." \r\n"; 
                         echo "<p>* modifier la tab_espace: Echec</p>";
-                    }
-                    else {
+                    } else {
                         echo '<p>modification de la tab_espace: ajout du mail</p>';
                     }
 
@@ -117,8 +113,7 @@
                             $finale = InsertLogMAJ('maj', $versionew, date('Y-m-d H:i'), "Mise à jour de version 1.1 effectuée");
                             echo '<p class="text-blue"><b>Modification du numero de version : ' . $versionActuelle . '</b></p>';
                         }
-                    }
-                    else {
+                    } else {
                         echo "erreur lors de la mise à jour depuis la version 1.0 vers la version 1.1 : " . $error;
                     }
                 }                    
@@ -130,8 +125,7 @@
                     if ($row1 != "OK") {
                         $error.= "Echec impossible Modification de la table des preinscriptions (1)"." \r\n"; 
                         echo "<p>* Modification de la table des preinscriptions (1) : echec</p>";
-                    }
-                    else{
+                    } else {
                         echo '<p>Modification de la table des preinscriptions (1)</p>';
                     }
         
@@ -139,8 +133,7 @@
                     if ($row2 != "OK") {
                         $error.= "Echec impossible Modification de la table des preinscriptions (2)"." \r\n"; 
                         echo "<p>* Modification de la table des preinscriptions (2) : echec</p>";
-                    }
-                    else {
+                    } else {
                         echo '<p>Modification de la table des preinscriptions (2)</p>';
                     }
     
@@ -148,8 +141,7 @@
                     if ($row3 != "OK"){
                         $error.= "Echec impossible de Modication de la table des message"." \r\n"; 
                         echo "<p>* Modication de la table des messages : echec</p>";
-                    }
-                    else {
+                    } else {
                         echo '<p>Modication de la table des messages</p>';
                     }
     
@@ -157,8 +149,7 @@
                     if ($row4 != "OK") {
                         $error.= "Echec Creation de la table de validation des preinscriptions"." \r\n"; 
                         echo "<p>* Creation de la table de validation des preinscriptions: echec</p>";
-                    }
-                    else {
+                    } else {
                         echo '<p>Creation de la table de validation des preinscriptions</p>';
                     }
     
@@ -166,8 +157,7 @@
                     if ($row5 != "OK"){
                         $error.= "Echec impossible Insertion de donnees dans la table"." \r\n"; 
                         echo "<p>* Insertion de donnees dans la table: Echec</p>";
-                    }
-                    else {
+                    } else {
                         echo '<p>Insertion de donnees dans la table</p>';
                     }
                     if ($error == "") {
@@ -176,8 +166,7 @@
                             $finale = InsertLogMAJ('maj', $versionew, date('Y-m-d H:i'), "Mise à jour de version 1.2 effectuée");
                             echo '<p class="text-blue"><b>Modification du numero de version : ' . $versionActuelle . '</b></p>';
                         }
-                    }
-                    else {
+                    } else {
                         echo "erreur lors de la mise à jour depuis la version 1.1 vers la version 1.2 : " . $error;
                     }
                 }
@@ -194,8 +183,7 @@
                 if ($versionActuelle == "1.3") {
                     $testmaj = "ok" ;
                 }
-            }
-            else {
+            } else {
 ?>
                 <p>Erreur : la mise &agrave; jour n'est possible que depuis la version 1.0 de Cybergestionnaire ou sup&eacute;rieure.
                 Vous devez faire d'abord la mise à jour vers la version 1.0 avant de tenter la mise à jour vers cette version.</p>
@@ -235,8 +223,7 @@
         //****ecriture du fichier de log
         if ($finale == FALSE) { 
             $error .= "Echec impossible d'ecrire dans la table des logs"." \r\n"; 
-        }
-        else {
+        } else {
             //inscrire l'ensemble des erreurs dans le fichier log de la version                 
             if ($error != "") {
                 gFilelog(addslashes($error), "log_majv1.3.txt");

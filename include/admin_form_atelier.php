@@ -73,8 +73,7 @@ Fichier servant à modifier/créer la programmation d'un atelier
         $statut  = '';
         $idSalle = '';
         $idTarif = '';        
-    }
-    else {
+    } else {
         // modification
         $post_url = "index.php?a=14&m=2&idatelier=" .  $idAtelier;
         $label_bouton = "Modifier l'atelier" ;
@@ -133,8 +132,7 @@ Fichier servant à modifier/créer la programmation d'un atelier
 </div>
 
 <?php   
-    }
-    else {
+    } else {
 ?>
 
 <form method="post" action="<?php echo $post_url; ?>" role="form">
@@ -153,8 +151,7 @@ Fichier servant à modifier/créer la programmation d'un atelier
         foreach ($atelierSujets AS $atelierSujet) {
             if ($idSujet == $atelierSujet->getId()) {
                 echo "<option value=\"" . $atelierSujet->getId() . "\" selected>" . $atelierSujet->getLabel() . "</option>";
-            }
-            else {
+            } else {
                 echo "<option value=\"" . $atelierSujet->getId() . "\">" . $atelierSujet->getLabel() . "</option>";
             }
         }
@@ -179,8 +176,7 @@ Fichier servant à modifier/créer la programmation d'un atelier
         foreach ($dureesa AS $key=>$value) {
             if ($duree == $key) {
                 echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
-            }
-            else {
+            } else {
                 echo "<option value=\"" . $key . "\">" . $value . "</option>";
             }
         }
@@ -229,8 +225,7 @@ Fichier servant à modifier/créer la programmation d'un atelier
         foreach ($salles AS $salle) {
             if ($idSalle == $salle->getId()) {
                 echo "<option value=\"" . $salle->getId() . "\" selected>" . htmlentities($salle->getNom()) . "</option>";
-            }
-            else {
+            } else {
                 echo "<option value=\"" . $salle->getId() . "\">" . htmlentities($salle->getNom()) . "</option>";
             }
         }
@@ -246,8 +241,7 @@ Fichier servant à modifier/créer la programmation d'un atelier
         foreach ($animateurs AS $animateur) {
             if ($idAnim == $animateur->getId()) {
                 echo "<option value=\"" . $animateur->getId() . "\" selected>" . htmlentities($animateur->getPrenom()) . " " . htmlentities($animateur->getNom()) . "</option>";
-            }
-            else {
+            } else {
                 echo "<option value=\"" . $animateur->getId() . "\">" . htmlentities($animateur->getPrenom()) . " " . htmlentities($animateur->getNom()) . "</option>";
             }
         }
@@ -268,8 +262,7 @@ Fichier servant à modifier/créer la programmation d'un atelier
         foreach ($tarifs AS $tarif) {
             if ($idTarif == $tarif->getId()) {
                 echo "<option value=\"" . $tarif->getId() . "\" selected>" . htmlentities($tarif->getNom()) . "</option>";
-            }
-            else {
+            } else {
                 echo "<option value=\"" . $tarif->getId()."\">" . htmlentities($tarif->getNom() . " (" . $tarif->getDonnee(). "€)" ) . "</option>";
             }
         }
@@ -285,8 +278,7 @@ Fichier servant à modifier/créer la programmation d'un atelier
         foreach ($stateAtelier AS $key=>$value) {
             if ($statut == $key) {
                 echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
-            }
-            else {
+            } else {
                 echo "<option value=\"" . $key . "\">" . $value . "</option>";
             }
         }

@@ -237,8 +237,7 @@ class Utilisateur
         if ($avatar == "") {
             if ($this->_sexe = "H") {
                 $avatar = "male.png";
-            }
-            else {
+            } else {
                 $avatar = "female.png";
             }
         }
@@ -310,9 +309,7 @@ class Utilisateur
 
         if($result == FALSE)
         {
-        }
-        else
-        {
+        } else {
             $row = mysqli_fetch_array($result) ;
             
             $idEspaceAnim = $row["id_epn"];
@@ -331,9 +328,7 @@ class Utilisateur
 
         if($result == FALSE)
         {
-        }
-        else
-        {
+        } else {
             $row = mysqli_fetch_array($result) ;
             
             $idEspaceAnim = $row["id_salle"];
@@ -353,8 +348,7 @@ class Utilisateur
         
         if ($this->hasParametresAnim()) {
             $sql  = "UPDATE `rel_user_anim` SET `id_epn`='" . $idEspace . "', `id_salle`='" . $salles . "', `anim_avatar`='" . $avatar . "' WHERE id_animateur='" . $this->_id . "' ";
-        }
-        else {
+        } else {
             $sql  = "INSERT INTO `rel_user_anim`(`id_animateur`, `id_epn`, `id_salle`, `anim_avatar`) VALUES ('" . $this->_id . "', '" . $idEspace . "', '" . $salles . "', '" . $avatar . "')";
         }
         //mettre l'epn dans la tab user aussi
@@ -752,8 +746,7 @@ class Utilisateur
         Mysql::closedb($db);
         if ($result == FALSE ) {
             return FALSE ;
-        }
-        else {
+        } else {
             $utilisateurs = array();
             while($row = mysqli_fetch_assoc($result)) {
                 $utilisateurs[] = new Utilisateur($row);

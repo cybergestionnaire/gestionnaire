@@ -63,8 +63,7 @@
     
 <?php
        
-    }
-    else {
+    } else {
         echo getError(41);
     }
 ?>

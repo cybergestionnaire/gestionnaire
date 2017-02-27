@@ -32,9 +32,7 @@ if ($b==1)
         $post_url = "index.php?a=52&b=1&act=1";
         $label_bouton = "Ajouter un texte &agrave; un courrier" ;
         $label_titre ="Cr&eacute;er un nouveau texte de courrier";
-}
-else
-{ // modification
+} else { // modification
         $post_url = "index.php?a=52&b=2&act=2&idcourrier=".$id;
         $label_bouton = "Modifier le texte du courrier" ;
         $label_titre="Modifier le texte d'un courrier";
@@ -85,9 +83,7 @@ $arraytype=array(
 				if ($name == $key)
 				{
 					echo "<option value=\"".$key."\" selected>".$value."</option>";
-				}
-				else
-				{
+				} else {
 					echo "<option value=\"".$key."\">".$value."</option>";
 				}
 			}
@@ -102,9 +98,7 @@ $arraytype=array(
 				if ($type == $key)
 				{
 					echo "<option value=\"".$key."\" selected>".$value."</option>";
-				}
-				else
-				{
+				} else {
 					echo "<option value=\"".$key."\">".$value."</option>";
 				}
 			}

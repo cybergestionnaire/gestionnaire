@@ -95,8 +95,7 @@
         for ($b = 0 ; $b < 2 ; $b++) {
             if ($menuarray[$b] == $utilisation->getType()) {
                 echo "<option value=\"" . $menuarray[$b] . "\" selected>" . $menuarray[$b] . "</option>";
-            }
-            else {
+            } else {
                 echo "<option value=\"" . $menuarray[$b] . "\">" . $menuarray[$b] . "</option>";
             }
         }
@@ -113,8 +112,7 @@
         for ($b = 0; $b < 2; $b++) {
             if ($visiblearray[$b] == $utilisation->getVisible()) {
                 echo "<option value=\"" . $visiblearray[$b] . "\" selected>" . $visiblearray[$b] . "</option>";
-            }
-            else {
+            } else {
                 echo "<option value=\"" . $visiblearray[$b] . "\">" . $visiblearray[$b] . "</option>";
             }
         }

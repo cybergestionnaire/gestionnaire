@@ -56,8 +56,7 @@
                 break;
             }
 
-        }
-        else {
+        } else {
             $c = 0;
             $result = getFutsessions(0);
         }
@@ -131,8 +130,7 @@
             // $statutaffiche = $row["nbre_dates_sessions"] . "&nbsp;&nbsp;<small class=\"badge bg-blue\" data-toggle=\"tooltip\" title=\"Des dates de la session n'ont pas encore &eacute;t&eacute; valid&eacute;es !\"><i class=\"fa fa-info\"></i></small>";
             $statutaffiche = $session->getNbDates() . "&nbsp;&nbsp;<small class=\"badge bg-blue\" data-toggle=\"tooltip\" title=\"Des dates de la session n'ont pas encore &eacute;t&eacute; valid&eacute;es !\"><i class=\"fa fa-info\"></i></small>";
             $class = "text-red" ;
-        }
-        else {
+        } else {
             $class = "" ;
             $statutaffiche = $session->getNbDates();
         }
@@ -202,8 +200,7 @@
         </div><!-- .box-body -->
     </div><!-- .box -->
 <?php
-    }
-    else {
+    } else {
 ?>
     <div class="alert alert-info alert-dismissable">
         <i class="fa fa-info"></i><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Aucune session programm&eacute;e

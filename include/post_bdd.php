@@ -36,8 +36,7 @@
         closedb($db);
         if (FALSE == $result) {
             return FALSE;
-        }
-        else {
+        } else {
             return $iduser;
         }
     }
@@ -66,8 +65,7 @@
                         fputs ($fp, $save) ;
                         fclose($fp);
                         header("Location:./telecharger.php?fichier=".$fichier."&chemin=".$chemin."");
-                    }   
-                    else {
+                    } else {
                         $mess = 1;
                     }
                     break;
@@ -82,15 +80,13 @@
             //recuperation des variables envoiyées depuis le formulaire
             if (isset($_POST["mdp"])) {
                 $type_mdp = $_POST["mdp"];
-            }
-            else {
+            } else {
                 $type_mdp=1;
             }
 
             if (isset($_POST["tarif"])) {
                 $tarif=$_POST["tarif"]; 
-            }
-            else {
+            } else {
                 $tarif=1;
             }
 
@@ -165,8 +161,7 @@
         
                     if ($ligne['Statut*'] == "actif") {
                         $status = 1;
-                    }
-                    else {
+                    } else {
                         $status = 2;
                     }
                     if ($ligne['Archivé*'] == "oui") {
@@ -174,8 +169,7 @@
                     } 
                     if ($ligne['Login*'] == "") {
                         $loginn = "loginvide";
-                    }
-                    else {
+                    } else {
                         $loginn = $ligne['Login*'];
                     }
         
@@ -186,7 +180,7 @@
         //CSP transformé en chiffre
         if (in_array($ligne['CSP'],$profession))  { 
             $csp=array_search($ligne['CSP'], $profession);
-            }else{
+            } else {
             $csp=14;
             }
                 
@@ -201,7 +195,7 @@
             {
                 $ville=array_search($ligne['Commune de provenance'], $resultville);
                 
-            }else{
+            } else {
                 $ville=$town; //premiere ville par defaut ou bien mettre un champs "autre ville"
             }
         
@@ -248,7 +242,7 @@
             {
                 $epn=array_search($ligne['Espace'], $espaces);
                 
-            }else{
+            } else {
                 $epn=1;
             }
         
@@ -256,7 +250,7 @@
         if(in_array($ligne['Connaissance informatique'],$connaissancearray))
         {
             $connaissance=array_search($ligne['Connaissance informatique'],$connaissancearray);
-        }else{
+        } else {
             $connaissance=0;
         }
             
@@ -265,7 +259,7 @@
         if(in_array($ligne['Utilisation informatique'],$utilisationarray))
         {
             $utilisation=array_search($ligne['Utilisation informatique'],$utilisationarray);
-        }else{
+        } else {
             $utilisation=0;
         }
         
@@ -291,11 +285,11 @@
         $tempdate =  explode("/",$date_inscription) ;
         if($status=1){
             $daterenouv =date('Y')."-".$tempdate[1]."-".$tempdate[0];
-        }else{
+        } else {
             $daterenouv =$tempdate[2].$tempdate[1]."-".$tempdate[0];
         }
     
-        if($ligne['Inscrit à la liste de diffusion']=="oui"){$newsletter=1; }else{ $newsletter=0;}
+        if($ligne['Inscrit à la liste de diffusion']=="oui"){$newsletter=1; } else { $newsletter=0;}
         
         
         
@@ -311,9 +305,7 @@
              //on cree un fichier avec la ligne d'erreur
              $error=implode(";", $lignerror);
                 gFilelog($error,"log_bdd.txt")."\r\n";
-            }
-            else
-            {
+            } else {
             //var_dump($date,$nom,$prenom,$sexe,$jour,$mois,$annee,$adresse,$ville,$tel,$mail,$temps,$loginn,$passs,$status,$lastvisit,$csp,$equipement,$utilisation,$connaissance, $info,$tarif,$daterenouv,$epn,$newsletter);
             
              if (FALSE!=addUser($date,$nom,$prenom,$sexe,$jour,$mois,$annee,$adresse,$ville,$tel,$mail,$temps,$loginn,$passs,$status,$lastvisit,$csp,$equipement,$utilisation,$connaissance, $info,$tarif,$daterenouv,$epn,$newsletter))

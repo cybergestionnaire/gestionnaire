@@ -39,8 +39,7 @@
     if ($espace != null ) {
         if ($espace->hasConfiglogiciel()) {
             $bouton  = "valider les modifications";
-        }
-        else {
+        } else {
             $bouton  = "cr&eacute;er la configuration";
         }
 
@@ -90,8 +89,7 @@
     foreach ($espaces AS $espaceAffichage) {
         if ($espaceAffichage->getId() == $espace->getId()) {
             echo "<option value=\"" . $espaceAffichage->getId() . "\" selected>" . htmlentities($espaceAffichage->getNom()) . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $espaceAffichage->getId() . "\">" . htmlentities($espaceAffichage->getNom()) . "</option>";
         }
     }
@@ -122,8 +120,7 @@
     if ($config->hasActiverConsole()) {
         $sel1="checked=\"checked\"" ;
         $sel2="";
-    }
-    else {
+    } else {
         $sel1="" ;
         $sel2="checked=\"checked\"";
     }
@@ -177,8 +174,7 @@
     if ($config->hasActivationForfait()) {
         $sel1 = "checked=\"checked\"" ;
         $sel2 = "";
-    }
-    else {
+    } else {
         $sel1 = "" ;
         $sel2 = "checked=\"checked\"";
     }
@@ -194,8 +190,7 @@
     if ($config->hasInscriptionUsagersAuto()) {
         $sel1 = "checked=\"checked\"" ;
         $sel2 = "";
-    }
-    else {
+    } else {
         $sel1 = "" ;
         $sel2 = "checked=\"checked\"";
     }

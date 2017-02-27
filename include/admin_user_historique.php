@@ -152,7 +152,7 @@ if(!is_dir($dossierimg)){
 				echo '<img src="img/avatar/male.png">' ;
 				}
 					
-			}else{
+			} else {
 				echo '<img src="img/avatar/default.png" width="60%">' ;
 				}
 			?>
@@ -219,7 +219,7 @@ $chartS->render("img/chart/".$year."/txpresences_".$id_user.".png");
 	   </tbody></table>
 	   
 	  <?php 
-	  }else {
+	  } else {
 	  echo "<p>Pas d'inscription enregistr&eacute;e pour le moment</p>";
 
 		} ?>
@@ -270,8 +270,8 @@ $chartS->render("img/chart/".$year."/txpresences_".$id_user.".png");
 				$sujetLVS=mysqli_fetch_array(getSujetSessionById($arraysessionLVS["nom_session"]));
 				if($rowLVS["statut_datesession"]==1){
 				$class= "text-muted";
-					if($rowLVS["status_rel_session"]==1){ $presence="Pr&eacute;sent"; }else{ $presence="Absent";}
-				}else{
+					if($rowLVS["status_rel_session"]==1){ $presence="Pr&eacute;sent"; } else { $presence="Absent";}
+				} else {
 				$class="";
 				$presence="";
 				}
@@ -290,7 +290,7 @@ $chartS->render("img/chart/".$year."/txpresences_".$id_user.".png");
 	   </tbody></table>
 	   
 	  <?php 
-	  }else {
+	  } else {
 	  echo "<p>Pas d'inscription enregistr&eacute;e pour le moment</p>";
 
 		} ?>
@@ -369,7 +369,7 @@ $chartS->render("img/chart/".$year."/txpresences_".$id_user.".png");
 		
 		?>
 		</tbody></table>
-<?php }else{ echo "<p>Pas d'absence pass&eacute;e enregistr&eacute;e</p>" ; } ?>
+<?php } else { echo "<p>Pas d'absence pass&eacute;e enregistr&eacute;e</p>" ; } ?>
 	
 		<h4>Pr&eacute;sent (<?php echo $nbtotalpresent; ?>)</h4>
 	<?php if($nbtotalpresent>0){ ?>

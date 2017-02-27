@@ -111,8 +111,7 @@ class SessionDate
         if (!self::isUtilisateurInscrit($idUtilisateur)) {
             $sql = "INSERT INTO `rel_session_user` (`id_session` , `id_datesession`, `id_user` , `status_rel_session` )
                     VALUES ('" . $this->_idSession . "', '" . $this->_id . "', '" . $idUtilisateur."', '" . $statut . "')";
-        }
-        else {
+        } else {
             $sql = "UPDATE `rel_session_user` "
                  . "SET status_rel_session=" . $statut . " "
                  . "WHERE `id_user`=" . $idUtilisateur . " AND `id_datesession`=" . $this->_id ;

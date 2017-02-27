@@ -50,16 +50,14 @@
         if ($m != "" AND $m != 3) {  // verife si non vide
             if ($date == '' || $heure == '' || $idSujet == '' || $nbplace == '') {
                 $mess = getError(4) ;
-            }
-            else {
+            } else {
                 switch($m) {
                     case 1:   // ajout planification d'un poste
                         //$idAtelier = addAtelier($date, $heure, $duree, $idAnim, $idSujet, $nbplace, $public, $stateAtelier, $idSalle, $idTarif, 0, 0);
                         $atelier = Atelier::creerAtelier($date, $heure, $duree, intval($idAnim), intval($idSujet), $nbplace, $public, $stateAtelier, intval($idSalle), intval($idTarif), 0, 0);
                         if ($atelier == null) {
                             header("Location: ./index.php?a=11&mesno=0");
-                        }
-                        else {
+                        } else {
                             /*
                             // insertion de la relation usage de poste (resa=1 ou atelier=2) EN MODIF
                             $minute = str_split($heure);
@@ -88,8 +86,7 @@
                             //rajouter la relation des computers à libérer pour epnconnect
                             if (FALSE == connectAtelierComputer($idSalle, $idAtelier)) {
                                 header("Location: ./index.php?a=11&mesno=0");
-                            }
-                            else {
+                            } else {
                                 header("Location: ./index.php?a=11&mesno=14");
                             }
                         }
@@ -103,10 +100,9 @@
                             
                                 $statAtelier = StatAtelierSession::getStatAtelierByIdAtelier($atelier->getId());
                                 if ($statAtelier === null) {
-                                    $statAtelier = StatAtelierSession::creerStatAtelierSession('a', $idAtelier, $atelier->getDate(), $atelier-getNbUtilisateursInscritsOuPresents(), 0, 0, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 2, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
-                                }
-                                else {
-                                    $statAtelier->modifier('a', $idAtelier, $atelier->getDate(), $atelier-getNbUtilisateursInscritsOuPresents(), 0, 0, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 2, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
+                                    $statAtelier = StatAtelierSession::creerStatAtelierSession('a', $idAtelier, $atelier->getDate() . " " . $atelier->getHeure() . ":00", $atelier-getNbUtilisateursInscritsOuPresents(), 0, 0, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 2, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
+                                } else {
+                                    $statAtelier->modifier('a', $idAtelier, $atelier->getDate() . " " . $atelier->getHeure() . ":00", $atelier-getNbUtilisateursInscritsOuPresents(), 0, 0, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 2, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
                                 }
                                 // $inscrits = countPlace($idAtelier);
                                 // //adherent en attente
@@ -115,8 +111,7 @@
                                 // InsertStatAS('a', $idAtelier, $date, $inscrits, 0, 0, $attente, $nbplace, $stateAtelier);
                             }
                             header("Location: ./index.php?a=11&mesno=14");
-                        }
-                        else {
+                        } else {
                             header("Location: ./index.php?a=11mesno=0");
                         }
                     break;
@@ -160,8 +155,7 @@
             // else {
                 header("Location: ./index.php?a=11&mesno=14");
             // }
-        }
-        else {
+        } else {
             header("Location: ./index.php?a=11&mesno=0");
         }
     }

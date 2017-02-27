@@ -72,8 +72,7 @@
         $label_bouton = "Cr&eacute;er l'adh&eacute;rent" ;
         $testb        = 1;
         
-    }
-    else {
+    } else {
     
         if ($sim != '') {
     
@@ -108,8 +107,7 @@
             $newsletter     = $similaire->getNewsletter();
               
         
-        }
-        else {
+        } else {
             // Parametre du formulaire pour la MODIFICATION
             $post_url = "index.php?a=1&b=2&act=2&iduser=" . $idUser;
             $label_bouton = "Modifier l'adh&eacute;rent" ;
@@ -150,8 +148,7 @@
                 
                 $mailok = 0;
 
-            }
-            else {
+            } else {
                 $espacearray    = mysqli_fetch_array(getEspace($_SESSION["idepn"]));
                 $mail_epn       = $espacearray["mail_espace"];
                 $adresse_epn    = $espacearray["adresse"];
@@ -295,8 +292,7 @@
     if ($idUser != '') {
         if ($sim != '') { //creer similaire
             echo '<img src="img/avatar/default.png" width="115px" class="img-circle">' ;
-        }
-        else {
+        } else {
             // tout le monde
             //detection existance fichier image pour la photo
             //enlever les espaces
@@ -315,8 +311,7 @@
                 }
             }
             
-        }
-    else {
+        } else {
         // creation avatar par defaut
         echo '<img src="img/avatar/default.png" width="60%">' ;
     }
@@ -354,8 +349,7 @@
     for ($i = 1 ; $i < 32 ; $i++) {
         if ($i == $jour) {
             echo "<option value=\"" . $i . "\" selected>" . $i . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $i . "\">" . $i . "</option>";
         }
     }
@@ -368,8 +362,7 @@
     foreach ($month AS $key=>$value) {
         if ($mois == $key) {
             echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $key . "\">" . $value . "</option>";
         }
     }
@@ -401,8 +394,7 @@
     foreach ($villes AS $ville) {
         if ($idVille == $ville->getId()) {
             echo "<option value=\"" . $ville->getId() . "\" selected>" . htmlentities($ville->getNom()) . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $ville->getId() . "\">" . htmlentities($ville->getNom()) . "</option>";
         }
     }
@@ -473,8 +465,7 @@
     foreach ($forfaits AS $forfait) {
         if ($temps == $forfait->getId()) {
             echo "<option value=\"" . $forfait->getId() . "\" selected>" . htmlentities($forfait->getNom()) . " (" . htmlentities($forfait->getPrix()) . " €)</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $forfait->getId() . "\">" . htmlentities($forfait->getNom()) . " (" . htmlentities($forfait->getPrix()) . " €)</option>";
         }
     }
@@ -491,8 +482,7 @@
     foreach ($tarifs AS $tarif) {
         if ($idTarif == $tarif->getId()) {
             echo "<option value=\"" . $tarif->getId() . "\" selected>" . htmlentities($tarif->getNom()) . " (" . htmlentities($tarif->getDonnee()) . " €)</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $tarif->getId() . "\">" . htmlentities($tarif->getNom()) . " (" . htmlentities($tarif->getDonnee()) . " €)</option>";
         }
     }
@@ -511,8 +501,7 @@
     foreach ($espaces AS $espace) {
         if ($idEspace == $espace->getId()) {
             echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
         }
     }
@@ -527,8 +516,7 @@
         foreach ($state AS $key=>$value) {
             if ($status == $key) {
                 echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
-            }
-            else {
+            } else {
                 echo "<option value=\"" . $key . "\">" . $value . "</option>";
             }
         }
@@ -543,8 +531,7 @@
     foreach ($professions AS $profession) {
         if ($csp == $profession->getId()) {
             echo "<option value=\"" . $profession->getId() . "\" selected>" . htmlentities($profession->getCSP()) . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $profession->getId() . "\">" . htmlentities($profession->getCSP()) . "</option>";
         }
     }
@@ -562,8 +549,7 @@
 <?php 
     if ($newsletter == '') { 
         echo ' <input type="checkbox" name="newsletter" value="1" />';
-    }
-    else {
+    } else {
         echo ' <input type="checkbox" name="newsletter" value="1" checked />';
     }
 ?>
@@ -640,8 +626,7 @@ echo '<input type="hidden" name="type" value="anim" />';
     
         if (in_array($x, $equipement)) { 
             $check = "checked"; 
-        }
-        else {
+        } else {
             $check = ''; 
         }
         
@@ -656,8 +641,7 @@ echo '<input type="hidden" name="type" value="anim" />';
     for ($x = 5 ; $x < 8 ; $x++) {
         if (in_array($x, $equipement)) { 
             $check = "checked"; 
-        }
-        else {
+        } else {
             $check = ''; 
         }
         
@@ -672,8 +656,7 @@ echo '<input type="hidden" name="type" value="anim" />';
     foreach ($utilisationarray AS $keyutil=>$valueutil) {
         if (strcmp ($utilisation, $keyutil) == 0) {
             echo "<div class=\"radio\"><label><input type=\"radio\" name=\"utilisation\" value=" . $keyutil . "  class=\"minimal\" checked>&nbsp;" . $valueutil . "  </label></div>";
-        }
-        else {
+        } else {
             echo "<div class=\"radio\"><label><input type=\"radio\" name=\"utilisation\" value=" . $keyutil . " class=\"minimal\">&nbsp;" . $valueutil . " </label></div> ";
         }
     }
@@ -685,8 +668,7 @@ echo '<input type="hidden" name="type" value="anim" />';
     foreach ($connaissancearray AS $key=>$valuecon) {
         if (strcmp ($connaissance,$key) == 0) {
             echo "<div class=\"radio\"><label><input type=\"radio\" name=\"connaissance\" value=" . $key . " checked>&nbsp;" . $valuecon . "</label></div>";
-        }
-        else {
+        } else {
             echo "<div class=\"radio\"><label><input type=\"radio\" name=\"connaissance\" value=" . $key . ">&nbsp;" . $valuecon . "</label></div>";
         }
     }

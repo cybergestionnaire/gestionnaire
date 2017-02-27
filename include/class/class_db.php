@@ -97,9 +97,7 @@ class db
     	if (FALSE === $db)
        	{
        		return FALSE;
-       	}
-       	else
-       	{
+       	} else {
     		/*selection de la base de donnees a utilise */
     		mysql_select_db ($this->database) ;
     		return TRUE ;
@@ -153,16 +151,12 @@ class db
     	if(FALSE==$this->opendb())
         {
         	return FALSE ;
-        }
-        else
-        { 
+        } else { 
         	$result = mysql_query($sql) ;
         	if (FALSE == $result)
 			{
 				return FALSE ;
-			}
-			else
-			{
+			} else {
 				// initialise la variable column 
 				// contenant la liste des colonnes d'une table
 				$this->setColumn($result);

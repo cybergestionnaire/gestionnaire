@@ -458,4 +458,29 @@ class Session
         return $sessions;
     }
     
+    public static function getSessionsArchiveeByEspaceAndAnnee($idEspace, $annee) {
+        $sessions = null;
+    
+        $db      = Mysql::opendb();
+        $sql     = "SELECT tab_session.* "
+                 . "FROM tab_session, tab_salle "
+                 . "WHERE tab_salle.`id_salle` = tab_session.`id_salle` "
+                 . "  AND tab_salle.`id_espace`=" . $idEspace . " "
+                 . "  AND YEAR(date_session)=" . $annee . " "
+                 . "ORDER BY `date_session` ASC";
+                 
+        $result  = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $sessions = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $sessions[] = new Session($row);
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $sessions;
+    }
+    
 }

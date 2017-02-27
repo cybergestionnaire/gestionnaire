@@ -87,9 +87,7 @@ if(!is_dir($dossierimg)){
             if ($epn == $key)
             {
                 echo "<option  value=\"".$key."\" selected>".$value."</option>";
-            }
-            else
-            {
+            } else {
                 echo "<option  value=\"".$key."\">".$value."</option>";
             }
         }
@@ -324,7 +322,7 @@ for ($i=1 ; $i<= $month;++$i)
 
 
 <?php 
-    }else{
+    } else {
      echo geterror(36);
     }
 ?>

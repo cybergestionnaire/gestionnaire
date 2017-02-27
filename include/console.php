@@ -38,9 +38,7 @@
     if (mysqli_connect_errno()) 
     {
         return false;
-    }
-    else
-    {
+    } else {
         $db->set_charset("utf8");
         $salle=$_POST['id_salle'];
                     
@@ -133,9 +131,7 @@
         </tr>
 <?php                  
                         $rowInfos = mysqli_fetch_array($resultInfos) ;    
-                    }
-                    else
-                    {   
+                    } else {   
                         //poste libre
                         $heurelastetat = $rowPostes["lastetat_computer"]; // en secondes depuis 0:00:00
                         $heure         = floor($heurelastetat / 3600);

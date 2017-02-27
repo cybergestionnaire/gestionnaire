@@ -44,18 +44,17 @@ $stateAtelier = array(
     // classement par annee-
     if (isset($_GET['year'])) {
         $year = $_GET['year'];
-    }
-    else{
+    } else {
         $year = date('Y');
     }
 
     //affichage admin
     if ($_SESSION["status"] == 4) {
-        $statAteliers = StatAtelierSession::getStatAteliersParAnnee($year);
+        $statAteliers = StatAtelierSession::getStatAteliersArchivesParAnnee($year);
     }
     if ($_SESSION["status"] == 3) {
         $anim = $_SESSION["iduser"];
-        $statAteliers = StatAtelierSession::getStatAteliersParAnneeEtParAnimateur($year, $_SESSION["iduser"]);
+        $statAteliers = StatAtelierSession::getStatAteliersArchivesParAnneeEtParAnimateur($year, $_SESSION["iduser"]);
     }
 
     $nb2 = count($statAteliers);  
@@ -66,13 +65,14 @@ $stateAtelier = array(
         <div class="box-tools pull-right">
             <div class="btn-group">
 <?php 
-        
-    $rowanneesstat = getYearStatAtelierSessions();
-    while ($ans = mysqli_fetch_array($rowanneesstat)) {
-        echo '<a href="index.php?a=18&year=' . $ans['Y'] . '&month=12&day=365&jour=31" > <button class="btn bg-yellow btn-sm">' . $ans['Y'] . ' </button></a>'; 
+    $annees = StatAtelierSession::getYearStatAtelierSessions();
+    foreach ($annees as $annee) {
+        echo '<a href="index.php?a=18&year=' . $annee . '&month=12&day=365&jour=31" > <button class="btn bg-yellow btn-sm">' . $annee . ' </button></a>'; 
     }
+
     //annee en cours
     echo '<a href="index.php?a=18&year=' . date('Y') . '"> <button class="btn bg-yellow btn-sm"> Ann&eacute;e en cours</button></a>';
+
 ?>
             </div>
         </div>
@@ -103,8 +103,7 @@ $stateAtelier = array(
         </table>
     </div><!-- .box-body -->
 <?php
-    }
-    else {
+    } else {
 ?>
         <div class="alert alert-info alert-dismissable"><i class="fa fa-info"></i><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Aucune formation archiv&eacute;e cette ann&eacute;e</div>
 <?php

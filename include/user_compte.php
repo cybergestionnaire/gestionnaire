@@ -127,8 +127,7 @@
 <?php
     if($utilisateur->getNewsletter() == 1) {
         echo "Je suis abonn&eacute;" ;
-    }
-    else{
+    } else {
         echo "Je ne suis pas abonn&eacute; ";
     }
 ?>                      </dd>
@@ -168,8 +167,7 @@
     if ($utilisateur->getNewsletter() == 1) { 
         echo '<input type="radio" name="newsletter" value="0"  /> non
             <input type="radio" name="newsletter" value="1"  checked /> oui ';
-    }
-    else {
+    } else {
         echo '<input type="radio" name="newsletter" value="0"  checked /> non
             <input type="radio" name="newsletter" value="1"  /> oui ';
     }

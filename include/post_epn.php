@@ -56,15 +56,13 @@ if ($act != "" AND $act != 3) { // verife si non vide
   // Traitement des champs a insérer
     if (!$nom || !$ville || !$mail || !$adresse ) {
        $mess = getError(4);
-    }
-    else {
+    } else {
         switch($act) {
             case 1:   // ajout d'un epn
                 $nouvelEspace = Espace::creerEspace($nom, $adresse, intval($ville), $tel, $fax, $logoespace, $couleur, $mail) ;
                 if ($nouvelEspace == null) {
                     header("Location: ./index.php?a=43&mesno=0");
-                }
-                else {
+                } else {
                     $nouvelEspace->copyHoraires();
                     $nouvelEspace->copyConfig('0');
                     $nouvelEspace->copyConfigLogiciel();
@@ -77,8 +75,7 @@ if ($act != "" AND $act != 3) { // verife si non vide
                 $espaceAModifier = Espace::getEspaceById($idEspace);
                 if ($espaceAModifier != null && $espaceAModifier->modifier($nom,$adresse,$ville,$tel,$fax,$logoespace,$couleur,$mail)) {
                     header("Location: ./index.php?a=43&mesno=14");
-                }
-                else {
+                } else {
                     header("Location: ./index.php?a=43&mesno=0");
                 }
                 break;
@@ -87,8 +84,7 @@ if ($act != "" AND $act != 3) { // verife si non vide
             case 4: // modification du nom du reseau par defaut
                 if (FALSE == modreseau($nom,$adresse,$ville,$tel,$mail,$logo,$courrier,$activation)) {
                     echo getError(0);
-                }
-                else {
+                } else {
                     header("Location:index.php?a=43&mesno=14") ;
                 }
                 break;

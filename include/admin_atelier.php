@@ -83,8 +83,7 @@
                 if ($atelier->MAJStatutUtilisateur($idUser, 0)) {
                     echo geterror(26);
                 }
-            }
-            else {
+            } else {
                 echo "<div class=\"alert alert-warning alert-dismissable\"><i class=\"fa fa-exclamation\"></i>
                 <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>L'atelier est d&eacute;j&agrave; complet, veuillez attendre qu'une place se lib&egrave;re !</div>" ;
             }
@@ -100,8 +99,7 @@
     
                 echo "<div class=\"alert alert-success alert-dismissable\"><i class=\"fa fa-info\"></i>
                 <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Inscription en liste d'attente valid&eacute;e</div>" ;
-            }
-            else {
+            } else {
                 echo geterror(26);
             }
         }
@@ -154,8 +152,7 @@
             
             $mailok = 0;
 
-        }
-        else{
+        } else {
             // $espacearray = mysqli_fetch_array(getEspace($salle->getIdEspace()));
             // $mail_epn    = $espacearray["mail_espace"];
             // $adresse_epn = $espacearray["adresse"];
@@ -213,16 +210,14 @@
             if ($atelier->getStatus() > 0) {
                 $class  = "disabled";
                 $action = "#";
-            }
-            else {
+            } else {
                 $class  = "";
                 $action = "index.php?a=13&b=11&idatelier=" . $idAtelier;
             }
             
             if ($atelier->getStatus() == 2) {
                 $class2 = "disabled";
-            }
-            else { 
+            } else { 
                 $class2 = "";
             }
 ?>
@@ -251,8 +246,7 @@
     
             if ($testTarifAtelier > 1) { 
                 $tooltipinfo = "Inscriptions en cours / total d&eacute;pens&eacute;  sur total achet&eacute;";
-            }
-            else {
+            } else {
                 $tooltipinfo = "Inscriptions en cours";
             }
 ?>
@@ -304,13 +298,11 @@
                             $depense = "<span class=\"text-red\">" . abs($nbhorsforfait) . " Hors forfait</span>";
                         }
                         $affichage = $nbASencours . "/ " . $depense;
-                    }
-                    else {
+                    } else {
                         //affichage avec forfait en cours
                         $affichage = $nbASencours . "/ " . $depenseactuel . " sur " . $nbactuelsurforfait;
                     }
-                }
-                else { // sans le forfait, affichage des autres inscriptions
+                } else { // sans le forfait, affichage des autres inscriptions
                     $affichage = $nbASencours;
                 }
 ?>
@@ -394,8 +386,7 @@
             $nb = count($utilisateursRecherche);
             if ($nb <= 0) {
                 echo getError(6);
-            }
-            else {
+            } else {
                 echo "<p>R&eacute;sultats de la recherche: " . $nb . "</p>";
 ?>
                 <table class="table table-hover">
@@ -427,24 +418,21 @@
                                 $depense = "<span class=\"text-red\">" . abs($nbhorsforfait) . " Hors forfait</span>";
                             }
                             $affichage = $nbASencours . "/ " . $depense;
-                        }
-                        else {
+                        } else {
                             //affichage avec forfait en cours
                             $affichage = $nbASencours . "/ " . $depenseactuel . " sur " . $nbactuelsurforfait;
             
                         }
         
         
-                    }
-                    else { // sans le forfait, affichage des autres inscriptions
+                    } else { // sans le forfait, affichage des autres inscriptions
                         $affichage = $nbASencours;
                     }
             
                     //en grisé si adhérent inactif
                     if( $statutuser == 2) {
                         $classstatut = "text-muted";
-                    }
-                    else{
+                    } else {
                         $classstatut = "";
                     }
                 
@@ -454,8 +442,7 @@
                             <td><a href=\"index.php?a=13&b=2&idstatut=0&idatelier=" . $idAtelier . "&iduser=" . $utilisateur->getId() . "\"><button type=\"button\" class=\"btn btn-success sm\"  data-toggle=\"tooltip\" title=\"Inscrire\"><i class=\"fa fa-check\"></i></button></a>
                             <a href=\"index.php?a=13&b=10&idstatut=2&idatelier=" . $idAtelier . "&iduser=" . $utilisateur->getId() . "\"><button type=\"button\" class=\"btn bg-purple sm\"   data-toggle=\"tooltip\" title=\"Mettre en liste d'attente\"><i class=\"fa fa-repeat\"></i></button></a></td>
                             </tr>";
-                    }
-                    else {
+                    } else {
                         echo "<tr><td>" . htmlentities($utilisateur->getNom() . " " . $utilisateur->getprenom()) . "</td>
                             <td>" . $affichage . "</td>
                             <td><a href=\"index.php?a=13&b=10&idstatut=2&idatelier=" . $idAtelier . "&iduser=" . $utilisateur->getId() . "\"><button type=\"button\" class=\"btn btn-success sm\"><i class=\"fa fa-pause\" title=\"Mettre en liste d'attente\"></i></button></a></td>

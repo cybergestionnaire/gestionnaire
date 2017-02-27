@@ -122,8 +122,7 @@ class Config
     public function getDureeResaRapideOrUnitDefault() {
         if ($this->_dureeResaRapide > 0) {
             return $this->_dureeResaRapide;
-        }
-        else {
+        } else {
             return $this->_unitDefault; // je ne comprends pas le pourquoi de cette conversion, mais je reproduis l'ancienne fonctionnalité.
             // cf admin_config_horaire ligne 314 et fonction.php ligne 2299
             // probablement un copier-coller pas terminé...
@@ -137,8 +136,7 @@ class Config
     public function getMaxTimeOrDefaultMaxTime() {
         if ($this->_maxTime > 0) {
             return $this->_maxTime;
-        }
-        else {
+        } else {
             return $this->_defaultMaxTime; 
         }
     }
@@ -154,8 +152,7 @@ class Config
     public function getTimeUnit() {
         if ($this->_unit > 0) {
             return $this->_unit;
-        }
-        else {
+        } else {
             return $this->_unitDefault; 
         }
     }

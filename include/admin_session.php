@@ -59,8 +59,7 @@
             if ($session->inscrireUtilisateur($idUtilisateur, $idstatut)) {
                 echo geterror(25);
             }
-        }
-        else {
+        } else {
             echo geterror(21);
         }
     }
@@ -118,8 +117,7 @@
         if ($nb > 0) {     
             if ($testTarifAtelier > 1) { 
                 $tooltipinfo = "Inscriptions en cours / total d&eacute;pens&eacute;  sur total achet&eacute;";
-            }
-            else {
+            } else {
                 $tooltipinfo = "Inscriptions en cours ";
             }
 
@@ -166,15 +164,13 @@
                             $depense = "<span class=\"text-red\">" . abs($nbhorsforfait) . " Hors forfait</span>";
                         }
                         $affichage = $nbASencours . "/ " . $depense;
-                    }
-                    else {
+                    } else {
                         //affichage avec forfait en cours
                         $affichage = $nbASencours . "/ " . $depenseactuel . " sur " . $nbactuelsurforfait;
                     }
                 
                 
-                }
-                else { // sans le forfait, affichage des autres inscriptions
+                } else { // sans le forfait, affichage des autres inscriptions
                     $affichage = $nbASencours;
                 }
 ?>
@@ -266,9 +262,7 @@
             $nb = count($utilisateursRecherche);
             if ($nb <= 0) {
                 echo getError(6);
-            }
-
-            else {
+            } else {
                 echo "<p>R&eacute;sultats de la recherche : " . $nb . "</p>";
 ?>
                 <table class="table table-hover">
@@ -312,15 +306,13 @@
                                     $depense = "<span class=\"text-red\">" . abs($nbhorsforfait) . " Hors forfait</span>";
                                 }
                                 $affichage = $nbASencours . "/ " . $depense;
-                            }
-                            else {
+                            } else {
                                 //affichage avec forfait en cours
                 
                                 $affichage = $nbASencours . "/ " . $depenseactuel . " sur " . $nbactuelsurforfait;
                 
                             }
-                        }
-                        else { // sans le forfait, affichage des autres inscriptions
+                        } else { // sans le forfait, affichage des autres inscriptions
                             $affichage = $nbASencours;
                         }
 ?>  
@@ -334,8 +326,7 @@
                             <td><?php echo $affichage ?></td>
                         </tr>
 <?php
-                    }
-                    else {
+                    } else {
 ?>
                         <tr>
                             <td></td>
@@ -406,8 +397,7 @@
     
 <?php   
     
-    }
-    else {
+    } else {
 //la session a ete cloturée
 ?>
     <div class="box box-success">

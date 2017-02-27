@@ -52,9 +52,7 @@
             
             $messErr = '<div class="col-md-4"><div class="alert alert-success alert-dismissable"><i class="fa fa-check-square"></i>
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;&nbsp;&nbsp;</button>Reservation ajoutée</div></div>' ; 
-        }
-        else
-        {
+        } else {
             $messErr = '<div class="col-md-4"><div class="alert alert-info alert-dismissable"><i class="fa fa-info"></i>
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;&nbsp;&nbsp;</button>Vous devez s&eacute;lectionner un adh&eacute;rent et un poste</div></div>' ; 
         }
@@ -75,8 +73,7 @@
         if(isset($_POST['chatadh']) AND isset($_POST['chattxt_message'])) {
             addMessage($date, $id_user, $message, $tags, $destinataire);
             //echo 'message ajouté';
-        } 
-        else {
+        } else {
             $messErr = '<h4 class="alert_info">Vous devez entrer un texte !</h4>' ; 
         }
     }

@@ -42,14 +42,12 @@ if (isset($_GET["act"])) {
            
             if (!$nom || !$codepost || !$pays) {
                $mess = getError(4);
-            }
-            else {   
+            } else {   
                 $ville = Ville::creerVille($nom, $codepost, $pays);
                 
                 if ($ville == null) {
                     echo getError(0);
-                }
-                else {
+                } else {
                     //header("Location:index.php?a=41&mesno=14") ;
                     echo getError(14);
                 }
@@ -63,16 +61,14 @@ if (isset($_GET["act"])) {
 
             if (!$nom || !$codepost || !$pays) {
                 $mess = getError(4);
-            }
-            else {
+            } else {
                 $ville = Ville::getVilleById(intval($idcity));
                 
                 if ($ville != null) {
                         
                     if (FALSE == $ville->modifier($nom, $codepost, $pays)) {
                         echo getError(0);
-                    }
-                    else {
+                    } else {
                         // header("Location:index.php?a=41&mesno=14") ;
                         echo getError(14);
                     }
@@ -93,8 +89,7 @@ if (isset($_GET["act"])) {
                         echo getError(11);
                         break;
                 } 
-            }
-            else {
+            } else {
                 echo getError(0);
             }
             
@@ -163,8 +158,7 @@ if ($act == 4) {
     if (FALSE == $utilisateurs)
     {
         echo getError(0);
-    }
-    else {
+    } else {
         $arraystatus = array(1=>"Actif", 2=>"Inactif");
         $arraycolor  = array(1=>"bg-light-blue", 2=>"bg-yellow");
 ?>

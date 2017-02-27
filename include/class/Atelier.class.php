@@ -284,8 +284,7 @@ class Atelier
         if (!self::isUtilisateurInscrit($idUtilisateur)) {
             $sql = "INSERT INTO `rel_atelier_user` (`id_atelier` , `id_user` , `status_rel_atelier_user` )
                     VALUES ('" . $this->_id . "', '" . $idUtilisateur."', '" . $statut . "')";
-        }
-        else {
+        } else {
             $sql = "UPDATE `rel_atelier_user` "
                  . "SET status_rel_atelier_user='" . $statut ."'"
                  . "WHERE `id_user`=" . $idUtilisateur . " AND `id_atelier`=" . $this->_id ;

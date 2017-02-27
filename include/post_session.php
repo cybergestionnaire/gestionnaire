@@ -76,8 +76,7 @@
 
                 $dates = $arraydate[$resultat - 1]; //donner la derniere date comme date reference
         
-            }
-            else {
+            } else {
                 $session = Session::getSessionById($idsession);
                 
                 $nbre_origin = $session->getNbDates();
@@ -101,13 +100,11 @@
                 $_SESSION['sauvegarde'] = $_POST;
                 header('Location: ./index.php?a=31&m=' . $m . '&idsession=' . $idsession . '&mesno=45');
                 exit;   
-            }
-            else {
+            } else {
          
                 if ($idTitre == "" || $nbre_dates == "" || $nbplace == "") {
                     $mess = getError(4) ; //autres champs manquants
-                }
-                else {
+                } else {
             
                     //Insertion des données
                     switch($m) {
@@ -119,8 +116,7 @@
                                     $session->addSessionDate($arraydate[$i], 0);
                                 }
                                 header("Location: ./index.php?a=37");
-                            }                        
-                            else {
+                            } else {
                                 header("Location: ./index.php?a=37&mesno=0");
                             }
                     
@@ -161,8 +157,7 @@
                                     $statSession = StatAtelierSession::getStatSessionByIdSessionAndDate($session->getId(), $sessionDates[$i - 1]->getDate());
                                     if ($statSession === null) {
                                         $statSession = StatAtelierSession::creerStatAtelierSession('s', $session->getId(), $sessionDates[$i - 1]->getDate(), $sessionDates[$i - 1]->getNbUtilisateursInscritsOuPresents(), 0, 0, $sessionDates[$i - 1]->getNbUtilisateursEnAttente(), $session->getNbPlaces(), $session->getSessionSujet()->getIdCategorie(), 2, $session->getIdAnimateur(), $session->getSalle()->getIdEspace());
-                                    }
-                                    else {
+                                    } else {
                                         $statSession->modifier('s', $sessionDates[$i - 1]->getId(), $sessionDates[$i - 1]->getDate(), $sessionSate->getNbUtilisateursInscritsOuPresents(), 0, 0, $sessionSate->getNbUtilisateursEnAttente(), $session->getNbPlaces(), $session->getSessionSujet()->getIdCategorie(), 2, $session->getIdAnimateur(), $session->getSalle()->getIdEspace());
                                     }
 
@@ -196,8 +191,7 @@
                             
                             if ($session->modifier($dates, $idTitre, $nbplace, $nbre_dates, $status, $idAnim, $idSalle, $idTarif)) {
                                 header("Location: ./index.php?a=37&mesno=14");
-                            }
-                            else {
+                            } else {
                                 //modification echouée
                                 header("Location: ./index.php?a=37&mesno=0");
                             }
@@ -216,8 +210,7 @@
         if ($session->supprimer()) {
             // les relations sont désormais gérées par la fonction supprimer
             header("Location: ./index.php?a=37&mesno=46");
-        }
-        else {
+        } else {
             header("Location: ./index.php?a=37&mesno=0");
         }
     }

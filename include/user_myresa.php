@@ -123,9 +123,7 @@ if (TRUE==checkResa($_SESSION['iduser']))
 	}
 	
 
-}
-else
-{
+} else {
 	echo "<div class=\"alert alert-info alert-dismissable\"><i class=\"fa fa-info\"></i>
           <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>&nbsp;&nbsp;&nbsp;Vous n'avez pas de r&eacute;servations enregistrée</div>" ;
 	

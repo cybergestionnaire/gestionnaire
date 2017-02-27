@@ -28,7 +28,7 @@
  if($maj==0){
  $urlredirect="index.php";
  $bouton="Retour &agrave; l'accueil";
- }else{
+ } else {
  $urlredirect="index.php?a=61";
  $bouton="Faire la mise &agrave; jour" ;
  }
@@ -53,7 +53,7 @@ if ($bdd==TRUE){
 	echo '<p>* La base de donn&eacute;es a &eacute;t&eacute; sauvegard&eacute;e sur votre serveur. </p><br>
 				<p>Pour r&eacute;cup&eacute;rer le fichier g&eacute;n&eacute;r&eacute;, ouvrez le dossier /sql de l\'application</p>
 				';
-}else{
+} else {
 		echo 'Impossible de faire la sauvegarde, veuillez v&eacute;rifier que votre base est accessible et ouverte en &eacute;criture !';
 		$error.="mise &agrave; jour impossible, base sql inaccessible" ;
 	}

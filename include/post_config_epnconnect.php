@@ -78,8 +78,7 @@
                         $config->getDureeResaRapide()
                 )) {
                     header("Location:index.php?a=25&mess=ok&epnr=" . $idEspace) ;
-                }
-                else {
+                } else {
                     header("Location:index.php?a=25&mess=0&epnr=" . $idEspace);
                 }
         
@@ -108,8 +107,7 @@
                         $config->getDureeResaRapide()
                     )) {
                     header("Location:index.php?a=25&mess=ok&epnr=" . $idEspace) ;
-                }
-                else {
+                } else {
                     header("Location:index.php?a=25&mess=0&epnr=" . $idEspace);
                 }
  

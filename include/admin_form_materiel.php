@@ -42,8 +42,7 @@
         $nomhote       = '';
         $fonctionarray = '';
         $fonctions     = '';
-    }
-    else {
+    } else {
         // Parametre du formulaire pour la MODIFICATION
         $post_url      = "index.php?a=2&act=2&idmat=" . $idMateriel;
         $label_bouton  = "Modifier le poste" ;
@@ -102,8 +101,7 @@
     foreach ($osarray AS $key=>$value) {
         if ($os == $value) {
             echo "<option value=\"".$value."\" selected>".$value."</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"".$value."\">".$value."</option>";
         }
     }
@@ -119,8 +117,7 @@
     foreach ($allSalles AS $salle) {
         if ($salle->getId() == $idSalle) {
             echo "<option value=\"" . $salle->getId() . "\" selected>" . htmlentities($salle->getNom()) . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $salle->getId() . "\">" . htmlentities($salle->getNom()) . "</option>";
         }
     }
@@ -170,14 +167,12 @@
         foreach ($usages AS $usage) {
             if (in_array($usage->getId(), $fonctions)) { 
                 $check = "checked"; 
-            }
-            else {
+            } else {
                 $check = ''; 
             }
             echo "<div class=\"checkbox\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"fonction[]\" value=" . $usage->getId() . "  " . $check . ">&nbsp;&nbsp;" . htmlentities($usage->getNom()) . "</div>\r\n";
         }
-    }
-    else {   // creation d'un poste
+    } else {   // creation d'un poste
     
         foreach ($usages AS $usage) {
             echo "<div class=\"checkbox\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"fonction[]\" value=" . $usage->getId() . ">&nbsp;&nbsp;" . htmlentities($usage->getNom()) . "</div>\r\n" ;

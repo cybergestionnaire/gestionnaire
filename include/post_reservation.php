@@ -33,9 +33,7 @@
       {
           $_SESSION['debut']=$_POST["debut"] ;
           $step = $_POST["step"]+1;
-      }
-      else
-      {
+      } else {
           $step = $_POST['step'] ;
           $messErr = 'Vous devez s&eacute;lectionner l\'heure de d&eacute;but de votre r&eacute;servation </br>' ;                 
       }
@@ -47,9 +45,7 @@
       {
           $_SESSION['duree']=$_POST["duree"] ;
           $step = $_POST["step"]+1;
-      }
-      else
-      {
+      } else {
           $step = $_POST['step'] ;
           $messErr = 'Vous devez s&eacute;lectionner la dur&eacute;e de votre r&eacute;servation </br>' ; 
       }
@@ -72,9 +68,7 @@
         if (TRUE == is_numeric($_SESSION['other_user']))
         {
            $id_user = $_SESSION["other_user"];
-        }
-        else
-        {
+        } else {
             $id_user = $_SESSION["iduser"];
         }
 		

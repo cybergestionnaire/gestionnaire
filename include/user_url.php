@@ -30,9 +30,7 @@ if ($_POST["submit"]!="")
    if (!$titre || !$url)
    {
        echo getError(13);
-   }
-   else
-   {
+   } else {
        addBookmark($_SESSION["iduser"],$titre,$url,$_POST['rubSel']);
    }
 }

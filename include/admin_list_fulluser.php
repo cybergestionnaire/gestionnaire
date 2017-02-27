@@ -97,8 +97,7 @@
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>&nbsp;&nbsp;&nbsp;<a  href="index.php?a=1&b=1" >Cr&eacute;er un nouvel utilisateur ?</a>
         </div>
 <?php
-        }
-        else {
+        } else {
             // affichage des résultats de recherche
                 
 ?>
@@ -137,8 +136,7 @@
                 $tarifAdhesion      = Tarif::getTarifById($utilisateurRecherche->getIdTarifAdhesion());
                 if ($tarifAdhesion != null){
                     $adhesion       = $tarifAdhesion->getNom();
-                }
-                else {
+                } else {
                     $adhesion       = '';
                 }
                 $aujourdhui         = date_create(date('Y-m-d'));
@@ -197,8 +195,7 @@
                 
                 if($utilisateurRecherche->getStatut() == 2 or $utilisateurRecherche->getStatut() == 6 ) {
                     $class = "text-muted" ;
-                }
-                else {
+                } else {
                     $class = "" ;
                 }
                 
@@ -232,8 +229,7 @@
                                 </div>
 <?php
                     }
-                }
-                else {
+                } else {
                     echo    '<span class="badge bg-red">NC</span> 0h';
                 }
 ?>
@@ -259,8 +255,7 @@
         </div><!-- .box -->
 <?php
         }
-    }
-    else {
+    } else {
         // si pas de recherche alors affichage classique
         switch($adh) {// on recupere le type de membre a afficher
     
@@ -320,8 +315,7 @@
         </div>
 <?php            
             
-        }
-        else { // affichage du resultat
+        } else { // affichage du resultat
         
             //$nb  = mysqli_num_rows($result);
             // count total number of appropriate listings:
@@ -353,15 +347,13 @@
 <?php
                 if (countUser(3) > 0) {
                     echo "&nbsp;(<a href=\"index.php?a=1&adh=" . $numOther . "\">afficher les " . $other . " </a>)";
-                }
-                else {
+                } else {
                     echo "";
                 }
                     //ajout des archivés
                 if (countUser(4) > 0) {
                     echo "&nbsp;(<a href=\"index.php?a=1&adh=" . $numOthera . "\">afficher les " . $othera . " </a>)";
-                }
-                else {
+                } else {
                     echo "";
                 }
 ?>
@@ -412,8 +404,7 @@
 ?>
                                 <button type="submit" name="archivage" class="btn bg-red btn-sm" data-toggle="tooltip" title="Archiver pour statistique" OnClick="return confirm(\'Veuillez confirmer le changement de statut de ces adh&eacute;rents !\');"><i class="fa fa-archive"></i></button>
 <?php
-                }
-                else {
+                } else {
                     echo '';   // ????
                 }
 ?>
@@ -517,8 +508,7 @@
                                 </div>
                             </div>
 <?php
-                        }
-                        else {
+                        } else {
                             echo '<span class="badge bg-red">NC</span> 0h';
                         }
                     }

@@ -21,7 +21,7 @@ closedb($db);
  
  if(FALSE==$result){ 
     return FALSE;
-    }else{
+    } else {
         return TRUE;
     }
 }
@@ -36,10 +36,10 @@ $result = mysqli_query($db,$sql);
 closedb($db);
     if(FALSE==$result){
         return FALSE;
-    }else{
+    } else {
         if(mysqli_num_rows($result)==0){
         return FALSE;
-        }else{
+        } else {
         return TRUE;
         }
     }
@@ -58,7 +58,7 @@ $result = mysqli_query($db,$sql);
 closedb($db);
     if(FALSE==$result){
         return FALSE;
-    }else{
+    } else {
         return TRUE;
     }
 
@@ -105,7 +105,7 @@ function AddTab_courrier()
     $db     = opendb();
     $result = mysqli_query($db,$sql);
     closedb($db);
-    if(FALSE==$result){ $row="echec"; }else{ $row="OK"; }
+    if(FALSE==$result){ $row="echec"; } else { $row="OK"; }
     return $row;
 }
 
@@ -118,7 +118,7 @@ function add_courriertest()
     $db     = opendb();
     $result = mysqli_query($db,$sql);
     closedb($db);
-    if(FALSE==$result){ $row="echec"; }else{ $row="OK"; }
+    if(FALSE==$result){ $row="echec"; } else { $row="OK"; }
     return $row;
 }
 
@@ -129,7 +129,7 @@ function alterEspace()
     $db     = opendb();
     $result = mysqli_query($db,$sql);
     closedb($db);
-    if(FALSE==$result){ $row="echec"; }else{ $row="OK"; }
+    if(FALSE==$result){ $row="echec"; } else { $row="OK"; }
     return $row;
 }
 
@@ -144,7 +144,7 @@ function Tab_ins1()
     $db     = opendb();
     $result = mysqli_query($db,$sql);
     closedb($db);
-    if(FALSE==$result){ $row="echec"; }else{ $row="OK"; }
+    if(FALSE==$result){ $row="echec"; } else { $row="OK"; }
     return $row;
 }
 
@@ -154,7 +154,7 @@ function Tab_ins2()
     $db     = opendb();
     $result = mysqli_query($db,$sql);
     closedb($db);
-    if(FALSE==$result){ $row="echec"; }else{ $row="OK"; }
+    if(FALSE==$result){ $row="echec"; } else { $row="OK"; }
     return $row;
 }
 
@@ -164,7 +164,7 @@ function alterMessageMAJ()
     $db     = opendb();
     $result = mysqli_query($db,$sql);
     closedb($db);
-    if(FALSE==$result){ $row="echec"; }else{ $row="OK"; }
+    if(FALSE==$result){ $row="echec"; } else { $row="OK"; }
     return $row;
 }
 
@@ -182,8 +182,7 @@ function createtabinscriptMAJ()
     closedb($db);
     if (FALSE == $result) {
         $row = "echec";
-    }
-    else {
+    } else {
         $row = "OK";
     }
     return $row;
@@ -197,8 +196,7 @@ function insertCapt()
     closedb($db);
     if (FALSE == $result) {
         $row = "echec";
-    }
-    else {
+    } else {
         $row = "OK";
     }
     return $row;

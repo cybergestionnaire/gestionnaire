@@ -50,8 +50,7 @@
         $loginn       = "";
     //$testb=1;
         
-    }
-    else {
+    } else {
         // Parametre du formulaire pour la MODIFICATION
         $post_url     = "index.php?a=51&b=2&act=2&iduser=" . $id_user;
         $label_bouton = "Modifier" ;
@@ -74,8 +73,7 @@
             $statuss    = $utilisateur->getStatut();
             $info       = $utilisateur->getInfo();
             $avatar     = $utilisateur->getAvatar();
-        }
-        else {
+        } else {
             $mess = geterror(0);
         }
     }
@@ -156,17 +154,14 @@
     if ($id_user != '') {
         if ($statuss == 3 || $statuss == 4) {
             echo '<img src="img/avatar/' . $avatar . '" width="50%">' ;
-        }
-        else {
+        } else {
             if ($sexe =="F") {
                 echo '<img src="img/avatar/female.png">' ;
-            }
-            else {
+            } else {
                 echo '<img src="img/avatar/male.png">' ;
             }
         }
-    }
-    else {
+    } else {
         echo '<img src="img/avatar/default.png" width="60%">' ;
     }
 ?>
@@ -189,13 +184,11 @@
         if ($sexe == "F") {
             echo '<input type="radio" name="sexe" value="H">&nbsp;Homme&nbsp;&nbsp;
                 <input type="radio" name="sexe" value="F" checked >&nbsp;Femme';
-        }
-        else {
+        } else {
             echo '<input type="radio" name="sexe" value="H" checked >&nbsp;Homme&nbsp;&nbsp;
                 <input type="radio" name="sexe" value="F">&nbsp;Femme ';
         }
-    }
-    else {
+    } else {
         echo '<input type="radio" name="sexe" value="H" >&nbsp;Homme&nbsp;&nbsp;
             <input type="radio" name="sexe" value="F" >&nbsp;Femme ';
             
@@ -217,8 +210,7 @@
     for ($i=1 ; $i<32 ; $i++) {
         if ($i == $jour) {
             echo "<option value=\"" . $i . "\" selected>" . $i . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $i . "\">" . $i . "</option>";
         }
     }
@@ -231,8 +223,7 @@
     foreach ($month AS $key=>$value) {
         if ($mois == $key) {
             echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $key . "\">" . $value . "</option>";
         }
     }
@@ -267,9 +258,7 @@
     foreach ($villes AS $ville) {
         if ($idVille == $ville->getId()) {
             echo "<option value=\"" . $ville->getId() . "\" selected>" . htmlentities($ville->getNom()) . "</option>";
-        }
-        else
-        {
+        } else {
             echo "<option value=\"" . $ville->getId() . "\">" . htmlentities($ville->getNom()) . "</option>";
         }
     }
@@ -324,8 +313,7 @@
         foreach ($state AS $key=>$value) {
             if ($statuss == $key) {
                 echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
-            }
-            else {
+            } else {
                 echo "<option value=\"" . $key . "\">" . $value . "</option>";
             }
         }
@@ -335,8 +323,7 @@
         foreach ($state AS $key=>$value) {
             if ($value == "Animateur") {
                 echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
-            }
-            else {
+            } else {
                 echo "<option value=\"" . $key . "\">" . $value . "</option>";
             }
         }

@@ -36,17 +36,14 @@ if ($act != "" AND $act != 3) { // verife si non vide
     if ($nom == '' || $espace == '' )
     {
        $mess = getError(4);
-    }
-    else
-    {
+    } else {
         switch($act)  
         {
             case 1:   // ajout d'une salle
                 $salle = Salle::creerSalle($nom,intval($espace),$comment) ;
                 if ($salle == null) {
                     header("Location: ./index.php?a=44&mesno=0");
-                }
-                else {
+                } else {
                    header("Location: ./index.php?a=44");
                 }
             break;
@@ -54,8 +51,7 @@ if ($act != "" AND $act != 3) { // verife si non vide
                 $salle = Salle::getSalleById($idSalle);
                 if ($salle != null && $salle->modifier($nom,$espace,$comment)) {
                     header("Location: ./index.php?a=44");
-                }
-                else {
+                } else {
                     header("Location: ./index.php?a=44&mesno=0");
                 }
             break;

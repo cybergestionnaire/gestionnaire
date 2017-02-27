@@ -113,7 +113,7 @@ $annees=array(
 				</tr>" ;
 		}
 		echo "</tbody></table>" ;
-	}else{
+	} else {
 		echo "Aucune réservation enregistrée pour les jours prochains</br>";
 	}
 	
@@ -146,14 +146,12 @@ $annees=array(
 				  <td>".$row['nom_computer']."</td></tr>" ;
 		}
 		echo "</tbody></table>" ;
-	}else{
+	} else {
 		echo "Aucune réservation enregistrée pour le mois en cours </br>";
 	}
 	
 
-}
-else
-{
+} else {
 	echo "Vous n'avez pas de r&eacute;servations enregistrée" ;
 	
 }
@@ -207,10 +205,10 @@ else
 				</tr>" ;
 		}
 		echo "</tbody></table>" ;
-	}else{
+	} else {
 		echo "Aucune réservation enregistrée pour la période demandée</br>";
 	}
-}else{
+} else {
 	echo "Veuillez entrer 2 dates pour définir la période SVP!";
 }
 }
@@ -241,16 +239,14 @@ else
 		{
 			$total = 'illimit&eacute;' ;
 			$reste = $total ;
-		}
-		else
-		{
+		} else {
 			$total = getTime($row['total']);
 			$utilise=$row['util'];
 			$reste = getTime($row['total']-$utilise) ;
 			
 			//$reste = getTime($row['total']-$row['util']) ;
 		}
-	}else{
+	} else {
 		$total=getTime(300);
 		$utilise=0;
 		$reste=$total;

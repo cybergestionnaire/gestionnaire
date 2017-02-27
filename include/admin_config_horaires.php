@@ -64,8 +64,7 @@ include("include/boites/menu-parametres.php");
     foreach ($espaces AS $espace) {
         if ($idEspace == $espace->getId()) {
             echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
         }
     }
@@ -114,8 +113,7 @@ include("include/boites/menu-parametres.php");
     foreach($horaires as $horaire) {
         if (isset($_GET["dayline"]) && $horaire->getIdJour() == $_GET["dayline"]) {
             $color = "#CC9999";
-        }
-        else {
+        } else {
             $color = "#FFFFFF";
         }
         
@@ -160,8 +158,7 @@ include("include/boites/menu-parametres.php");
             for ($minutes = 0 ; $minutes <= 59 ;$minutes = $minutes + 15) {
                 if ($horaire->getHoraire1Fin() == Horaire::convertHoraire($heure."h".$minutes)) {
                     $select = "selected" ;
-                }
-                else {
+                } else {
                     $select = "";
                 }
 
@@ -189,8 +186,7 @@ include("include/boites/menu-parametres.php");
             for ($minutes = 0 ; $minutes <= 59 ;$minutes = $minutes + 15) {
                 if ($horaire->getHoraire2Debut() == Horaire::convertHoraire($heure."h".$minutes)) {
                     $select = "selected" ;
-                }
-                else {
+                } else {
                     $select = "";
                 }
 
@@ -216,8 +212,7 @@ include("include/boites/menu-parametres.php");
             for ($minutes = 0 ; $minutes <= 59 ;$minutes=$minutes+15) {
                 if ($horaire->getHoraire2Fin() == Horaire::convertHoraire($heure."h".$minutes)) {
                     $select = "selected" ;
-                }
-                else {
+                } else {
                     $select = "";
                 }
 
@@ -282,8 +277,7 @@ include("include/boites/menu-parametres.php");
     if ($config->getResaRapide()) {
         $sel1 = "" ;
         $sel2 = "checked=\"checked\"";
-    }
-    else {
+    } else {
         $sel1 = "checked=\"checked\"" ;
         $sel2 = "";
     }
@@ -303,8 +297,7 @@ include("include/boites/menu-parametres.php");
     foreach ($dureearray as $key=>$value) {
         if ($dureerr == $key) {
             echo "                        <option value=\"" . $key . "\" selected>" . $value . "</option>";
-        }
-        else {
+        } else {
             echo "                        <option value=\"" . $key . "\">" . $value . "</option>";
         }
     }
@@ -365,8 +358,7 @@ include("include/boites/menu-parametres.php");
 
         if ($check == 0) {
             insertJourFerie(intval($_GET["idday"]), intval(date("Y")), $idEspace);
-        }
-        else {
+        } else {
             deleteJourFerie($check);
         }
     }
@@ -381,8 +373,7 @@ include("include/boites/menu-parametres.php");
         default: //affichage du mois
             if ($display != "") {
                 $month = $display;
-            }
-            else {
+            } else {
                 $month = date("n");
             }
             echo getCalendarClose(date("Y"), $month, $idEspace) ;

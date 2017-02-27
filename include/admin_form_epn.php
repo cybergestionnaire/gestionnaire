@@ -33,8 +33,7 @@ if ($idEspace == '') {   // Parametre du formulaire pour la CREATION
     $label_bouton = "Cr&eacute;er l'Espace" ;
     $logo="logo.png";
     $forfait=0;
-}
-else {
+} else {
     // Parametre du formulaire pour la MODIFICATION
     $post_url = "index.php?a=43&b=2&act=2&idespace=".$idEspace;
     $label_bouton = "Modifier l'espace" ;
@@ -91,8 +90,7 @@ echo isset($mess) ? $mess : '' ;
     foreach ($villes AS $ville) {
         if (isset($espaceAModifier) && $ville->getId() == $espaceAModifier->getIdVille()) {
             echo "<option value=\"" . $ville->getId() . "\" selected>" . $ville->getNom() . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $ville->getId() . "\">" . $ville->getNom() . "</option>";
         }
     }
@@ -125,8 +123,7 @@ echo isset($mess) ? $mess : '' ;
     foreach ($couleurArray AS $key=>$value) {
         if (isset($espaceAModifier) && $espaceAModifier->getCodeCouleur() == $key) {
             echo "<option value=\"" . $key . "\" selected class=\"text-" . $value . "\">" . $value . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $key . "\" class=\"bg-" . $value . "\">" . $value . "</option>";
         }
     }
@@ -139,8 +136,7 @@ echo isset($mess) ? $mess : '' ;
  <?php 
     if ($b == 2) {
         echo '<img src="'.$filedir.$espaceAModifier->getLogo().'" >' ;
-    }
-    else {
+    } else {
         echo '<img src="./img/logo/logo.png" >' ;
     }
 ?>
@@ -153,8 +149,7 @@ echo isset($mess) ? $mess : '' ;
     for ($l = 0 ; $l < $nblogo ; $l++) {
         if (isset($espaceAModifier) && strcmp($espaceAModifier->getLogo(), $filesLogoarray[$l]) == 0) {
             $check = "checked"; 
-        }
-        else {
+        } else {
             $check = ''; 
         }
         echo "<img src=".$filedir.$filesLogoarray[$l].">&nbsp;<input type=\"radio\" name=\"elogo\" value=".$filesLogoarray[$l]."  ".$check.">";

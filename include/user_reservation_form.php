@@ -117,9 +117,7 @@ $epn=$_GET["idepn"];
           if (TRUE == isset($_SESSION['other_user']))
           {
               $reserve = '<dt>R&eacute;servation pour : </dt><dd> '.getUserName($_SESSION['other_user']).'</dd>' ;
-          }
-          else
-          {
+          } else {
               $reserve = '<dt>R&eacute;servation par : </dt><dd> '.getUserName($_SESSION['iduser']).'<dd>' ;
           }
           $step  =  '<dl class="dl-horizontal">'.$reserve.'
@@ -149,9 +147,7 @@ $epn=$_GET["idepn"];
                         if (FALSE == $result OR mysqli_num_rows($result)==0)
                         {
                           echo getError(6);
-                        }
-                        else
-                        {
+                        } else {
                           $nb  = mysqli_num_rows($result);
                           if ($nb > 0)
                           {
@@ -172,10 +168,10 @@ $epn=$_GET["idepn"];
 								$class="text-muted" ;
 									if ($dateadhesion<$aujourdhui){	
 										$info='<small class="badge bg-blue" data-toggle="tooltip" title="adh&eacute;sion &agrave; renouveller"><i class="fa fa-info"></i></small> ';
-									} else{ 
+									} else { 
 										$info='<small class="badge bg-blue" data-toggle="tooltip" title="compte inactif"><i class="fa fa-info"></i></small>';
 									}
-								}else{
+								} else {
 								$class="";
 								$info="";
 								}

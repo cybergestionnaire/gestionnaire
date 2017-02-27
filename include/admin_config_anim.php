@@ -37,8 +37,7 @@
 <?php
     if ($_SESSION['status'] == 4) {
         echo ' <li ><a href="#tab1" data-toggle="tab">Administrateur</a></li>';
-    }
-    else {
+    } else {
         echo ' <li><a href="">Administrateur</a></li>';
     }
 ?>
@@ -53,8 +52,7 @@
     $administrateurs = Utilisateur::getAdministrateurs();
     if ($administrateurs == null) {
         echo getError(1);
-    }
-    else {
+    } else {
         //seuls les admins ont le droit de modifier un profil admin
                 //echo "<div class=soustitre>Administrateurs: ".$nb."</div>";
 ?>
@@ -112,8 +110,7 @@
 
     if ($animateurs === null) {
         echo getError(1);
-    }
-    else {
+    } else {
         $nb  = count($animateurs);
             //echo "<div class=soustitre>Animateurs: ".$nb."</div>";
 ?>
@@ -130,8 +127,7 @@
 
             if ($animateur->getStatut() == 5) { 
                 $class = "text-muted";
-            }
-            else { 
+            } else { 
                 $class = "";
             }
 ?>

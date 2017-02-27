@@ -13,9 +13,7 @@ if (TRUE == isset($_GET['month']) AND TRUE==is_numeric($_GET['month']) AND $_GET
 	{
 		$month = $_GET['month'] ;
 		$year =$_GET['year'];
-	}
-	else
-	{
+	} else {
 	   $month = date('m');
 	   $year=date('Y');
 	}
@@ -50,9 +48,7 @@ if(!is_dir($dossierimg)){
 		    if ($epn == $key)
 		    {
 			echo "<option  value=\"".$key."\" selected>".$value."</option>";
-		    }
-		    else
-		    {
+		    } else {
 			echo "<option  value=\"".$key."\">".$value."</option>";
 		    }
 		}

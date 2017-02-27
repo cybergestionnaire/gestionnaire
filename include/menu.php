@@ -31,19 +31,16 @@
     //photo de profil
     if ($_SESSION["status"] == 3 OR  $_SESSION["status"] == 4) {
         $avatar = "img/avatar/" . $utilisateur->getAvatar();
-    }
-    else {
+    } else {
         $nomSE    = str_replace(CHR(32), "", $utilisateur->getNom());
         $prenomSE = str_replace(CHR(32), "", $utilisateur->getPrenom());
         $filenamephoto = "img/photos_profil/" . trim($nomSE) . "_" . trim($prenomSE) . ".jpg" ;
         if (file_exists($filenamephoto)) {
             $avatar = $filenamephoto;
-        }
-        else {
+        } else {
             if ($utilisateur->getSexe() == 'H') {
                 $avatar = "img/avatar/male.png";
-            }
-            else {
+            } else {
                 $avatar = "img/avatar/female.png";
             }
         }
@@ -81,12 +78,12 @@
             $statut = "Actif"; //Utilisateur standart
 ?>
     <ul class="sidebar-menu">
-        <li class="<?php if ($m == "") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php"><i class="fa fa-home"></i> <span>Tableau de bord</span></a></li>
-        <li class="<?php if ($m == "2") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php?m=2"><i class="fa fa-edit" ></i><span>Mon compte</span></a></li>
+        <li class="<?php if ($m == "") { echo "active"; } else { echo "treeview" ;} ?>"><a href="index.php"><i class="fa fa-home"></i> <span>Tableau de bord</span></a></li>
+        <li class="<?php if ($m == "2") { echo "active"; } else { echo "treeview" ;} ?>"><a href="index.php?m=2"><i class="fa fa-edit" ></i><span>Mon compte</span></a></li>
         <!--<li><a href="index.php?m=5"><i class="fa fa-bookmark-o" ></i><span>Mes liens favoris</span></a></li>-->
-        <li class="<?php if ($m == "20") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php?m=20"><i class="fa fa-print" ></i><span>Mes impressions</span></a></li>
-        <li class="<?php if ($m == "6") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php?m=6"><i class="fa fa-graduation-cap" ></i><span>Mes formations</span></a></li>
-        <li class="<?php if ($m == "3") { echo "active"; }else{ echo "treeview" ;} ?>"><a href="index.php?m=3"><i class="fa fa-calendar"></i><span>Mes r&eacute;servations</span></a></li>
+        <li class="<?php if ($m == "20") { echo "active"; } else { echo "treeview" ;} ?>"><a href="index.php?m=20"><i class="fa fa-print" ></i><span>Mes impressions</span></a></li>
+        <li class="<?php if ($m == "6") { echo "active"; } else { echo "treeview" ;} ?>"><a href="index.php?m=6"><i class="fa fa-graduation-cap" ></i><span>Mes formations</span></a></li>
+        <li class="<?php if ($m == "3") { echo "active"; } else { echo "treeview" ;} ?>"><a href="index.php?m=3"><i class="fa fa-calendar"></i><span>Mes r&eacute;servations</span></a></li>
         <!--<li><a href="index.php?m=20"><span>Mes impressions</span></a></li>-->
     </ul>
         
@@ -108,7 +105,7 @@
 ?>
         <!--    <li class="<?php if ($a == 41) { echo "active"; } else { echo "treeview" ;} ?>"><a href="index.php?a=41"><i class="fa fa-gears"></i> <span>Configuration</span> </a></li>-->
         
-        <li class="<?php if ($a == 1 OR $a == 24 OR $a == 23) { echo "active"; }else{ echo "treeview" ;} ?>">
+        <li class="<?php if ($a == 1 OR $a == 24 OR $a == 23) { echo "active"; } else { echo "treeview" ;} ?>">
             <a href="#"><i class="fa fa-group"></i> <span>Adh&eacute;rents</span><i class="fa fa-angle-left pull-right"></i></a>
             <ul class="treeview-menu">
                 <li ><a href="index.php?a=1"><i class="fa fa-angle-double-right"></i>Liste des Adh&eacute;rents</a></li>
@@ -126,14 +123,14 @@
             </ul>
         </li>
         
-        <li class="<?php if ($a == 11 OR $a == 12  OR $a == 18 OR $a == 7 OR $a == 10 or $a == 15 OR $a == 17 or  $a == 34 OR $a == 35) { echo "active"; }else{ echo "treeview" ;} ?>">
+        <li class="<?php if ($a == 11 OR $a == 12  OR $a == 18 OR $a == 7 OR $a == 10 or $a == 15 OR $a == 17 or  $a == 34 OR $a == 35) { echo "active"; } else { echo "treeview" ;} ?>">
             <a href="#"><i class="fa fa-keyboard-o"></i> <span>Ateliers</span><i class="fa fa-angle-left pull-right"></i></a>
             <ul class="treeview-menu">
-                <li class="<?php if ($a == 7 OR $a == 10 or $a == 15 OR $a == 17 or $a == 34 OR $a == 35) { echo "active"; }else{ echo "treeview" ;} ?>">
+                <li class="<?php if ($a == 7 OR $a == 10 or $a == 15 OR $a == 17 or $a == 34 OR $a == 35) { echo "active"; } else { echo "treeview" ;} ?>">
                     <a href="#"><i class="fa fa-angle-double-right"></i> Param&egrave;tres atelier <i class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
                         <li><a href="index.php?a=7"><i class="fa fa-angle-double-right"></i> Cat&eacute;gories / Niveaux</a></li>
-                        <li class="<?php if ( $a == 15 OR $a == 17){ echo "active treeview"; }else{ echo "treeview" ;} ?>">
+                        <li class="<?php if ( $a == 15 OR $a == 17){ echo "active treeview"; } else { echo "treeview" ;} ?>">
                             <a href="index.php?a=17"><i class="fa fa-angle-double-right"></i> Sujets</i></a>
                         </li>
                         <li class="<?php if ( $a == 34 OR $a == 35){ echo "active treeview"; } else { echo "treeview" ;} ?>">
@@ -222,7 +219,7 @@
         <li class="<?php if ($a == 11 OR $a == 12  OR $a == 18 OR $a == 7 OR $a == 10 or $a == 15 OR $a == 17) { echo "active"; } else { echo "treeview" ;} ?>">
             <a href="#"><i class="fa fa-keyboard-o"></i> <span>Ateliers</span><i class="fa fa-angle-left pull-right"></i></a>
             <ul class="treeview-menu">
-                <li class="<?php if ($a == 7 OR $a == 10 or $a == 15 OR $a == 17) { echo "active"; }else{ echo "treeview" ;} ?>">
+                <li class="<?php if ($a == 7 OR $a == 10 or $a == 15 OR $a == 17) { echo "active"; } else { echo "treeview" ;} ?>">
                     <a href="#"><i class="fa fa-angle-double-right"></i> Param&egrave;tres <i class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
                         <li><a href="index.php?a=7"><i class="fa fa-angle-double-right"></i> Cat&eacute;gories / Niveaux</a></li>
@@ -265,7 +262,7 @@
         </li>
         
         <!-- Gestion -->    
-        <li class="<?php if ($a == 3 OR $a == 4) { echo "active"; }else{ echo "treeview" ;} ?>">
+        <li class="<?php if ($a == 3 OR $a == 4) { echo "active"; } else { echo "treeview" ;} ?>">
             <a href="#"><i class="fa fa-gear"></i> <span>Gestion de l'espace</span><i class="fa fa-angle-left pull-right"></i></a>
             <ul class="treeview-menu">
 

@@ -54,7 +54,7 @@ if ($b==6)
 			 echo geterror(25);
 		
 	  
-      }else{
+      } else {
       	echo geterror(21);
 	
       }
@@ -83,7 +83,7 @@ if ($b == 1 OR $b==5 )
 			if ($row["prix_atelier"] == 0)
 				{
 					 $prix = "Gratuit";
-				}else{
+				} else {
 					 $prix = $row["prix_atelier"]."&euro;" ;
 				}
 			
@@ -259,15 +259,15 @@ $numSession=mysqli_num_rows($ListeSessionEnCours);
 							if($testinscription=="FALSE"){
 								if ($nbplace>0){
 								$boutoninscr="<a href=\"index.php?m=6&b=1&idatelier=".$idatelier."\"><small class=\"badge bg-default\">voir le d&eacute;tail et s'inscrire</small></a>";
-								}else{
+								} else {
 								$boutoninscr="";
 								}
-							}else{
+							} else {
 							$boutoninscr="<small class=\"badge bg-green\">d&eacute;j&agrave; inscrit</small>&nbsp; 
 							<a href=\"index.php?m=6&b=3&idatelier=".$idatelier."\"><button class=\"btn btn-xs btn-danger\" data-toggle=\"tooltip\" title=\"Se d&eacute;sinscrire\"><i class=\"fa fa-trash-o\"></i></button></a>";
 							
 							}
-						}else{
+						} else {
 							$boutoninscr="<small class=\"badge bg-yellow\">Annul&eacute;</small>";
 						
 						}
@@ -282,7 +282,7 @@ $numSession=mysqli_num_rows($ListeSessionEnCours);
 								<td>".$plevel[$rowsujet["niveau_atelier"]]."</td>
 									<td>".$lieuA."</td>
 											<td>"; 
-											if ($nbplace==0){echo '<span class="badge bg-purple">COMPLET</span>'; }	else{echo $nbplace;}
+											if ($nbplace==0){echo '<span class="badge bg-purple">COMPLET</span>'; } else {echo $nbplace;}
 											echo "</td>
 										<td>".$boutoninscr."</td>
 										</tr>";
@@ -291,7 +291,7 @@ $numSession=mysqli_num_rows($ListeSessionEnCours);
 						?>
 						</table>
 						<?php
-				}else {
+				} else {
 							echo '  <div class="alert alert-info alert-dismissable">
 									<i class="fa fa-info"></i>
 									<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Aucun atelier programm&eacute; pour le moment</div>' ;
@@ -337,16 +337,16 @@ $numSession=mysqli_num_rows($ListeSessionEnCours);
 							if($testinscription=="FALSE"){
 								if ($placesrestantes>0){
 								$boutoninscrsession="<a href=\"index.php?m=6&b=5&idsession=".$rowsession["id_session"]."\"><small class=\"badge bg-default\">voir le d&eacute;tail et s'inscrire</small></a>";
-								}else{
+								} else {
 									$boutoninscrsession="";
 								}
-							}else{
+							} else {
 								
 							$boutoninscrsession="<small class=\"badge bg-green\">d&eacute;j&agrave; inscrit</small>&nbsp; 
 							<a href=\"index.php?m=6&b=5&idsession=".$rowsession["id_session"]."\"><button class=\"btn btn-xs btn-danger\" data-toggle=\"tooltip\" title=\"Se d&eacute;sinscrire\"><i class=\"fa fa-trash-o\"></i></button></a>";
 							
 							}
-						}else{
+						} else {
 							$boutoninscrsession="<small class=\"badge bg-yellow\">Annul&eacute;</small>";
 						
 						}
@@ -357,7 +357,7 @@ $numSession=mysqli_num_rows($ListeSessionEnCours);
 									<td><span class="text-muted">'.$titresession["session_titre"].'</span></td>
 									<td>'.$lieuS.'</td>						
 									<td>';
-									if ($placesrestantes==0){echo '<span class="badge bg-purple">COMPLET</span>'; }	else{echo $placesrestantes;}
+									if ($placesrestantes==0){echo '<span class="badge bg-purple">COMPLET</span>'; } else {echo $placesrestantes;}
 									
 									echo '</td>
 									<td>'.$boutoninscrsession.'</td></tr>';
@@ -368,7 +368,7 @@ $numSession=mysqli_num_rows($ListeSessionEnCours);
 						</table>
 				
 				<?php
-				}else{
+				} else {
 				echo '<div class="alert alert-info alert-dismissable"><i class="fa fa-info"></i>
 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Aucune session programm&eacute;e</div>' ;
 				

@@ -61,9 +61,7 @@ $heure="12:00";
 						if ($salle == $key)
 						{
 							echo "<option  value=\"".$key."\" selected>".$value."</option>";
-						}
-						else
-						{
+						} else {
 							echo "<option  value=\"".$key."\">".$value."</option>";
 						}
 					}
@@ -91,9 +89,7 @@ if (strlen($term)>=2)
 		echo "<div class=\"col-md-4\">";
 		echo getError(6);
 		echo "</div>";
-    }
-    else
-    {
+    } else {
       $nb  = mysqli_num_rows($result);
       if ($nb > 0)
       {
@@ -114,7 +110,7 @@ if (strlen($term)>=2)
 					
 					if($row['status_user']==1){
 						$class="" ;
-					}else{
+					} else {
 						$class="inactif" ;}
 					//*****tarifs de consultation
 					$tarifTemps= getForfaitConsult($row["id_user"]);
@@ -172,9 +168,7 @@ if (strlen($term)>=2)
 							if ($num == $key)
 							{
 								echo "<option value=\"".$key."\" selected>".$value."</option>";
-							}
-							else
-							{
+							} else {
 								echo "<option value=\"".$key."\">".$value."</option>";
 							}
 						}

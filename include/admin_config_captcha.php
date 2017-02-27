@@ -36,8 +36,7 @@
             case "N":
                 if ( $captcha->modifier($valid, '') ) {
                     echo getError(14);
-                }
-                else {
+                } else {
                     echo getError(0);
                 }
             break;
@@ -45,12 +44,10 @@
             case "Y":
                 if ($code == '') {
                     echo getError(4);
-                }
-                else {
+                } else {
                     if ( $captcha->modifier($valid, $code) ) {
                         echo getError(14);
-                    }
-                    else {
+                    } else {
                         echo getError(0);
                     }
                 }
@@ -64,8 +61,7 @@
     if ($captcha == null) {
         $preinscmode = 'N';
         $capt_code   = "";
-    }
-    else {
+    } else {
         $preinscmode = $captcha->getActivation();
         $capt_code   = $captcha->getCode();
     }

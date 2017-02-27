@@ -30,7 +30,7 @@ renvoie le nombre d'inscrits, le nombre de présents et l'id des présents (pour
     
     require_once("include/class/Session.class.php");
     require_once("include/class/SessionDate.class.php");
-    include_once("include/class/StatAtelierSession.class.php");
+    require_once("include/class/StatAtelierSession.class.php");
 
     $idsession  = isset($_GET["idsession"]) ? $_GET["idsession"] : '';
     if ($idsession == '') {
@@ -62,8 +62,7 @@ renvoie le nombre d'inscrits, le nombre de présents et l'id des présents (pour
     if ($act == 1) {
         $statutdatesession = 1;
         $action = "index.php?a=32&act=1";
-    }
-    else {
+    } else {
         $statutdatesession = 0;
         $action = "index.php?a=32&act=0";
     }
@@ -92,20 +91,12 @@ renvoie le nombre d'inscrits, le nombre de présents et l'id des présents (pour
     <div class="col-lg-7">
 <?php
     
-    // liste des user inscrit a un atelier
-    if ($act == 0) {
-        $utilisateursInscrits = $dateSession->getUtilisateursInscrits();
-        $utilisateursPresents = $dateSession->getUtilisateursPresents();
-        // $result2 = getSessionUser($idsession,$statutdatesession); 
-    }
-    elseif ($act == 1) {
-        //$result2 = getSessionValidpresences($idsession,$iddate);
-    }
-    // $nb = mysqli_num_rows($result2) ;
+    $utilisateursInscrits = $dateSession->getUtilisateursInscrits();
+    $utilisateursPresents = $dateSession->getUtilisateursPresents();
+
     $nb = count ($utilisateursInscrits) + count ($utilisateursPresents);
     
-    if ($nb>0)
-    {       
+    if ($nb > 0) {       
 
 ?>
 
@@ -126,9 +117,6 @@ renvoie le nombre d'inscrits, le nombre de présents et l'id des présents (pour
                         </thead>
                         <tbody>
 <?php
-         
-        // for ($i = 1 ; $i <= $nb; $i++) {
-            // $array = mysqli_fetch_array($result2) ;
         foreach ($utilisateursInscrits as $utilisateur) {
 ?>
                             <tr>

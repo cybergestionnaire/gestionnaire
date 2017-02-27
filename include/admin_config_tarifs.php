@@ -36,8 +36,7 @@
             
     if (isset($tarif_r)) {
         $tarif = $tarif_r;
-    }
-    else {
+    } else {
         $tarif   = 1; //tarif par defaut 
         $tarif_r = 1;
         $ptarif  = 1;
@@ -116,8 +115,7 @@
     foreach ($categorieTarif AS $key=>$value) {
         if ($tarif == $key) {
             echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $key . "\">" . $value . "</option>";
         }
     }
@@ -131,8 +129,7 @@
     foreach ($espaces as $espace) {
         if ($_SESSION['idepn'] == $espace->getId()) {
             echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
         }
     }
@@ -176,8 +173,7 @@
     foreach ($dureetype AS $key=>$value) {
         if (isset($duree) && ($duree == $key)) {
             echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $key . "\">" . $value . "</option>";
         }
     }
@@ -193,8 +189,7 @@
     foreach ($espaces as $espace) {
         if ($_SESSION['idepn'] == $espace->getId()) {
             echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
         }
     }
@@ -290,8 +285,7 @@
     foreach ($espaces as $espace) {
         if ($_SESSION['idepn'] == $espace->getId()) {
             echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
         }
     }
@@ -332,8 +326,7 @@
     foreach ($categorieTarif AS $key=>$value) {
         if ($tarif == $key) {
             echo "<option value=\"".$key."\" selected>".$value."</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"".$key."\">".$value."</option>";
         }
     }
@@ -371,8 +364,7 @@
         </div>
     </div>
 <?php
-        }
-        else {
+        } else {
     
             $categorieTarif = array(
                 1=>"Impression",
@@ -431,8 +423,7 @@
                     foreach ($dureetype AS $key=>$value) {
                         if ($key == $duree2) {
                             echo "<option value=\"".$key."\" selected>".$value."</option>";
-                        }
-                        else {
+                        } else {
                             echo "<option value=\"".$key."\">".$value."</option>";
                         }
                     }
@@ -448,8 +439,7 @@
                     foreach ($espaces as $espace) {
                         if (in_array($espace->getId(),$idEspaces)) {
                             echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
-                        }
-                        else {
+                        } else {
                             echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
                         }
                     }
@@ -459,8 +449,7 @@
         
 
 <?php   
-                }
-                else {
+                } else {
 ?>
     
                     <div class="form-group"><label>Nom</label><input type="hidden" name="catTarif" value="<?php echo $catTarif; ?>"><input type="text" class="form-control" name="nomtarif" value="<?php echo htmlentities($tarifByCat->getNom()); ?> "></div>
@@ -473,8 +462,7 @@
                     foreach ($espaces as $espace) {
                         if (in_array($espace->getId(),$idEspaces)) {
                             echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
-                        }
-                        else {
+                        } else {
                             echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
                         }
                     }
@@ -501,8 +489,7 @@
             } // end FOR cat tarif 1 to 5
         }
         
-    }
-    else {
+    } else {
         // forfaits ! à voir dans la table tab_forfait...
         // Affichage du tarif consultation (6)
         $forfaits = Forfait::getForfaits();
@@ -518,8 +505,7 @@
         </div>
     </div>
 <?php
-        }
-        else {
+        } else {
             /// affichage de l'array des consultations
             
             foreach ($forfaits as $forfait) {
@@ -528,8 +514,7 @@
                 $frequence_temps_affectation = $forfait->getFrequenceConsultation();
                 if ($forfait->getTempsForfaitIllimite() == '1') {
                     $unite_duree_forfait = 4;
-                }
-                else {
+                } else {
                     $unite_duree_forfait = $forfait->getUniteValidite();
                 }
                 
@@ -582,8 +567,7 @@
                 foreach ($tab_unite_duree_forfait AS $key=>$value) {
                     if ($unite_duree_forfait == $key) {
                         echo "<option value=\"".$key."\" selected>".$value."</option>";
-                    }
-                    else {
+                    } else {
                         echo "<option value=\"".$key."\">".$value."</option>";
                     }
                 }
@@ -605,8 +589,7 @@
                 foreach ($tab_unite_temps_affectation AS $key=>$value) {
                     if ($unite_temps_affectation == $key) {
                         echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
-                    }
-                    else {
+                    } else {
                         echo "<option value=\"" . $key . "\">" . $value . "</option>";
                     }
                 }
@@ -620,8 +603,7 @@
                 foreach ($tab_frequence_temps_affectation AS $key=>$value) {
                     if ($frequence_temps_affectation == $key) {
                         echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
-                    }
-                    else {
+                    } else {
                         echo "<option value=\"" . $key . "\">" . $value . "</option>";
                     }
                 }
@@ -639,8 +621,7 @@
                 foreach ($espaces as $espace) {
                     if (in_array($espace->getId(),$epnC)) {
                         echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
-                    }
-                    else {
+                    } else {
                         echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
                     }
                 }

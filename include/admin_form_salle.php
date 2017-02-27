@@ -28,9 +28,7 @@
     if ($idSalle == '') {   // Parametre du formulaire pour la CREATION
         $post_url = "index.php?a=44&b=1&act=1";
         $label_bouton = "Cr&eacute;er la salle" ;
-    }
-    else
-    {
+    } else {
         // Parametre du formulaire pour la MODIFICATION
         $post_url = "index.php?a=44&b=2&act=2&idsalle=".$idSalle;
         $label_bouton = "Modifier la salle" ;
@@ -60,9 +58,7 @@
         if ( isset($salle) && $salle->getIdEspace() == $espace->getId())
         {
             echo "<option value=\"" . htmlentities($espace->getId()) . "\" selected>" .  htmlentities($espace->getNom()) . "</option>";
-        }
-        else
-        {
+        } else {
             echo "<option value=\"" .  htmlentities($espace->getId()) . "\">" .  htmlentities($espace->getNom()) . "</option>";
         }
     }

@@ -56,16 +56,12 @@ if (FALSE != isset($_POST["submit"]))
     if (!$titr || !$comment) //verification des champs non vide
     {
         header ("Location:index.php?a=3&b=1&error=1");
-    }
-    else
-    {
+    } else {
        $result = addInter($titr,$date,$comment,$dispo);    
         if (FALSE == $result)
         {
             header ("Location:index.php?a=3&b=1&error=2");
-        }
-        else
-        {
+        } else {
            $idinter = $result;  
                foreach ($comp AS $key=>$value)
                {    

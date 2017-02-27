@@ -106,20 +106,17 @@ class Ville
 
         if ($result == FALSE) {
             return 0; // echec de la requete
-        }
-        else {
+        } else {
             ;
             if (mysqli_num_rows($result) > 0 ) {
                 return 1; // il reste des utilisateurs lies a la ville
-            }
-            else {
+            } else {
                 // Suppression de la ville
                 $sql2   = "DELETE FROM `tab_city` WHERE `id_city`=" . $this->_id;
                 $result = mysqli_query($db, $sql2);
                 if ($result == FALSE ) {
                     return 0;
-                }
-                else {
+                } else {
                     return 2;
                 }
             }
@@ -140,8 +137,7 @@ class Ville
         if ($result) {
           $row = mysqli_fetch_array($result)  ;
           return intval($row['nb']);
-        } 
-        else {
+        } else {
             return 0;
         }
     }

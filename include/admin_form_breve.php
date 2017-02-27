@@ -29,9 +29,7 @@ if (FALSE == isset($id))
         $post_url = "index.php?a=4&b=1&act=1";
         $label_bouton = "Cr&eacute;er une br&egrave;ve" ;
 				$datenews=date("Y-m-d H:i");
-}
-else
-{ // modification
+} else { // modification
         $post_url = "index.php?a=4&b=2&act=2&idbreve=".$id;
         $label_bouton = "Modifier la br&egrave;ve" ;
         $row = getBreve($id);
@@ -103,9 +101,7 @@ $arraytype=array(
 				if ($type == $key)
 				{
 					echo "<option value=\"".$key."\" selected>".$value."</option>";
-				}
-				else
-				{
+				} else {
 					echo "<option value=\"".$key."\">".$value."</option>";
 				}
 			}
@@ -124,9 +120,7 @@ $arraytype=array(
 				if ($epn == $key)
 				{
 					echo "<option value=\"".$key."\" selected>".$value."</option>";
-				}
-				else
-				{
+				} else {
 					echo "<option value=\"".$key."\">".$value."</option>";
 				}
 			}

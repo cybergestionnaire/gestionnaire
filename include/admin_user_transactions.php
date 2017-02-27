@@ -55,7 +55,7 @@ if(isset($_GET["act"])){
 	if($act=="del"){
 			if(FALSE==delForfait($transac)){
 				 header("Location: ./index.php?a=6&mesno=0&iduser=".$id_user);
-			}else{
+			} else {
 				//
 				if($_GET["type"]=="temps"){
 					delreluserforfaittemps($id_user);
@@ -109,7 +109,7 @@ $nbrestant=$nbForfait-$nbvalide; //restant apres dépense
 
 if($nbrestant>=0){
 	$nbHorsForfait= "aucune";
-	}else{
+	} else {
 	$nbHorsForfait= "<span class=\"text-red\">".abs($nbrestant)."&nbsp;&nbsp;</span><span class=\"btn bg-red btn-xs\" data-toggle=\"tooltip\" title=\"Ces ateliers n'ont pas &eacute;t&eacute; pay&eacute;s !\"><i class=\"fa fa-warning\"></i></span>";
 	}
 
@@ -174,7 +174,7 @@ if($nbrestant>=0){
 	
 	if ($nbf==0){
 		echo "<p>l'adh&eacute;rent n'a souscrit &agrave; aucun forfait atelier</p>";
-	}else{
+	} else {
 		?>
 	
 	<div class="table"><table class="table"><thead><th>Nom du Tarif</th><th>Date d'achat</th><th>Nbr</th><th>D&eacute;pens&eacute;</th><th>Statut</th><th></th><th></th></thead>
@@ -279,7 +279,7 @@ if(TRUE==$transactemps){
 		
 	</div>
 		<?php 
-}else{ 
+} else { 
 echo "<p>Aucun achat de temps pour l'instant</p>"; ?>
 <div class="box-footer"> 
 	

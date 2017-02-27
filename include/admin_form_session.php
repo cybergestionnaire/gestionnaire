@@ -93,8 +93,7 @@
         unset($_SESSION['sauvegarde']);
        
         
-    }
-    else {
+    } else {
         if ($m == 1) {  // creation
             $post_url = "index.php?a=31&m=1";
             $label_bouton = "Planifier" ;
@@ -176,8 +175,7 @@
 </div>
 
 <?php   
-    }
-    else {
+    } else {
 
 
 ?>
@@ -198,8 +196,7 @@
         for ($i = $nbr_date ; $i <= 20 ; $i++) {
             if ($i == $nbr_date) {
                 echo "<option value=\"" . $i . "\" selected>" . $i . "</option>";
-            }
-            else {
+            } else {
                 echo "<option value=\"" . $i . "\">" . $i . "</option>";
             }
         }
@@ -229,8 +226,7 @@
         foreach ($sessionSujets AS $sessionSujet) {
             if ($idTitre == $sessionSujet->getId()) {
                 echo "<option value=\"" . $sessionSujet->getId() . "\" selected>" . $sessionSujet->getTitre() . "</option>";
-            }
-            else {
+            } else {
                 echo "<option value=\"" . $sessionSujet->getId() . "\">" . $sessionSujet->getTitre() . "</option>";
             }
         }
@@ -252,9 +248,7 @@
             if ($idSalle == $salle->getId())
             {
                 echo "<option value=\"" . $salle->getId() . "\" selected>" . htmlentities($salle->getNom()) . "</option>";
-            }
-            else
-            {
+            } else {
                 echo "<option value=\"" . $salle->getId() . "\">" . htmlentities($salle->getNom()) . "</option>";
             }
         }
@@ -270,8 +264,7 @@
         foreach ($animateurs AS $animateur) {
             if ($idAnim == $animateur->getId()) {
                 echo "<option value=\"" . $animateur->getId() . "\" selected>" . htmlentities($animateur->getPrenom(). ' ' . $animateur->getNom()) . "</option>";
-            }
-            else {
+            } else {
                 echo "<option value=\"" . $animateur->getId() . "\">" . htmlentities($animateur->getPrenom(). ' ' . $animateur->getNom()) . "</option>";
             }
         }
@@ -292,8 +285,7 @@
         foreach ($tarifs AS $tarif) {
             if ($idTarif == $tarif->getId()) {
                 echo "<option value=\"" . $tarif->getId() . "\" selected>" . htmlentities($tarif->getNom() . " (" . $tarif->getDonnee(). "€)" ) . "</option>";
-            }
-            else {
+            } else {
                 echo "<option value=\"" . $tarif->getId()."\">" . htmlentities($tarif->getNom() . " (" . $tarif->getDonnee(). "€)" ) . "</option>";
             }
         }
@@ -330,8 +322,7 @@
             }
             else if ($$nomVariable1 == 2) {
                 echo ' <span class="text-muted">' . $$nomVariable2 . '  &nbsp;&nbsp;&nbsp;Atelier annul&eacute; </span><input name="' . $nomVariable2 . '"  id="dt' . $i  . '" class="hidden" value="' . $$nomVariable2 . '"><input name="' . $nomVariable1 . '" class="hidden" value="' . $$nomVariable1 . '">';
-            }
-            else {
+            } else {
 ?>                        
                         <input name="date<?php echo $i ?>" class='input'  id="dt<?php echo $i ?>" placeholder="Cliquez pour prendre une date" style="width: 230px;" value="<?php echo $$nomVariable2; ?>" >
                         <select name="statutdate<?php echo $i ?>" >
@@ -339,8 +330,7 @@
                 foreach ($statusarray AS $key=>$value) {
                     if ($$nomVariable1 == $key) {
                         echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
-                    }
-                    else {
+                    } else {
                         echo "<option value=\"" . $key . "\">" . $value . "</option>"; 
                     }
                 }

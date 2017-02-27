@@ -16,9 +16,7 @@ if(isset($act) AND $act==3){
 	 if (FALSE == supPrint($idprint))
 	  {
 		  header("Location: ./index.php?a=21&b=1&iduser=".$id_user."&mesno=0");
-	  }
-	  else
-	  {
+	  } else {
 		  header("Location: ./index.php?a=21&b=1&iduser=".$id_user."&mesno=45");
 		  $act="";
 	  }
@@ -127,7 +125,7 @@ if (TRUE==checkPrint($id_user))
                 <a href=\"index.php?a=21&b=1&act=3&idprint=".$row['id_print']."&iduser=".$id_user."\"><button type=\"button\" class=\"btn btn-warning btn-sm\"><i class=\"fa fa-trash-o\"></i></button></a></td>
 				 					
 					";
-				}else{
+				} else {
 					// transaction enregistrée
 					echo "<td><p class=\"text-light-blue\">".$statut."</p></td> <td>&nbsp;</td>";
 				}
@@ -163,8 +161,7 @@ if (TRUE==checkPrint($id_user))
 <?php
 	}
 	
-}else 
-	{
+} else {
 // si le compte d'impression est vide
 // arrivee depuis la page des resas
 	$rown=getuser($id_user);

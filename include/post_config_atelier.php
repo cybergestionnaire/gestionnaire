@@ -46,16 +46,14 @@
             if ($testcat != "") {
                 if (AtelierCategorie::creerAtelierCategorie($nom) !== null) {
                     header("Location:index.php?a=7&mesno=14") ;
-                }
-                else {
+                } else {
                     $mesno = 0;
                 }
             }
             elseif ($testniv != "") {
                 if (AtelierNiveau::creerAtelierNiveau('', $niveau) !== null) { // code_level inutilisé, mis à ''
                     header("Location:index.php?a=7&mesno=14") ;
-                }
-                else {
+                } else {
                     $mesno = 0;
                 }
 
@@ -63,8 +61,7 @@
             elseif ($testcsp != "") {
                 if (CSP::creerCSP($newcsp) !== null) {
                     header("Location:index.php?a=7&mesno=14") ;
-                }
-                else {
+                } else {
                     $mesno = 0;
                 }
             }
@@ -80,8 +77,7 @@
                 $atelierCategorie = AtelierCategorie::getAtelierCategorieById($idcat);
                 if ($atelierCategorie->modifier( $nom)) { 
                     header("Location:index.php?a=7&mesno=14") ;
-                }
-                else {
+                } else {
                     $mesno = 0;
                 }
             }
@@ -89,8 +85,7 @@
                 $atelierNiveau = AtelierNiveau::getAtelierNiveauById($idniveau);
                 if ($atelierNiveau->modifier('', $niveau)) {// code_level inutilisé, mis à ''
                     header("Location:index.php?a=7&mesno=14") ;
-                }
-                else {
+                } else {
                     $mesno = 0;
                 }
             }
@@ -98,8 +93,7 @@
                 $csp = CSP::GetCSPById($idcsp);
                 if ($csp->modifier($modcsp)) {
                     header("Location:index.php?a=7&mesno=14") ;
-                }
-                else {
+                } else {
                     $mesno = 0;
                 }
             }
@@ -112,8 +106,7 @@
                 $atelierCategorie = AtelierCategorie::getAtelierCategorieById($idcat);
                 if ($atelierCategorie->supprimer()){
                     header("Location:index.php?a=7&mesno=14") ;
-                }
-                else {
+                } else {
                     $mesno = 0;
                 }
             }
@@ -121,8 +114,7 @@
                 $atelierNiveau = AtelierNiveau::getAtelierNiveauById($idniveau);
                 if ($atelierNiveau->supprimer()){
                     header("Location:index.php?a=7&mesno=14") ;
-                }
-                else {
+                } else {
                     $mesno = 0;
                 }
             }
@@ -130,8 +122,7 @@
                 $csp = CSP::GetCSPById($idcsp);
                 if ($csp->supprimer()){
                     header("Location:index.php?a=7&mesno=14") ;
-                }
-                else {
+                } else {
                     $mesno = 0;
                 }
             }

@@ -19,10 +19,7 @@ if ($act !="" AND $act!=3)  // verife si non vide
     if (!$titr || !$comment )
     {
        $mess = getError(4);
-    }
-	
-    else
-    {
+    } else {
         switch($act)  
         {
             case 1:   // ajout d'un poste
@@ -30,9 +27,7 @@ if ($act !="" AND $act!=3)  // verife si non vide
                  {
                      
 					 header("Location: ./index.php?a=4&mesno=0");
-                 }
-                 else
-                 {
+                 } else {
                     header("Location: ./index.php?a=4");
                  }
             break;
@@ -41,9 +36,7 @@ if ($act !="" AND $act!=3)  // verife si non vide
                  {
 					
                      header("Location: ./index.php?a=4mesno=0");
-                 }
-                 else
-                 {
+                 } else {
                      header("Location: ./index.php?a=4");
                  }
             break;
@@ -55,9 +48,7 @@ if ($act==3) // supprime un poste
   if (FALSE == supBreve($id))
   {
       header("Location: ./index.php?a=4mesno=0");
-  }
-  else
-  {
+  } else {
       header("Location: ./index.php?a=4");
   }
 }

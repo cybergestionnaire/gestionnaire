@@ -49,9 +49,7 @@ $result = getAllCourrier();
 if ($result == FALSE)
 {
   echo getError(0);
-}
-else
-{
+} else {
   $nb = mysqli_num_rows($result);
   if ($nb==0)
   {
@@ -60,9 +58,7 @@ else
      <div class="col-lg-3 col-xs-6"><a href="index.php?a=52&b=1"><button class="btn btn-primary">Ajouter un nouveau courrier <i class="fa fa-plus-circle"></i></button></a></div>
 		 </div>
  <?php  
-  }
-  else
-  {
+  } else {
      
      ?> 
   

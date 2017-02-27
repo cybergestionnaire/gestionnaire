@@ -310,7 +310,7 @@ class StatAtelierSession
         return $statAteliers;
     }
 
-    public static function getStatAteliersParAnnee($annee) {
+    public static function getStatAteliersArchivesParAnnee($annee) {
 
         $statAteliers = null;
     
@@ -335,7 +335,7 @@ class StatAtelierSession
         return $statAteliers;
     }
     
-    public static function getStatAteliersParAnneeEtParAnimateur($annee, $idAnimateur) {
+    public static function getStatAteliersArchivesParAnneeEtParAnimateur($annee, $idAnimateur) {
 
         $statAteliers = null;
     
@@ -408,5 +408,50 @@ class StatAtelierSession
         return $statSession;
     }
     
+    public static function getStatSessionsArchiveesParAnnee($annee) {
+
+        $statAteliers = null;
+    
+        $db      = Mysql::opendb();
+        $sql     = "SELECT * FROM tab_as_stat "
+                 . "WHERE `type_AS` = 's' "
+                 . "AND `statut_programmation`=1 "
+                 . "AND YEAR(`date_AS`)=" . $annee . " "
+                 . "ORDER BY date_AS ASC";
+
+        $result  = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $statAteliers = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $statAteliers[] = new StatAtelierSession($row);
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $statAteliers;
+    }
+
+//retourne les années contenues dans les ateliers et sessions
+    public static function getYearStatAtelierSessions() {
+        $annees = null;
+        
+        $db      = Mysql::opendb();
+        $sql     = "SELECT DISTINCT (YEAR( `date_AS` )) AS Y FROM `tab_as_stat` WHERE YEAR( `date_AS` )<YEAR(NOW())";
+        $result  = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if($result) {
+            $annees = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $annees[] = $row["Y"];
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $annees;
+    }
+
     
 }

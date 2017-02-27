@@ -54,8 +54,7 @@
 <?php 
         }
     
-    }
-    else {
+    } else {
         echo geterror(0);
     }
 ?>
@@ -99,8 +98,7 @@
 <?php 
         }
     
-    }
-    else {
+    } else {
         echo geterror(0);
     }
 ?>
@@ -141,8 +139,7 @@
 <?php 
         }
 
-    }
-    else {
+    } else {
         echo geterror(0);
     }
 ?>

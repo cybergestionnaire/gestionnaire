@@ -74,8 +74,7 @@ if (isset($_GET["action"])) {
                 if ($heurereel < $heureresa) { //moins de 24 h
                     $duree1     = 1439 - $heureresa;    //temps j1 (en minutes)
                     $dureetotal = $duree1 + $heurereel; //duree total en minutes
-                }
-                else {//plus de 24h
+                } else {//plus de 24h
                     $duree1     = $heureel-$heureresa;    //duree en minutes
                     $dureetotal = $duree1 + 1440;       //duree total en minutes
                 }
@@ -87,8 +86,7 @@ if (isset($_GET["action"])) {
                     $duree1     = 1439 - $heureresa;    //temps j1 en minutes
                     $duree2     = $duree1 + $heurereel; //temps j2 en minutes
                     $dureetotal =(($diffjour*1440) + $duree2); //duree total en minutes
-                }
-                else {//plus de 24h
+                } else {//plus de 24h
                     $duree1     = $heurereel - $heureresa;  //duree en minutes
                     $dureetotal = ($duree1 + ($diffjour*1440)); //duree total en minutes
                 }

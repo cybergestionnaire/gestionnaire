@@ -32,15 +32,11 @@ if ($_POST["submit"]=="Ajouter")
    if (!$tit || !$ur)
    {
        $mess =  getError(13);
-   }
-   else
-   { // si les champs ne sont pas vides on ajoute
+   } else { // si les champs ne sont pas vides on ajoute
    		if($_POST['rubInput']!="")
    		{
    			$rubName = $_POST['rubInput'];			
-   		}
-   		else
-   		{
+   		} else {
    			$rubId = $_POST['rubSel'] ;
    		}
        addBookmark(0,$tit,$ur,$rubId,$rubName);
@@ -55,9 +51,7 @@ if ($_POST["submit"]=="Modifier")
    if (!$tit || !$ur)
    {
        $mess = getError(13);
-   }
-   else
-   { // si les champs ne sont pas vides on update
+   } else { // si les champs ne sont pas vides on update
    		updateBookmark($idu,$tit,$ur);
    		
    }

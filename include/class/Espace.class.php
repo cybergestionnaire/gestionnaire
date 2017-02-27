@@ -219,12 +219,10 @@ class Espace
 
         if ($result == FALSE) {
             return 0; // echec de la requete
-        }
-        else {
+        } else {
             if (mysqli_num_rows($result) > 0 ) {
                 return 1; // il reste des salles lies a l'espace
-            }
-            else {
+            } else {
                 // Suppression de l'espace
                 $sql1    = "DELETE FROM `tab_espace` WHERE `id_espace` = " . $this->_id;
                 $sql2    = "DELETE FROM `tab_config` WHERE `id_espace` = " . $this->_id . "" ;
@@ -238,8 +236,7 @@ class Espace
                 
                 if ($result1 && $result2 && $result3 && $result4) {
                     return 2; //succes
-                }
-                else {
+                } else {
                     return 0;
                 }
             }

@@ -29,16 +29,13 @@
         if ($pass1 != "" AND $pass2 != "") {
             if ($pass1 != $pass2) {
                 $mess = getError(7);
-            }
-            else {
+            } else {
                 $utilisateur = Utilisateur::getUtilisateurById($_SESSION["iduser"]);
                 $result = $utilisateur->updatePassword($pass1);
                 if ($result == FALSE)
             {
                 $mess = getError(0);
-            }
-            else
-            {
+            } else {
                 $mess = getError(8);
             }
         }
@@ -49,8 +46,7 @@
 
     if(FALSE == updateNewsletter($_SESSION["iduser"], $_POST["newsletter"])) {
         $mess = getError(0);
-    }
-    else{
+    } else {
         $mess = getError(8);
     }
 

@@ -31,16 +31,14 @@
     $animateur = Utilisateur::getUtilisateurById($idAnim);
     if ($animateur == null) {
         getError(0);
-    }
-    else {
+    } else {
         if (!$animateur->hasParametresAnim()) {   // Parametre du formulaire pour la CREATION
 
             $post_url     = "index.php?a=50&b=1&idanim=" . $idAnim;
             $label_bouton = "Enregistrer les param&egrave;tres" ;
             $avatar       = "avatar.png";
             $idEspace     = "";
-        }
-        else {
+        } else {
             // Parametre du formulaire pour la MODIFICATION
             $post_url     = "index.php?a=50&b=2&idanim=" . $idAnim;
             $label_bouton = "Modifier les param&egrave;tres" ;
@@ -101,8 +99,7 @@
 <?php 
     if ($animateur->hasParametresAnim()) {
         echo '<img src="' . $filedir . $avatar . '" width="30%">' ;
-    }
-    else{
+    } else {
         echo '<img src="./img/avatar/default.png" width="30%">' ;
     }
 ?>
@@ -131,8 +128,7 @@
     foreach ($espaces AS $espace) {
         if ($idEspace == $espace->getId()) {
             echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
         }
     }
@@ -147,8 +143,7 @@
     foreach ($salles as $salle) {
         if (isset($sallesAnim) && in_array($salle->getId(), $sallesAnim)) { 
             $check = "checked"; 
-        }
-        else {
+        } else {
             $check = ''; 
         }
         echo "<div class=\"checkbox\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"salle_r[]\" value=" . $salle->getId() . "  " . $check . ">&nbsp;" . htmlentities($salle->getNom()) . " (" . htmlentities($salle->getEspace()->getNom()) . ")</div>";
@@ -163,8 +158,7 @@
     for ($v = 0 ; $v < $nbavatar ; $v++) {
         if (strcmp($avatar, $filesavatararray[$v]) == 0) { 
             $check = "checked"; 
-        }
-        else {
+        } else {
             $check = ''; 
         }
         echo "<img src=" . $filedir . $filesavatararray[$v] . " width=\"60px\" height=\"60px\">&nbsp;<input type=\"radio\" name=\"avatar_r\" value=" . $filesavatararray[$v] . "  " . $check . ">&nbsp;&nbsp;&nbsp;";

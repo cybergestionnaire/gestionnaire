@@ -79,9 +79,7 @@ echo $mess ;
 				if ($idVille == $ville->getid())
 				{
 					echo "<option value=\"".$ville->getId()."\" selected>".$ville->getNom()."</option>";
-				}
-				else
-				{
+				} else {
 					echo "<option value=\"".$ville->getId()."\">".$ville->getNom()."</option>";
 				}
 			}
@@ -106,7 +104,7 @@ echo $mess ;
 		if($activation==0){ 
 			echo ' <input type="radio" name="activation" value="0"  checked/> Non
 							<input type="radio" name="activation" value="1"  /> Oui';
-		}else{
+		} else {
 			echo '<input type="radio" name="activation" value="0"  /> Non 
 						<input type="radio" name="activation" value="1"  checked /> Oui';
 		}
@@ -120,7 +118,7 @@ echo $mess ;
 		if($courrier==0){ 
 			echo ' <input type="radio" name="courriers" value="0"  checked/> Non
 							<input type="radio" name="courriers" value="1"  /> Oui';
-		}else{
+		} else {
 			echo '<input type="radio" name="courriers" value="0"  /> Non 
 						<input type="radio" name="courriers" value="1"  checked /> Oui';
 		}
@@ -133,7 +131,7 @@ echo $mess ;
 			if ($logo==""){
 				echo  '<img src="./img/logo/logo.png" width="120px">';
 				
-			}else{
+			} else {
 			
 				echo '<img src="'.$filedir.$logo.'" width="120px" >' ;
 				}

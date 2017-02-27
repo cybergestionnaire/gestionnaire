@@ -46,16 +46,14 @@
     
             if ($sujet == "" || $idCategorie == "") {
                 $mesno = 4 ;
-            }
-            else {
+            } else {
                 // if (FALSE == createSession($sujet,$content,$idNiveau,$idCategorie)) {
 
                 $sessionSujet = SessionSujet::creerSessionSujet($sujet, $content, $idNiveau, $idCategorie);
 
                 if ($sessionSujet !== null) {
                     header ("Location:./index.php?a=29&mesno=23");
-                }
-                else {
+                } else {
                     $mesno = 0;
                 }
             }
@@ -64,14 +62,12 @@
         if ($s == "mod") { //modification du sujet de la session
             if ($sujet == "") {
                 $mesno = 4;
-            }
-            else {
+            } else {
                 $sessionSujet = SessionSujet::getSessionSujetById($idSujet);
                 
                 if ($sessionSujet->modifier($sujet, $content, $idNiveau, $idCategorie)) {
                     header ("Location:./index.php?a=29&mesno=22");
-                }
-                else {
+                } else {
                     $mesno = 0;
                 }
                 //ModifSujetsession($id,$sujet,$content,$idNiveau,$idCategorie);

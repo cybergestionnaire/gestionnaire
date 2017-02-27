@@ -108,19 +108,16 @@ class Salle
 
         if ($result == FALSE) {
             return 0; // echec de la requete
-        }
-        else {
+        } else {
             if (mysqli_num_rows($result) > 0 ) {
                 return 1; // il reste des ordinateurs lies a la salle
-            }
-            else {
+            } else {
                 // Suppression de la salle
                 $sql2   = "DELETE FROM `tab_salle` WHERE `id_salle`=" . $this->_id;
                 $result = mysqli_query($db, $sql2);
                 if ($result == FALSE ) {
                     return 0;
-                }
-                else {
+                } else {
                     return 2;
                 }
             }

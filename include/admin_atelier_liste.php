@@ -74,8 +74,7 @@
                 break;
             }
 
-        }
-        else {
+        } else {
             $c = 1;
             $result1 = getFutAtelierbyanim(date('Y'), $anim);
         }
@@ -142,8 +141,7 @@
             if ($atelier->getStatut() > 1 ) {
                 $class = "text-muted";
                 $classpan = "label label-primary";
-            }
-            else {
+            } else {
                 $class = "";
                 $classpan = "label label-success";
             }
@@ -153,8 +151,7 @@
             }
             elseif (($atelier->getStatut() == 0) AND (strtotime($atelier->getDate()) < strtotime(date('Y-m-d')))) {
                 $info = "<small class=\"badge bg-blue\" data-toggle=\"tooltip\" title=\"Cet  atelier n'a pas encore &eacute;t&eacute; clotur&eacute;, veuillez valider les pr&eacute;sences rapidement\"><i class=\"fa fa-info\"></i></small>";
-            }
-            else {
+            } else {
                 $info = "";
             }
                     
@@ -169,8 +166,7 @@
             // en cas d'atelier cloture aucun acces possible -> archives !
             if ($atelier->getStatut() > 1 ) {
                 echo "<td>" . htmlentities($atelier->getSujet()->getLabel()) . " ";
-            }
-            else {
+            } else {
                 echo " <td><a href=\"index.php?a=13&b=1&idatelier=" . $atelier->getId() . "\" data-toggle=\"tooltip\" title=\"Inscrire un adherent\">" . htmlentities($atelier->getSujet()->getLabel()) . "</a>";
             }
             //Ajout mention "complet"
@@ -197,8 +193,7 @@
             </tbody>
         </table>
 <?php                 
-    }
-    else {
+    } else {
 ?>
         <br>
         <div class="alert alert-info alert-dismissable">
@@ -237,8 +232,7 @@
                 break;
             }
 
-        }
-        else{
+        } else {
             $c = 1;
             $result2 = getFutAtelierbyanim((date('Y')+1), $anim);
         }
@@ -303,8 +297,7 @@
             if ($atelier->getStatut() > 1 ) {
                 $class = "text-muted";
                 $classpan = "label label-primary";
-            }
-            else {
+            } else {
                 $class = "";
                 $classpan = "label label-success";
             }
@@ -334,8 +327,7 @@
     </div><!-- .box-body -->
 </div><!-- .box -->
 <?php
-    }
-    else {
+    } else {
         if (date('m') >= 8) {
             echo "<div class=\"alert alert-info alert-dismissable\" id=\"nextyear\" class=\"fade\"><i class=\"fa fa-warning\"></i>
                 <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>aucune formation programm&eacute;e pour l'ann&eacute;e prochaine</div>";

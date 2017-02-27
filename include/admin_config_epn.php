@@ -43,8 +43,7 @@ include("include/boites/menu-parametres.php");
             </div>
         </div>
 <?php
-    }
-    else {
+    } else {
         $rowreseau = getReseau();
 ?>
         <div class="box box-solid box-primary">
@@ -86,9 +85,7 @@ include("include/boites/menu-parametres.php");
     if ($espaces == null || count($espaces) == 0)
     {
         echo getError(30) ;
-    }
-    else
-    {
+    } else {
         foreach ($espaces as $espace) {
 ?>
                         <tr>
