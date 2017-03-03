@@ -16,7 +16,6 @@
     along with CyberGestionnaire.  If not, see <http://www.gnu.org/licenses/>
 
 */
-
     // error_log("GET : " . print_r($_GET, true));
     // error_log("POST : " . print_r($_POST, true));
     
@@ -103,7 +102,11 @@
             } else {
          
                 if ($idTitre == "" || $nbre_dates == "" || $nbplace == "") {
-                    $mess = getError(4) ; //autres champs manquants
+                    error_log("Sauvegarde de session");
+                    $_SESSION['sauvegarde'] = $_POST;
+                    header('Location: ./index.php?a=31&m=' . $m . '&idsession=' . $idsession . '&mesno=4');
+                    exit();
+
                 } else {
             
                     //Insertion des données

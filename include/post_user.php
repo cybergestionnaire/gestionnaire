@@ -51,7 +51,7 @@
         $utilisation    = isset($_POST["utilisation"])  ? $_POST["utilisation"] : '';
         $connaissance   = isset($_POST["connaissance"]) ? $_POST["connaissance"] : '';
         $info           = isset($_POST["info"])         ? $_POST["info"] : '';
-        $idTarif          = isset($_POST["tarif"])        ? $_POST["tarif"] : '';
+        $idTarif        = isset($_POST["tarif"])        ? $_POST["tarif"] : '';
      
         $equipement     = isset($_POST["equipement"])   ? implode("-", $_POST["equipement"]) : '';
     

@@ -108,14 +108,12 @@
         
         if ($codepostal == "vide") {
             $codepostal = "";
-        }
-        else {
+        } else {
             $codepostal = $_POST["codepostal"];
         }
         
         unset($_SESSION['sauvegarde']);
-    }
-    else { 
+    } else { 
         $sexe         = "H";
         $nom          = "";
         $prenom       = "";
@@ -209,8 +207,7 @@
     for ($i = 1 ; $i < 32 ; $i++) {
         if ($i == $jour) {
             echo "<option value=\"" . $i . "\" selected>" . $i . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $i . "\">" . $i . "</option>";
         }
     }
@@ -221,8 +218,7 @@
     foreach ($month AS $key=>$value) {
         if ($mois == $key) {
             echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $key . "\">" . $value . "</option>";
         }
     }
@@ -235,8 +231,7 @@
     for ($a = 1910 ; $a < date('Y') ; $a++) {
         if ($a == $annee) {
             echo "<option value=\"" . $a . "\" selected>" . $a . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $a . "\">" . $a . "</option>";
         }
     }
@@ -257,8 +252,7 @@
     foreach ($villes AS $ville) {
         if ($idVille == $ville->getId()) {
             echo "<option value=\"" . $ville->getId() . "\" selected>" . htmlentities($ville->getNom()) . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $ville->getId() . "\">" . htmlentities($ville->getNom()) . "</option>";
         }
     }
@@ -303,8 +297,7 @@
     foreach ($espaces AS $espace) {
         if ($idEspace == $espace->getId()) {
             echo "<option value=\"" . $espace->getId() . "\" selected>" .  htmlentities($espace->getNom()) . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $espace->getId() . "\">" .  htmlentities($espace->getNom()) . "</option>";
         }
     }
@@ -329,8 +322,7 @@
     for ($x = 0 ; $x < 8 ; $x++) {
         if (in_array($x, $equipement)) {
             $check = "checked"; 
-        }
-        else {
+        } else {
             $check = ''; 
         }
 ?>  
@@ -348,8 +340,7 @@
     foreach ($utilisationarray AS $keyutil => $valueutil) {
         if (strcmp ($utilisation, $keyutil) == 0) {
             echo "<div class=\"radio\"><label><input type=\"radio\" name=\"utilisation\" value=" . $keyutil . "  class=\"minimal\" checked>&nbsp;" . $valueutil . "  </label></div>";
-        }
-        else {
+        } else {
             echo "<div class=\"radio\"><label><input type=\"radio\" name=\"utilisation\" value=" . $keyutil . " class=\"minimal\">&nbsp;" . $valueutil . " </label></div> ";
         }
     }
@@ -363,8 +354,7 @@
     foreach ($professions AS $profession) {
         if ($csp == $profession->getId()) {
             echo "<option value=\"" . $profession->getId() . "\" selected>" . htmlentities($profession->getCsp()) . "</option>";
-        }
-        else {
+        } else {
             echo "<option value=\"" . $profession->getId() . "\">" . htmlentities($profession->getCsp()) . "</option>";
         }
     }
@@ -378,8 +368,7 @@
     foreach ($connaissancearray AS $key=>$valuecon) {
         if (strcmp ($connaissance, $key) == 0) {
             echo "<div class=\"radio\"><label><input type=\"radio\" name=\"connaissance\" value=" . $key . " checked>&nbsp;" . $valuecon . "</label></div>";
-        }
-        else {
+        } else {
             echo "<div class=\"radio\"><label><input type=\"radio\" name=\"connaissance\" value=" . $key . ">&nbsp;" . $valuecon . "</label></div>";
         }
     }

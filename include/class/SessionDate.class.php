@@ -299,4 +299,42 @@ class SessionDate
         return $sessionDates;
 
     }
+    
+    public static function getSessionDatesParSemaine($jour, $idEspace) {
+
+        $sessionDates = null;
+    
+        $db = Mysql::opendb();
+        if ($idEspace == 0) {
+            $sql = "SELECT tab_session_dates.* "
+                 . "FROM tab_session_dates "
+                 . "WHERE WEEK(`date_session`) = WEEK('" . $jour . "') "
+                 . "  AND statut_datesession=0 "
+                 . "ORDER BY date_session ASC";
+                 
+        } else {
+            $sql = "SELECT  tab_session_dates.* "
+                 . "FROM tab_session_dates,tab_salle,tab_session "
+                 . "WHERE WEEK(tab_session_dates.`date_session`) = WEEK('".$jour."') "
+                 . "  AND statut_datesession=0 "
+                 . "  AND tab_salle.`id_espace` =" . $idEspace . " "
+                 . "  AND tab_session.`id_salle` = tab_salle.id_salle "
+                 . "  AND tab_session.`id_session` = tab_session_dates.`id_session` "
+                 . "ORDER BY date_session ASC ";
+         }
+                    
+        $result   = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $sessionDates = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $sessionDates[] = new SessionDate($row);
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $sessionDates;
+    }
+    
 }

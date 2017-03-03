@@ -55,8 +55,8 @@ Fichier servant à modifier/créer la programmation d'un atelier
         // creation
         $post_url     = "index.php?a=12&m=1";
         $label_bouton = "Programmer" ;
-        $public       = "Tous public";
-        $idAnim       = $_SESSION["iduser"];
+
+
         //statut de l'atelier
         $stateAtelier = array(
                 0=> "En cours",
@@ -64,15 +64,31 @@ Fichier servant à modifier/créer la programmation d'un atelier
                 //2=> "Cloturé",
                 //3=> "Annulé"
             );
-        $date    = '';
-        $heure   = '';
-        $nbplace = '';
-        $duree   = '';
-        $public  = '';
-        $idSujet = '';
-        $statut  = '';
-        $idSalle = '';
-        $idTarif = '';        
+        if (isset($_POST["submit_atelier"]) && $_POST["submit_atelier"] != "") {
+            error_log("POST = " . print_r($_POST, true));
+            $idAnim  = $_POST["anim"];
+            $public  = $_POST["public"];
+            $date    = $_POST["date"];
+            $heure   = $_POST["heure"];
+            $nbplace = $_POST["nbplace"];
+            $duree   = $_POST["duree"];
+            $public  = $_POST["public"];
+            $idSujet = $_POST["sujet"];
+            $statut  = $_POST["statut"];
+            $idSalle = $_POST["salle"];
+            $idTarif = $_POST["tarif"];          
+        } else {
+            $idAnim  = $_SESSION["iduser"];
+            $public  = "Tout public";
+            $date    = '';
+            $heure   = '';
+            $nbplace = '';
+            $duree   = '';
+            $idSujet = '';
+            $statut  = '';
+            $idSalle = '';
+            $idTarif = '';
+        }
     } else {
         // modification
         $post_url = "index.php?a=14&m=2&idatelier=" .  $idAtelier;
@@ -80,7 +96,7 @@ Fichier servant à modifier/créer la programmation d'un atelier
 
         $atelierEnCours = Atelier::getAtelierById($idAtelier);
         //Informations matos
-        $date    = $atelierEnCours->getDate();
+        $date    = $atelierEnCours->getJour();
         $heure   = $atelierEnCours->getHeure();
         $nbplace = $atelierEnCours->getNbPlaces();
         $duree   = $atelierEnCours->getDuree();
@@ -298,7 +314,31 @@ Fichier servant à modifier/créer la programmation d'un atelier
     
 
 <script src='rome-master/dist/rome.js'></script>
-<script src='rome-master/example/atelier.js'></script>
+<script>
+    var moment = rome.moment;
+
+    rome(dt0, {time: false, weekStart: 1 });
+    rome(dt1, {date: false, weekStart: 1 });
+
+    var picker = rome(ind, options={"weekStart": moment().weekday(1).day()});
+
+    if (toggle.addEventListener) {
+      toggle.addEventListener('click', toggler);
+    } else if (toggle.attachEvent) {
+      toggle.attachEvent('onclick', toggler);
+    } else {
+      toggle.onclick = toggler;
+    }
+
+    function toggler () {
+      if (picker.destroyed) {
+        picker.restore();
+      } else {
+        picker.destroy();
+      }
+      toggle.innerHTML = picker.destroyed ? 'Restore <code>rome</code> instance!' : 'Destroy <code>rome</code> instance!';
+    }
+</script>
 
 
 <?php } ?>

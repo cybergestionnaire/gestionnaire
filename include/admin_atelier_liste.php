@@ -52,8 +52,8 @@
 //-------------ATELIERS POUR L'ANNEE EN COURS ---------------:::
     if ($_SESSION["status"] == 4) {
         // $result1 = getFutAtelier(date('Y'));
-        //$ateliers = Atelier::getAteliersParAnnee(date('Y'));
-        $ateliers = Atelier::getAteliers();
+        $ateliers = Atelier::getAteliersNonClotures();
+        //$ateliers = Atelier::getAteliers();
     }
     if ($_SESSION["status"] == 3) {
         $anim = $_SESSION["iduser"];
@@ -149,7 +149,7 @@
             if ($atelier->getStatut() == 2 ) {
                 $info = "<small class=\"badge bg-blue\" data-toggle=\"tooltip\" title=\"Cet atelier a &eacute;t&eacute; clotur&eacute;, rdv aux archives pour modifier les pr&eacute;sences\"><i class=\"fa fa-info\"></i></small>";
             }
-            elseif (($atelier->getStatut() == 0) AND (strtotime($atelier->getDate()) < strtotime(date('Y-m-d')))) {
+            elseif (($atelier->getStatut() == 0) AND (strtotime($atelier->getJour()) < strtotime(date('Y-m-d')))) {
                 $info = "<small class=\"badge bg-blue\" data-toggle=\"tooltip\" title=\"Cet  atelier n'a pas encore &eacute;t&eacute; clotur&eacute;, veuillez valider les pr&eacute;sences rapidement\"><i class=\"fa fa-info\"></i></small>";
             } else {
                 $info = "";
@@ -160,7 +160,7 @@
             // }
                     
             echo "<tr class='" . $class . "'> 
-                     <td>" . datefr($atelier->getDate()) . "</td>
+                     <td>" . datefr($atelier->getJour()) . "</td>
                      <td>" . htmlentities($atelier->getHeure()) . "</td>
                      ";
             // en cas d'atelier cloture aucun acces possible -> archives !
@@ -303,7 +303,7 @@
             }
 
             echo "<tr> 
-                <td>" . datefr($atelier->getDate()) . "</td>
+                <td>" . datefr($atelier->getJour()) . "</td>
                 <td>" . htmlentities($atelier->getHeure()) . "</td>
                 <td><a href=\"index.php?a=13&b=1&idatelier=" . $atelier->getId() . "\" data-toggle=\"tooltip\" title=\"Inscrire un adherent\" >" . htmlentities($atelier->getSujet()->getLabel()) . "</a>";
                 

@@ -53,14 +53,14 @@
     $mail           = isset($mail)         ? $mail         : '';
     $temps          = isset($temps)        ? $temps        : '';
     $loginn         = isset($loginn)       ? $loginn       : '';
-    $pass           = isset($pass)         ? $pass       : '';
-    $status         = isset($status)      ? $status      : '';
+    $pass           = isset($pass)         ? $pass         : '';
+    $status         = isset($status)       ? $status       : '';
     $csp            = isset($csp)          ? $csp          : '14'; // par défaut sur "non renseigné"
     $equipement     = isset($equipement) && $equipement != ''   ? array_map('intval', explode("-", $equipement))   : array();
     $utilisation    = isset($utilisation)  ? $utilisation  : '';
     $connaissance   = isset($connaissance) ? $connaissance : '';
     $info           = isset($info)         ? $info         : '';
-    $idTarif          = isset($idTarif)        ? $idTarif        : '';
+    $idTarif        = isset($idTarif)      ? $idTarif      : '';
     $idEspace       = isset($idEspace)     ? $idEspace     : '';
     $newsletter     = isset($newsletter)   ? $newsletter   : '';
     $mailok         = isset($mailok)       ? $mailok       : '';

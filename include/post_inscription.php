@@ -67,7 +67,7 @@
     $newsletter     = "0";
       
     
-    $idVille          = isset($_POST["ville"]) ? $_POST["ville"] : '';
+    $idVille        = isset($_POST["ville"]) ? $_POST["ville"] : '';
     $codepost       = isset($_POST["codepostal"]) ? $_POST["codepostal"] : '';
     $commune        = isset($_POST["commune"]) ? $_POST["commune"] : '';
     $pays           = isset($_POST["pays"]) ? $_POST["pays"] : '';

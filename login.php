@@ -42,8 +42,7 @@ $rowprinscription = getPreinsmode();
     //debug(mysqli_num_rows(getReseau()));
     if (mysqli_num_rows(getReseau()) == 0) {
         echo "Connexion au CyberGestionnaire";
-    }
-    else {
+    } else {
         $rowreseau  = mysqli_fetch_array(getReseau());
         $logoreseau = "img/logo/" . $rowsreseau['res_logo'];
         echo "<img src=" . $logoreseau . ">";
@@ -57,8 +56,7 @@ $rowprinscription = getPreinsmode();
 <?php
     if ($error != "") {
         echo '<p class="login-box-msg text-red">Acces refus&eacute; mot de passe ou identifiant invalide, veuillez recommencer !</p>';
-    }
-    else {
+    } else {
         echo ' <p class="login-box-msg">Identifiez-vous pour commencer une session</p>';
     }
 ?>

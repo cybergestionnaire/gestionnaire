@@ -33,8 +33,7 @@ $utilisateur = Utilisateur::getUtilisateurByLoginPassword($login,$passwd);
 
 if ($utilisateur == null) {
     header("Location: ./index.php?error=3");
-}
-else {
+} else {
     session_start();
     $_SESSION["login"]  = $utilisateur->getLogin();
     $_SESSION["status"] = $utilisateur->getStatut();

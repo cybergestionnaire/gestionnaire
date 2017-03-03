@@ -62,8 +62,13 @@ class Atelier
     public function getId() {
         return $this->_id;
     }
-    public function getDate() {
+
+    public function getJour() {
         return $this->_date;
+    }
+
+    public function getDate() {
+        return $this->_date . " " . $this->_heure;
     }
 
     public function getHeure() {
@@ -521,6 +526,31 @@ class Atelier
     
     }
     
+    public static function getAteliersNonClotures() {
+
+        $ateliers = null;
+    
+        $db       = Mysql::opendb();
+        $sql      = "SELECT * "
+                  . "FROM `tab_atelier` "
+                  . "WHERE statut_atelier < 2 "
+                  . "ORDER BY `date_atelier` ASC";
+                    
+        $result   = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $ateliers = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $ateliers[] = new Atelier($row);
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $ateliers;
+    
+    }   
+    
     public static function getAteliersParAnnee($annee) {
 
         $ateliers = null;
@@ -623,5 +653,42 @@ class Atelier
         
         return $ateliers;
     
-    }    
+    }
+    
+    public static function getAteliersParSemaine($jour, $idEspace) {
+
+        $ateliers = null;
+    
+        $db       = Mysql::opendb();
+        if ($idEspace == 0) {
+            //page utilisateur liste de tous les ateliers/sessions du reseau
+            $sql = "SELECT tab_atelier.* "
+                 . "FROM tab_atelier "
+                 . "WHERE WEEK(`date_atelier`) = WEEK('" . $jour . "') "
+                 . "  AND statut_atelier=0 "
+                 . "ORDER BY date_atelier ASC";
+        } else {
+            //adapter donne les ID et le type d'atelier
+            $sql = "SELECT  tab_atelier.* "
+                 . "FROM  `tab_atelier` , tab_salle "
+                 . "WHERE WEEK(`date_atelier`) = WEEK('".$jour."') "
+                 . "  AND statut_atelier=0 "
+                 . "  AND tab_salle.`id_espace` =" . $idEspace . " "
+                 . "  AND tab_atelier.`salle_atelier` = tab_salle.id_salle "
+                 . "ORDER BY date_atelier ASC ";
+        }
+
+                    
+        $result   = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $ateliers = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $ateliers[] = new Atelier($row);
+            }
+            mysqli_free_result($result);
+        }
+        return $ateliers;
+    }
 }

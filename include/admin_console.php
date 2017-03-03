@@ -27,8 +27,18 @@
 }*/
 
 // console
-	//}
-
+//}
+    require_once("include/class/Salle.class.php");
+    $animateur = Utilisateur::getUtilisateurById($_SESSION["iduser"]);
+    if ($animateur->getStatut() == 3) {
+        $salles = $animateur->getSallesAnim();
+    }
+    if ($animateur->getStatut() == 4) {
+        $salles = Salle::getSalles();
+    }
+    
+    // error_log("salles = " . print_r($salles , true));
+    
 ?>
 <form method="post" action="index.php?a=45">
     <table width="100%">
@@ -37,28 +47,26 @@
                 Salle : <select name="numsalle">
 <?php
     if (isset($_POST['numsalle'])) {
-        $premiereSalleAnim = $_POST['numsalle'];
+        $idSalleSelect = $_POST['numsalle'];
     } else {
         // recuperation de la premiere salle geree par l'animateur
-        $premiereSalleAnim = 1 ; // valeur par defaut pour l'initialisation. Posera probleme s'il n'y a pas de salle avec l'id = 1
-        $resultSallesAnim = getSallesbyAnim($_SESSION["iduser"]);
-        
-        $sallesAnim = explode(";", $resultSallesAnim[0]);
-        if (count($sallesAnim) > 0) {
-            $premiereSalleAnim = $sallesAnim[0];
+        if (count($salles) > 0) {
+            $idSalleSelect = $salles[0]->getId() ; // on prend la première par défaut
+        }
+        else {
+            $idSalleSelect = 0;
         }
     }        
-    // creation de la liste des salles
-    $resultsalle = getAllSalle();
-    $nbsalle     = mysqli_num_rows($resultsalle);
-    for($i = 1; $i <= $nbsalle; $i++) {
-        $rowsalle = mysqli_fetch_array($resultsalle);
-        if ( $rowsalle["id_salle"] == $premiereSalleAnim ) {
-            echo "<option value=\"".$rowsalle["id_salle"]."\" selected >".$rowsalle["nom_salle"]."</option>";
+
+    
+    foreach ($salles as $salle) {
+        if ( $salle->getId() == $idSalleSelect ) {
+            echo "<option value=\"".$salle->getId()."\" selected >" . htmlentities($salle->getNom()) . "</option>";
         } else {
-            echo "<option value=\"".$rowsalle["id_salle"]."\">".$rowsalle["nom_salle"]."</option>";
+            echo "<option value=\"".$salle->getId()."\">" . htmlentities($salle->getNom()) . "</option>";
         }
     }
+       
 ?>
                 </select>
                 <input type="submit" value="Ok" onclick="request(readData);">
@@ -66,6 +74,6 @@
         </tr>
     </table>
 </form>
-<input type="hidden" id="numconsole" value="<?php echo $premiereSalleAnim ?>">
+<input type="hidden" id="numconsole" value="<?php echo $idSalleSelect ?>">
 <div id="consoleafficher" align="center"><img src="img/ajax-loader.gif"></div>
 <div id="actionconsoleafficher" align="center"></div>

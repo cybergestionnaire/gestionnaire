@@ -40,21 +40,21 @@
         return false;
     } else {
         $db->set_charset("utf8");
-        $salle=$_POST['id_salle'];
+        $salle = $_POST['id_salle'];
                     
         //$resultPostes = getConsole($salle);
         //récupération de la liste d'ordinateur dans la salle demandé
-        $sql="SELECT `nom_computer`, `id_computer`, `adresse_ip_computer`,`date_lastetat_computer`, `lastetat_computer`, `usage_computer` FROM tab_computer WHERE id_salle=".$salle." ORDER BY nom_computer;";
+        $sql = "SELECT `nom_computer`, `id_computer`, `adresse_ip_computer`,`date_lastetat_computer`, `lastetat_computer`, `usage_computer` FROM tab_computer WHERE id_salle=".$salle." ORDER BY nom_computer;";
         $resultPostes = mysqli_query($db, $sql);
         //$resultPostes = $db->query($sql);
         
         //récupération des informations d'occupation de poste dans la salle demandé         
-        $sql="SELECT `nom_computer`, `id_computer`, `nom_user`, `prenom_user`, `status_user`, `date_resa`, `debut_resa` FROM `tab_user`, `tab_computer`, `tab_resa` WHERE `tab_resa`.`id_user_resa`=`tab_user`.`id_user` AND `tab_resa`.`id_computer_resa`=`tab_computer`.`id_computer` AND `tab_computer`.`id_salle`='".$salle."' AND `tab_resa`.`status_resa`='0' ORDER BY `nom_computer`;";
+        $sql = "SELECT `nom_computer`, `id_computer`, `nom_user`, `prenom_user`, `status_user`, `date_resa`, `debut_resa` FROM `tab_user`, `tab_computer`, `tab_resa` WHERE `tab_resa`.`id_user_resa`=`tab_user`.`id_user` AND `tab_resa`.`id_computer_resa`=`tab_computer`.`id_computer` AND `tab_computer`.`id_salle`='".$salle."' AND `tab_resa`.`status_resa`='0' ORDER BY `nom_computer`;";
         $resultInfos = mysqli_query($db, $sql);
         //$resultInfos = $db->query($sql); 
         
         //récupération des informations de la salle         
-        $sql="SELECT `id_salle`, `nom_salle`, `id_espace`, `comment_salle` FROM tab_salle WHERE id_salle=".$salle.";";
+        $sql = "SELECT `id_salle`, `nom_salle`, `id_espace`, `comment_salle` FROM tab_salle WHERE id_salle=".$salle.";";
         $resultSalles = mysqli_query($db, $sql);
         //$resultSalles = $db->query($sql);
                     
@@ -67,8 +67,8 @@
         }
         else  // affichage du resultat
         {
-            $rowSalles=mysqli_fetch_array($resultSalles) ;
-            $nbPostes = mysqli_num_rows($resultPostes);
+            $rowSalles = mysqli_fetch_array($resultSalles) ;
+            $nbPostes  = mysqli_num_rows($resultPostes);
             //$nbPostes  = $resultPostes->num_rows;
 ?>
 <div class="box box-solid box-warning">
@@ -76,29 +76,25 @@
     <div class="box-body no-padding">
     <form name="formactionconsole">
     <table class="table">
-        <tr class="list_title"><td>Nom Poste</td><td>&Eacute;tat</td><td>Affectation</td><td>Options</td></tr>
+        <tr class="list_title"><th>Nom Poste</th><th>&Eacute;tat</th><th>Affectation</th><th>Options</th></tr>
 <?php
-            if ($nbPostes > 0) // il y a des postes dans la salle demandee
-            {
+            if ($nbPostes > 0) {// il y a des postes dans la salle demandee
                 $rowInfos = mysqli_fetch_array($resultInfos) ;
-                for ($i=1; $i<=$nbPostes; $i++)
-                {
+                for ($i = 1 ; $i <= $nbPostes ; $i++)  {
                     $rowPostes = mysqli_fetch_array($resultPostes) ;
-                    if($rowPostes["id_computer"] == $rowInfos["id_computer"])  //si un poste a des infos de reservation, alors il est occupe
-                    {
+                    if($rowPostes["id_computer"] == $rowInfos["id_computer"]) { //si un poste a des infos de reservation, alors il est occupe
                         //poste occupé
-
                         
                         $heureresa = $rowInfos["debut_resa"];
-                        $heure = floor($heureresa / 60);
-                        $minute = $heureresa - $heure * 60;
+                        $heure     = floor($heureresa / 60);
+                        $minute    = $heureresa - $heure * 60;
                         if ($minute < 10) {
-                            $temp = $rowInfos["date_resa"]." ".$heure.":0".$minute;
+                            $temp = $rowInfos["date_resa"] . " " . $heure . ":0" . $minute;
                         } else {
-                            $temp = $rowInfos["date_resa"]." ".$heure.":".$minute;
+                            $temp = $rowInfos["date_resa"] . " " . $heure . ":" . $minute;
                         }                                
-                        $dateresa = date_create_from_format("Y-m-d H:i",$temp);
-                        $diff = time() - date_timestamp_get($dateresa); // difference en secondes
+                        $dateresa      = date_create_from_format("Y-m-d H:i",$temp);
+                        $diff          = time() - date_timestamp_get($dateresa); // difference en secondes
                         $now           = new DateTime();
                         $interval      = date_diff($datelastetat, $now);
                         $time          = $interval->format("%d j %hh%im");                       
@@ -111,13 +107,13 @@
             <td>Occup&eacute;</td>
             <td><?php echo $rowInfos["nom_user"] ?> <?php echo $rowInfos["prenom_user"] ?> 
 <?php
-                        if($rowInfos["status_user"]==1) {
+                        if ($rowInfos["status_user"] == 1) {
                             echo "(".$time.")"; 
                         }
-                        else if($rowInfos["status_user"]==3) {
+                        else if($rowInfos["status_user"] == 3) {
                             echo "(Animateur)";
                         }
-                        else if($rowInfos["status_user"]==4)
+                        else if($rowInfos["status_user"] == 4)
                         {
                             echo "(Administrateur)";                                  
                         }
@@ -175,7 +171,8 @@
                     }
                 }
 ?>
-</table></form>
+    </table>
+    </form>
 </div>
 <?php
             } else {

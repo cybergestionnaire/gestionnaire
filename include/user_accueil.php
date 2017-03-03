@@ -24,6 +24,8 @@
 // Page d'accueil sur le compte animateur ou administrateur
 
     require_once("include/class/Resa.class.php");
+    require_once("include/class/Atelier.class.php");
+    require_once("include/class/SessionDate.class.php");
 
     // admin --- Utilisateur
     include("post_reservation-rapide.php");
@@ -42,8 +44,8 @@
      //***** -------------fonctions pour administrateur & animateurs   
     if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
     //liste des ateliers/evenements de la journee
-        $listeWeekAtelier = getWeekAteliers(date('Y-m-d'), $_SESSION["idepn"]);
-        $nbTA             = mysqli_num_rows($listeWeekAtelier);
+        // $listeWeekAtelier = getWeekAteliers(date('Y-m-d'), $_SESSION["idepn"]);
+        // $nbTA             = mysqli_num_rows($listeWeekAtelier);
 
         // $espaces = getAllepn(); 
         $espaces = Espace::getEspaces();
@@ -136,87 +138,96 @@
 </div><!-- /.row -->
  
  
- 
 <div class="row">
     <div class="col-md-6"> <!-- colonne 1-->
     <!-- DIV TIMELINE evenements de la semaine -->
         <div class="box">
             <div class="box-header"><h3 class="box-title">Au programme cette semaine &agrave; l'EPN</h3></div>
             <div class="box-body">
-            <!-- The time line -->
-            
-<?php
-        // temporaire pour debug
-        //if ($nbTA > 0) { 
-        if ($nbTA < 0) {    
-
-            for ($g = 1 ; $g <= $nbTA ; $g++) {
-                $rowTA = mysqli_fetch_array($listeWeekAtelier);
-                if ($rowTA["tab_origine"] == "tab_atelier") {
-                    $idatelier  = $rowTA["id"];
-                    $rowAtelier = getAtelier($idatelier);
-                    $result     = getSujetById($rowAtelier["id_sujet"]);
-                    $rowsujet   = mysqli_fetch_array($result);
-                    $titre      = $rowsujet["label_atelier"];
-                    $heureAS    = $rowAtelier["heure_atelier"];
-                    $dateAS     = $rowAtelier["date_atelier"];
-                    $anim       = getUserName($rowAtelier["anim_atelier"]);
-                    $inscrits   = countPlace($rowAtelier["id_atelier"]);
-                    $salle      = mysqli_fetch_array(getSalle($rowAtelier["salle_atelier"]));
-                    $nomsalle   = $salle["nom_salle"] . " (" . $espaces[$salle["id_espace"]] . ")";
-                    $duree      = $rowAtelier["duree_atelier"];
-                    $urlAS      = "index.php?a=13&b=1&idatelier=" . $idatelier;
-                        
-                }
-                elseif ($rowTA["tab_origine"] == "tab_session_dates") {
-                    $idsession  = $rowTA["id"];
-                    $rowSession = getSession($idsession);
-                    $titrearr   = getTitreSession($rowSession["nom_session"]);
-                    $titre      = $titrearr["session_titre"];
-                    $temp       = strtotime($rowTA["dateAS"]);
-                    $heureAS    = date('H:i', $temp);
-                    $dateAS     = $rowTA["dateAS"];
-                    $anim       = getUserName($rowSession["id_anim"]);
-                    $inscrits   = countPlaceSession($rowSession["id_session"], 0);
-                    $salle      = mysqli_fetch_array(getSalle($rowSession["id_salle"]));
-                    $nomsalle   = $salle["nom_salle"];
-                    $duree      = "60";
-                    $urlAS      = "index.php?a=30&b=1&idsession=" . $idsession;
-
-                }
-?>
-                            <!-- timeline time label -->
+            <!-- The time line --> 
                 <ul class="timeline">
+<?php
+        $listeAteliers     = Atelier::getAteliersParSemaine(date('Y-m-d'), $_SESSION["idepn"]);
+        $listeSessionDates = SessionDate::getSessionDatesParSemaine(date('Y-m-d'), $_SESSION["idepn"]);
+        $listeGlobale      = array_merge($listeAteliers, $listeSessionDates );
+        
+        
+        // tri des ateliers et des sessions en fonction de leur date
+        // error_log(print_r($listeGlobale, true));
+        
+        function cmp($a, $b) {
+            return strtotime($a->getDate()) - strtotime($b->getDate());
+        }
+        usort($listeGlobale, 'cmp');
+        // error_log(print_r($listeGlobale, true));
+        
+        if (count($listeGlobale) > 0 ) {
+            foreach ($listeGlobale as $AS) {
+                if ($AS instanceof Atelier) {
+                    // error_log("Atelier à la date : " . $AS->getDate());
+                    $titre    = $AS->getSujet()->getLabel();
+                    $inscrits = $AS->getNbUtilisateursInscrits();
+                    $salle    = $AS->getSalle();
+                    $duree    = $AS->getDuree();
+                    $anim     = $AS->getAnimateur();
+                    $urlAS    = "index.php?a=13&b=1&idatelier=" . $AS->getId();
+                } else {
+                    // error_log("Session à la date : " . $AS->getDate());
+                    $session  = $AS->getSession();
+                    $titre    = $session->getSessionSujet()->getTitre();
+                    $inscrits = $session->getNbUtilisateursInscrits();
+                    $salle    = $session->getSalle();
+                    $duree    = '60';    //TODO : rendre la duree des sessions configurables
+                    $anim     = $session->getAnimateur();
+                    $urlAS    = "index.php?a=30&b=1&idsession=" . $session->getId();
+                }
+        
+?>
                     <li class="time-label">
-                        <span class="bg-red">&nbsp;<?php echo getDayFr($dateAS); ?>&nbsp;&nbsp;<i class="fa fa-clock-o"></i>&nbsp;<?php echo $heureAS; ?></span>
+                        <span class="bg-red">&nbsp;<?php echo getDateFr($AS->getDate()); ?>&nbsp;&nbsp;<i class="fa fa-clock-o"></i></span>
                     </li><!-- /.timeline-label -->
                     <li>
                         <i class="fa fa-keyboard-o bg-green"></i>
                         <div class="timeline-item">
-                            <h3 class="timeline-header"><?php echo $titre; ?></h3>
+                            <h3 class="timeline-header"><?php echo htmlentities($titre); ?></h3>
                             <div class="timeline-body">
                                 <small class="badge bg-purple"><?php echo $inscrits; ?></small>&nbsp;&nbsp;Participants enregistr&eacute;s<br>
-                                <small class="badge bg-purple"><i class="fa fa-map-marker"></i></small>&nbsp;&nbsp;<?php echo $nomsalle ; ?><br>
+                                <small class="badge bg-purple"><i class="fa fa-map-marker"></i></small>&nbsp;&nbsp;<?php echo htmlentities($salle->getNom() . " (" . $salle->getEspace()->getNom() .")") ; ?><br>
                                 <small class="badge bg-purple"><i class="fa fa-hourglass"></i></small>&nbsp;&nbsp;<?php echo $duree; ?> min<br>
-                                <small class="badge bg-purple"><i class="fa fa-user"></i></small>&nbsp;&nbsp;<?php echo $anim; ?>
+                                <small class="badge bg-purple"><i class="fa fa-user"></i></small>&nbsp;&nbsp;<?php echo htmlentities($anim->getPrenom() . " " . $anim->getNom()); ?>
                             </div>
                             <div class='timeline-footer'>
                                 <a href="<?php echo $urlAS; ?>" class="btn btn-success btn-xs">Voir le d&eacute;tail</a>
                             </div>
                         </div>
-                    </li>
-                    
-<?php
+                    </li> 
+<?php 
             }
 ?>
-                                            
+                    
+                    
+                    
                     <li><i class="fa fa-clock-o"></i></li>
                 </ul>
+                
 <?php
         } else {
             echo "<p>aucun &eacute;v&eacute;nement enregistr&eacute; pour cette semaine !</p>"; 
         }
 ?>
+            </div><!-- .box-body -->
+        </div><!-- .box -->
+    </div><!-- /colonne 1 -->
+
+    
+
+    <div class="col-md-6"> <!-- colonne 1-->
+    <!-- DIV TIMELINE evenements de la semaine -->
+        <div class="box">
+            <div class="box-header"><h3 class="box-title">Au programme cette semaine &agrave; l'EPN</h3></div>
+            <div class="box-body">
+            <!-- The time line -->
+
             </div><!-- .box-body -->
         </div><!-- .box -->
     </div><!-- /colonne 1 -->

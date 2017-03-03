@@ -19,6 +19,7 @@
 
 require_once("Mysql.class.php");
 require_once("Forfait.class.php");
+require_once("Salle.class.php");
 
 class Utilisateur
 {
@@ -319,7 +320,7 @@ class Utilisateur
     }
     
     public function getIdSallesAnim() {
-        $idEspaceAnim = '';
+        $idSalleAnim = '';
         
         $db     = Mysql::opendb();
         $sql    = "SELECT `id_salle` FROM `rel_user_anim` WHERE `id_animateur`='" . $this->_id . "' ";
@@ -330,11 +331,23 @@ class Utilisateur
         {
         } else {
             $row = mysqli_fetch_array($result) ;
-            
-            $idEspaceAnim = $row["id_salle"];
+            $idSalleAnim = $row["id_salle"];
             mysqli_free_result($result);
         }
-        return $idEspaceAnim;
+        return $idSalleAnim;
+    }
+    
+    public function getSallesAnim() {
+        $SallesAnim = null;
+    
+        $ids = explode(';', $this->getIdSallesAnim());
+        if (count($ids) > 0) {
+            $sallesAnim = array();
+            foreach ($ids as $idSalle) {
+                $SallesAnim[] = Salle::getSalleById($idSalle);
+            }
+        }
+        return $SallesAnim;
     }
     
     function setParametresAnim($idEspace, $salles, $avatar) {

@@ -57,8 +57,7 @@ if ($logout != '') {
  //Autentification
 if (FALSE == isset($_SESSION["login"])) {
     include ("login.php") ;
-}
-else {
+} else {
     // Acces autorise
     require_once("include/class/Espace.class.php");
     require_once("include/class/Config.class.php");
@@ -209,8 +208,7 @@ else {
                 </div>
             </nav>
 <?php
-    }
-    else {
+    } else {
     
     ///*** section pour les utilisateurs *** ////
 ?>
@@ -315,8 +313,7 @@ else {
 <?php 
     if ($a == 1 OR $a == 43) { 
         "nothing";
-    }
-    else {
+    } else {
 ?>
     <script src="template/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
     <script>

@@ -53,20 +53,20 @@
     
     //verifications en cas d'envoi partiel avec fautes
     if(isset($_SESSION['sauvegarde'])) {
-        $_POST    = $_SESSION["sauvegarde"] ;
-        $idTitre  = $_POST["idTitre"];
-        $nbr_date = $_POST['nbre_dates'];
-        $nbplace  = $_POST['nbplace'];
-        $idSalle  = $_POST['idSalle'];
-        $idAnim   = $_POST['idAnim'];
-        $idTarif  = $_POST['idTarif'];
+        // $_POST    = $_SESSION["sauvegarde"] ;
+        $idTitre  = $_SESSION["sauvegarde"]["idTitre"];
+        $nbr_date = $_SESSION["sauvegarde"]['nbre_dates'];
+        $nbplace  = $_SESSION["sauvegarde"]['nbplace'];
+        $idSalle  = $_SESSION["sauvegarde"]['idSalle'];
+        $idAnim   = $_SESSION["sauvegarde"]['idAnim'];
+        $idTarif  = $_SESSION["sauvegarde"]['idTarif'];
         $post_url = "index.php?a=31&m=1";
         $label_bouton = "Planifier" ;
       //debug($_POST);
       //dates à récuperer
         for ($i = 1 ; $i <= $nbr_date ; $i++) {
-            ${'date'.$i} = $_POST["date".$i];
-            ${'statutdate'.$i} = $_POST["statutdate".$i];
+            ${'date'.$i} = $_SESSION["sauvegarde"]["date".$i];
+            ${'statutdate'.$i} = $_SESSION["sauvegarde"]["statutdate".$i];
         }
       
         // $date1  = $_POST["date1"];
