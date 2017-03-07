@@ -144,7 +144,7 @@
 ?>
         <tr class="list">
             <td><?php echo $rowPostes["nom_computer"] ?></td>
-            <td><?php if ($diff < 15) { ?>Libre<?php } else { ?>&Eacute;teint (depuis  <?php echo $time . " " . $diff ?> ) <?php } ?></td>
+            <td><?php if ($diff < 15) { ?>Libre<?php } else { ?>&Eacute;teint (depuis  <?php echo $time ?> ) <?php } ?></td>
             <td>-</td>
             <td>
 <?php 
