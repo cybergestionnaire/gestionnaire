@@ -214,8 +214,15 @@
                 <p>Dans cette mise à jour :</p>
                 <ul>
                     <li>Refonte de la console</li>
-                    <li>Sous le capot : ré-écriture en mode objet pour séparer le modèle de la vue </li>
-                    <li>Sous le capot : suppression des "PHP Notice" (non terminé)</li>
+                    <li>Modifications de l'ordre des menus ateliers et sessions</li>
+                    <li>Sous le capot : 
+                        <ul>
+                            <li>Changement du codage des caractères : tout passe en UTF-8 (non-terminé)<br />Cela devrait éviter l'apparition d'artefacts au lieu des caractères accentués.</li>
+                            <li>ré-écriture en mode objet pour séparer le modèle de la vue (non terminé)</li>
+                            <li>suppression des "PHP Notice" (non terminé)</li>
+                            <li>multiples corrections de bugs, et multiples inclusions de nouveaux bugs...</li>
+                        </ul>
+                    </li>
                 </ul>
 
 <?php       
