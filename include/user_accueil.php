@@ -30,6 +30,10 @@
     // admin --- Utilisateur
     include("post_reservation-rapide.php");
     include("fonction_stat.php");
+
+    function cmp($a, $b) {
+        return strtotime($a->getDate()) - strtotime($b->getDate());
+    }
     
     $term   = isset($_POST["term"]) ? $_POST["term"] : '';
     $mesno  = isset($_GET["mesno"]) ? $_GET["mesno"] : '';
@@ -48,7 +52,7 @@
         // $nbTA             = mysqli_num_rows($listeWeekAtelier);
 
         // $espaces = getAllepn(); 
-        $espaces = Espace::getEspaces();
+        //$espaces = Espace::getEspaces();
         
         if ($mesno != "") {
             echo getError($mesno);
@@ -155,9 +159,7 @@
         // tri des ateliers et des sessions en fonction de leur date
         // error_log(print_r($listeGlobale, true));
         
-        function cmp($a, $b) {
-            return strtotime($a->getDate()) - strtotime($b->getDate());
-        }
+
         usort($listeGlobale, 'cmp');
         // error_log(print_r($listeGlobale, true));
         
@@ -171,6 +173,8 @@
                     $duree    = $AS->getDuree();
                     $anim     = $AS->getAnimateur();
                     $urlAS    = "index.php?a=13&b=1&idatelier=" . $AS->getId();
+                    $type     = "Atelier";
+                    $class    = "bg-green";
                 } else {
                     // error_log("Session à la date : " . $AS->getDate());
                     $session  = $AS->getSession();
@@ -180,6 +184,8 @@
                     $duree    = '60';    //TODO : rendre la duree des sessions configurables
                     $anim     = $session->getAnimateur();
                     $urlAS    = "index.php?a=30&b=1&idsession=" . $session->getId();
+                    $type     = "Session";
+                    $class    = "bg-blue";
                 }
         
 ?>
@@ -187,9 +193,9 @@
                         <span class="bg-red">&nbsp;<?php echo getDateFr($AS->getDate()); ?>&nbsp;&nbsp;<i class="fa fa-clock-o"></i></span>
                     </li><!-- /.timeline-label -->
                     <li>
-                        <i class="fa fa-keyboard-o bg-green"></i>
+                        <i class="fa fa-keyboard-o <?php echo $class ?>"></i>
                         <div class="timeline-item">
-                            <h3 class="timeline-header"><?php echo htmlentities($titre); ?></h3>
+                            <h3 class="timeline-header"><?php echo htmlentities($type . " : " . $titre); ?></h3>
                             <div class="timeline-body">
                                 <small class="badge bg-purple"><?php echo $inscrits; ?></small>&nbsp;&nbsp;Participants enregistr&eacute;s<br>
                                 <small class="badge bg-purple"><i class="fa fa-map-marker"></i></small>&nbsp;&nbsp;<?php echo htmlentities($salle->getNom() . " (" . $salle->getEspace()->getNom() .")") ; ?><br>
@@ -411,13 +417,22 @@
         // bouton envoyer message &agrave; animateur
 
         //charger la liste des evenements du reseau
-        $listeWeekAtelier = getWeekAteliers(date('Y-m-d'), 0);
-        $nbe              = mysqli_num_rows($listeWeekAtelier);
+        // $listeWeekAtelier = getWeekAteliers(date('Y-m-d'), 0);
+        // $nbe              = mysqli_num_rows($listeWeekAtelier);
         $arrayinscrip     = array(
                                 2=>"Sur la liste d'attente",
                                 0=>"Je suis d&eacute;j&agrave; inscrit"
                             );
+        $arrayClass     = array(
+                                2=>"bg-",
+                                0=>"Je suis d&eacute;j&agrave; inscrit"
+                            );
 
+        $listeAteliers     = Atelier::getAteliersParSemaine(date('Y-m-d'), 0);
+        $listeSessionDates = SessionDate::getSessionDatesParSemaine(date('Y-m-d'), $_SESSION["idepn"]);
+        $listeGlobale      = array_merge($listeAteliers, $listeSessionDates );
+                            
+        usort($listeGlobale, 'cmp');                            
     //****UTILISATEUR ACTIF
  
         if ($_SESSION["status"] == "1") {
@@ -430,79 +445,137 @@
             <div class="box-header"><h3 class="box-title">Au programme cette semaine &agrave; l'EPN</h3></div>
             <div class="box-body">
 <?php
-            if ($nbe > 0) { 
-                for ($g = 1 ; $g <= $nbe ; $g++) {
-                    $rowTA = mysqli_fetch_array($listeWeekAtelier);
-                    if ($rowTA["tab_origine"] == "tab_atelier") {
-                        $idatelier       = $rowTA["id"];
-                        $rowAtelier      = getAtelier($idatelier);
-                        $result          = getSujetById($rowAtelier["id_sujet"]);
-                        $rowsujet        = mysqli_fetch_array($result);
-                        $titre           = $rowsujet["label_atelier"];
-                        $heureAS         = $rowAtelier["heure_atelier"];
-                        $dateAS          = $rowAtelier["date_atelier"];
-                        $anim            = getUserName($rowAtelier["anim_atelier"]);
-                        $inscrits        = countPlace($rowAtelier["id_atelier"]);
-                        $salle           = mysqli_fetch_array(getSalle($rowAtelier["salle_atelier"]));
-                        $nomsalle        = $salle["nom_salle"]." (".$espaces[$salle["id_espace"]].")";
-                        $nomespace       = mysqli_fetch_array(getEspace($rowTA["id_espace"]));
-                        $duree           = $rowAtelier["duree_atelier"];
-                        $testinscription = getTestInscript($_SESSION["iduser"],$idatelier,"a");
+
+        if (count($listeGlobale) > 0 ) {
+            foreach ($listeGlobale as $AS) {
+                if ($AS instanceof Atelier) {
+                    // error_log("Atelier à la date : " . $AS->getDate());
+                    $titre    = $AS->getSujet()->getLabel();
+                    $inscrits = $AS->getNbUtilisateursInscrits();
+                    $salle    = $AS->getSalle();
+                    $duree    = getTime($AS->getDuree());
+                    $anim     = $AS->getAnimateur();
+                    $urlAS    = "index.php?a=13&b=1&idatelier=" . $AS->getId();
+                    $type     = "Atelier";
+                    $class    = "bg-green";
+
+                    if ($AS->isUtilisateurInscrit($_SESSION["iduser"])) {
+                        $statut      = $AS->getStatutUtilisateur($_SESSION["iduser"]);
+                        $urlAS       = "#";
+                        $boutoninscr = $arrayinscrip[$statut];
+                        $couleurb    = "btn btn-success btn-xs";    
+                        if ($statut == 0) {
+                            $couleurb    = "btn btn-success btn-xs";
+                        } else {
+                            $couleurb    = "btn btn-warning btn-xs";
+                        }                        
+                    } else {
+                        $urlAS       = "index.php?m=6&b=1&idatelier=" . $AS->getId();
+                        $boutoninscr = "s'inscrire";
+                        $couleurb    = "btn btn-info btn-xs";
+                    }
+                } else {
+                    // error_log("Session à la date : " . $AS->getDate());
+                    $session  = $AS->getSession();
+                    $titre    = $session->getSessionSujet()->getTitre();
+                    $inscrits = $session->getNbUtilisateursInscrits();
+                    $salle    = $session->getSalle();
+                    $duree    = getTime('60');    //TODO : rendre la duree des sessions configurables
+                    $anim     = $session->getAnimateur();
+                    $urlAS    = "index.php?a=30&b=1&idsession=" . $session->getId();
+                    $type     = "Session";
+                    $class    = "bg-blue";
+                    if ($AS->isUtilisateurInscrit($_SESSION["iduser"])) {
+                        $statut      = $session->getStatutUtilisateur($_SESSION["iduser"]);
+                        $urlAS       = "#";
+                        $boutoninscr = $arrayinscrip[$statut];
+                        if ($statut == 0) {
+                            $couleurb    = "btn btn-success btn-xs";
+                        } else {
+                            $couleurb    = "btn btn-warning btn-xs";
+                        }
+                        
+                    } else {
+                        $urlAS       = "index.php?m=6&b=5&idsession=" . $session->getId();
+                        $boutoninscr = "s'inscrire";
+                        $couleurb    = "btn btn-info btn-xs";
+                    }
+                }
+
+
+            // if ($nbe > 0) { 
+                // for ($g = 1 ; $g <= $nbe ; $g++) {
+                    // $rowTA = mysqli_fetch_array($listeWeekAtelier);
+                    // if ($rowTA["tab_origine"] == "tab_atelier") {
+                        // $idatelier       = $rowTA["id"];
+                        // $rowAtelier      = getAtelier($idatelier);
+                        // $result          = getSujetById($rowAtelier["id_sujet"]);
+                        // $rowsujet        = mysqli_fetch_array($result);
+                        // $titre           = $rowsujet["label_atelier"];
+                        // $heureAS         = $rowAtelier["heure_atelier"];
+                        // $dateAS          = $rowAtelier["date_atelier"];
+                        // $anim            = getUserName($rowAtelier["anim_atelier"]);
+                        // $inscrits        = countPlace($rowAtelier["id_atelier"]);
+                        // $salle           = mysqli_fetch_array(getSalle($rowAtelier["salle_atelier"]));
+                        // $nomsalle        = $salle["nom_salle"]." (".$espaces[$salle["id_espace"]].")";
+                        // $nomespace       = mysqli_fetch_array(getEspace($rowTA["id_espace"]));
+                        // $duree           = $rowAtelier["duree_atelier"];
+                        // $testinscription = getTestInscript($_SESSION["iduser"],$idatelier,"a");
                     
                         
-                        if ($testinscription == "FALSE") {
-                            $urlAS       = "index.php?m=6&b=1&idatelier=" . $idatelier;
-                            $boutoninscr = "s'inscrire";
-                            $couleurb    = "btn btn-success btn-xs";
-                        } else {
+                        // if ($testinscription == "FALSE") {
+                            // $urlAS       = "index.php?m=6&b=1&idatelier=" . $idatelier;
+                            // $boutoninscr = "s'inscrire";
+                            // $couleurb    = "btn btn-success btn-xs";
+                        // } else {
                             
-                            $urlAS       = "";
-                            $boutoninscr = $arrayinscrip[$testinscription["statut"]];
-                            $couleurb    = "btn btn-warning btn-xs";
-                        }
-                    }
-                    elseif ($rowTA["tab_origine"] == "tab_session_dates") {
-                        $idsession       = $rowTA["id"];
-                        $rowSession      = getSession($idsession);
-                        $titrearr        = getTitreSession($rowSession["nom_session"]);
-                        $titre           = $titrearr["session_titre"];
-                        $temp            = strtotime($rowTA["dateAS"]);
-                        $heureAS         = date('H:i',$temp);
-                        $dateAS          = $rowTA["dateAS"];
-                        $anim            = getUserName($rowSession["id_anim"]);
-                        $inscrits        = countPlaceSession($rowSession["id_session"],0);
-                        $salle           = mysqli_fetch_array(getSalle($rowSession["id_salle"]));
-                        //$nomsalle=$salle["nom_salle"];
-                        $nomespace       = mysqli_fetch_array(getEspace($rowTA["id_espace"]));
-                        $duree           = "60";
-                        $testinscription = getTestInscript($_SESSION["iduser"],$idsession,"s");
+                            // $urlAS       = "";
+                            // $boutoninscr = $arrayinscrip[$testinscription["statut"]];
+                            // $couleurb    = "btn btn-warning btn-xs";
+                        // }
+                    // }
+                    // elseif ($rowTA["tab_origine"] == "tab_session_dates") {
+                        // $idsession       = $rowTA["id"];
+                        // $rowSession      = getSession($idsession);
+                        // $titrearr        = getTitreSession($rowSession["nom_session"]);
+                        // $titre           = $titrearr["session_titre"];
+                        // $temp            = strtotime($rowTA["dateAS"]);
+                        // $heureAS         = date('H:i',$temp);
+                        // $dateAS          = $rowTA["dateAS"];
+                        // $anim            = getUserName($rowSession["id_anim"]);
+                        // $inscrits        = countPlaceSession($rowSession["id_session"],0);
+                        // $salle           = mysqli_fetch_array(getSalle($rowSession["id_salle"]));
+                        // //$nomsalle=$salle["nom_salle"];
+                        // $nomespace       = mysqli_fetch_array(getEspace($rowTA["id_espace"]));
+                        // $duree           = "60";
+                        // $testinscription = getTestInscript($_SESSION["iduser"],$idsession,"s");
                                             
-                        if ($testinscription == "FALSE") {
-                            $urlAS       = "index.php?m=6&b=1&idsession=" . $idsession;
-                            $boutoninscr = "s'inscrire";
-                            $couleurb    = "btn btn-success btn-xs";
-                        } else {
-                            $urlAS       = "#";
-                            $boutoninscr = $arrayinscrip[$testinscription["statut"]];
-                            $couleurb    = "btn btn-warning btn-xs";
-                        }
-                    }
+                        // if ($testinscription == "FALSE") {
+                            // $urlAS       = "index.php?m=6&b=1&idsession=" . $idsession;
+                            // $boutoninscr = "s'inscrire";
+                            // $couleurb    = "btn btn-success btn-xs";
+                        // } else {
+                            // $urlAS       = "#";
+                            // $boutoninscr = $arrayinscrip[$testinscription["statut"]];
+                            // $couleurb    = "btn btn-warning btn-xs";
+                        // }
+                    // }
                     //  debug($testinscription);
                 
 ?>
                             <!-- timeline time label -->
                 <ul class="timeline">
-                    <li class="time-label"><span class="bg-red"> <?php echo getDayFr($dateAS); ?> &agrave; <?php echo $heureAS; ?></span></li><!-- /.timeline-label -->
+                    <li class="time-label"><span class="bg-red"> <?php echo getDateFr($AS->getDate()); ?></span></li><!-- /.timeline-label -->
                     <li>
-                        <i class="fa fa-keyboard-o bg-green"></i>
+                        <i class="fa fa-keyboard-o <?php echo $class?>"></i>
                         <div class="timeline-item">
-                            <h3 class="timeline-header"><?php echo $titre; ?></h3>
+                            <h3 class="timeline-header"><?php echo htmlentities($type . " : " . $titre); ?></h3>
                                 
                             <div class="timeline-body">
                                 <small class="badge bg-purple"><?php echo $inscrits; ?></small> participants enregistr&eacute;s<br>
-                                <small class="badge bg-purple"><i class="fa fa-map-marker"></i></small> <?php echo $salle["nom_salle"] ; ?> (<?php echo $nomespace["nom_espace"];?>)<br>
-                                <small class="badge bg-purple"><i class="fa fa-clock-o"></i></small> <?php echo $duree; ?> min<br>
-                                <small class="badge bg-purple"><i class="fa fa-user"></i></small> Anim&eacute; par  <?php echo $anim; ?>
+                                <small class="badge bg-purple"><i class="fa fa-map-marker"></i></small> <?php echo htmlentities($salle->getNom() . " (" . $salle->getEspace()->getNom() .")") ; ?><br>
+                                <small class="badge bg-purple"><i class="fa fa-clock-o"></i></small> <?php echo $duree; ?><br>
+                                <small class="badge bg-purple"><i class="fa fa-user"></i></small> Anim&eacute; par <?php echo htmlentities($anim->getPrenom() . " " . $anim->getNom()); ?>
                             </div>
                             <div class='timeline-footer'><a href="<?php echo $urlAS; ?>" class="<?php echo $couleurb;?>"><?php echo $boutoninscr; ?></a></div>
                         </div>

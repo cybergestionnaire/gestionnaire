@@ -38,34 +38,28 @@
         $sessions = Session::getSessionsNonCloturees();
     }
     if ($_SESSION["status"] == 3) {
-        $anim = $_SESSION["iduser"];
     
-    
-        if (isset($c)) {
-            switch ($c) {
-                case 1:
-                    $result = getFutsessionsbyanim($anim);
-                break;
-                
-                case 2:
-                    $result = getFutsessions($_SESSION["idepn"]);
-                break;
-                
-                case 3:
-                    $result = getFutsessions(0);
-                break;
-            }
-
-        } else {
-            $c = 0;
-            $result = getFutsessions(0);
+        switch ($c) {
+            default :
+            case 1:
+                // $result = getFutsessionsbyanim($anim);
+                $sessions = Session::getSessionsFuturesParAnimateur($_SESSION["iduser"]);
+            break;
+            
+            case 2:
+                $result = getFutsessions($_SESSION["idepn"]);
+                $sessions = Session::getSessionsFuturesParEspace($_SESSION["idepn"]);
+            break;
+            
+            // réseau pas encore implémenté
+            // case 3:
+                // $result = getFutsessions(0);
+            // break;
         }
+
     
     }
 
-
-
-    // $nbsessionsprog = mysqli_num_rows($result);
     $nbsessionsprog = count($sessions);
               
     if ($nbsessionsprog > 0) {
@@ -87,7 +81,7 @@
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="index.php?a=37&c=1">Mes sessions</a></li>
                         <li><a href="index.php?a=37&c=2">Sessions de l'epn</a></li>
-                        <li><a href="index.php?a=37&c=3">Sessions du r&eacute;seau</a></li>
+                        <!--<li><a href="index.php?a=37&c=3">Sessions du r&eacute;seau</a></li>-->
                            
                     </ul>
                 </div>
@@ -110,24 +104,14 @@
                 </thead>
 <?php
         
-    // for ($j = 1 ; $j <= $nbsessionsprog ; $j++) {
-        // $row = mysqli_fetch_array($result) ;
     foreach ($sessions as $session) {
         
         //elements                  
-        // $titresession = getTitreSession($row["nom_session"]);
-        
-
-        //test de validation en cours des dates de la session pour permettre ou non la suppression
-        // $testvalidation = getSessionvalidees($row["id_session"]);
-        // $salle = mysqli_fetch_array(getSalle($row["id_salle"]));
         $salle = $session->getSalle();
         $espace = $salle->getEspace();
         $animateur = $session->getAnimateur();
                     
-        // if ($row["date_session"] < date('Y-m-d')) {
         if ($session->getDate() < date('Y-m-d')) {
-            // $statutaffiche = $row["nbre_dates_sessions"] . "&nbsp;&nbsp;<small class=\"badge bg-blue\" data-toggle=\"tooltip\" title=\"Des dates de la session n'ont pas encore &eacute;t&eacute; valid&eacute;es !\"><i class=\"fa fa-info\"></i></small>";
             $statutaffiche = $session->getNbDates() . "&nbsp;&nbsp;<small class=\"badge bg-blue\" data-toggle=\"tooltip\" title=\"Des dates de la session n'ont pas encore &eacute;t&eacute; valid&eacute;es !\"><i class=\"fa fa-info\"></i></small>";
             $class = "text-red" ;
         } else {
@@ -136,18 +120,12 @@
         }
         
         //affichage de toutes les dates de la session
-        // $datesarray = getDatesSession($row["id_session"]);
         $datesSession = $session->getSessionDates();
         
         $nbrdates = $session->getNbDates();
 
         $listedatess = '';
 
-        // for ($f=0; $f<$nbrdates ; $f++){
-            // $rowdates=mysqli_fetch_array($datesarray);
-            // $dd=date_create($rowdates["date_session"]);
-            // $listedatess=$listedatess.date_format($dd,"Y/m/d H:i")."</br>";
-        // }
         
         foreach ($datesSession as $dateSession) {
             $listedatess .= date_format(date_create($dateSession->getDate()),"d/m/Y H:i")."</br>";
@@ -155,16 +133,11 @@
         
                         
         //nombre de places pour la session
-        // $placesoccupee = countPlaceSession($row["id_session"],0);
-        // $nbplace       = $row["nbplace_session"];
-        // $enattente     = countPlaceSession($row["id_session"],2);
         $placesOccupees = $session->getNbUtilisateursInscritsOuPresents();
         $nbPlaces       = $session->getNbPlaces();
         $enAttente      = $session->getNbUtilisateursEnAttente();
         
         
-        //$placesrestantes=$nbplace-$placesoccupee;
-        //debug($datesSession);
 ?>        
                 <tr class="<?php echo $class ?>"> 
                     <td><small><?php echo $listedatess?></small></td>

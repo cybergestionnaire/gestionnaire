@@ -22,10 +22,9 @@
 
 // Fichier de configuration de l'espace utilisateur
 // #############################################################################
-// menu niveau 2 : ADMINISTRATEUR
+// menu niveau 2 : ADMINISTRATEUR Ou Animateur !
 // #############################################################################
-if ($_SESSION["status"]==4)
-{
+if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
   switch ($a)
   {
     case 1:  // ADHERENT

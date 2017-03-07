@@ -27,7 +27,11 @@
 
     // $sessionsujet = getAllSujetSession() ;
     $sessionSujets = SessionSujet::getSessionSujets();
-    $salles        = Salle::getSalles();
+    if ($_SESSION["status"] == 4 ) {
+        $salles        = Salle::getSalles();
+    } else {
+        $salles        = Utilisateur::getUtilisateurById($_SESSION["iduser"])->getSallesAnim();    // Pas efficace !!! Fonctionne, mais à revoir
+    }
     $animateurs    = Utilisateur::getAnimateurs();
     $tarifs        = Tarif::getTarifsByCategorie(5);
     
@@ -247,9 +251,9 @@
         foreach ($salles AS $salle) {
             if ($idSalle == $salle->getId())
             {
-                echo "<option value=\"" . $salle->getId() . "\" selected>" . htmlentities($salle->getNom()) . "</option>";
+                echo "<option value=\"" . $salle->getId() . "\" selected>" . htmlentities($salle->getNom()) . " (" . htmlentities($salle->getEspace()->getNom()) . ")</option>";
             } else {
-                echo "<option value=\"" . $salle->getId() . "\">" . htmlentities($salle->getNom()) . "</option>";
+                echo "<option value=\"" . $salle->getId() . "\">" . htmlentities($salle->getNom()) . " (" . htmlentities($salle->getEspace()->getNom()) . ")</option>";
             }
         }
         

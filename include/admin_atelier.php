@@ -129,18 +129,7 @@
             }
         }
     
-            
-        // if (countPlace($idAtelier) > $row["nbplace_atelier"]){
-            // $nbplace = 0;
-        // }
-        // else {
-            // $nbplace = $row["nbplace_atelier"] - countPlace($idAtelier);
-        // }
-        //adherent en attente
-        //$rattente  = getAtelierUser($idAtelier, 2) ; 
-        //$enattente = mysqli_num_rows($rattente);
-        
-        // $testTarifAtelier = TestTarifs();
+
         $testTarifAtelier = count(Tarif::getTarifsByCategorie('5'));
         //
         ////Envoi du mail de rappel
@@ -153,12 +142,7 @@
             $mailok = 0;
 
         } else {
-            // $espacearray = mysqli_fetch_array(getEspace($salle->getIdEspace()));
-            // $mail_epn    = $espacearray["mail_espace"];
-            // $adresse_epn = $espacearray["adresse"];
-            // $nom_epn     = $espacearray["nom_espace"];
-            // $tel_epn     = $espacearray["tel_espace"];
-            
+             
             $espace = $salle->getEspace();
             
 
@@ -269,9 +253,6 @@
                 $nbASencours = getnbASUserEncours($utilisateur->getId(), 0) ; 
             
                 // construction des BCCmail
-                // if ($row2["mail_user"] <> '') {
-                    // $bccusers = $bccusers . trim($row2["mail_user"]) . ";";
-                // }
                 if ($utilisateur->getMail() <> '') {
                     $bccusers = $bccusers . $utilisateur->getMail() . ";";
                 }

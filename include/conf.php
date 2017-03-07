@@ -84,7 +84,7 @@ if (isset($_SESSION["status"])) {
 
     switch ($_SESSION["status"]) {
         case 3:
-            include('include/conf_anim.php') ;
+            include('include/conf_admin.php') ;
         break;
         case 4:
             include('include/conf_admin.php') ;

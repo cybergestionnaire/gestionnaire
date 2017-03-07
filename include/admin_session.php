@@ -77,7 +77,7 @@
         }
     }
  
-    $placesrestantes = $session->getNbPlaces() - $session->getNbUtilisateursInscritsOuPresents();
+    $placesrestantes = $session->getNbPlacesRestantes();
 
 ?> 
     

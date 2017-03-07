@@ -348,7 +348,7 @@ class Utilisateur
             }
         }
         return $SallesAnim;
-    }
+    }   
     
     function setParametresAnim($idEspace, $salles, $avatar) {
         $success = false;

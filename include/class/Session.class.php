@@ -74,6 +74,10 @@ class Session
         return $this->_nbPlaces;
     }
 
+    public function  getNbPlacesRestantes() {
+        return $this->getNbPlaces() - $this->getNbUtilisateursInscritsOuPresents();
+    }
+    
     public function getNbDates() {
         return $this->_nbDates;
     }
@@ -219,6 +223,22 @@ class Session
         return $success;
     }
     
+    public function getStatutUtilisateur($idUtilisateur) {
+        $statut = null;
+        
+        $db  = Mysql::opendb();
+        $sql = "SELECT  `status_rel_session` FROM `rel_session_user` WHERE `id_session`='" . $this->_id . "' AND `id_user`='" . $idUtilisateur . "' ";
+        $result = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        if ($result and mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+            $statut = $row["status_rel_session"];
+            mysqli_free_result($result);
+        }
+        
+        return $statut;
+    }
+
     public function hasSessionDatesValidees() {
         // permet de savoir si des dates ont déjà été validées,
         // auquel cas, on ne doit plus supprimer la session !
@@ -467,6 +487,7 @@ class Session
                  . "WHERE tab_salle.`id_salle` = tab_session.`id_salle` "
                  . "  AND tab_salle.`id_espace`=" . $idEspace . " "
                  . "  AND YEAR(date_session)=" . $annee . " "
+                 . "  AND status_session=1 "
                  . "ORDER BY `date_session` ASC";
                  
         $result  = mysqli_query($db,$sql);
@@ -483,4 +504,93 @@ class Session
         return $sessions;
     }
     
+    
+    public static function getSessionsFuturesParAnimateur($idAnimateur) {
+        $sessions = null;
+    
+        $db       = Mysql::opendb();
+        $sql      = "SELECT * "
+                  . "FROM `tab_session` "
+                  . "WHERE status_session=0 "
+                  . "  AND id_anim=" . $idAnimateur . " "
+                  . "  AND YEAR(`date_session`) >= " . date('Y') . " "
+                  . "ORDER BY `id_session` ASC";
+                  
+        $result   = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $sessions = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $sessions[] = new Session($row);
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $sessions;
+    }
+
+    public static function getSessionsFuturesParEspace($idEspace) {
+        $sessions = null;
+    
+        $db       = Mysql::opendb();
+        $sql      = "SELECT tab_session.* "
+                  . "FROM `tab_session`, tab_salle "
+                  . "WHERE status_session=0 "
+                  . " AND  tab_salle.`id_salle` = tab_session.`id_salle` "
+                  . " AND tab_salle.`id_espace` =" . $idEspace . " "
+                  . "ORDER BY `id_session` ASC";
+        $result   = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $sessions = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $sessions[] = new Session($row);
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $sessions;
+    }
+    
+    public static function getSessionsFuturesByAnnee($annee) {
+        $sessions = null;
+        
+        $db    = Mysql::opendb();
+        
+        $annee = mysqli_real_escape_string($db, $annee);
+        
+        $cetteAnnee = date('Y');
+    
+        if ($annee > $cetteAnnee) {
+    
+            $sql = "SELECT * "
+                 . "FROM `tab_session` "
+                 . "WHERE YEAR(`date_session`)=" . $annee . " "
+                 . "ORDER BY `date_session` ASC";
+    
+        } else if ($annee == $cetteAnnee){
+    
+            $sql = "SELECT * "
+                 . "FROM `tab_session` "
+                 . "WHERE YEAR(`date_session`)=" . $annee . " "
+                 . "  AND MONTH( `date_session` ) >= MONTH( NOW( )) "
+                 . "ORDER BY `date_session` ASC";
+
+        }   
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $sessions = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $sessions[] = new Session($row);
+            }
+            mysqli_free_result($result);
+            
+        }
+        return $sessions;
+    }    
 }

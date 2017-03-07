@@ -37,20 +37,20 @@ Fichier servant à modifier/créer la programmation d'un atelier
         $idAtelier = '';
     }
     //recupérer les sujets d'atelier
-    //$atelier   = getAllSujet();
     $atelierSujets = AtelierSujet::getAtelierSujets();
     //recupérer les animateurs
-    //$allanim   = getAllAnim();
     $animateurs    = Utilisateur::getAnimateurs();
     //récupérer les salles
-    //$allsalles = getAllSalleAtelier();
-    $salles        = Salle::getSalles();
+    if ($_SESSION["status"] == 4 ) {
+        $salles        = Salle::getSalles();
+    } else {
+        $salles        = Utilisateur::getUtilisateurById($_SESSION["iduser"])->getSallesAnim();    // Pas efficace !!! Fonctionne, mais à revoir
+    }
+    
     //recuperation des tarifs categorieTarif(5)=forfait atelier
-    //$tarifs=getTarifsbyCat(5);
     $tarifs        = Tarif::getTarifsByCategorie(5);
 
 
-// if (FALSE == isset($id))
     if ($idAtelier == '') {
         // creation
         $post_url     = "index.php?a=12&m=1";
@@ -240,9 +240,9 @@ Fichier servant à modifier/créer la programmation d'un atelier
 <?php
         foreach ($salles AS $salle) {
             if ($idSalle == $salle->getId()) {
-                echo "<option value=\"" . $salle->getId() . "\" selected>" . htmlentities($salle->getNom()) . "</option>";
+                echo "<option value=\"" . $salle->getId() . "\" selected>" . htmlentities($salle->getNom()) . " (" . htmlentities($salle->getEspace()->getNom()) . ")</option>";
             } else {
-                echo "<option value=\"" . $salle->getId() . "\">" . htmlentities($salle->getNom()) . "</option>";
+                echo "<option value=\"" . $salle->getId() . "\">" . htmlentities($salle->getNom()). " (" . htmlentities($salle->getEspace()->getNom()) . ")</option>";
             }
         }
         

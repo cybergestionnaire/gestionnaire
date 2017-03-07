@@ -51,33 +51,25 @@
                 
 //-------------ATELIERS POUR L'ANNEE EN COURS ---------------:::
     if ($_SESSION["status"] == 4) {
-        // $result1 = getFutAtelier(date('Y'));
         $ateliers = Atelier::getAteliersNonClotures();
-        //$ateliers = Atelier::getAteliers();
     }
     if ($_SESSION["status"] == 3) {
-        $anim = $_SESSION["iduser"];
-    
-    
-        if (isset($c)) {
-            switch($c){
-                case 1:
-                    $result1 = getFutAtelierbyanim(date('Y'), $anim);
-                break;
-                
-                case 2:
-                    $result1 = getFutAtelierbyepn(date('Y'), $_SESSION["idepn"]);
-                break;
-                
-                case 3:
-                    $result1 = getFutAtelier(date('Y'));
-                break;
-            }
-
-        } else {
-            $c = 1;
-            $result1 = getFutAtelierbyanim(date('Y'), $anim);
+        switch($c){
+            default:
+            case 1:
+                $ateliers = Atelier::getAteliersParAnneeEtParAnimateur(date('Y'), $_SESSION["iduser"]);
+            break;
+            
+            case 2:
+                $ateliers = Atelier::getAteliersParAnneeEtParEspace(date('Y'), $_SESSION["idepn"]);
+            break;
+            
+            // reseau pas encore implémenté !!
+            // case 3:
+                // $result1 = getFutAtelier(date('Y'));
+            // break;
         }
+
     }
 
     $nbAteliers = count($ateliers);
@@ -100,7 +92,7 @@
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="index.php?a=11&c=1">Mes ateliers</a></li>
                     <li><a href="index.php?a=11&c=2">Ateliers de l'epn</a></li>
-                    <li><a href="index.php?a=11&c=3">Ateliers du r&eacute;seau</a></li>
+                    <!--<li><a href="index.php?a=11&c=3">Ateliers du r&eacute;seau</a></li>-->
                 </ul>
             </div>
 <?php } ?>
@@ -215,30 +207,23 @@
         
     }
     elseif($_SESSION["status"] == 3) {
-        $anim = $_SESSION["iduser"];
-        
-        if ($c != "") {
-            switch($c){
-                case 1:
-                    $result2 = getFutAtelierbyanim((date('Y')+1), $anim);
-                break;
-                
-                case 2:
-                    $result2 = getFutAtelierbyepn(date('Y')+1, $_SESSION["idepn"]);
-                break;
-                
-                case 3:
-                    $result2 = getFutAtelier(date('Y')+1);
-                break;
-            }
-
-        } else {
-            $c = 1;
-            $result2 = getFutAtelierbyanim((date('Y')+1), $anim);
+        switch($c){
+            default:
+            case 1:
+                $ateliers2 = Atelier::getAteliersParAnneeEtParAnimateur(date('Y') + 1, $_SESSION["iduser"]);
+            break;
+            
+            case 2:
+                $ateliers2 = Atelier::getAteliersParAnneeEtParEspace(date('Y') + 1, $_SESSION["idepn"]);
+            break;
+            
+            // case 3:
+                // $result2 = getFutAtelier(date('Y')+1);
+            // break;
         }
+
     }
     
-    //$nbas = mysqli_num_rows($result2);
     $nbAteliers = count($ateliers2);    
     if ($nbAteliers > 0) {
 ?>  
@@ -312,7 +297,7 @@
                 echo "<b>      <span class=\"text-red\">COMPLET</span></b>";
             }
             echo"</td>
-                <td>" . htmlentities($salle->getNom()) . " (" . htmlentities($espace->getNom()) . "</td>
+                <td>" . htmlentities($salle->getNom()) . " (" . htmlentities($espace->getNom()) . ")</td>
                 <td>" . $atelier->getNbPlacesPrises() . " / " . $atelier->getNbPlaces() . "</td>
                 <td>" . $atelier->getNbUtilisateursEnAttente() . "</td>
                 <td><span class=\"" . $classpan . "\">" . $stateAtelier[$atelier->getStatut()] . "</span></td>

@@ -357,7 +357,20 @@ class Atelier
         return $success;
     }
 
-    
+    public function getStatutUtilisateur($idUtilisateur) {
+        $statut = null;
+        
+        $db  = Mysql::opendb();
+        $sql = "SELECT `status_rel_atelier_user` FROM `rel_atelier_user` WHERE `id_atelier`='" . $this->_id . "' AND `id_user`='" . $idUtilisateur . "' ";
+        $result = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        if ($result and mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+            $statut = $row["status_rel_atelier_user"];
+            mysqli_free_result($result);
+        }
+        return $statut;
+    }
     
     public function modifier($date, $heure, $duree, $idAnimateur, $idSujet, $nbPlaces, $public, $statut, $idSalle, $idTarif, $status, $cloturer) {
         $success = FALSE;
@@ -534,6 +547,7 @@ class Atelier
         $sql      = "SELECT * "
                   . "FROM `tab_atelier` "
                   . "WHERE statut_atelier < 2 "
+                  . "  AND YEAR(`date_atelier`)=" . date('Y') . " "
                   . "ORDER BY `date_atelier` ASC";
                     
         $result   = mysqli_query($db,$sql);
@@ -581,12 +595,30 @@ class Atelier
         $ateliers = null;
     
         $db       = Mysql::opendb();
-        $sql      = "SELECT * "
-                  . "FROM `tab_atelier` "
-                  . "WHERE YEAR(`date_atelier`)=" . $annee . " "
-                  . "AND `id_anim` =" . $anim . " "
-                  . "ORDER BY `date_atelier` ASC";
-                    
+
+        $cetteAnnee = date('Y');                    
+
+        if ($annee > $cetteAnnee) {
+    
+            $sql = "SELECT * "
+                 . "FROM `tab_atelier` "
+                 . "WHERE YEAR(`date_atelier`)=" . $annee . " "
+                 . "  AND anim_atelier=" . $idAnimateur . " "
+                 . "ORDER BY `date_atelier` ASC";
+            error_log("sql = " . $sql);
+    
+        } else if ($annee == $cetteAnnee){
+    
+            $sql = "SELECT * "
+                 . "FROM `tab_atelier` "
+                 . "WHERE YEAR(`date_atelier`)=" . $annee . " "
+                 . "  AND MONTH( `date_atelier` ) >= MONTH( NOW( ))-1 "
+                 . "  AND anim_atelier=" . $idAnimateur . " "
+                 . "ORDER BY `date_atelier` ASC";
+            error_log("sql = " . $sql);
+
+        }
+
         $result   = mysqli_query($db,$sql);
         Mysql::closedb($db);
         
@@ -600,6 +632,74 @@ class Atelier
         
         return $ateliers;
     
+    }
+    
+    public static function getAteliersParAnneeEtParEspace($annee, $idEspace) {
+
+        $ateliers = null;
+    
+        $db       = Mysql::opendb();
+
+        $sql = "SELECT * "
+             . "FROM `tab_atelier`, `tab_salle` "
+             . "WHERE `salle_atelier`=`id_salle` "
+             . "  AND tab_salle.`id_espace`=" . $idEspace . " "
+             . "  AND YEAR(`date_atelier`)=" . $annee . " "
+             . "  AND `statut_atelier`<2 "
+             . "ORDER BY `date_atelier` ASC";
+
+        $result   = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $ateliers = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $ateliers[] = new Atelier($row);
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $ateliers;
+    
+    }   
+    
+    public static function getAteliersFutursByAnnee($annee) {
+        $ateliers = null;
+        
+        $db    = Mysql::opendb();
+        
+        $annee = mysqli_real_escape_string($db, $annee);
+        
+        $cetteAnnee = date('Y');
+    
+        if ($annee > $cetteAnnee) {
+    
+            $sql = "SELECT * "
+                 . "FROM `tab_atelier` "
+                 . "WHERE YEAR(`date_atelier`)=" . $annee . " "
+                 . "ORDER BY `date_atelier` ASC";
+    
+        } else if ($annee == $cetteAnnee){
+    
+            $sql = "SELECT * "
+                 . "FROM `tab_atelier` "
+                 . "WHERE YEAR(`date_atelier`)=" . $annee . " "
+                 . "  AND MONTH( `date_atelier` ) >= MONTH( NOW( )) "
+                 . "ORDER BY `date_atelier` ASC";
+
+        }   
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);        
+
+        if ($result) {
+            $ateliers = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $ateliers[] = new Atelier($row);
+            }
+            mysqli_free_result($result);
+        }
+        return $ateliers;
     }
     
     public static function getAteliersArchivesParAnnee($annee) {
@@ -636,7 +736,7 @@ class Atelier
         $sql      = "SELECT * "
                   . "FROM `tab_atelier` "
                   . "WHERE YEAR(`date_atelier`)=" . $annee . " "
-                  . "AND `id_anim` =" . $anim . " "
+                  . "AND `anim_atelier` =" . $idAnimateur . " "
                   . "AND statut_atelier = 2 "
                   . "ORDER BY `date_atelier` ASC";
                     
