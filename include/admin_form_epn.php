@@ -29,14 +29,14 @@ $b         = isset($_GET["b"]) ? $_GET["b"] : '';
 
 
 if ($idEspace == '') {   // Parametre du formulaire pour la CREATION
-    $post_url = "index.php?a=43&b=1&act=1";
+    $post_url     = "index.php?a=43&b=1&act=1";
     $label_bouton = "Cr&eacute;er l'Espace" ;
-    $logo="logo.png";
-    $forfait=0;
+    $logo         = "logo.png";
+    $forfait      = 0;
 } else {
     // Parametre du formulaire pour la MODIFICATION
-    $post_url = "index.php?a=43&b=2&act=2&idespace=".$idEspace;
-    $label_bouton = "Modifier l'espace" ;
+    $post_url        = "index.php?a=43&b=2&act=2&idespace=".$idEspace;
+    $label_bouton    = "Modifier l'espace" ;
     $espaceAModifier = Espace::getEspaceById($idEspace);
 }
 
@@ -58,11 +58,11 @@ $couleurArray = array(
 
 
 //array logos
-$filesLogoarray=array();
-$filedir="./img/logo/";
+$filesLogoarray = array();
+$filedir        = "./img/logo/";
 $filesLogoarray = array_diff(scandir($filedir), array('..', '.')); //lister les logos dans le dossier
 $filesLogoarray = array_values($filesLogoarray); //r&eacute;indexer le tableau après avoir enlever lignes vides
-$nblogo=count($filesLogoarray);
+$nblogo         = count($filesLogoarray);
 
 //Affichage -----
 echo isset($mess) ? $mess : '' ;

@@ -501,67 +501,7 @@
                         $couleurb    = "btn btn-info btn-xs";
                     }
                 }
-
-
-            // if ($nbe > 0) { 
-                // for ($g = 1 ; $g <= $nbe ; $g++) {
-                    // $rowTA = mysqli_fetch_array($listeWeekAtelier);
-                    // if ($rowTA["tab_origine"] == "tab_atelier") {
-                        // $idatelier       = $rowTA["id"];
-                        // $rowAtelier      = getAtelier($idatelier);
-                        // $result          = getSujetById($rowAtelier["id_sujet"]);
-                        // $rowsujet        = mysqli_fetch_array($result);
-                        // $titre           = $rowsujet["label_atelier"];
-                        // $heureAS         = $rowAtelier["heure_atelier"];
-                        // $dateAS          = $rowAtelier["date_atelier"];
-                        // $anim            = getUserName($rowAtelier["anim_atelier"]);
-                        // $inscrits        = countPlace($rowAtelier["id_atelier"]);
-                        // $salle           = mysqli_fetch_array(getSalle($rowAtelier["salle_atelier"]));
-                        // $nomsalle        = $salle["nom_salle"]." (".$espaces[$salle["id_espace"]].")";
-                        // $nomespace       = mysqli_fetch_array(getEspace($rowTA["id_espace"]));
-                        // $duree           = $rowAtelier["duree_atelier"];
-                        // $testinscription = getTestInscript($_SESSION["iduser"],$idatelier,"a");
-                    
-                        
-                        // if ($testinscription == "FALSE") {
-                            // $urlAS       = "index.php?m=6&b=1&idatelier=" . $idatelier;
-                            // $boutoninscr = "s'inscrire";
-                            // $couleurb    = "btn btn-success btn-xs";
-                        // } else {
-                            
-                            // $urlAS       = "";
-                            // $boutoninscr = $arrayinscrip[$testinscription["statut"]];
-                            // $couleurb    = "btn btn-warning btn-xs";
-                        // }
-                    // }
-                    // elseif ($rowTA["tab_origine"] == "tab_session_dates") {
-                        // $idsession       = $rowTA["id"];
-                        // $rowSession      = getSession($idsession);
-                        // $titrearr        = getTitreSession($rowSession["nom_session"]);
-                        // $titre           = $titrearr["session_titre"];
-                        // $temp            = strtotime($rowTA["dateAS"]);
-                        // $heureAS         = date('H:i',$temp);
-                        // $dateAS          = $rowTA["dateAS"];
-                        // $anim            = getUserName($rowSession["id_anim"]);
-                        // $inscrits        = countPlaceSession($rowSession["id_session"],0);
-                        // $salle           = mysqli_fetch_array(getSalle($rowSession["id_salle"]));
-                        // //$nomsalle=$salle["nom_salle"];
-                        // $nomespace       = mysqli_fetch_array(getEspace($rowTA["id_espace"]));
-                        // $duree           = "60";
-                        // $testinscription = getTestInscript($_SESSION["iduser"],$idsession,"s");
-                                            
-                        // if ($testinscription == "FALSE") {
-                            // $urlAS       = "index.php?m=6&b=1&idsession=" . $idsession;
-                            // $boutoninscr = "s'inscrire";
-                            // $couleurb    = "btn btn-success btn-xs";
-                        // } else {
-                            // $urlAS       = "#";
-                            // $boutoninscr = $arrayinscrip[$testinscription["statut"]];
-                            // $couleurb    = "btn btn-warning btn-xs";
-                        // }
-                    // }
-                    //  debug($testinscription);
-                
+               
 ?>
                             <!-- timeline time label -->
                 <ul class="timeline">

@@ -42,8 +42,7 @@ $db_pass ='';
             if (FALSE == testDb($_POST))
             {
                 $mess = ' Les param&ecirc;tres fournis sont incorrects' ;    
-            }
-            else{
+            } else {
                 $_SESSION['db'] = $_POST ;
                 header('Location:step3.php')  ;
                 exit;
@@ -66,7 +65,7 @@ $sql = new mysqli($array['db_host'], $array['db_user'],$array['db_pass'], $array
 	if ($sql->connect_error) {
 	    die('Erreur de connexion (' . $sql->connect_errno . ') '. $sql->connect_error);
 		return FALSE ;
-	}else{
+	} else {
 		return TRUE;
 	}
 	$sql->close();

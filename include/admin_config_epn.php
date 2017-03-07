@@ -26,7 +26,7 @@ include("include/boites/menu-parametres.php");
 ?>
 
 <div class="row">
-    <section class="col-lg-3 connectedSortable"> 
+<!--    <section class="col-lg-3 connectedSortable"> 
 <?php 
 
     if (getReseau() == FALSE) { 
@@ -55,12 +55,12 @@ include("include/boites/menu-parametres.php");
                         <span class="input-group-btn"><button class="btn btn-success btn-sm"  type="submit" value="modifier" data-toggle="tooltip" title="Modifier les param&egrave;tres de votre r&eacute;seau"><i class="fa fa-edit"></i></button></span>
                     </div>
                 </form>
-            </div><!-- /.box-body -->
-        </div><!-- /.box -->
+            </div><!-- /.box-body 
+        </div><!-- /.box 
 
 <?php } ?>
 
-    </section>
+    </section>-->
 
     <section class="col-lg-9 connectedSortable">  
     <!-- liste des espaces existants-->

@@ -25,16 +25,14 @@ session_start() ;
 
 if (TRUE == is_file('../connect_db.php') && TRUE == is_writable('../connect_db.php')){
     $class_connect = 'writable' ;    
-}
-else{
+} else {
     $class_connect = 'error' ;
     $error = 'yes';
 }
 
 if (TRUE == is_dir('../sql') && TRUE == is_writable('../sql')){
     $class_save = 'writable' ;    
-}
-else{
+} else {
     $class_save = 'error' ;
     $error = 'yes' ;
 }

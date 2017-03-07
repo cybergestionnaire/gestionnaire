@@ -40,8 +40,7 @@ if ( FALSE == file_put_contents($file, $str))
 {
     $config_class = 'error';
     $config = '<span class="error">Une erreur s\'est produite lors de la cr&eacute;ation du fichier de configuration</span>'; 
-}
-else{
+} else {
     $config_class = 'writable' ;
     $config = 'Cr&eacute;ation du fichier de configuration de la base de donn&eacute;es'; 
 }
@@ -842,9 +841,7 @@ if (TRUE == isset($error))
 {   
     $db_class = 'error' ;
     $db = 'Une erreur s\'est produite lors de la cr&eacute;ation de la base de donn&eacute;es'; 
-}
-else
-{
+} else {
     $db_class = 'writable' ;
     $db = 'Cr&eacute;ation de la base de donn&eacute;es'; 
 }

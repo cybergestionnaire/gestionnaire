@@ -3085,20 +3085,16 @@ closedb($db);
 }
 
 // test si la base a été sauvegardée
-function getLogBackup()
-{
-	$sql="SELECT `id_log` FROM `tab_logs` WHERE MONTH(`log_date`)=MONTH(NOW())  AND `log_type`='bac' AND DATE(`log_date`)>DATE(`log_date`)-15 ";
-	$db=opendb();
-$result = mysqli_query($db, $sql);
-closedb($db);
-    if (mysqli_num_rows($result) == NULL )
-    {
-      return TRUE ;
+function getLogBackup() {
+    $sql = "SELECT `id_log` FROM `tab_logs` WHERE YEAR(`log_date`) = YEAR(NOW()) AND MONTH(`log_date`)=MONTH(NOW())  AND `log_type`='bac' AND DATE(`log_date`)>DATE(`log_date`)-15 ";
+    $db  = opendb();
+    $result = mysqli_query($db, $sql);
+    closedb($db);
+    if (mysqli_num_rows($result) <= 0 ) {
+        return TRUE ;
     } else {
-			return FALSE ;
+        return FALSE ;
     }
-	
-	
 }
 
 
