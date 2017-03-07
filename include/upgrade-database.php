@@ -756,7 +756,7 @@ VALUES
 (8, 'Jeunesse')";
 $query[] = "INSERT INTO `tab_captcha`(`id_captcha`, `capt_activation`, `capt_code`) VALUES (1,'N','')";
 $query[] = "INSERT INTO `tab_city`  (`id_city`, `nom_city`, `code_postale_city`, `pays_city`) VALUES ('1','Paris','75000','FRANCE')";
-$query[] = "INSERT INTO `tab_config`(`id_config`, `activer_console`, `name_config`, `unit_default_config`, `unit_config`, `maxtime_config`, `maxtime_default_config`, `inscription_usagers_auto`, `message_inscription`, `id_espace`, `nom_espace`, `activation_forfait`, `resarapide`, `duree_resarapide`) VALUES (1,1,'1.3',15,15,120,120,1,'message par defaut',1,'EPN Test',1,1,60)";
+$query[] = "INSERT INTO `tab_config`(`id_config`, `activer_console`, `name_config`, `unit_default_config`, `unit_config`, `maxtime_config`, `maxtime_default_config`, `inscription_usagers_auto`, `message_inscription`, `id_espace`, `nom_espace`, `activation_forfait`, `resarapide`, `duree_resarapide`) VALUES (1,1,'1.9',15,15,120,120,1,'message par defaut',1,'EPN Test',1,1,60)";
 $query[] = "INSERT INTO `tab_courriers` (`id_courrier`, `courrier_titre`, `courrier_text`, `courrier_name`, `courrier_type`) VALUES
 (1, 'rappel', 'Piqure de rappel', 1, 2),
 (2, 'rappel', 'Vous &ecirc;tes inscrit(e) &agrave; un atelier :', 1, 3),
@@ -798,8 +798,8 @@ $query[] = "INSERT INTO `tab_level` (`id_level`, `code_level`, `nom_level`) VALU
 (5, 5, 'Expert'),
 (6, 6, 'Administrateur')";
 $query[] = "INSERT INTO `tab_logs` (`id_log`,  `log_type`,`log_date`, `log_MAJ`,`log_valid`,`log_comment`) 
-VALUES (1,'maj',NOW(),'1.3',1,'Installation de la version 1.3 par la procedure installation complete'),
-(2,'bac',NOW(),'1.3',1,'creation de la base de donnee')";
+VALUES (1,'maj',NOW(),'1.9',1,'Installation de la version 1.9 par la procedure installation complete'),
+(2,'bac',NOW(),'1.9',1,'creation de la base de donnee')";
 $query[] = "INSERT INTO `tab_salle` (`id_salle`, `nom_salle`, `id_espace`, `comment_salle`) VALUES(1, 'Espace Consultation', 1, 'Vous pouvez changer le nom de cette salle !'); ";
 $query[] = "INSERT INTO `tab_tarifs`(`id_tarif`, `nom_tarif`, `donnee_tarif`, `comment_tarif`, `nb_atelier_forfait`, `categorie_tarif`, `duree_tarif`, `epn_tarif`) VALUES(1, 'sans tarif-illimité ', '0 ', 'default--ne pas enlever merci', 0, 5,0,1);";
 $query[] = "INSERT INTO `tab_usage` (`id_usage`, `nom_usage`, `type_usage`) VALUES 

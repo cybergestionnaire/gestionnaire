@@ -319,7 +319,7 @@ $query[] = "CREATE TABLE `tab_config` (
   `duree_resarapide` int(11) NOT NULL,
   PRIMARY KEY (`id_config`)
 ) ENGINE=MyISAM";
-$query[] = "INSERT INTO `tab_config`(`id_config`, `activer_console`, `name_config`, `unit_default_config`, `unit_config`, `maxtime_config`, `maxtime_default_config`, `inscription_usagers_auto`, `message_inscription`, `id_espace`, `nom_espace`, `activation_forfait`, `resarapide`, `duree_resarapide`) VALUES (1,1,'1.3',15,15,120,120,1,'message par defaut',1,'EPN Test',1,1,60)";
+$query[] = "INSERT INTO `tab_config`(`id_config`, `activer_console`, `name_config`, `unit_default_config`, `unit_config`, `maxtime_config`, `maxtime_default_config`, `inscription_usagers_auto`, `message_inscription`, `id_espace`, `nom_espace`, `activation_forfait`, `resarapide`, `duree_resarapide`) VALUES (1,1,'1.9',15,15,120,120,1,'message par defaut',1,'EPN Test',1,1,60)";
 
 
 //table config logiciels
@@ -548,8 +548,8 @@ $query[] = "CREATE TABLE `tab_logs` (
   PRIMARY KEY (`id_log`)
 ) ENGINE=MyISAM ";
 $query[] = "INSERT INTO `tab_logs` (`id_log`,  `log_type`,`log_date`, `log_MAJ`,`log_valid`,`log_comment`) 
-VALUES (1,'maj',NOW(),'1.3',1,'Installation de la version 1.3 par la procédure installation complête'),
-(2,'bac',NOW(),'1.3',1,'création de la base de donnée')";
+VALUES (1,'maj',NOW(),'1.9',1,'Installation de la version 1.9 par la procédure installation complete'),
+(2,'bac',NOW(),'1.9',1,'création de la base de donnée')";
 
 //table messages epn connect
 $query[] = "DROP TABLE IF EXISTS `tab_message_epnconnect`";

@@ -3,7 +3,7 @@
     
     $config = Config::getConfig($_SESSION["idepn"]);
     $version = $config->getName();
-    $newversion = 1.3;
+    $newversion = 1.9;
     if (floatval($version) < $newversion) {
 ?>
     <!--DIV Mises &agrave; jour -->

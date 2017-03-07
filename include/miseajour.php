@@ -28,7 +28,7 @@
     $config          = Config::getConfig($_SESSION["idepn"]);
     $versionActuelle = $config->getName($_SESSION["idepn"]);
     
-    $versionew       = "1.3";
+    $versionew       = "1.9";
 
  
 ?>
@@ -174,13 +174,13 @@
                 if ($versionActuelle == "1.2") {
                     include("upgrade-database.php");
                 
-                    if ($config->setName("1.3")) { 
+                    if ($config->setName("1.9")) { 
                         $versionActuelle = $config->getName();
-                        $finale = InsertLogMAJ('maj', $versionew, date('Y-m-d H:i'), "Mise à jour de version 1.3 effectuée");
+                        $finale = InsertLogMAJ('maj', $versionew, date('Y-m-d H:i'), "Mise à jour de version 1.9 effectuée");
                         echo '<p class="text-blue"><b>Modification du numero de version : ' . $versionActuelle . '</b></p>';
                     }
                 }
-                if ($versionActuelle == "1.3") {
+                if ($versionActuelle == "1.9") {
                     $testmaj = "ok" ;
                 }
             } else {
@@ -226,7 +226,7 @@
         } else {
             //inscrire l'ensemble des erreurs dans le fichier log de la version                 
             if ($error != "") {
-                gFilelog(addslashes($error), "log_majv1.3.txt");
+                gFilelog(addslashes($error), "log_majv1.9.txt");
             }
     
             
