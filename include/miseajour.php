@@ -215,7 +215,22 @@
                 <ul>
                     <li>Refonte de la console</li>
                     <li>Modifications de l'ordre des menus ateliers et sessions</li>
-                    <li>Sous le capot : 
+                    <li>Travail de ré-écriture en objet : sont faits
+                        <ul>
+                            <li>toutes les pages "configuration"</li>
+                            <li>une grande partie de pages adhérents (manque la gestion des transactions/abonnements, les résas et les impressions)</li>
+                            <li>la gestion des ateliers et des sessions</li>
+                        </ul>
+                    </li>
+                    <li>reste donc à faire :
+                        <ul>
+                            <li>Tous le système de réservations</li>
+                            <li>Toute la gestion des forfaits (Adhésion/impression/consultation etc ...)</li>
+                            <li>Les statistiques</li>
+                            <li>et les courriers</li>
+                        </ul>
+                    </li>
+                    <li>A été fait également sous le capot : 
                         <ul>
                             <li>Changement du codage des caractères : tout passe en UTF-8 (non-terminé)<br />Cela devrait éviter l'apparition d'artefacts au lieu des caractères accentués.</li>
                             <li>ré-écriture en mode objet pour séparer le modèle de la vue (non terminé)</li>
