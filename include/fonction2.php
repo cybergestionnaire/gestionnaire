@@ -3049,21 +3049,18 @@ closedb($db);
 }
 
 // update des adherents actifs ---> inactifs
-function updateUserStatut()
-{
-$sql="UPDATE `tab_user` SET `status_user`=2 WHERE `status_user`=1 AND DATE(`dateRen_user`)=DATE(NOW())";
-$db=opendb();
-$result = mysqli_query($db, $sql);
-$nb=mysqli_affected_rows($db);
+function updateUserStatut() {
+    $sql    = "UPDATE `tab_user` SET `status_user`=2 WHERE `status_user`=1 AND DATE(`dateRen_user`)<=DATE(NOW())";
+    $db     = opendb();
+    $result = mysqli_query($db, $sql);
+    $nb     = mysqli_affected_rows($db);
 
-closedb($db);
-    if ($result == FALSE )
-    {
+    closedb($db);
+    if ($result == FALSE ) {
         return FALSE ;
     } else {
-		return $nb ;
+        return $nb ;
     }
-
 }
 
 //retourne id + nom + prenom des adherents inactifs du jour

@@ -72,7 +72,6 @@
     if ($b == 13) {
         //debug($id);
         $atelierSujet = AtelierSujet::getAtelierSujetById($idSujet);
-        error_log(print_r($atelierSujet, true));
         // delSujetAtelier($idSujet);// suppression du sujet d'atelier dans la base
         if ($atelierSujet->supprimer()) {
             header ("Location:index.php?a=17&mesno=24");

@@ -80,7 +80,6 @@ class AtelierSujet
      */
     
     public function modifier($label, $content, $ressource, $idNiveau, $idCategorie) {
-        error_log("--- fonction modifier ! ");
         $success = FALSE;
         $db = Mysql::opendb();
         
@@ -97,7 +96,6 @@ class AtelierSujet
             . "`niveau_atelier`='" . $idNiveau . "', "
             . "`categorie_atelier`='" . $idCategorie . "' "
             . "WHERE `id_sujet`=" . $this->_id;
-        error_log("--- fonction modifier : sql : " . $sql);
 
         $result = mysqli_query($db,$sql);
         Mysql::closedb($db);

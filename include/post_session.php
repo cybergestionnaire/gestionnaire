@@ -102,7 +102,6 @@
             } else {
          
                 if ($idTitre == "" || $nbre_dates == "" || $nbplace == "") {
-                    error_log("Sauvegarde de session");
                     $_SESSION['sauvegarde'] = $_POST;
                     header('Location: ./index.php?a=31&m=' . $m . '&idsession=' . $idsession . '&mesno=4');
                     exit();

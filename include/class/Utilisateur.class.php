@@ -19,7 +19,10 @@
 
 require_once("Mysql.class.php");
 require_once("Forfait.class.php");
+require_once("Tarif.class.php");
 require_once("Salle.class.php");
+require_once("Atelier.class.php");
+require_once("Session.class.php");
 
 class Utilisateur
 {
@@ -136,6 +139,10 @@ class Utilisateur
         return $this->_idTarifConsultation;
     }
     
+    public function getForfaitConsultation() {
+        return Forfait::getForfaitById($this->_idTarifConsultation);
+    }
+    
     public function getLogin() {
         return $this->_login;
     }
@@ -174,6 +181,10 @@ class Utilisateur
 
     public function getIdTarifAdhesion() {
         return $this->_idTarifAdhesion;
+    }
+
+    public function getTarifAdhesion() {
+        return Tarif::getTarifById($this->_idTarifAdhesion);
     }
 
     public function getDateRenouvellement() {
@@ -378,14 +389,23 @@ class Utilisateur
 
         return $success;
     }
-    
-    
-    public function getForfaitConsultation() {
 
-        return Forfait::getForfaitById($this->_idTarifConsultation);
-
+    public function getAteliersInscrit() {
+        return Atelier::getAteliersParUtilisateurEtParStatut($this->_id, 0);
+    }
+    
+    public function getSessionsInscrit() {
+        return Session::getSessionsParUtilisateurEtParStatut($this->_id, 0);
     }
 
+    public function getAteliersPresent() {
+        return Atelier::getAteliersParUtilisateurEtParStatut($this->_id, 1);
+    }
+    
+    public function getSessionsPresent() {
+        return Session::getSessionsParUtilisateurEtParStatut($this->_id, 1);
+    }
+    
     public function modifier( $dateInscription,
                             $nom,
                             $prenom,
@@ -503,7 +523,7 @@ class Utilisateur
                 . "`newsletter_user`='" . $newsletter . "' "
                 . "WHERE `id_user` = " . $this->_id . " ";
 
-                error_log("sql = {$sql}");
+                // error_log("sql = {$sql}");
 
                 $result = mysqli_query($db,$sql);
                 Mysql::closedb($db);

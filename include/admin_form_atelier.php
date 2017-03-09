@@ -65,7 +65,7 @@ Fichier servant à modifier/créer la programmation d'un atelier
                 //3=> "Annulé"
             );
         if (isset($_POST["submit_atelier"]) && $_POST["submit_atelier"] != "") {
-            error_log("POST = " . print_r($_POST, true));
+            // error_log("POST = " . print_r($_POST, true));
             $idAnim  = $_POST["anim"];
             $public  = $_POST["public"];
             $date    = $_POST["date"];

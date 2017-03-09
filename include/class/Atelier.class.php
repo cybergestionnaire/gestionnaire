@@ -605,7 +605,6 @@ class Atelier
                  . "WHERE YEAR(`date_atelier`)=" . $annee . " "
                  . "  AND anim_atelier=" . $idAnimateur . " "
                  . "ORDER BY `date_atelier` ASC";
-            error_log("sql = " . $sql);
     
         } else if ($annee == $cetteAnnee){
     
@@ -615,7 +614,6 @@ class Atelier
                  . "  AND MONTH( `date_atelier` ) >= MONTH( NOW( ))-1 "
                  . "  AND anim_atelier=" . $idAnimateur . " "
                  . "ORDER BY `date_atelier` ASC";
-            error_log("sql = " . $sql);
 
         }
 
@@ -791,4 +789,30 @@ class Atelier
         }
         return $ateliers;
     }
+    
+    public static function getAteliersParUtilisateurEtParStatut($idUtilisateur, $statut) {
+        $ateliers = null;
+    
+        $db  = Mysql::opendb();
+        $sql = "SELECT tab_atelier.* "
+             . "FROM tab_atelier, `rel_atelier_user` "
+             . "WHERE `rel_atelier_user`.`status_rel_atelier_user`=" . $statut . " "
+             . "  AND tab_atelier.statut_atelier = 0 "
+             . "  AND `id_user`=" . $idUtilisateur;
+
+                    
+        $result = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $ateliers = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $ateliers[] = new Atelier($row);
+            }
+            mysqli_free_result($result);
+        }
+        return $ateliers;
+    }
+    
+    
 }

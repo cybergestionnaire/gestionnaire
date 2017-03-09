@@ -85,7 +85,6 @@ class Usage
         if ( $nom != ""
             && $type != ""
         ) {
-            error_log("debut création ! nom = {$nom} / type = {$type}");
             $db = Mysql::opendb();
             
             $nom  = mysqli_real_escape_string($db, $nom);

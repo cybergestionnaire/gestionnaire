@@ -165,7 +165,7 @@ class Tarif
             $sql = "INSERT INTO `tab_tarifs` (`nom_tarif`,`donnee_tarif`, `comment_tarif`, `nb_atelier_forfait`, `categorie_tarif`, `duree_tarif`, `epn_tarif`) "
                  . "VALUES ('" . $nom . "', '" . $prix."', '" . $commentaire . "', '" . $nbAteliers . "', '" . $categorie . "', '" . $duree . "', '" . $idsEspaces . "') " ;       
             
-            error_log("requete SQL : {$sql}");
+            // error_log("requete SQL : {$sql}");
             $result = mysqli_query($db,$sql);
             
             if ($result)

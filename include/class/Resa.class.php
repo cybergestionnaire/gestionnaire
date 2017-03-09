@@ -160,7 +160,6 @@ class Resa
             $sql = "INSERT INTO `tab_resa` (`id_computer_resa`,`id_user_resa`, `dateresa_resa`, `debut_resa`, `duree_resa`, `date_resa`, `status_resa`) "
                  . "VALUES ('" . $idMateriel . "', '" . $idUtilisateur."', '" . $dateResa . "', '" . $debut . "', '" . $duree . "', '" . $date . "', '" . $statut . "') " ;       
             
-            error_log("requete SQL : {$sql}");
             $result = mysqli_query($db,$sql);
             
             if ($result)

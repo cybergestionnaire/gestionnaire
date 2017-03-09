@@ -297,7 +297,7 @@
                             <a href="courriers/lettre_atelier.php?user=<?php echo $utilisateur->getId();?>&epn=<?php echo $salle->getIdEspace(); ?>" target="_blank" class="btn bg-navy btn-sm" data-toggle="tooltip" title="imprimer les inscriptions"><i class="fa fa-envelope"></i></a>
              
 <?php
-                if ($statut == 0 ) {
+                if ($atelier->getStatut() == 0 ) {
 ?>
                             <a href="index.php?a=13&b=3&iduser=<?php echo $utilisateur->getId();?>&idatelier=<?php echo $idAtelier;?>"  class="btn bg-red btn-sm"  data-toggle="tooltip" title="D&eacute;sinscrire" ><i class="fa fa-trash-o"></i></a>
 <?php
@@ -316,11 +316,11 @@
             <div class="box-footer">
      
 <?php
-            if ($statut < 2 ) {
+            if ($atelier->getStatut() < 2 ) {
                 //validation interdite si déjà faite !
                 echo "<a href=\"index.php?a=16&b=4&act=0&idatelier=" . $idAtelier . "\"><input type=\"submit\" name=\"valider_presence\" value=\"Valider les Presences\" class=\"btn btn-success\"></a>";
             }
-            else if ($statut == 2) {
+            else if ($atelier->getStatut() == 2) {
                 echo "<p class=\"text-red\">Cet atelier est pass&eacute; et clotur&eacute;, vous ne pouvez plus inscrire d'adh&eacute;rent</p>";
             } 
             //Bouton d'envoi de mail de rappel
@@ -485,7 +485,7 @@
     </section>
 <!-- retour de la validation-->
 <?php
-    if ($statut == 2) {
+    if ($atelier->getStatut() == 2) {
 ?>
     
 

@@ -38,7 +38,7 @@
     
     switch ($act) {
         case 1: // creation
-            error_log("----- cas n 1 : creation");
+            //error_log("----- cas n 1 : creation");
 
             $nom    = isset($_POST["newcat"])    ? $_POST["newcat"]    : '';
             $niveau = isset($_POST["newniveau"]) ? $_POST["newniveau"] : '';
@@ -68,7 +68,7 @@
             break;
 
         case 2: // modification
-            error_log("----- cas n 2 : modification");
+            //error_log("----- cas n 2 : modification");
             $nom    = isset($_POST["categorie"]) ? $_POST["categorie"] : '';
             $niveau = isset($_POST["niveau"])    ? $_POST["niveau"]    : '';
             $modcsp = isset($_POST["csp"])       ? $_POST["csp"]       : '';
@@ -101,7 +101,7 @@
             break;
         
         case 3: // suppression
-            error_log("----- cas n 3 : suppression");
+            //error_log("----- cas n 3 : suppression");
             if ($idcat != "") {
                 $atelierCategorie = AtelierCategorie::getAtelierCategorieById($idcat);
                 if ($atelierCategorie->supprimer()){

@@ -592,5 +592,30 @@ class Session
             
         }
         return $sessions;
-    }    
+    }
+
+    public static function getSessionsParUtilisateurEtParStatut($idUtilisateur, $statut) {
+        $sessions = null;
+    
+        $db  = Mysql::opendb();
+        $sql = "SELECT tab_session.* "
+             . "FROM tab_session, `rel_session_user` "
+             . "WHERE `rel_session_user`.`status_rel_session`=" . $statut . " "
+             . "  AND tab_session.status_session = 0 "
+             . "  AND `rel_session_user`.`id_user`=" . $idUtilisateur;
+
+                    
+        $result = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $sessions = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $sessions[] = new Session($row);
+            }
+            mysqli_free_result($result);
+        }
+        return $sessions;
+    }
+    
 }
