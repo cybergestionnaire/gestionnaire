@@ -40,7 +40,7 @@
 </head>
  <body class="register-page">
     <div class="register-box">
-        <div class="register-logo">Installation de <br><b>Cyber-Gestionnaire V1.3</b><br><br>
+        <div class="register-logo">Installation de <br><b>Cyber-Gestionnaire V1.9</b><br><br>
         <a href="step1.php" class="btn bg-blue btn-block">Installer maintenant</a></div>
     </div>
 </body>
