@@ -17,9 +17,7 @@ function checkDayAtelier($j,$m,$year)
   if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         $row = mysqli_fetch_array($result);
 		return $row;
 	}
@@ -42,9 +40,7 @@ ORDER BY `date_atelier` ASC
      if ($result == FALSE )
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         return $result ;
     }
 }
@@ -61,9 +57,7 @@ $sql="SELECT `id_programmation` FROM `tab_atelier_stat` WHERE `id_atelier`='".$i
     if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       $nb = mysqli_fetch_array($result) ;
       return $nb ;
   }
@@ -81,9 +75,7 @@ $sql = "INSERT INTO `tab_atelier_stat`
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return True;
   }
 }
@@ -115,9 +107,7 @@ $sql = "DELETE FROM `tab_atelier_sujet` WHERE `id_sujet`='".$id."'
     if (FALSE == $result)
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         return TRUE;
     }
 }

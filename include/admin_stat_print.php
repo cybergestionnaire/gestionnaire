@@ -52,9 +52,7 @@ if(!is_dir($dossierimg)){
 		    if ($epn == $key)
 		    {
 			echo "<option  value=\"".$key."\" selected>".$value."</option>";
-		    }
-		    else
-		    {
+		    } else {
 			echo "<option  value=\"".$key."\">".$value."</option>";
 		    }
 		}

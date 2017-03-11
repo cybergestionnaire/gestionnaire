@@ -23,9 +23,9 @@
 
 $host = "localhost" ;
 $port = "3306"; 
-$database = "test" ;
-$userdb = "root" ;
-$passdb = "php1506" ;
+$database = "cyberg" ;
+$userdb = "cyberg" ;
+$passdb = "cyberg" ;
 
 
 ?>

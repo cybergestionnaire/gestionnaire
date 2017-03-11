@@ -1,25 +1,25 @@
 <?php
 /*
-     This file is part of Cybermin.
+     This file is part of CyberGestionnaire.
 
-    Cybermin is free software; you can redistribute it and/or modify
+    CyberGestionnaire is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    Cybermin is distributed in the hope that it will be useful,
+    CyberGestionnaire is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Cybermin; if not, write to the Free Software
+    along with CyberGestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
  2006 Namont Nicolas
  
  class_db.php V0.1  
- cybermin 2
+ CyberGestionnaire 2
  
  * classe de gestion de la base de données
  *
@@ -97,9 +97,7 @@ class db
     	if (FALSE === $db)
        	{
        		return FALSE;
-       	}
-       	else
-       	{
+       	} else {
     		/*selection de la base de donnees a utilise */
     		mysql_select_db ($this->database) ;
     		return TRUE ;
@@ -153,16 +151,12 @@ class db
     	if(FALSE==$this->opendb())
         {
         	return FALSE ;
-        }
-        else
-        { 
+        } else { 
         	$result = mysql_query($sql) ;
         	if (FALSE == $result)
 			{
 				return FALSE ;
-			}
-			else
-			{
+			} else {
 				// initialise la variable column 
 				// contenant la liste des colonnes d'une table
 				$this->setColumn($result);
@@ -173,7 +167,7 @@ class db
 		}
     }
     
-    /* Renvoi le dump de la base cybermin
+    /* Renvoi le dump de la base CyberGestionnaire
      * @return FALSE
      * @return string
     */

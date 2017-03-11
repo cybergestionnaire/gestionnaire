@@ -1,31 +1,29 @@
 <?php
 /*
-     This file is part of Cybermin.
+     This file is part of CyberGestionnaire.
 
-    Cybermin is free software; you can redistribute it and/or modify
+    CyberGestionnaire is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    Cybermin is distributed in the hope that it will be useful,
+    CyberGestionnaire is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Cybermin; if not, write to the Free Software
+    along with CyberGestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
  2006 Namont Nicolas
- 
 
-  include/fonction.php V0.1
 */
 
 //fonctions
 
 // opendb ()
-// connexion a la base de donnÈes
+// connexion a la base de donn√©es
 function opendb()
 {
     include ("./connect_db.php");
@@ -39,17 +37,15 @@ function opendb()
    if (mysqli_connect_errno()) 
        {
        return false;
-       }
-   else
-	{
-        mysqli_query($db, "SET NAMES 'utf8'");
+       } else {
+        $db->set_charset("utf8");
     	return $db ;
 	}
 }     
 
 //
 // closedb()
-// fermeture de la connexion a la base de donnÈe
+// fermeture de la connexion a la base de donn√©e
 function closedb ($mydb)
 {
   mysqli_close ($mydb) ;
@@ -65,178 +61,6 @@ function passwd($pass)
     return md5($pass) ;
 }
 
-/*
-* LES 2 FONCTIONS SUIVANTES SONT A REFLECHIR
-*
-*/
-// convertit les mot de passe de la V1 au format V2
-function convertPass($id,$pass)
-{
-    $pass = passwd($pass) ;
-    $sql = "UPDATE tab_user SET `pass_user`='".$pass."' WHERE `id_user`=".$id ;
-    $db=$db=opendb();
-   $result = mysqli_query($db, $sql);
-   closedb($db);
-      if (mysqli_num_rows($result)==TRUE)
-      {
-        return TRUE ;
-      }
-      else
-      {
-        return FALSE ;
-      }
-}
-// convertit la base 
-function convertDB()
-{
-    $sql='SELECT id_user,pass_user FROM tab_user ORDER BY id_user' ;
-    $db=opendb();
-    $result= mysqli_query( $db,$sql);
-    closedb($db);
-    $tmp = array() ;
-    $i=0;
-    while ($row = mysqli_fetch_array($result))
-    {
-        $tmp[$i]['id'] = $row['id_user'];
-        $tmp[$i]['pass'] = $row['pass_user'];
-        $i++ ;
-    }
-    for ($i=0 ; $i < count($tmp) ;$i++)
-    {
-        convertPass($tmp[$i]['id'],$tmp[$i]['pass']) ;
-        echo 'OK : '.$tmp[$i]['id'].' - '.$tmp[$i]['pass'].' - '.passwd($tmp[$i]['pass']).'<br />' ;
-    }
-}
-
-// checkUser()
-// Verifie si un utilisateur existe et renvoi son status
-function checkUser($log,$pass)
-{
-  if ($log !="" AND $pass !="")
-  {
-      $db=opendb();
-      $log = mysqli_real_escape_string($db, $log);
-      $sql = "SELECT `id_user`,`login_user` , `status_user`
-           FROM `tab_user`
-           WHERE `login_user` = '".$log."'
-           AND `pass_user` = '".passwd($pass)."'
-           LIMIT 0,1 ";
-      $result= mysqli_query($db,$sql);
-      closedb($db);
-      
-      if (mysqli_num_rows($result) == 1)
-      {
-          $row = mysqli_fetch_array($result);
-          session_start();
-          $_SESSION["login"] = $row["login_user"];
-          $_SESSION["status"] = $row["status_user"];
-          $_SESSION["iduser"] = $row["id_user"];
-					$_SESSION["idepn"]=$row["epn_user"];
-	 
-		
-		  //enregistrement de la visite		  
-      $sql = "UPDATE tab_user SET lastvisit_user='".date("Y-m-d")."' WHERE `id_user`=".$_SESSION['iduser'] ;
-            $db=opendb();
-          $result = mysqli_query($db, $sql);
-          closedb($db);
-          return TRUE ;
-      }
-      else
-      {
-          return FALSE ;
-      }
-  }
-  else
-  {
-      return FALSE;
-  }
-}
-
-//
-// getAllUser()
-// recupere les utilisateurs
-
-function getAllUserbyPage($nb=1,$nbpager=25,$page=1)
-{
-  if ($nbpager==0)
-  {
-    $sql="SELECT `id_user`, `date_insc_user`, `nom_user`, `prenom_user`, `sexe_user`, `jour_naissance_user`, `mois_naissance_user`, `annee_naissance_user`, `temps_user`, `login_user`,`lastvisit_user`, `status_user`
-        FROM tab_user WHERE `status_user`=".$nb."  ORDER BY `nom_user`";
-  }
-  else
-  {
-    if ($page==1)
-    {
-    $sql="SELECT `id_user`, `date_insc_user`, `nom_user`, `prenom_user`, `sexe_user`, `jour_naissance_user`, `mois_naissance_user`, `annee_naissance_user`, `temps_user`, `login_user`, `lastvisit_user`, `status_user`
-        FROM tab_user WHERE `status_user`=".$nb."  ORDER BY `nom_user` LIMIT 0,".$nbpager ;
-    }
-    else
-    {
-    $sql="SELECT `id_user`, `date_insc_user`, `nom_user`, `prenom_user`, `sexe_user`, `jour_naissance_user`, `mois_naissance_user`, `annee_naissance_user`, `temps_user`, `login_user`, `lastvisit_user`, `status_user`
-        FROM tab_user WHERE `status_user`=".$nb."  ORDER BY `nom_user` LIMIT ".((($page-1)*$nbpager)).",".$nbpager ;
-    }
-  }
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return $result;
-  }
-}
-
-
-
-//function getAllUser remplacÈe
-
-function getAllUser($nb){
-if($nb==3){
-$sql="SELECT * FROM tab_user WHERE `status_user`=3 OR  `status_user`=5 ORDER BY `nom_user`";
-}else{
- $sql="SELECT * FROM tab_user WHERE `status_user`=".$nb."  ORDER BY `nom_user` ";
- }
- $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return $result;
-  }
-
-
-}
-
-
-///rÈcupËre les x derniers inscrits pour la page d'accueil des abonnÈs AJOUT 2012
-function getLastUser($i)
-{
-$an=date('Y')."-01-01";
-$sql=" SELECT *
-	FROM tab_user
-	WHERE `date_insc_user`> ".$an."
-	AND status_user<3
-	ORDER BY `date_insc_user` DESC LIMIT ".$i."
-	";
-$db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return $result;
-  }
-}
 //
 // getUser()
 // recupere un utilisateur
@@ -249,9 +73,7 @@ function getUser($id)
   if (FALSE == $result)
   {
       return FALSE;
-  }
-  else
-  {
+  } else {
       $row=mysqli_fetch_array($result);
       return $row;
   }
@@ -275,9 +97,7 @@ function searchUser($exp)
     if ($result == FALSE )
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         return $result ;
     }
 }
@@ -296,61 +116,11 @@ function searchUserRapid($exp)
     if ($result == FALSE )
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         return $result ;
     }
 }
 
-
-
-//
-// searchUserByCity()
-// recherche des utilisateurs dans une ville et renvoi le resultat de la recherche
-function searchUserByCity($id)
-{
-    $sql="SELECT `id_user` , `nom_user` , `prenom_user`,`status_user`
-        FROM `tab_user`
-        WHERE `ville_user` =".$id."
-        AND `status_user`<3
-        ORDER BY `nom_user` ASC ";
-    $db=opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if ($result == FALSE )
-    {
-        return FALSE ;
-    }
-    else
-    {
-        return $result ;
-    }
-}
-
-//page config city retourne le nombre d'adhÈrent par ville
-function statCityalladh($ville)
-{                              
- // $ville =addslashes($ville) ;
-  $sql = "SELECT count(`id_user`) AS nb FROM `tab_user`  
-          WHERE `ville_user` = '".$ville."' 
-		  AND `status_user`<3
-		 
-		  
-		  ";
-    $db=opendb();
-  	$result = mysqli_query($db, $sql);
-    closedb($db);
-  if($result == FALSE)
-  {
-      return FALSE;
-  }
-  else
-  {
-      $row = mysqli_fetch_array($result)  ;
-      return $row['nb'] ;
-  }
-}
 //
 // countUser()
 // compte le nombre d'utilisateur actif ,inactifs , total
@@ -378,147 +148,12 @@ function countUser($id)
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       $nb = mysqli_num_rows($result) ;
       return $nb ;
   }
 }
 
-//
-// checkLogin()
-// verifie si un login existe deja ou non lors de la crÈation
-function checklogin($login)
-{
-  $sql = "SELECT `id_user` FROM tab_user WHERE `login_user`='".$login."'" ;
-  $db=opendb();
-  $result = mysqli_query($db, $sql);
-  closedb($db);
-  $nb=mysqli_num_rows($result);
-  if ($nb > 0)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return TRUE;
-  }
-
-}
-//
-// checkLoginUpdate()
-// verifie si un login existe deja ou non lors de la modification
-function checkloginUpdate($login,$iduser)
-{
-  $sql  = "SELECT `login_user` FROM tab_user WHERE `login_user`='".$login."'" ;
-  $sql2 = "SELECT `login_user` FROM tab_user WHERE `id_user`='".$iduser."'" ;
-  $db=opendb();
-$result = mysqli_query($db, $sql);
-  $result2=mysqli_query($db,$sql2);
-  closedb($db);
-  $nb=mysqli_num_rows($result);
-  $row=mysqli_fetch_array($result2);
-
-  if ($nb > 0 AND $login != $row["login_user"])
-  {
-      return FALSE;   // le login existe deja
-  }
-  else
-  {
-      return TRUE;    // le login n'existe pas
-  }
-
-}
-
-//
-// addUser()
-// ajoute un adherent
-function addUser($date,$nom,$prenom,$sexe,$jour,$mois,$annee,$adresse,$ville,$tel,$mail,$temps,$login,$pass,$status,$lastvisit,$csp,$equipement,$utilisation,$connaissance,$info,$tarif,$daterenouv,$epn,$newsletter)
-{
-
-  $sql="INSERT INTO `tab_user`(`id_user`, `date_insc_user`, `nom_user`, `prenom_user`, `sexe_user`, `jour_naissance_user`, `mois_naissance_user`, `annee_naissance_user`, `adresse_user`, `ville_user`, `tel_user`, `mail_user`, `temps_user`, `login_user`, `pass_user`, `status_user`, `lastvisit_user`, `csp_user`, `equipement_user`, `utilisation_user`, `connaissance_user`, `info_user`, `tarif_user`, `dateRen_user`, `epn_user`, `newsletter_user`) 
-  VALUES ('', '".$date."', '".$nom."', '".$prenom."', '".$sexe."', '".$jour."', '".$mois."', '".$annee."', '".$adresse."',  '".$ville."', '".$tel."', '".$mail."', '".$temps."', '".$login."', '".passwd($pass)."', '".$status."', '".$lastvisit."','".$csp."','".$equipement."','".$utilisation."','".$connaissance."','".$info."','".$tarif."','".$daterenouv."','".$epn."','".$newsletter."') ";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  $iduser=mysqli_insert_id($db);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-		return $iduser;
-  }
-}
-
-
-//
-// modUser()
-// modifie un adherent
-function modUser($id,$nom,$prenom,$sexe,$jour,$mois,$annee,$adresse,$ville,$tel,$mail,$loginn,$pass,$status,$lastvisit,$csp,$equipement,$utilisation,$connaissance, $info,$epn,$newsletter)
-{
-  if(TRUE == isset($pass) && FALSE == empty($pass)){
-    updatePassword($id, $pass) ;
-  }
-    
-  $sql="UPDATE `tab_user` 
-  SET 
-	  `nom_user`='".$nom."',
-	  `prenom_user`='".$prenom."',
-	  `sexe_user`='".$sexe."',
-	  `jour_naissance_user`='".$jour."',
-	  `mois_naissance_user`='".$mois."',
-	  `annee_naissance_user`='".$annee."',
-	  `adresse_user`='".$adresse."',
-	  `ville_user`='".$ville."',
-	  `tel_user`='".$tel."',
-	  `mail_user`='".$mail."',
-		`login_user`='".$loginn."',
-	  `status_user`='".$status."',
-		`lastvisit_user`='".$lastvisit."',
-		`csp_user`='".$csp."',
-		`equipement_user`='".$equipement."',
-		`utilisation_user` ='".$utilisation."',
-		`connaissance_user`= '".$connaissance."',
-		`info_user`= '".$info."',
-		`epn_user`='".$epn."', 
-		`newsletter_user`='".$newsletter."'
-		
-      WHERE `id_user` =".$id." LIMIT 1 ;";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return TRUE;
-  }
-}
-
-
-//
-// deluser
-// Supprime un utilisateur
-function delUser($id)
-{
-  $sql = "DELETE FROM `tab_user` WHERE `id_user`=".$id." LIMIT 1 " ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return TRUE;
-  }
-}
 
 //
 // updatePassword()
@@ -534,9 +169,7 @@ function updatePassword($id,$pass)
   if (FALSE == $result)
   {
       return FALSE;
-  }
-  else
-  {
+  } else {
       return TRUE;
   }
 }
@@ -551,9 +184,7 @@ $sql="UPDATE tab_user SET status_user='".$i."' WHERE id_user=".$user;
   if (FALSE == $result)
   {
       return FALSE;
-  }
-  else
-  {
+  } else {
       return TRUE;
   }
 
@@ -574,15 +205,11 @@ function checkBookmark($id)
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       if (mysqli_num_rows($result) <=0)
       {
           return FALSE ;
-      }
-      else
-      {
+      } else {
           return TRUE;
       }
   }
@@ -614,9 +241,7 @@ function getBookmark($id)
                 FROM tab_url AS url
                 WHERE `iduser_url`=".$id." 
                 ORDER BY Flabel ASC, Ftitre ASC" ;
-  }
-  else
-  {
+  } else {
       $sql = "SELECT  url.id_url AS Fid, url.titre_url AS Ftitre, url.url_url AS Furl, 
                 (
                     SELECT rub.label_url_rub
@@ -635,9 +260,7 @@ function getBookmark($id)
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return $result;
   }
 }
@@ -669,9 +292,7 @@ function getUrlSelect()
     if (FALSE == $result)
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         $var = '<select name="rubSel">';
         while($row = mysqli_fetch_array($result))
         {
@@ -706,9 +327,7 @@ function addBookmark($id,$titre,$url,$rubId=NULL,$rubName=FALSE)
         $result2 = @mysqli_query($db,$sql2);  
         $idRub   = @mysql_insert_id($db);
         $sql3 .="VALUES ('','".$idUrl."','".$idRub."')" ;
-    }
-    else
-    {
+    } else {
         $sql3 .="VALUES ('','".$idUrl."','".$rubId."')" ;
     }
     $result3 = @mysqli_query($db,$sql3) ;
@@ -718,9 +337,7 @@ function addBookmark($id,$titre,$url,$rubId=NULL,$rubName=FALSE)
     if (FALSE == $result OR FALSE == $result2 OR FALSE == $result3)
     {
         return FALSE ;
-    }
-    else    
-    {
+    } else {
         return TRUE;
     }
    
@@ -738,9 +355,7 @@ function updateBookmark($id,$name,$url)
     if (FALSE == $result)
     {
         return FALSE ;
-    }
-    else    
-    {
+    } else {
         return TRUE;
     }
 }
@@ -757,9 +372,7 @@ function delBookmark($iduser,$idurl)
     if (mysqli_num_rows($result) != 1)
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         $sql = "DELETE FROM `tab_url` WHERE `id_url`=".$idurl ;
         $db=opendb();
         $result = mysqli_query($db,$sql);
@@ -767,9 +380,7 @@ function delBookmark($iduser,$idurl)
         if (FALSE == $result)
         {
             return FALSE ;
-        }
-        else
-        {
+        } else {
             return TRUE;
         }
     }
@@ -783,50 +394,7 @@ function delBookmark($iduser,$idurl)
 //
 //
 
-Function createAtelier($sujet,$content,$ressource,$niveau,$categorie)
-{
-$sql = "INSERT INTO `tab_atelier_sujet`(`id_sujet`, `label_atelier`, `content_atelier`, `ressource_atelier`, `niveau_atelier`, `categorie_atelier`)
-		VALUES ('','".$sujet."','".$content."','".$ressource."','".$niveau."','".$categorie."')" ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return $result;
-  }
-}
-
-
-
-function modifSujetAtelier($id,$sujet,$content,$ressource,$niveau,$categorie)
-{
-$sql = " UPDATE `tab_atelier_sujet` 
-SET `label_atelier`='".$sujet."',
-	`content_atelier`='".$content."',
-	`ressource_atelier`='".$ressource."',
-	`niveau_atelier`='".$niveau."',
-	`categorie_atelier`='".$categorie."'
-	
-WHERE `id_sujet`='".$id."' " ;
-  
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return $result;
-  }
-}
-
-//tous les ateliers du rÈseau
+//tous les ateliers du r√©seau
 function getFutAtelier($year)
 {
 	if ($year==date('Y')){
@@ -851,9 +419,7 @@ function getFutAtelier($year)
 	  if (FALSE == $result)
 	  {
 		  return FALSE ;
-	  }
-	  else
-	  {
+	  } else {
 		return $result;
 	  }
 	
@@ -890,9 +456,7 @@ function getFutAtelierbyanim($year,$anim)
 	  if (FALSE == $result)
 	  {
 		  return FALSE ;
-	  }
-	  else
-	  {
+	  } else {
 		return $result;
 	  }
 }
@@ -914,18 +478,16 @@ function getFutAtelierbyepn($year,$epn)
 	  if (FALSE == $result)
 	  {
 		  return FALSE ;
-	  }
-	  else
-	  {
+	  } else {
 		return $result;
 	  }
 }
 
 
-// retourne les ateliers anciennement programmÈs ///DEPRECATED
+// retourne les ateliers anciennement programm√©s ///DEPRECATED
 function getAncAtelier($year)
 {
-if ($year!=date('Y')) { $annee=$year."-12-31"; }else{ $annee=date('Y-m-d');}
+if ($year!=date('Y')) { $annee=$year."-12-31"; } else { $annee=date('Y-m-d');}
 
 $sql= "SELECT  *
 		FROM `tab_atelier` 
@@ -939,50 +501,12 @@ $sql= "SELECT  *
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
 	return $result;
   }
 }
 
-//retourne les ateliers archivÈs
-// pour rappel, statut 1= en programmation, 2= annule.
-function getArchivAtelier($y, $anim)
-{
-if ($anim==0){
-$sql="SELECT `id_AS` , `date_AS` , `inscrits` , `presents` , `absents` , `attente` , `nbplace` , `statut_programmation`
-FROM `tab_as_stat`
-WHERE `type_AS` = 'a'
-AND `statut_programmation` =1
-AND YEAR(`date_AS`)=".$y."
-ORDER BY `date_AS` DESC " ;
-} else{
-$sql="SELECT `id_AS` , `date_AS` , `inscrits` , `presents` , `absents` , `attente` , `nbplace` , `statut_programmation`
-FROM `tab_as_stat`
-WHERE `type_AS` = 'a'
-AND `statut_programmation` =1
-AND YEAR(`date_AS`)=".$y."
-AND `id_anim` =".$anim."
-ORDER BY `date_AS` DESC " ;
-}
-
-
-$db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-	return $result;
-  }
-
-
-}
-// renvoie les donnÈes sujets en fonction de l'id du sujet
+// renvoie les donn√©es sujets en fonction de l'id du sujet
 //INNER JOIN tab_atelier_categories AS tab_atelier_sujet.categorie_atelier=tab_atelier_categories.id_atelier_categorie
 
 function getSujetById($idsujet)
@@ -996,15 +520,13 @@ $db=opendb();
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
 	return $result;
   }
 }
 
 
-// nombre total d'ateliers programmÈ par date > aujourdhui
+// nombre total d'ateliers programm√© par date > aujourdhui
 function getNombreTotAtelier()
 {
 $sql="SELECT COUNT(`id_atelier`) AS nombreT_atelier FROM tab_atelier
@@ -1016,45 +538,9 @@ $db=opendb();
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
   $row= mysqli_fetch_array($result) ;
 	return $row;
-  }
-}
-
-// getAllAtelier()
-// recupere la liste de tous les ateliers
-
-function getAllAtelier($id,$value=0)
-{
-  if($value==0)
-  { // a venir
-  $sql = "SELECT `sujet_atelier`, `date_atelier`, `heure_atelier`,`id_atelier`,`nbplace_atelier`
-          FROM `tab_atelier`
-          WHERE `niveau_atelier` =".$id."
-          AND `date_atelier`>= '".date('Y-m-d')."'
-          ORDER BY `date_atelier` ASC";
-  }
-  else //archive
-  {
-  $sql = "SELECT *
-          FROM `tab_atelier`
-		  WHERE `id_atelier` =".$id."
-          AND `date_atelier`< '".date('Y-m-d')."'
-          ORDER BY `date_atelier` ASC";
-  }
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return $result;
   }
 }
 
@@ -1073,9 +559,7 @@ function getAtelier($id)
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       $row = mysqli_fetch_array($result) ;
       return $row;
   }
@@ -1083,7 +567,7 @@ function getAtelier($id)
 
 //
 // getAllLevel()
-// recupere la liste de tous les niveau (debutant, confirmÈ...)
+// recupere la liste de tous les niveau (debutant, confirm√©...)
 function getAllLevel($x)
 {
   $sql = "SELECT * FROM `tab_level` ORDER BY `id_level` ASC" ;
@@ -1093,9 +577,7 @@ function getAllLevel($x)
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
 		if($x>0){
 		$level = array();
         $nb= mysqli_num_rows($result);
@@ -1105,7 +587,7 @@ function getAllLevel($x)
             $level[$row["id_level"]] =stripslashes( $row["nom_level"] );
         }
         return $level ;
-		}else{
+		} else {
       return $result;
 	  }
   }
@@ -1124,9 +606,7 @@ function getAllCategorie($x)
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
 	if($x>0){
 		$level = array();
         $nb= mysqli_num_rows($result);
@@ -1136,7 +616,7 @@ function getAllCategorie($x)
             $level[$row["id_atelier_categorie"]] = stripslashes($row["label_categorie"]) ;
         }
         return $level ;
-	} else{
+	} else {
 	return $result;
 	}
      
@@ -1155,9 +635,7 @@ function getAllSujet()
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
      $sujet = array();
         $nb= mysqli_num_rows($result);
         for ($i=1;$i<=$nb;$i++)
@@ -1183,13 +661,11 @@ AS nba";
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
 	$row=mysqli_fetch_array($result);
 	if($row['nba']>0){
 		return TRUE;
-	}else{
+	} else {
 		return FALSE;
 	}
   }
@@ -1217,14 +693,10 @@ function checkUserAtelier($idatelier,$iduser)
       if (countPlace($idatelier) < $row["nbplace_atelier"])  // verifie le nombre de place restante
       {
           return TRUE ;
-      }
-      else
-      {
+      } else {
           return FALSE ; //inserer la liste d'attente Attention normalement doit etre FALSE
       }
-  }
-  else
-  {
+  } else {
       return FALSE ;
   }
 }
@@ -1247,7 +719,7 @@ function countPlace ($idatelier)
 }
 
 // getNombrePresents
-// retrouve le nombre de prÈsents ‡ l'atelier
+// retrouve le nombre de pr√©sents √† l'atelier
 function getNombrePresents($idatelier)
 {
    $sql = "SELECT `nombre_presents` FROM `tab_atelier_stat` WHERE `id_atelier`=".$idatelier ;
@@ -1257,9 +729,7 @@ function getNombrePresents($idatelier)
    if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return $result;
   }
 }
@@ -1284,14 +754,10 @@ function addUserAtelier($idatelier,$idstatut,$iduser,$idtarif)
       if (FALSE == $result)
       {
           return FALSE ;
-      }
-      else
-      {
+      } else {
           return TRUE;
       }
-  }
-  else
-  {
+  } else {
       return FALSE ;
   }
 }
@@ -1307,9 +773,7 @@ function addUserAtelierAttente($idatelier,$idstatut,$iduser)
       if (FALSE == $result)
       {
           return FALSE ;
-      }
-      else
-      {
+      } else {
           return TRUE;
       }
 
@@ -1328,15 +792,13 @@ function delUserAtelier($idatelier,$iduser)
     if (FALSE == $result)
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         return TRUE;
     }
 }
 // delUserAtelier()
 // Desinscription d'un adherent a un atelier
-function ModifyUserAtelier($idatelier,$iduser,$statut)
+function ModifyUserAtelier($idatelier, $iduser, $statut)
 {
 
   $sql = "UPDATE `rel_atelier_user` 
@@ -1348,9 +810,7 @@ function ModifyUserAtelier($idatelier,$iduser,$statut)
     if (FALSE == $result)
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         return TRUE;
     }
 
@@ -1376,14 +836,11 @@ if ($t==1){ //ateliers futurs
 	  if (FALSE == $result)
 	  {
 		  return FALSE ;
-	  }
-	  else
-	  {
+	  } else {
 		  return $result;
 	  }
  
-	}else
-	{ // ancien atelier
+	} else { // ancien atelier
 	$sql = "SELECT atelier.id_atelier,`id_sujet`,`date_atelier`,`heure_atelier`
 			  FROM `tab_atelier` AS atelier, `rel_atelier_user` AS rel
 			  WHERE atelier.id_atelier = rel.id_atelier
@@ -1396,9 +853,7 @@ if ($t==1){ //ateliers futurs
 	  if (FALSE == $result)
 	  {
 		  return FALSE ;
-	  }
-	  else
-	  {
+	  } else {
 		  return $result;
 	  }
  
@@ -1426,9 +881,7 @@ AND session.status_session=0 ORDER BY dat.date_session ASC";
   if (FALSE == $result)
   {
 	  return FALSE ;
-  }
-  else
-  {
+  } else {
 	  return $result;
   }
 }
@@ -1450,9 +903,7 @@ AND session.status_session=0 ORDER BY dat.date_session ASC";
   if (FALSE == $result)
   {
 	  return FALSE ;
-  }
-  else
-  {
+  } else {
 	  return $result;
   }
 
@@ -1478,7 +929,7 @@ if($statut==2){
 		  AND rel.status_rel_atelier_user='".$statut."'
           AND rel.id_atelier ='".$idatelier."'  ORDER BY `id_rel_atelier_user` ASC
 		  ";
-}else{
+} else {
   $sql = "SELECT rel.id_user, `nom_user` , `prenom_user`,mail_user, `status_rel_atelier_user`, dateRen_user
           FROM `tab_user` AS user, `rel_atelier_user` AS rel
           WHERE rel.id_user = user.id_user
@@ -1492,14 +943,12 @@ if($statut==2){
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return $result;
   }
 }
 
-///renvoie les participants ‡ un atelier validÈ absents ou prÈsents
+///renvoie les participants √† un atelier valid√© absents ou pr√©sents
 function getAtelierArchivUser($idatelier){
 $sql="SELECT rel.id_user, `nom_user` , `prenom_user`, `status_rel_atelier_user`
           FROM `tab_user` AS user, `rel_atelier_user` AS rel
@@ -1512,9 +961,7 @@ $sql="SELECT rel.id_user, `nom_user` , `prenom_user`, `status_rel_atelier_user`
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return $result;
   }
 }
@@ -1535,9 +982,7 @@ function addAtelier($date,$heure,$duree,$anim,$sujet,$nbplace,$public,$stateAtel
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return $id;
   }
 }
@@ -1566,9 +1011,7 @@ function ModifAtelier($id,$date,$heure,$duree,$anim,$sujet,$nbplace,$public,$sta
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return $result;
   }
 }
@@ -1586,9 +1029,7 @@ function delAtelier($id)
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return $result;
   }
 }
@@ -1607,9 +1048,7 @@ $db=opendb();
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
 	$row=mysqli_fetch_array($result);
       return $row;
   }
@@ -1621,7 +1060,7 @@ $db=opendb();
 //
 //
 // getAllMateriel()
-// recupere la liste de tous les materiel prÈsent dans la table
+// recupere la liste de tous les materiel pr√©sent dans la table
 function getAllMateriel()
 {
   $sql = "SELECT `id_computer`,`nom_computer`,`os_computer`,`comment_computer`,`usage_computer`, `id_salle`
@@ -1632,9 +1071,7 @@ function getAllMateriel()
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return $result;
   }
 }
@@ -1653,9 +1090,7 @@ ORDER BY `usage_computer` , `nom_computer`";
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return $result;
   }
 
@@ -1673,15 +1108,13 @@ function getComputerName($id)
     if (FALSE == $result)
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         $row = mysqli_fetch_array($result);
         return $row['nom_computer'];
     } 
 }
 
-// renvoi toutes les machines disponibles ‡ la reservation
+// renvoi toutes les machines disponibles √† la reservation
 function getAllMaterielDispo($salle)
 {
   $sql = "SELECT `id_computer`,`nom_computer`,`os_computer`,`comment_computer`,`usage_computer`
@@ -1696,9 +1129,7 @@ function getAllMaterielDispo($salle)
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return $result;
   }
 }
@@ -1727,9 +1158,7 @@ function getComputerByUsage($usage)
     if (FALSE == $result)
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         return $result;
     }
 }
@@ -1746,9 +1175,7 @@ function getAllComputerDispo($salle)
     if (FALSE == $result)
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         $comp = array();
         $nb= mysqli_num_rows($result);
         for ($i=1;$i<=$nb;$i++)
@@ -1774,16 +1201,14 @@ function getComputerId()
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return $result;
   }
 }
 
 //
 // getMateriel($id)
-// renvoi les donnÈes sur un poste a partir de son id
+// renvoi les donn√©es sur un poste a partir de son id
 function getMateriel($id)
 {
   $sql = "SELECT *
@@ -1795,138 +1220,10 @@ function getMateriel($id)
   if (FALSE == $result)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return $row;
   }
 }
-
-
-//
-// addMateriel()
-// ajoute un poste dans la table computer
-function addMateriel($nom,$os,$comment,$usage, $fonction,$salle,$adresseIP,$adresseMAC,$nomhote)
-{
- $sql = "INSERT INTO `tab_computer`(`id_computer`, `nom_computer`, `comment_computer`, `os_computer`, `usage_computer`, `fonction_computer`, `id_salle`, `adresse_mac_computer`, `adresse_ip_computer`, `nom_hote_computer`, `date_lastetat_computer`, `lastetat_computer`, `configurer_epnconnect_computer`) 
- VALUES ('','".$nom."', '".$comment."', '".$os."','".$usage."', '".$fonction."','".$salle."', '".$adresseMAC."','".$adresseIP."', '".$nomhote."', '','','') " ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  $lastid = mysqli_insert_id($db);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return $lastid;
-  }
-}
-
-
-
-//
-// modMateriel()
-// modifie un materiel, poste dans la table computer
-function modMateriel($id,$nom, $os, $comment,$usage,$fonction, $salle, $adresseIP, $adresseMAC, $nomhote)
-{
-    $sql="UPDATE `tab_computer`
-    SET `nom_computer` ='".$nom."',
-        `comment_computer` ='".$comment."',
-        `os_computer` ='".$os."',
-        `usage_computer` ='".$usage."',
-		`fonction_computer` ='".$fonction."',
-		`id_salle`='".$salle."',
-		`adresse_ip_computer`='".$adresseIP."',
-		`adresse_mac_computer`='".$adresseMAC."',
-		`nom_hote_computer`='".$nomhote."'
-	
-     WHERE `id_computer` =".$id." LIMIT 1 ";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return TRUE;
-  }
-}
-
-
-//
-// supMateriel ()
-// supprime un poste de la table computer
-function supMateriel($id)
-{
-  $sql = "DELETE FROM `tab_computer` WHERE `id_computer` = ".$id." LIMIT 1" ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      if (FALSE == supMaterielUsage($id))
-      {
-          return FALSE ;
-      }
-      else
-      {
-          return TRUE;
-      }
-  }
-}
-
-
-//
-// addMaterielUsage()
-// ajoute un usage pour un materiel
-function addMaterielUsage($idmat,$usage)
-{
-  $sql="INSERT INTO `rel_usage_computer` (`id_usage_computer`,`id_computer`,`id_usage`)
-        VALUES ('',".$idmat.",".$usage.") " ;
-  opendb ();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return TRUE ;
-  }
-}
-
-//
-// supMaterielUsage()
-// supprime tous les usages d'un poste
-function supMaterielUsage($id)
-{
-  $sql = "DELETE FROM `rel_usage_computer` WHERE `id_computer`=".$id ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return TRUE ;
-  }
-
-}
-
-
-
-
 
 //
 // reservation & planning ------------------------------------------------------
@@ -1942,9 +1239,7 @@ function getResa($id_comp,$date_resa,$salle)
             WHERE `id_computer_resa`='".$id_comp."'
             AND `dateresa_resa`='".$date_resa."'
             ORDER BY `debut_resa` ASC";
-  }
-  else
-  {
+  } else {
     $sql = "SELECT `id_resa`,`id_computer_resa`,`id_user_resa`,`dateresa_resa`,`debut_resa`,`duree_resa`,`date_resa`,`status_resa` 
 	FROM `tab_resa`,`tab_computer` 
 	WHERE `dateresa_resa`='".$date_resa."' 
@@ -1958,9 +1253,7 @@ function getResa($id_comp,$date_resa,$salle)
   if (FALSE == $result)
   {
       return FALSE;
-  }
-  else
-  {
+  } else {
       return $result ;
   }
 }
@@ -1985,9 +1278,7 @@ function getResaById($id,$type)
     if(FALSE == mysqli_num_rows($result))
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         return $result ;
     }
 }
@@ -2002,7 +1293,7 @@ function checkResa($id)
     closedb($db);
     if (mysqli_num_rows($result)>0){
         return TRUE ;
-    }else{
+    } else {
         return FALSE;
 	}
 }
@@ -2018,7 +1309,7 @@ function checkResaSemaine($id, $date1, $date2)
     closedb($db);
     if (mysqli_num_rows($result)>0){
         return TRUE ;
-    }else{
+    } else {
         return FALSE;}
 }
 
@@ -2049,8 +1340,7 @@ function getCredit($iduser)
     closedb($db);
     if ($result==FALSE){
         return FALSE;
-    }else
-    {
+    } else {
         return  mysqli_fetch_array($result) ;
     }
 }
@@ -2072,16 +1362,14 @@ $sql= "SELECT SUM(`duree_resa`) AS util, temps_user AS total
     if ($result==FALSE)
 	{
         return FALSE;
-    }
-	else
-    {
+    } else {
         return mysqli_fetch_array($result) ;
     }
 }
 
 
 // renvoi un select contenant les horaires de reservation
-// @param1 : unité
+// @param1 : unit≈Ω
 // @param2 : Heure d'ouverture matin
 // @param3 : Heure de fermeture matin
 // @param4 : Heure d'ouverture de l'apres midi
@@ -2089,7 +1377,7 @@ $sql= "SELECT SUM(`duree_resa`) AS util, temps_user AS total
 function getHorDebutSelect($unit , $h1begin , $h1end , $h2begin , $h2end , $idcomp , $dateResa , $hselected)
 {
   $select    = "<select name=\"debut\" size=\"15\" >" ;
-  //renvoi le tableau des valeurs deja reservées
+  //renvoi le tableau des valeurs deja reserv≈Ωes
   $arrayResa = getResaArray($idcomp,$dateResa,$unit) ;
   //on boucle pour afficher 
   //$heureX=strftime("%H",time());
@@ -2107,9 +1395,7 @@ function getHorDebutSelect($unit , $h1begin , $h1end , $h2begin , $h2end , $idco
          else if (TRUE==in_array( $i, $arrayResa) OR ($i >=$h1end AND $i<$h2begin))
          {
             $select .= "<option value=\"".$i."\" disabled style=\"background-color:#EEEEEE\">".getTime($i)."</option>";
-         }
-         else
-         {
+         } else {
             $select .= "<option value=\"".$i."\">".getTime($i)."</option>";   
          }
      // }
@@ -2149,9 +1435,7 @@ function getResaArray($idcomp,$dateResa,$unit)
         }
         
         return $array ;
-    }
-    else
-    {
+    } else {
         return FALSE ;
     }
 }
@@ -2178,9 +1462,7 @@ function getHorDureeSelect($unit,$h1begin,$h1end,$h2begin,$h2end, $idcomp , $dat
   {// si oui on calcul l'ecart
     $row = mysqli_fetch_array($result) ;
     $maxtimedb = $row['debut_resa']-$hselected ;
-  }
-  else
-  {
+  } else {
     $maxtimedb = 9999999;  
   }
   
@@ -2209,9 +1491,7 @@ function getHorDureeSelect($unit,$h1begin,$h1end,$h2begin,$h2end, $idcomp , $dat
         if($i==$_SESSION["duree"])
         {
             $select .= "<option value=\"".$i."\" selected>".getTime($i)."</option>";
-        }
-        else
-        {
+        } else {
             $select .= "<option value=\"".$i."\">".getTime($i)."</option>";
         }
     }
@@ -2222,7 +1502,7 @@ function getHorDureeSelect($unit,$h1begin,$h1end,$h2begin,$h2end, $idcomp , $dat
 }
 
 
-///pour modifier la duree d'une rÈsa en cours
+///pour modifier la duree d'une r√©sa en cours
 function getHorDureeSelect2($duree,$hbegin,$dateResa,$idComp,$epn)
 {
     
@@ -2257,8 +1537,7 @@ function getHorDureeSelect2($duree,$hbegin,$dateResa,$idComp,$epn)
   for ($i=$unit ; $i<=$maxtime ;  $i = $i+$unit)
   {
         if ($i == $duree){
-            $select .='<option value="'.$i.'" selected="selected">'.getTime($i).'</option>' ;}
-        else{
+            $select .='<option value="'.$i.'" selected="selected">'.getTime($i).'</option>' ;} else {
             $select .='<option value="'.$i.'">'.getTime($i).'</option>' ;}
   }
   $select .= "</select> ";
@@ -2288,9 +1567,7 @@ function updateDureeResa($arrayPost){
     if (FALSE == $result)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         return TRUE;
     }
 }
@@ -2319,7 +1596,7 @@ function getResaComp($step,$idcomp,$date_resa,$select)
        case 2: //step 2
             $table  ="<table><tr><td>";
             $table .= "<form method=\"post\" action=\"".$_SERVER["REQUEST_URI"]."\">";
-           // $table .= "<div>DurÈe de la reservation </div>";
+           // $table .= "<div>Dur√©e de la reservation </div>";
             $table .= $select;
             $table .= "</td><td valign=\"top\"><input type=\"hidden\" name=\"step\" value=\"2\">
                                <input type=\"submit\" class=\"btn btn-default\" name=\"retour\" value=\"<<\">
@@ -2340,8 +1617,7 @@ function delResa2($id)
     if ($result ==TRUE)
     {
         return TRUE;
-    }else
-    {
+    } else {
         return FALSE;
     }
 }
@@ -2357,8 +1633,7 @@ function addResa($idcomp,$iduser,$date,$debut,$duree)
     if ($result ==TRUE)
     {
         return $id;
-    }else
-    {
+    } else {
         return FALSE;
     }
 }
@@ -2374,14 +1649,13 @@ function insertrelresa($idresa,$usage,$titreatelier)
     if ($result ==TRUE)
     {
         return TRUE;
-    }else
-    {
+    } else {
         return FALSE;
     }
 	
 }
 
-// renvoi la largeur en % par unitÈ de temps
+// renvoi la largeur en % par unit√© de temps
 // $nbtot = int en mn
 // $unit  = int en mn
 function getWidthPerUnit($nbTotM,$unit)
@@ -2426,15 +1700,10 @@ function getConfig($field,$default_field,$epn)
   if ($row[$field]>0)
   {
       return $row[$field] ;
-  }
-  else
-  {
+  } else {
       return $row[$default_field];
   }
 }
-
-
-
 
 
 function getConfigConsole($epn,$field){
@@ -2444,7 +1713,7 @@ $db=opendb();
   closedb($db);
  if($result==FALSE){
 	return FALSE;
-	}else{
+	} else {
 	$row= mysqli_fetch_array($result);
 	return $row[$field] ;
 	}
@@ -2454,7 +1723,7 @@ $db=opendb();
 // renvoi un graf de temps en fonction des horaires matin(h1) et apm(h2)
 function getPlanning($dotd,$h1begin,$h1end,$h2begin,$h2end,$epn,$salle)
 {
-  if ($h1begin == 0 AND $h2begin>0) //si fermÈ le matin
+  if ($h1begin == 0 AND $h2begin>0) //si ferm√© le matin
   {
       $h1begin = $h2begin ;
   }
@@ -2470,7 +1739,7 @@ function getPlanning($dotd,$h1begin,$h1end,$h2begin,$h2end,$epn,$salle)
   // Initialisation des variables
 
   $graf          = "" ;
-  $unit          = getConfig("unit_config","unit_default_config",$epn) ; // unité dans la table config
+  $unit          = getConfig("unit_config","unit_default_config",$epn) ; // unit≈Ω dans la table config
   $unitLabel     = 30 ;                  // echelle de division du temps pour les labels des heures
   
   $h1begin = (floor($h1begin/60)*60); // on recupere l"heure de debut ex : 9h15 =>9h => 540mn
@@ -2488,9 +1757,7 @@ function getPlanning($dotd,$h1begin,$h1end,$h2begin,$h2end,$epn,$salle)
   if (mysqli_num_rows($result)<1)
   {
       $graf = "Aucun ordinateur dans la salle s&eacute;lection&eacute;e, veuillez choisir une autre salle" ;
-  } 
-  else
-  {
+  } else {
       // Creation du tableau
       $graf .= "<table  class=\"table table-condensed\">" ;
     
@@ -2531,9 +1798,7 @@ function getPlanning($dotd,$h1begin,$h1end,$h2begin,$h2end,$epn,$salle)
           {
           $graf .= "<tr><td class=\"computer\" >".$row["nom_computer"]."</td>
                         <td class=\"horaire\">" ;
-          }
-          else
-          {
+          } else {
               /*if(COUNT($usage)==$row['NB']) // si la recherche est exacte
               {
                 $graf .= "<tr><td class=\"computer2\"><a href=\"index.php?m=7&idepn=".$epn."&idcomp=".$row["id_computer"]."&nomcomp=".$row["nom_computer"]."&date=".$dotd."\">".$row["nom_computer"]."".$nbCritere."</a></td>
@@ -2547,7 +1812,7 @@ function getPlanning($dotd,$h1begin,$h1end,$h2begin,$h2end,$epn,$salle)
 	      
                 $graf .= "<tr><td class=\"computer\"><a href=\"index.php?m=7&idepn=".$epn."&idcomp=".$row["id_computer"]."&nomcomp=".$row["nom_computer"]."&date=".$dotd."\">".$row["nom_computer"]."".$nbCritere."</a></td>
                             <td class=\"horaire\">" ;
-		}else{
+		} else {
 		 $graf .= "<tr><td class=\"computer\"><span data-toggle=\"tooltip\" title=\"Une intervention est en cours sur ce poste, pas de r&eacute;servation possible !\" class=\"text-red\">".$row["nom_computer"]."</span></td>
                             <td class=\"horaire\">" ;
 		
@@ -2589,9 +1854,7 @@ function getPlanning($dotd,$h1begin,$h1end,$h2begin,$h2end,$epn,$salle)
 				
                 $altGraf = "(".getUserName($row2["id_user_resa"])." - ".getTime($row2["debut_resa"])." &agrave; ".getTime(($row2["debut_resa"])+($row2["duree_resa"])).")" ;
 				
-            }
-            else
-            { // comment d'utilisateur
+            } else { // comment d'utilisateur
                 $altGraf = "(".getTime($row2["debut_resa"])." &agrave; ".getTime(($row2["debut_resa"])+($row2["duree_resa"])).")" ;
             }
             $graf        .= "<div class=\"unitbusy\" style=\"width:".$width."%;left:".$position."%;\">
@@ -2648,9 +1911,7 @@ function getHoraire($day,$epn)
   if ($result ==FALSE)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       $row = mysqli_fetch_array($result);
       return $row  ;
   }
@@ -2670,9 +1931,7 @@ function getHoraireTexte($day, $epn)
   if ($result ==FALSE)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       $row = mysqli_fetch_array($result);
       if ($row["hor1_begin_horaire"]!=0 AND $row["hor1_end_horaire"]!=0)
          $horaire = getTime($row["hor1_begin_horaire"])." &agrave; ".getTime($row["hor1_end_horaire"]);
@@ -2681,7 +1940,7 @@ function getHoraireTexte($day, $epn)
       if ($row["hor2_begin_horaire"]!=0 AND $row["hor2_end_horaire"]!=0)
          $horaire .= ", ouvert de ".getTime($row["hor2_begin_horaire"])." &agrave; ".getTime($row["hor2_end_horaire"]) ;
       else
-         $horaire .= ", Ferm&eacute; l'aprËs midi" ;
+         $horaire .= ", Ferm&eacute; l'apr√®s midi" ;
 
       if ($row["hor1_begin_horaire"]!="" AND $row["hor1_end_horaire"]==0 AND $row["hor2_begin_horaire"]==0 AND $row["hor2_end_horaire"]!="")
          $horaire =  getTime($row["hor1_begin_horaire"])." &agrave; ".getTime($row["hor2_end_horaire"]) ;
@@ -2705,7 +1964,7 @@ function getAllBreve($nb)
       $sql ="SELECT *
              FROM `tab_news` " ;
       break;
-      case 1: // breve public, pour les adhÈrents
+      case 1: // breve public, pour les adh√©rents
       $sql ="SELECT `id_news`,`titre_news`,`comment_news`,`visible_news`
              FROM `tab_news`
              WHERE `visible_news`= 0
@@ -2724,9 +1983,7 @@ function getAllBreve($nb)
   if ($result ==FALSE)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return $result  ;
   }
 }
@@ -2745,9 +2002,7 @@ function getBreve($id)
   if ($result ==FALSE)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       $row = mysqli_fetch_array($result);
       return $row  ;
   }
@@ -2767,9 +2022,7 @@ function addBreve($titr,$comment,$visible,$type,$datepublish,$datenews,$epn)
   if ($result == FALSE)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return TRUE  ;
   }
 }
@@ -2795,9 +2048,7 @@ function modBreve($id,$titr,$comment,$visible,$type,$datepublish,$datenews,$epn)
   if ($result == FALSE)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return TRUE  ;
   }
 }
@@ -2814,9 +2065,7 @@ function supBreve($id)
   if ($result == FALSE)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return TRUE  ;
   }
 }
@@ -2841,9 +2090,7 @@ function getPrintById($iduser)
     if(FALSE == mysqli_num_rows($result))
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         return $result ;
     }
 }
@@ -2865,9 +2112,7 @@ function getPrintdebitType($iduser,$type)
   if (FALSE == $result)
   {
       return FALSE;
-  }
-  else
-  {
+  } else {
     $print= mysqli_fetch_array($result);
      return $print ;
   }
@@ -2884,9 +2129,7 @@ $sql="SELECT id_print
   if($result == FALSE)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return $result;
   }
 }
@@ -2905,9 +2148,7 @@ AND tab_print.print_tarif = tab_tarifs.id_tarif
   if (FALSE == $result)
   {
       return FALSE;
-  }
-  else
-  {
+  } else {
     $print= mysqli_fetch_array($result);
      return $print['debit'] ;
   }
@@ -2923,7 +2164,7 @@ function checkPrint($id)
     closedb($db);
     if (mysqli_num_rows($result)>0){
         return TRUE ;
-    }else{
+    } else {
 	
         return FALSE;}
 }
@@ -2940,9 +2181,7 @@ function addPrint($date_p,$id_user,$debit_p, $tarif_p,$statut_p,$credit_p,$nomus
   if($result == FALSE)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return TRUE ;
   }
 }
@@ -2969,9 +2208,7 @@ function modPrint($id,$date_p,$debit_p,$tarif_p, $statut_p, $credit_p,$nomuser_p
   if ($result == FALSE)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return TRUE  ;
   }
 }
@@ -2990,9 +2227,7 @@ function getPrintid($id_p)
   if ($result ==FALSE)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       $row = mysqli_fetch_array($result);
       return $row  ;
   }
@@ -3008,9 +2243,7 @@ $db=opendb();
   if ($result ==FALSE)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
      
       return $result  ;
   }
@@ -3029,9 +2262,7 @@ function supPrint($id_p)
   if ($result == FALSE)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
       return TRUE  ;
   }
 }
@@ -3047,9 +2278,7 @@ $db=opendb();
   if ($result == FALSE)
   {
       return FALSE ;
-  }
-  else
-  {
+  } else {
        $row = mysqli_fetch_array($result);
       return $row["credit"]  ;
   }
@@ -3060,60 +2289,7 @@ $db=opendb();
 //
 // usages ----------------------------------------------------------------------
 //
-//
-// getAllUsage()
-// recupere les usage de la table usage pour l'utilisation d'un poste
-function getAllUsage()
-{
-  $sql ="SELECT `id_usage`,`nom_usage` FROM `tab_usage` ORDER BY `type_usage` DESC, `nom_usage` " ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if ($result ==FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      $nb = mysqli_num_rows($result);
-      $tableau = array();
-      for ($i=1;$i<=$nb;$i++)
-      {
-          $row=mysqli_fetch_array($result);
-          $tableau[$row["id_usage"]] = $row["nom_usage"] ;
-      }
-      return $tableau ;
-  }
-}
 
-//
-// getUsage()
-// recupere les codes de l'usage de la table usage pour l'utilisation d'un poste
-function getUsage($id)
-{
-  $sql="SELECT `id_usage`
-        FROM `rel_usage_computer` AS rel, `tab_computer` AS computer
-        WHERE rel.id_computer = computer.id_computer
-        AND computer.id_computer=".$id;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if ($result == FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      $nb=mysqli_num_rows($result);
-      $tableau = array();
-      for ($i=1;$i<=$nb;$i++)
-      {
-      $row = mysqli_fetch_array($result);
-      $tableau[$i] = $row["id_usage"] ; 
-      }
-      return $tableau ;
-  }
-}
 
 //renvoi le nom des usages d'une machine
 function getUsageNameById($idcomp)
@@ -3129,411 +2305,9 @@ function getUsageNameById($idcomp)
     if ($result==FALSE)
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         return $result;    
     }
-}
-
-//renvoi les noms des usages a partir d'un tableau d'ID
-function getUsageName($usage)
-{
-    $nb = COUNT($usage) ;
-    $i = 1;
-    $sql = "SELECT nom_usage FROM tab_usage
-            WHERE ";
-            
-    foreach($usage AS $key=>$value)
-    {
-      if ($nb == $i)
-          $sql .="id_usage=".$key." " ;
-      else
-          $sql .="id_usage=".$key." OR " ;
-          ++$i ;
-    }
-    $sql .='ORDER BY nom_usage ASC' ;
-    $db=opendb();
-    $result = mysqli_query($db,$sql);
-    closedb($db);
-    if ($result == FALSE)
-    {
-         return FALSE ;
-    }
-    else
-    {
-        $return =array() ;
-        while ($row = mysqli_fetch_array($result))
-        {
-            $return[]= $row['nom_usage'] ;
-        }
-        return $return ;        
-    }
-}
-
-//
-// addUsage()
-// ajoute un nouvel usage au materiel
-function addUsage($usage)
-{
-  $sql="INSERT INTO `tab_usage` (`id_usage`,`nom_usage`) VALUES ('','".$usage."')";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if($result == FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return TRUE ;
-  }
-}
-
-
-//
-// modUsage()
-// ajoute un nouvel usage au materiel
-function modUsage($id,$usage)
-{
-  $sql="UPDATE `tab_usage`
-        SET `nom_usage`='".$usage."'
-        WHERE `id_usage`=".$id." LIMIT 1 ";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if($result == FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return TRUE ;
-  }
-}
-
-//
-// supUsage()
-// suppression d'un usage
-function supUsage($id)
-{
-  $sql = "DELETE FROM `tab_usage` WHERE `id_usage`=".$id." LIMIT 1";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if($result == FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      $sql = "SELECT `id_usage_computer` FROM `rel_usage_computer` WHERE `id_usage`=".$id ;
-      $db=opendb();
-      $result = mysqli_query($db,$sql);
-      closedb($db);
-      if($result == FALSE)
-      {
-          return FALSE ;
-      }
-      else
-      {
-          $nb = mysqli_num_rows($result);
-          if ($nb >0)
-          {
-            for ($i=1;$i<=$nb;$i++)
-            {
-                $row = mysqli_fetch_array($result);
-                $sql = "DELETE FROM `rel_usage_computer` WHERE `id_usage_computer`=".$row["id_usage_computer"];
-                $db=opendb();
-                $result = mysqli_query($db,$sql);
-                closedb($db);
-                if($result == FALSE)
-                {
-                    return FALSE ;
-                }
-            }
-          }
-          return TRUE;
-      }
-  }
-}
-//
-// Ajout de la CSP-----------------------------------
-//
-// getAllcsp
-//retourne les catÈgories socio-professionnelles sous forme de tableau
-function getAllCsp()
-{
-    $sql = "SELECT `id_csp`,`csp` FROM `tab_csp` ORDER BY `csp` ASC" ;
-    $db=opendb();
-    $result = mysqli_query($db,$sql);
-    closedb($db);
-    if (FALSE == $result)
-    {
-        return FALSE ;
-    }
-    else
-    {
-        $csp = array();
-        $nb= mysqli_num_rows($result);
-        for ($i=1;$i<=$nb;$i++)
-        {
-            $row = mysqli_fetch_array($result);
-            $csp[$row["id_csp"]] = $row["csp"] ;
-        }
-        return $csp ;
-    }
-}
-//
-// getCsp()
-// recupere le nom de la csp en fonction de l'id
-function getcsp($id)
-{
-  $sql = "SELECT `csp` FROM `tab_csp` WHERE `id_csp`=".$id ;
-  $db=opendb();
-    $result = mysqli_query($db,$sql);
-    closedb($db);
-    if (FALSE == $result)
-    {
-        return FALSE ;
-    }
-    else
-    {
-       $row = mysqli_fetch_array($result);
-       return $row["csp"] ;
-    }
-}
-//ajout de pret de cable
-function addPret($nomprenom,$carte,$date,$heure1,$typecable)
-{
-
- $sql="INSERT INTO `tab_pretcable` 
-		(`id_pret` , `pret_nom` , `pret_numcarte` , `pret_date` , `pret_heure1`,`pret_heure2`, `pret_typecable`)
-        VALUES ('', '".$nomprenom."', '".$carte."','".$date."', '".$heure1."','', '".$typecable."') 
-		";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-	return TRUE;
-  }
-}
-//modification de pret de cable
-function modPret($id,$nomprenom,$carte,$date,$heure1,$heure2,$typecable)
-{
-  $sql="UPDATE `tab_pretcable`
-    SET `pret_numcarte`='".$carte."',
-		`pret_date`='".$date."',
-		`pret_heure1`='".$heure1."',
-		`pret_heure2` ='".$heure2."',
-		`pret_typecable`='".$typecable."'
-		
-    WHERE `id_pret` ='".$id."' 
-	";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if ($result == FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return TRUE  ;
-  }
-}
-//ajouter un pret de cable dans la base
-
-
-function supPret($id)
-{
-$sql = "DELETE FROM `tab_pretcable` WHERE `id_pret`=".$id ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if ($result == FALSE)
-  {
-      return FALSE ;
-  }
-  else
-  {
-      return TRUE  ;
-  }
-}
-//
-// Ville ----------------------------------------------------------------
-//
-//
-// getAllcity()
-// recupere les villes et renvoile resultat sous la forme d'un tableau
-
-function getAllCityname($ordreAlpha = false)
-{
-    if ($ordreAlpha) {
-      $sql = "SELECT `id_city`,`nom_city` FROM `tab_city` ORDER BY `nom_city`" ;
-    } else {
-      $sql = "SELECT `id_city`,`nom_city` FROM `tab_city` ORDER BY `id_city`" ;
-    }
-    $db=opendb();
-    $result = mysqli_query($db,$sql);
-    closedb($db);
-    if (FALSE == $result)
-    {
-        return FALSE ;
-    }
-    else
-    {
-        $city = array();
-        $nb= mysqli_num_rows($result);
-        for ($i=1;$i<=$nb;$i++)
-        {
-            $row = mysqli_fetch_array($result);
-            $city[$row["id_city"]] = $row["nom_city"] ;
-        }
-        return $city ;
-    }
-}
-
-function getAllCity()
-{
-    $sql = "SELECT `id_city`,`nom_city`,`code_postale_city`,`pays_city` FROM `tab_city` ORDER BY nom_city" ;
-    $db=opendb();
- $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-      return $result;
-  }
-}
-
-// recupere les villes
-function getVilleByName($nom)
-{
-    $sql="SELECT `id_city` FROM tab_city WHERE `nom_city`='".$nom."'";
-	
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  }
-  else
-  {
-       $row = mysqli_fetch_array($result);
-       return $row["id_city"] ;
-  }
-}
-
-//
-// getCity()
-// recupere le nom de la ville en fonction de l'id
-function getCity($id)
-{
-  $sql = "SELECT `nom_city` FROM `tab_city` WHERE `id_city`=".$id ;
-  $db=opendb();
-    $result = mysqli_query($db,$sql);
-    closedb($db);
-    if (FALSE == $result)
-    {
-        return FALSE ;
-    }
-    else
-    {
-       $row = mysqli_fetch_array($result);
-       return $row["nom_city"] ;
-    }
-}
-
-
-//
-// AddCity()
-// ajoute une nouvelle ville
-function addCity($nom,$codepost,$pays)
-{
-   $sql="INSERT INTO `tab_city` (`id_city`,`nom_city`, `code_postale_city`, `pays_city`) VALUES ('','".$nom."','".$codepost."','".$pays."')";
-  $db=opendb();
-	$result = mysqli_query($db,$sql);
- $id=mysqli_insert_id($db);
-  closedb($db);
-  if ($result == FALSE )
-  {
-      return FALSE;
-  }
-  else
-  {
-      return $id;
-  }
-}
-
-//
-// modCity()
-// modife une ville
-function modCity($id,$nom,$codepost, $pays)
-{
-  $sql="UPDATE `tab_city`
-        SET `nom_city`='".$nom."', `code_postale_city`='".$codepost."', `pays_city`='".$pays."'
-        WHERE `id_city`=".$id;
-  $db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-  if ($result == FALSE )
-  {
-      return FALSE;
-  }
-  else
-  {
-      return TRUE;
-  }
-}
-
-//
-// delCity()
-// supprime une ville
-function supCity($id)
-{
-  // Verification avant suppression si il n'y a plus d'adherents
-  $sql="SELECT `id_user` FROM `tab_user` WHERE `ville_user`=".$id ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if($result == FALSE)
-  {
-     return 0;
-  }
-  else
-  {
-    $nb = mysqli_num_rows($result);
-    if ($nb > 0 )
-    {
-        return 1;
-    }
-    else
-    {
-        // Suppression de la ville
-        $sql2="DELETE FROM `tab_city` WHERE `id_city`=".$id;
-        $db=opendb();
-        $result = mysqli_query($db,$sql2);
-        closedb($db);
-        if ($result == FALSE )
-        {
-            return 0;
-        }
-        else
-        {
-            return 2;
-        }
-    }
-  }
 }
 
 //
@@ -3553,9 +2327,7 @@ function getAllInter()
         if ($result == FALSE )
         {
             return FALSE;
-        }
-        else
-        {
+        } else {
             return $result;
         } 
 }
@@ -3581,9 +2353,7 @@ function checkInter($id_comp)
             return TRUE ;
         else
             return FALSE ;
-    }
-    else
-    {
+    } else {
         return FALSE;
     }
 }
@@ -3602,9 +2372,7 @@ function addInter($titr,$date,$comment,$dispo)
         if ($result == FALSE )
         {
             return FALSE;
-        }
-        else
-        {
+        } else {
             return $lastid;
         } 
 }
@@ -3621,16 +2389,14 @@ function addInterComputer($idinter,$idcomputer)
         if ($result == FALSE )
         {
             return FALSE;
-        }
-        else
-        {
+        } else {
             return TRUE;
         } 
 }
 
 //
 // getInterComputer($idinter)
-// recupere le nom des machine concerné par une intervention
+// recupere le nom des machine concern≈Ω par une intervention
 function getInterComputer($idinter)
 {
     $sql = "SELECT `nom_computer` 
@@ -3643,9 +2409,7 @@ function getInterComputer($idinter)
      if ($result == FALSE )
      {
         return FALSE ;
-     }
-     else
-     {
+     } else {
         return $result ;
      }
 }
@@ -3662,9 +2426,7 @@ function modInter($id,$statut)
         if ($result == FALSE )
         {
             return FALSE;
-        }
-        else
-        {
+        } else {
             return TRUE;
         } 
 }
@@ -3681,9 +2443,7 @@ function supInter($id)
         if ($result == FALSE )
         {
             return FALSE;
-        }
-        else
-        {
+        } else {
             $sql = "DELETE FROM `rel_inter_computer` WHERE `id_inter`=".$id;
             $db=opendb();
             $result = mysqli_query($db,$sql);
@@ -3691,9 +2451,7 @@ function supInter($id)
             if ($result == FALSE )
             {
                 return FALSE;
-            }
-            else
-            {
+            } else {
                   return TRUE;
             }
         } 
@@ -3733,23 +2491,23 @@ function getCalendar($year,$month,$epn)
   $dayArray = array("L","M","M","J","V","S","D") ;
   //nombre de jour das le mois en cours
   $nb_jour  = date("t", mktime(0, 0, 0, $month, 1, $year));
-  //epn sÈlectionnÈ
+  //epn s√©lectionn√©
 	$Pepn=$_SESSION["idepn"];
 	if ($epn==$Pepn){
 	$epn=$epn;
-	}else{
+	} else {
 	$epn=$Pepn;
 	}
 	
   //Bouton pour la resa a posteriori que animateurs ou admin
 	if($_SESSION["status"]==3 OR $_SESSION["status"]==4){
 		$boutonresa="<a href=\"index.php?a=19\"><i class=\"ion ion-log-in\"></i></a>";
-	}else{
+	} else {
 		$boutonresa="";
 	}
   //Affichage -------------------------------------
 
-  //affichage du mois et de l'annÈe
+  //affichage du mois et de l'ann√©e
    $calendar = "<div align=\"center\" class=\"titreCal\"> <h4 ><a href=\"?m=3&month=".($month-1)."&year=".$year."\"><i class=\"ion-arrow-left-b\"></i></a>&nbsp;&nbsp;<b>".getMonthName($month)." ".$year."</b>
 	 <a href=\"?m=3&month=".($month+1)."&year=".$year."\">&nbsp;&nbsp;<i class=\"ion-arrow-right-b\"></i></a>
 	 &nbsp;&nbsp;&nbsp;&nbsp;".$boutonresa."</h4></div> ";
@@ -3813,7 +2571,7 @@ function getDayNum($j,$m,$a)
   return date("z",mktime(0,0,0,$m,$j,$a)) ;
 }
 
-// renvoi le statut ouvert ou ferme en fonction des horaire de la journÈ
+// renvoi le statut ouvert ou ferme en fonction des horaire de la journ√©
 function checkHoraireDay($j,$m,$y,$epn)
 {
   $row = getHoraire(date("w",mktime(0,0,0,$m,$j,$y)),$epn) ;
@@ -3823,7 +2581,7 @@ function checkHoraireDay($j,$m,$y,$epn)
      return TRUE;
 }
 
-// renvoi si le jour est ouvert ou fermÈ
+// renvoi si le jour est ouvert ou ferm√©
 function checkDayOpen($daynum,$year,$epn)
 {
     $sql = "SELECT id_days_closed, state_days_closed FROM `tab_days_closed` WHERE `year_days_closed`='".$year."' AND `num_days_closed`='".$daynum."' AND `id_epn`='".$epn."'
@@ -3837,15 +2595,13 @@ $nb=mysqli_num_rows($result);
   if ($nb==0)
   {
        return $nb;
-  }
-  else 
-  {
+  } else {
   $row=mysqli_fetch_array($result);
       return $row["id_days_closed"];
   }
 }
 
-// renvoi si le jour est ouvert ou fermÈ
+// renvoi si le jour est ouvert ou ferm√©
 function checkDayOpen2($j,$m,$year,$epn)
 {
   $daynum = getDayNum($j,$m,$year);
@@ -3871,7 +2627,7 @@ function checkDayOpen2($j,$m,$year,$epn)
       return "ferie";
   }
 }
-// met a jour un jour feriÈ
+// met a jour un jour feri√©
 /*
 function updateDay($daynum,$year,$epn)
 {
@@ -3900,7 +2656,7 @@ $result = mysqli_query($db,$sql);
 closedb($db);
 if ($result == TRUE){
      return TRUE;
-  }else{
+  } else {
      return FALSE;
 }
 }
@@ -3912,7 +2668,7 @@ $result = mysqli_query($db,$sql);
 closedb($db);
 if ($result == TRUE){
      return TRUE;
-  }else{
+  } else {
      return FALSE;
 }
 
@@ -3930,7 +2686,7 @@ function getCalendarClose($year,$month,$epn)
 $Pepn=$_SESSION["idepn"];
   //Affichage -------------------------------------
 
-  //affichage du mois et de l'annÈe
+  //affichage du mois et de l'ann√©e
   $calendar = "<br><b><a name=".$month."></a>".getMonthName($month)." ".$year."</b>";
 
   $calendar .= "<div class=\"calendar2\">" ;
@@ -4035,50 +2791,10 @@ function updateConfig($table,$array,$field,$idvalue,$epn)
     if (FALSE == $result)
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         return TRUE ;
     }
 }
-
-// modifie le champ nom_espace correspondant au resau des epn
-function modconfig($nom)
-{
-	$sql="UPDATE `tab_config` SET `nom_espace`='".$nom."' ";
-	
-	$db=opendb();
-    $result = mysqli_query($db,$sql);
-    closedb($db);
-    if (FALSE == $result)
-    {
-        return FALSE ;
-    }
-    else
-    {
-        return TRUE ;
-    }
-	
-	
-}
-
-//desactive ou active le mode console pour epnconnect
-function updateconsolemode($epn,$console){
-	$sql="UPDATE `tab_config` SET `activer_console`='".$console."' WHERE `id_espace`=".$epn;
-	 $db=opendb();
-    $result = mysqli_query($db,$sql);
-    closedb($db);
-    if (FALSE == $result)
-    {
-        return FALSE ;
-    }
-    else
-    {
-        return TRUE ;
-    }
-	
-}
-
 
 function updateresaconfig($epnr, $unitconfig, $maxtime_config,$resarapide, $duree_resarapide){
 	$sql="UPDATE `tab_config` SET 
@@ -4092,9 +2808,7 @@ function updateresaconfig($epnr, $unitconfig, $maxtime_config,$resarapide, $dure
     if (FALSE == $result)
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         return TRUE ;
     }
 	
@@ -4110,9 +2824,7 @@ function getCyberName($epn)
     if (FALSE == $result)
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         $row = mysqli_fetch_array($result);
                 
            return $row["nom_espace"] ;
@@ -4129,9 +2841,7 @@ $sql = "SELECT `logo_espace` FROM `tab_espace` WHERE `id_espace`='".$epn."' " ;
     if (FALSE == $result)
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         $row = mysqli_fetch_array($result);
                 
            return $row["logo_espace"] ;
@@ -4148,9 +2858,7 @@ function getCyberSpec($epn)
     if (FALSE == $result)
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
          return mysqli_fetch_array($result);
         
     }
@@ -4173,7 +2881,7 @@ $dayArr = array ("Dimanche","lundi","Mardi","Mercredi","Jeudi","Vendredi","Samed
  return $dayArr[$jourfr]." ".$jour." ".getMonthName($mois)." ".$annee ;
 }
 
-function getDatefr($date) //,$format='D j F ‡ 10h'
+function getDatefr($date) //,$format='D j F √† 10h'
 {
 $date0=date('Y-n-j-w',strtotime($date));
 $dateArr=explode("-",$date0);
@@ -4269,9 +2977,7 @@ function getPourcent($nb,$total)
     {
     $pourcent = round(($nb*100)/$total) ;
     return $pourcent."%";
-    }
-    else
-    {
+    } else {
     return "0";
     }
 }
@@ -4297,9 +3003,7 @@ function getTime($temps)
     {
       $heures = 0;
       $minutes= $temps;
-    }
-    else
-    {
+    } else {
       $heures  = floor(($temps)/60);
       $minutes = $temps-($heures*60) ;
     }
@@ -4307,15 +3011,11 @@ function getTime($temps)
     if ($minutes == 0)
     {
         $time = $heures."h" ;
-    }
-    else
-    {
+    } else {
         if ($heures == 0)
         {
             $time = $minutes."mn" ;
-        }
-        else
-        {
+        } else {
             $time = $heures."h".$minutes."mn";
         }
     }

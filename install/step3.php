@@ -1,19 +1,19 @@
 <?php
 /*
-     This file is part of Cybermin.
+     This file is part of CyberGestionnaire.
 
-    Cybermin is free software; you can redistribute it and/or modify
+    CyberGestionnaire is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    Cybermin is distributed in the hope that it will be useful,
+    CyberGestionnaire is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Cybermin; if not, write to the Free Software
+    along with CyberGestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
  2006-2008 Namont Nicolas
@@ -40,8 +40,7 @@ if ( FALSE == file_put_contents($file, $str))
 {
     $config_class = 'error';
     $config = '<span class="error">Une erreur s\'est produite lors de la cr&eacute;ation du fichier de configuration</span>'; 
-}
-else{
+} else {
     $config_class = 'writable' ;
     $config = 'Cr&eacute;ation du fichier de configuration de la base de donn&eacute;es'; 
 }
@@ -236,13 +235,13 @@ $query[] = "CREATE TABLE `tab_atelier_categorie` (
 ) ENGINE=MyISAM";
 $query[] = "INSERT INTO `tab_atelier_categorie` (`id_atelier_categorie`, `label_categorie`) 
 VALUES 
-(1, 'G&eacute;n&eacute;ral'),
+(1, 'Général'),
 (2, 'Bureautique'),
-(3, 'Syst&egrave;me d\'exploitation'),
-(4, 'Imagerie num&eacute;rique'),
+(3, 'Système d\'exploitation'),
+(4, 'Imagerie numérique'),
 (5, 'Internet, web'),
 (6, 'Messagerie'),
-(7, 'Vid&eacute;o'),
+(7, 'Vidéo'),
 (8, 'Jeunesse')";
 
 // table atelier_sujet
@@ -320,7 +319,7 @@ $query[] = "CREATE TABLE `tab_config` (
   `duree_resarapide` int(11) NOT NULL,
   PRIMARY KEY (`id_config`)
 ) ENGINE=MyISAM";
-$query[] = "INSERT INTO `tab_config`(`id_config`, `activer_console`, `name_config`, `unit_default_config`, `unit_config`, `maxtime_config`, `maxtime_default_config`, `inscription_usagers_auto`, `message_inscription`, `id_espace`, `nom_espace`, `activation_forfait`, `resarapide`, `duree_resarapide`) VALUES (1,1,'1.3',15,15,120,120,1,'message par defaut',1,'EPN Test',1,1,60)";
+$query[] = "INSERT INTO `tab_config`(`id_config`, `activer_console`, `name_config`, `unit_default_config`, `unit_config`, `maxtime_config`, `maxtime_default_config`, `inscription_usagers_auto`, `message_inscription`, `id_espace`, `nom_espace`, `activation_forfait`, `resarapide`, `duree_resarapide`) VALUES (1,1,'1.9',15,15,120,120,1,'message par defaut',1,'EPN Test',1,1,60)";
 
 
 //table config logiciels
@@ -364,8 +363,8 @@ $query[] = "CREATE TABLE `tab_courriers` (
 
 $query[]="INSERT INTO `tab_courriers` (`id_courrier`, `courrier_titre`, `courrier_text`, `courrier_name`, `courrier_type`) VALUES
 (1, 'rappel', 'Piqure de rappel', 1, 2),
-(2, 'rappel', 'Vous &ecirc;tes inscrit(e) &agrave; un atelier :', 1, 3),
-(3, 'rappel', 'N''h&eacute;sitez pas &agrave; nous recontacter aux coordonn&eacute;es suivantes', 1, 4);";
+(2, 'rappel', 'Vous êtes inscrit(e) à un atelier :', 1, 3),
+(3, 'rappel', 'N''hésitez pas à nous recontacter aux coordonnées suivantes', 1, 4);";
 
 
 
@@ -380,21 +379,21 @@ $query[] = "CREATE TABLE `tab_csp` (
 ) ENGINE=MyISAM" ;
 
 $query[] = "INSERT INTO `tab_csp` (`id_csp`, `csp`) 
-VALUES(1, 'Retrait&eacute;'),
-(2, 'Employ&eacute;'),
+VALUES(1, 'Retraité'),
+(2, 'Employé'),
 (3, 'Scolaire'),
 (4, 'Demandeur d''emploi'),
-(5, 'M&egrave;re/P&egrave;re au foyer'),
-(6, 'Lyc&eacute;en'),
+(5, 'Mère/Père au foyer'),
+(6, 'Lycéen'),
 (7, 'Etudiant'),
 (8, 'Artisans/Prof. Lib'),
 (9, 'Instituteurs'),
 (10, 'Agriculteur'),
 (11, 'Fonctionnaires'),
 (12, 'Divers'),
-(13, 'Coll&eacute;gien'),
-(14,'Non renseign&eacute;e'),
-(15,'Professions interm&eacute;diaires'),
+(13, 'Collégien'),
+(14,'Non renseignée'),
+(15,'Professions intermédiaires'),
 (16, 'Ouvrier'),
 (17,'Cadres ')
 ";
@@ -435,7 +434,7 @@ $query[] = "CREATE TABLE `tab_forfait` (
   `date_creation_forfait` date NOT NULL,
   `type_forfait` int(11) NOT NULL,
   `nom_forfait` varchar(50) COLLATE latin1_general_ci NOT NULL,
-  `prix_forfait` int(11) NOT NULL,
+  `prix_forfait` float NOT NULL,
   `critere_forfait` varchar(100) COLLATE latin1_general_ci NOT NULL,
   `commentaire_forfait` text COLLATE latin1_general_ci NOT NULL,
   `nombre_duree_forfait` int(11) NOT NULL,
@@ -528,10 +527,10 @@ $query[] = "CREATE TABLE `tab_level` (
   PRIMARY KEY  (`id_level`)
 ) ENGINE=MyISAM";
 $query[] = "INSERT INTO `tab_level` (`id_level`, `code_level`, `nom_level`) VALUES 
-(1, 1, 'Debutant'),
+(1, 1, 'Débutant'),
 (2, 2, 'Apprenti'),
 (3, 3, 'Autonome'),
-(4, 4, 'Confirm&eacute;'),
+(4, 4, 'Confirmé'),
 (5, 5, 'Expert'),
 (6, 6, 'Administrateur')";
 
@@ -549,8 +548,8 @@ $query[] = "CREATE TABLE `tab_logs` (
   PRIMARY KEY (`id_log`)
 ) ENGINE=MyISAM ";
 $query[] = "INSERT INTO `tab_logs` (`id_log`,  `log_type`,`log_date`, `log_MAJ`,`log_valid`,`log_comment`) 
-VALUES (1,'maj',NOW(),'1.3',1,'Installation de la version 1.3 par la procedure installation complete'),
-(2,'bac',NOW(),'1.3',1,'creation de la base de donnee')";
+VALUES (1,'maj',NOW(),'1.9',1,'Installation de la version 1.9 par la procédure installation complete'),
+(2,'bac',NOW(),'1.9',1,'création de la base de donnée')";
 
 //table messages epn connect
 $query[] = "DROP TABLE IF EXISTS `tab_message_epnconnect`";
@@ -642,7 +641,7 @@ $query[] = "CREATE TABLE `tab_reseau` (
   PRIMARY KEY  (`id_reseau`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8  ;";
 
-$query[]="INSERT INTO `tab_reseau`(`id_reseau`, `res_nom`, `res_adresse`, `res_ville`, `res_tel`, `res_mail`, `res_logo`, `res_courrier`, `res_activation`) VALUES (1,'nom de votre reseau','1, rue du libre',1,'00 00 00 00 00','mail@mail.com','','1','1')";
+$query[]="INSERT INTO `tab_reseau`(`id_reseau`, `res_nom`, `res_adresse`, `res_ville`, `res_tel`, `res_mail`, `res_logo`, `res_courrier`, `res_activation`) VALUES (1,'nom de votre réseau','1, rue du libre',1,'00 00 00 00 00','mail@mail.com','','1','1')";
 
 //table des salles
 $query[] = "DROP TABLE IF EXISTS `tab_salle` ";
@@ -705,7 +704,7 @@ $query[] = "CREATE TABLE `tab_tarifs` (
   `epn_tarif` varchar(200) COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`id_tarif`)
 ) ENGINE=MyISAM";
-$query[]="INSERT INTO `tab_tarifs`(`id_tarif`, `nom_tarif`, `donnee_tarif`, `comment_tarif`, `nb_atelier_forfait`, `categorie_tarif`, `duree_tarif`, `epn_tarif`) VALUES(1, 'sans tarif-illimit� ', '0 ', 'default--ne pas enlever merci', 0, 5,0,1);";
+$query[]="INSERT INTO `tab_tarifs`(`id_tarif`, `nom_tarif`, `donnee_tarif`, `comment_tarif`, `nb_atelier_forfait`, `categorie_tarif`, `duree_tarif`, `epn_tarif`) VALUES(1, 'sans tarif-illimité ', '0 ', 'défault--ne pas enlever merci', 0, 5,0,1);";
 
 //table des transactions
 $query[] = "DROP TABLE IF EXISTS `tab_transactions`";
@@ -755,11 +754,11 @@ INSERT INTO `tab_usage` (`id_usage`, `nom_usage`, `type_usage`) VALUES
 (2, 'Scanner', 'public'),
 (3, 'Gravure CD/DVD', 'public'),
 (4, 'Capture/Montage audio', 'public'),
-(5, 'jeux vid&eacute;o', 'public'),
+(5, 'jeux vidéo', 'public'),
 (6, 'Lecture cartes', 'public'),
 (7, 'impression', 'public'),
 (8, 'Navigation Internet', 'public'),
-(9, 'Messagerie Instantan&eacute;e ', 'public')";
+(9, 'Messagerie Instantanée ', 'public')";
 
 //table des adherents
 $query[] = "DROP TABLE IF EXISTS `tab_user`";
@@ -815,7 +814,7 @@ INSERT INTO `tab_utilisation` (`id_utilisation`, `nom_utilisation`, `type_menu`,
 (3, 'Gravure CD/DVD', 'Menu Principal', 'oui'),
 (4, 'Recherche d\'information', 'Menu Principal', 'oui'),
 (5, 'CV, Lettre de motivation', 'Sous Menu', 'oui'),
-(6,'D&eacute;marches de creation ou reprise d\'entreprise', 'Sous Menu', 'oui'),
+(6,'Démarches de creation ou reprise d\'entreprise', 'Sous Menu', 'oui'),
 (7,'Suivi de candidatures', 'Sous Menu', 'oui'),
 (8,'Internet', 'Menu Principal', 'oui'),
 (9, 'Vie quotidienne, loisirs, sport, vacances', 'Sous Menu', 'oui'),
@@ -842,9 +841,7 @@ if (TRUE == isset($error))
 {   
     $db_class = 'error' ;
     $db = 'Une erreur s\'est produite lors de la cr&eacute;ation de la base de donn&eacute;es'; 
-}
-else
-{
+} else {
     $db_class = 'writable' ;
     $db = 'Cr&eacute;ation de la base de donn&eacute;es'; 
 }

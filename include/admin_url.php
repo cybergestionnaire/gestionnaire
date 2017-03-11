@@ -17,8 +17,7 @@ if($_GET["action"]=="mod")
 	$titreUrl = $row["titre_url"] ;
 	$url   	  = $row["url_url"] ;
 	$theme 	  = $row["label_url_rub"] ;
-}
-else{
+} else {
 	$formSubmit = "Ajouter" ;
 }
 // formulaire de creation / modification d'un lien
@@ -44,7 +43,7 @@ if ($_GET["action"]!="mod") // si ajout
        
         	<?php echo getUrlSelect();?> </div>
 <?php 
-}else { // sinon modification
+} else { // sinon modification
 ?>
 	<div class="form-group"><label>Theme :</label>
        <input type="hidden" name="idurl" value="<?php echo $_GET['idurl'];?>">

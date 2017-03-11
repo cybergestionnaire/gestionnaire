@@ -1,19 +1,19 @@
 <?php
 /*
-     This file is part of Cybermin.
+     This file is part of CyberGestionnaire.
 
-    Cybermin is free software; you can redistribute it and/or modify
+    CyberGestionnaire is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    Cybermin is distributed in the hope that it will be useful,
+    CyberGestionnaire is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Cybermin; if not, write to the Free Software
+    along with CyberGestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
  2006-2008 Namont Nicolas
@@ -42,8 +42,7 @@ $db_pass ='';
             if (FALSE == testDb($_POST))
             {
                 $mess = ' Les param&ecirc;tres fournis sont incorrects' ;    
-            }
-            else{
+            } else {
                 $_SESSION['db'] = $_POST ;
                 header('Location:step3.php')  ;
                 exit;
@@ -66,7 +65,7 @@ $sql = new mysqli($array['db_host'], $array['db_user'],$array['db_pass'], $array
 	if ($sql->connect_error) {
 	    die('Erreur de connexion (' . $sql->connect_errno . ') '. $sql->connect_error);
 		return FALSE ;
-	}else{
+	} else {
 		return TRUE;
 	}
 	$sql->close();
@@ -100,7 +99,7 @@ $sql = new mysqli($array['db_host'], $array['db_user'],$array['db_pass'], $array
             <h4>Param&egrave;tres de connexion &agrave; la base de donn&eacute;es</h4>
             <p >Cette &eacute;tape vous permet de d&eacute;finir vos param&egrave;tres de connexions &agrave; la base de donn&eacute;es .<br/>
             <br/><strong>Attention !!</strong> Ceci va &eacute;craser la base si celle ci contient d&eacute;j&agrave; des tables ou des donn&eacute;es, les donn&eacute;es
-            seront perdues. Si vous utilisez une version pr&eacute;c&eacute;dente de Cybermin (V1.0) vous devez cr&eacute;er une autre base de donn&eacute;es
+            seront perdues. Si vous utilisez une version pr&eacute;c&eacute;dente de CyberGestionnaire (V1.0) vous devez cr&eacute;er une autre base de donn&eacute;es
             ou sauvegarder et importer vos donn&eacute;es ult&eacute;rieurement. Attention &agrave; la casse (Maj ou Min) !</p>
             <?php
             if (TRUE == isset($mess)){

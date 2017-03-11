@@ -34,9 +34,7 @@ $result=getAllInter();
     if ($nb ==0)
     {
         echo getError(12);
-    }
-    else
-    {
+    } else {
 ?>
 <div class="box box-primary">
 	<div class="box-header">

@@ -28,19 +28,17 @@ switch ($typeTransac)
 			if($_POST["statutprint"]<2){
 				if ($_POST["submit"]=="Encaisser"){
 					$statutp="1";
-					}else{
+					} else {
 					$statutp="0";
 					}
-			}else{
+			} else {
 				$statutp=2;
 				}
 		
 		if (FALSE == modPrint($transac,$datep,$debitp,$tarifp, $statutp, $creditp,$nomuserp,$moyen_p))
 			 {
 			 header("Location: ./index.php?a=21&mesno=0");
-			 }
-			 else
-			 {
+			 } else {
 				header("Location: ./index.php?a=21&b=1&iduser=".$id_user."");
 			 }
 	 
@@ -61,7 +59,7 @@ case "adh":
 			
 			if ($_POST["submit"] =="Encaisser" ){
 				$statutp="1";
-				}else{
+				} else {
 				$statutp="0";
 				}
 		
@@ -70,15 +68,13 @@ case "adh":
 	if (FALSE == addAdhesion($datetransac,$type_transac,$id_user,$adhesiontarif, $statutp))
 					 {
 						 header("Location: ./index.php?a=1&mesno=0");
-					 }
-					 else
-					 {
+					 } else {
 						//modification de la date de renouvellement dans tab_user, actualisation du statut et du tarif
 						
 					if(FALSE==modifUserStatut($id_user,1, $daterenouv, $adhesiontarif))
 						{
 							 header("Location: ./index.php?a=1&mesno=0");
-						}else{
+						} else {
 							header("Location: ./index.php?a=1&b=2&iduser=".$id_user."&mesno=26");
 						}
 					 }
@@ -104,7 +100,7 @@ case "forfait":
 			
 		if ($_POST["submit"] =="Encaisser" ){
 				$statutp="1"; //en cours
-				}else{
+				} else {
 				$statutp="0"; // en attente de paiement
 				}
 				
@@ -113,27 +109,23 @@ case "forfait":
 			if (FALSE == modifForfaitUser($transac,$tarif_forfait,$date,$nbredeforfait,$statutp,$nbatelier))
 			 {
 				 header("Location: ./index.php?a=6&mesno=0&iduser=".$id_user."");
-			 }
-			 else
-			 {
+			 } else {
 				 header("Location: ./index.php?a=6&iduser=".$id_user."");
 			 }	
-		}else{
+		} else {
 			//creation
 			$idtransac=addForfaitUser($type_transac,$id_user,$tarif_forfait,$nbreforfait,$date,$statutp);
 			if (FALSE ==$idtransac )
 			 {
 				 header("Location: ./index.php?a=6&mesno=0&iduser=".$id_user."");
-			 }
-			 else
-			 {
+			 } else {
 				 ///verifier avant la participation aux ateliers et inscrementer pour régulariser !
 				 $avalid=getnbASUserEncours($id_user,1);// total des ateliers et session validés
 				 $farchiv=getFUserArchiv($id_user);//anciens forfaits archivés à décompter..
 				 $reste=$avalid-$farchiv;
 					 if($reste>0){
 					 $depense= $reste;
-					 }else{
+					 } else {
 					 $depense=0;
 					 }
 				 //
@@ -159,7 +151,7 @@ case "temps" :
 			
 		if ($_POST["submit"] =="Encaisser" ){
 				$statutp="1"; //en cours
-				}else{
+				} else {
 				$statutp="0"; // en attente de paiement
 				}
 	
@@ -170,9 +162,7 @@ case "temps" :
 			if (FALSE == modifForfaitUser($transac,$tarif_forfait,$date,$nbreforfait,$statutp,$nbatelier))
 			 {
 				 header("Location: ./index.php?a=6&mesno=0&iduser=".$id_user."");
-			 }
-			 else
-			 {
+			 } else {
 				if($statut0==0 and $statutp==1){ 
 						addrelconsultationuser(1,$tarif_forfait,$id_user);//ajouter la relation pour activer-epnconnect
 					}else if($statut0==1 and $statutp==1){
@@ -183,16 +173,14 @@ case "temps" :
 			 }	
 			 
 			 
-		}else{
+		} else {
 			//creation
 		$idtransac=addForfaitUser($type_transac,$id_user,$tarif_forfait,$nbreforfait,$date,$statutp);
 		
 		if (FALSE ==$idtransac )
 			 {
 				 header("Location: ./index.php?a=6&mesno=0&iduser=".$id_user."");
-			 }
-			 else
-			 {
+			 } else {
 					//n'ajouter la relation pour epnconnect que si c'est encaissé
 					if($statutp==1){
 					 addrelconsultationuser(1,$tarif_forfait,$id_user);

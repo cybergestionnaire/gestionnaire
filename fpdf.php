@@ -694,9 +694,7 @@ function MultiCell($w, $h, $txt, $border=0, $align='J', $fill=false)
 			$border = 'LTRB';
 			$b = 'LRT';
 			$b2 = 'LR';
-		}
-		else
-		{
+		} else {
 			$b2 = '';
 			if(strpos($border,'L')!==false)
 				$b2 .= 'L';
@@ -754,9 +752,7 @@ function MultiCell($w, $h, $txt, $border=0, $align='J', $fill=false)
 					$this->_out('0 Tw');
 				}
 				$this->Cell($w,$h,substr($s,$j,$i-$j),$b,2,$align,$fill);
-			}
-			else
-			{
+			} else {
 				if($align=='J')
 				{
 					$this->ws = ($ns>1) ? ($wmax-$ls)/1000*$this->FontSize/($ns-1) : 0;
@@ -844,9 +840,7 @@ function Write($h, $txt, $link='')
 				if($i==$j)
 					$i++;
 				$this->Cell($w,$h,substr($s,$j,$i-$j),0,2,'',0,$link);
-			}
-			else
-			{
+			} else {
 				$this->Cell($w,$h,substr($s,$j,$sep-$j),0,2,'',0,$link);
 				$i = $sep+1;
 			}
@@ -1084,9 +1078,7 @@ function _getpagesize($size)
 			$this->Error('Unknown page size: '.$size);
 		$a = $this->StdPageSizes[$size];
 		return array($a[0]/$this->k, $a[1]/$this->k);
-	}
-	else
-	{
+	} else {
 		if($size[0]>$size[1])
 			return array($size[1], $size[0]);
 		else
@@ -1118,9 +1110,7 @@ function _beginpage($orientation, $size)
 		{
 			$this->w = $size[0];
 			$this->h = $size[1];
-		}
-		else
-		{
+		} else {
 			$this->w = $size[1];
 			$this->h = $size[0];
 		}
@@ -1188,9 +1178,7 @@ function _UTF8toUTF16($s)
 			$c2 = ord($s[$i++]);
 			$res .= chr(($c1 & 0x1C)>>2);
 			$res .= chr((($c1 & 0x03)<<6) + ($c2 & 0x3F));
-		}
-		else
-		{
+		} else {
 			// Single-byte character
 			$res .= "\0".chr($c1);
 		}
@@ -1337,9 +1325,7 @@ function _parsepngstream($f, $file)
 				$color .= preg_replace('/(.)./s','$1',$line);
 				$alpha .= preg_replace('/.(.)/s','$1',$line);
 			}
-		}
-		else
-		{
+		} else {
 			// RGB image
 			$len = 4*$w;
 			for($i=0;$i<$h;$i++)
@@ -1409,9 +1395,7 @@ function _parsegif($file)
 		rewind($f);
 		$info = $this->_parsepngstream($f,$file);
 		fclose($f);
-	}
-	else
-	{
+	} else {
 		// Use temporary file
 		$tmp = tempnam('.','gif');
 		if(!$tmp)
@@ -1462,9 +1446,7 @@ function _putpages()
 	{
 		$wPt = $this->DefPageSize[0]*$this->k;
 		$hPt = $this->DefPageSize[1]*$this->k;
-	}
-	else
-	{
+	} else {
 		$wPt = $this->DefPageSize[1]*$this->k;
 		$hPt = $this->DefPageSize[0]*$this->k;
 	}
@@ -1604,9 +1586,7 @@ function _putfonts()
 				$s .= ' /FontFile'.($type=='Type1' ? '' : '2').' '.$this->FontFiles[$font['file']]['n'].' 0 R';
 			$this->_out($s.'>>');
 			$this->_out('endobj');
-		}
-		else
-		{
+		} else {
 			// Allow for additional types
 			$mtd = '_put'.strtolower($type);
 			if(!method_exists($this,$mtd))

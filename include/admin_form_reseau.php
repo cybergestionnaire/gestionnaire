@@ -1,19 +1,19 @@
 <?php
 /*
-     This file is part of Cybermin.
+     This file is part of CyberGestionnaire.
 
-    Cybermin is free software; you can redistribute it and/or modify
+    CyberGestionnaire is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    Cybermin is distributed in the hope that it will be useful,
+    CyberGestionnaire is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Cybermin; if not, write to the Free Software
+    along with CyberGestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
  2006 Namont Nicolas
@@ -21,7 +21,7 @@
 
   include/admin_form_espace.php V0.1
 */
-
+require_once("include/class/Ville.class.php");
 // formulaire de creation / modification d'espace
                             
 
@@ -34,24 +34,24 @@ $label_bouton = "Modifier le r&eacute;seau" ;
 $rowreseau = getReseau();
 
 //Informations matos
-$nom     = $rowreseau["res_nom"];
-$adresse  = $rowreseau["res_adresse"];
-$ville = $rowreseau["res_ville"];
-$telephone=$rowreseau["res_tel"];
-$logo=$rowreseau["res_logo"];
-$mail=$rowreseau["res_mail"];
-$courrier=$rowreseau["res_courrier"];
-$activation=$rowreseau["res_activation"];
+$nom        = $rowreseau["res_nom"];
+$adresse    = $rowreseau["res_adresse"];
+$idVille    = $rowreseau["res_ville"];
+$telephone  = $rowreseau["res_tel"];
+$logo       = $rowreseau["res_logo"];
+$mail       = $rowreseau["res_mail"];
+$courrier   = $rowreseau["res_courrier"];
+$activation = $rowreseau["res_activation"];
 
 	// recupere les villes
-$town = getAllCityname();
+$villes = Ville::getVilles();
 
 //array logos
-$filesLogoarray=array();
-$filedir="./img/logo/";
+$filesLogoarray = array();
+$filedir        = "./img/logo/";
 $filesLogoarray = array_diff(scandir($filedir), array('..', '.')); //lister les logos dans le dossier
 $filesLogoarray = array_values($filesLogoarray); //r&eacute;indexer le tableau après avoir enlever lignes vides
-$nblogo=count($filesLogoarray);
+$nblogo         = count($filesLogoarray);
 
 
 //Affichage -----
@@ -74,15 +74,13 @@ echo $mess ;
     		<label >Ville *:</label>
    		 <select name="villereseau" class="form-control" >
 		<?php
-			foreach ($town AS $key=>$value)
+			foreach ($villes AS $ville)
 			{
-				if ($ville == $key)
+				if ($idVille == $ville->getid())
 				{
-					echo "<option value=\"".$key."\" selected>".$value."</option>";
-				}
-				else
-				{
-					echo "<option value=\"".$key."\">".$value."</option>";
+					echo "<option value=\"".$ville->getId()."\" selected>".$ville->getNom()."</option>";
+				} else {
+					echo "<option value=\"".$ville->getId()."\">".$ville->getNom()."</option>";
 				}
 			}
 		?>
@@ -106,7 +104,7 @@ echo $mess ;
 		if($activation==0){ 
 			echo ' <input type="radio" name="activation" value="0"  checked/> Non
 							<input type="radio" name="activation" value="1"  /> Oui';
-		}else{
+		} else {
 			echo '<input type="radio" name="activation" value="0"  /> Non 
 						<input type="radio" name="activation" value="1"  checked /> Oui';
 		}
@@ -120,7 +118,7 @@ echo $mess ;
 		if($courrier==0){ 
 			echo ' <input type="radio" name="courriers" value="0"  checked/> Non
 							<input type="radio" name="courriers" value="1"  /> Oui';
-		}else{
+		} else {
 			echo '<input type="radio" name="courriers" value="0"  /> Non 
 						<input type="radio" name="courriers" value="1"  checked /> Oui';
 		}
@@ -133,7 +131,7 @@ echo $mess ;
 			if ($logo==""){
 				echo  '<img src="./img/logo/logo.png" width="120px">';
 				
-			}else{
+			} else {
 			
 				echo '<img src="'.$filedir.$logo.'" width="120px" >' ;
 				}

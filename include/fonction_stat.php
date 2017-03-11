@@ -14,9 +14,7 @@ function getNewMemberNum()
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
    
     $row= mysqli_fetch_array($result);
 		return $row["num"];
@@ -33,9 +31,7 @@ function getSessionbyMonth($y,$m)
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
    
     $row= mysqli_fetch_array($result);
 		return $row["num"];
@@ -46,7 +42,7 @@ function getSessionbyMonth($y,$m)
 
 
 //******************STATISTIQUES RESERVATION***********************************************************************
-//retourne les années contenues dans les réservations
+//retourne les annÃ©es contenues dans les rÃ©servations
 function getYearStatResa()
 {
 $sql="SELECT DISTINCT (YEAR( `dateresa_resa` )) AS Y FROM `tab_resa` WHERE YEAR( `dateresa_resa` )<YEAR(NOW())";
@@ -56,41 +52,12 @@ $sql="SELECT DISTINCT (YEAR( `dateresa_resa` )) AS Y FROM `tab_resa` WHERE YEAR(
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
    
     return $result;
     }
 
 }
-
-///***OLD
-function getStatResaByDayold($date,$dureetotal,$nbtotal,$unit)
-{
-    $sql = "SELECT sum(duree_resa) AS duree, count(id_resa) AS nb
-            FROM tab_resa
-            WHERE dateresa_resa='".$date."'
-			AND id_user_resa !=1 " ;
-    $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);  ;
-    if($result == FALSE)
-    {
-        return FALSE;
-    }
-    else
-    {
-        $row = mysqli_fetch_array($result);
-        $array['height'] = $row['duree']*$unit;
-        $array['duree']  = $row['duree'];
-        $array['resa']   = $row['nb'];
-        return $array ;
-    }
-}
-
-
-
 
 
 function getStatResaByDay($date,$epn)
@@ -108,9 +75,7 @@ function getStatResaByDay($date,$epn)
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         $row = mysqli_fetch_array($result);
        $array['duree']  = $row['duree'];
         $array['resa']  = $row['nb'];
@@ -136,9 +101,7 @@ function getStatResa($monthNum,$year,$epn)
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         $row = mysqli_fetch_array($result)  ;
         return $row ;
     }
@@ -159,9 +122,7 @@ AND `id_espace` ='".$epn."' ";
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         $row = mysqli_fetch_array($result)  ;
         return $row ;
     }
@@ -171,7 +132,7 @@ AND `id_espace` ='".$epn."' ";
 //
 /**
  * getStatResaComputer()
- * renvoi l'id de la machine la plus reservŽ
+ * renvoi l'id de la machine la plus reservÃ©e
  **/
 function getStatResaComputer($monthNum,$year,$epn)
 {
@@ -192,9 +153,7 @@ function getStatResaComputer($monthNum,$year,$epn)
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         return $result ;
     }
 }
@@ -218,15 +177,13 @@ GROUP BY `id_user_resa` ";
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
     $nbA=0;
 	$nbB=0;
 	$nbC=0;
 		if ($y==date('Y')){
 			$nombreSemaines=date('W');
-		}else{
+		} else {
 			$nombreSemaines=52;
 		}
 		
@@ -251,7 +208,7 @@ GROUP BY `id_user_resa` ";
 	   
     }
 }
-// retoune le nombre de poste unique occupé
+// retoune le nombre de poste unique occupÃ©
 function pOccupe($nb1,$nb2,$date)
 {
   $sql = "SELECT id_resa
@@ -265,13 +222,13 @@ function pOccupe($nb1,$nb2,$date)
   closedb($db);
 	if(mysqli_num_rows($result)>0){
 	return $result ;
-	}else{
+	} else {
 	return FALSE;}
 	
 }
 
 //
-//recupère le nombre de postes occupés par tranche horaire 
+//recupÃ¨re le nombre de postes occupÃ©s par tranche horaire 
 // debut de tranche, nombre de resa dans la tranche
 function statTrancheHour($nb1,$nb2,$nomjour,$year,$epn)
 {
@@ -292,7 +249,7 @@ function statTrancheHour($nb1,$nb2,$nomjour,$year,$epn)
 		$row = mysqli_fetch_array($result);
 		return $row['NB'];
 		
-	}else{
+	} else {
 		return FALSE;
 	}
 }
@@ -310,7 +267,7 @@ function getnbcomputperepn($epn)
 		$row = mysqli_fetch_array($result);
 		return $row['NB'];
 		
-	}else{
+	} else {
 		return FALSE;
 	}
 	
@@ -348,7 +305,7 @@ function getJourEng($nb)
     return $day;
 }
 /*
-//milieu de tranche, nombre de resa accumulee avec leur duree, commençant et finissant dans la tranche
+//milieu de tranche, nombre de resa accumulee avec leur duree, commenÃ§ant et finissant dans la tranche
 // pour avoir le nombre de personnes dans l'epn par tranche horaire.
 function statTrancheHour2($nb1,$nb2,$date)
 {
@@ -402,9 +359,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
      $row=mysqli_fetch_array($result);
 	 return $row['duree'];
 	   
@@ -424,9 +379,7 @@ $sql="SELECT COUNT(id_resa) AS nd
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
      $row=mysqli_fetch_array($result);
 	 return $row['nd'];
 	   
@@ -451,42 +404,6 @@ $db=opendb();
 	return $row['duree'] ;
 }
 
-/**
- * renvoi le nombre de reservation et le nombre
- * d'heures pour un jour sous la forme d'un tableau
- **/
- /*
-function getStatResaByDay($date,$dureetotal,$nbtotal,$unit)
-{
-    $sql = "SELECT sum(duree_resa) AS duree, count(id_resa) AS nb
-            FROM tab_resa
-            WHERE dateresa_resa='".$date."'
-			AND id_user_resa !=9 " ;
-    opendb();
-    $result = mysql_query($sql);
-    closedb()      ;
-    if($result == FALSE)
-    {
-        return FALSE;
-    }
-    else
-    {
-        $row = mysql_fetch_array($result);
-        $array['height'] = $row['duree']*$unit;
-        $array['duree']  = $row['duree'];
-        $array['resa']   = $row['nb'];
-        return $array ;
-    }
-}
-*/
-////Statistique reservation par tranche d'age
-function getStatResaByAge()
-{
-
-}
-
-
-
 // retourne le cumul des resa par adh et par mois
 function getUserResabyMonth($iduser,$m,$year)
 {
@@ -503,9 +420,7 @@ $db=opendb();
 if ($result==FALSE)
 	{
       return FALSE;
-	}
-    else
-	{
+	} else {
 	
 	return $result;
 	
@@ -531,9 +446,7 @@ $db=opendb();
 if ($result==FALSE)
 	{
       return FALSE;
-	}
-    else
-	{
+	} else {
 		$row=mysqli_fetch_array($result);
 		$nbadh=$row['nbadh'];
       return  $nbadh ;
@@ -542,7 +455,7 @@ if ($result==FALSE)
 }
 //
 // statSexe()
-// recupere la répartition homme femme
+// recupere la rÃ©partition homme femme
 
 function statSexe($sex,$epn)
 {
@@ -558,9 +471,7 @@ function statSexe($sex,$epn)
     if (FALSE == $result)
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         $nb = mysqli_num_rows($result);
         return $nb ;
     }
@@ -608,9 +519,7 @@ $db=opendb();
     if ($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    { 
+    } else { 
     //         
     $row = mysqli_fetch_array($result)  ;
     return $row['nb'];
@@ -622,7 +531,7 @@ $db=opendb();
 
 //
 // statCsp()
-// retourne la répartition des adherents par Csp
+// retourne la rÃ©partition des adherents par Csp
 function statCsp($csp,$epn)
 {                              
   $csp =addslashes($csp) ;
@@ -637,9 +546,7 @@ $db=opendb();
   if($result == FALSE)
   {
       return FALSE;
-  }
-  else
-  {
+  } else {
       $row = mysqli_fetch_array($result)  ;
       return $row['nb'] ;
   }
@@ -647,7 +554,7 @@ $db=opendb();
 
 
 // statCity()
-// retourne la répartition des adherents par ville
+// retourne la rÃ©partition des adherents par ville
 function statCity($ville,$statut)
 {                              
  // $ville =addslashes($ville) ;
@@ -663,9 +570,7 @@ function statCity($ville,$statut)
   if($result == FALSE)
   {
       return FALSE;
-  }
-  else
-  {
+  } else {
       $row = mysqli_fetch_array($result)  ;
       return $row['nb'] ;
   }
@@ -675,7 +580,7 @@ function statCity($ville,$statut)
 
 //**************                 STATISTIQUES ATELIERS           ********************************************************
 
-//retourne les années contenues dans les ateliers et sessions
+//retourne les annÃ©es contenues dans les ateliers et sessions
 function getYearStatAtelierSessions()
 {
 $sql="SELECT DISTINCT (YEAR( `date_AS` )) AS Y FROM `tab_as_stat` WHERE YEAR( `date_AS` )<YEAR(NOW())";
@@ -685,9 +590,7 @@ $sql="SELECT DISTINCT (YEAR( `date_AS` )) AS Y FROM `tab_as_stat` WHERE YEAR( `d
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
    
     return $result;
     }
@@ -712,9 +615,7 @@ $db=opendb();
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         $row = mysqli_fetch_array($result);
 		
         $array['height'] = $row['duree']*$unit;
@@ -737,15 +638,13 @@ $db=opendb();
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         $row = mysqli_fetch_array($result)  ;
         return $row ;
     }
 }
 
-//Statistique nombre d'atelier par mois par catégorie
+//Statistique nombre d'atelier par mois par catÃ©gorie
 function getStatAtelierCategorie($year,$monthNum,$id_categorie,$unitV2)
 {
     $sql = "SELECT count(id_atelier) AS nb_atelier, id_categorie
@@ -759,9 +658,7 @@ $db=opendb();
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
        $row = mysqli_fetch_array($result);
 		$array['height'] = $row['nb_atelier']*$unitV2;
        $array['id_categorie']  = $row['id_categorie'];
@@ -770,7 +667,7 @@ $db=opendb();
     }
 }
 
-///stat de présence d'un adhérent à une liste d'ateliers
+///stat de prÃ©sence d'un adhÃ©rent Ã  une liste d'ateliers
 function listAteliersPresent($atelier)
 {
 $sql="SELECT  `id_atelier`,`ids_presents` FROM `tab_atelier_stat` WHERE `id_atelier`='".$atelier."' ";
@@ -780,9 +677,7 @@ closedb($db);
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
        $row = mysqli_fetch_array($result);
 	return $row ;
     }
@@ -791,7 +686,7 @@ closedb($db);
 
 
 
-// stat nombre de présent par atelier par mois
+// stat nombre de prÃ©sent par atelier par mois
 
 function getStatPresents($m,$y,$epn,$type)
 {
@@ -811,9 +706,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         
 		return $result;
     }
@@ -833,9 +726,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         $p=mysqli_fetch_array($result);
 		$var=($p["P"]/$p["I"])*100;
 		return $var;
@@ -844,7 +735,7 @@ $db=opendb();
 }
 
 
-// stat nombre d'atelier par catégories + nombre de présents par catégories.
+// stat nombre d'atelier par catÃ©gories + nombre de prÃ©sents par catÃ©gories.
 function CountCategories()
 {
 $sql="SELECT COUNT(id_atelier_categorie) as nbc FROM tab_atelier_categorie";
@@ -854,9 +745,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
          $row = mysqli_fetch_array($result)  ;
       return $row['nbc'] ;
     }
@@ -878,9 +767,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         
 		return $result;
     }
@@ -902,9 +789,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         
 		return $result;
     }
@@ -926,9 +811,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         
 		return $result;
     }
@@ -948,14 +831,12 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         
 		return $result;
     }
 }
-///nombre des ateliers sur l'année catégorie adultes/enfant
+///nombre des ateliers sur l'annÃ©e catÃ©gorie adultes/enfant
 /*
 function statAtelierAn($year, $cat)
 {
@@ -978,9 +859,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
 		$row=mysqli_fetch_array($result);
 		return $row["nbateliers"];
     }
@@ -988,7 +867,7 @@ $db=opendb();
 }
 
 */
-///retrouver les ateliers d'un adhérents par les forfaits
+///retrouver les ateliers d'un adhÃ©rents par les forfaits
 function UserStatInscription($iduser,$statut)
 {
 $sql="SELECT `id_atelier`,`id_session` FROM `rel_user_forfait` WHERE `id_user`='".$iduser."' AND `statut_forfait`='".$statut."' ";
@@ -998,17 +877,15 @@ closedb($db);
 if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         
 	return $result;
     }
 
 }
 
-///determiner la présences aux ateliers ou aux sessions pour l'année en cours uniqument
-// RAPPEL statut 0=inscrit, 1=présent, 2= en attente  /// type : 1->atelier, 2->session
+///determiner la prÃ©sences aux ateliers ou aux sessions pour l'annÃ©e en cours uniqument
+// RAPPEL statut 0=inscrit, 1=prÃ©sent, 2= en attente  /// type : 1->atelier, 2->session
 function getUserStatutAS($iduser,$statut,$type,$statutatelier)
 {
 
@@ -1045,9 +922,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         
 		return $result;
     }
@@ -1064,16 +939,14 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         
 		return $result;
     }
 }
 
 ///********************* Statistiques sur les sessions **********************
-//nombre de sessions dans l'année, total inscrits, total présents
+//nombre de sessions dans l'annÃ©e, total inscrits, total prÃ©sents
 function statSessionAn($year,$idepn)
 {
 $sql=" SELECT count(DISTINCT `id_AS`) AS nbsession, SUM(`presents`) AS presents, SUM(`absents`) as presents, SUM(inscrits) as inscrits FROM `tab_as_stat` 
@@ -1088,9 +961,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         
 		return $result;
     }
@@ -1112,16 +983,14 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         $row=mysqli_fetch_array($result);
 		return $row['nb'];
     }
 
 }
 ///Liste des sessions actives///
-// retourne array des n° de sessions actives
+// retourne array des nÂ° de sessions actives
 function listSession($year,$idepn)
 {
 $sql=" SELECT DISTINCT(`id_AS`) FROM `tab_as_stat` 
@@ -1136,9 +1005,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
        while($row=mysqli_fetch_array($result)){
 	   $r[]=$row[0];
 	   }
@@ -1160,9 +1027,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
       $row=mysqli_fetch_array($result);
 	  return $row["present"];
     }
@@ -1178,9 +1043,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
 	return $result;
 	}
 
@@ -1189,7 +1052,7 @@ $db=opendb();
 
 
 //
-///Statistique fréquence participation par sessions/dates
+///Statistique frÃ©quence participation par sessions/dates
 //
 function statSessionParticip($x)
 {
@@ -1207,9 +1070,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         return $result;
     }
 }
@@ -1231,9 +1092,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         return $result;
     }
 
@@ -1254,9 +1113,7 @@ function getSessionDetailStat($ids,$epn)
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         return $result;
     }
 	
@@ -1273,9 +1130,7 @@ function getsessionamebyid($id)
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         $row=mysqli_fetch_array($result);
         return $row["session_titre"];
     }
@@ -1291,7 +1146,7 @@ function getsessionamebyid($id)
 /////recuperer la liste de tous les adh qui impriment et pas les autres !
 // recupere le nombre d'adherents qui impriment
 
-//retourne les années contenues dans les impressions
+//retourne les annÃ©es contenues dans les impressions
 function getYearStatPrint()
 {
 $sql="SELECT DISTINCT (YEAR( `print_date` )) AS Y FROM `tab_print` WHERE YEAR( `print_date` )<YEAR(NOW())";
@@ -1301,9 +1156,7 @@ $sql="SELECT DISTINCT (YEAR( `print_date` )) AS Y FROM `tab_print` WHERE YEAR( `
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
    
     return $result;
     }
@@ -1318,7 +1171,7 @@ if ($type==1){ //couleur
 		WHERE `nom_tarif` LIKE '%coul%'
 		OR `comment_tarif` LIKE '%coul%'
 		AND `categorie_tarif` =1";
-	}else{//noir et blanc
+	} else {//noir et blanc
 		$sql="SELECT `id_tarif`
 		FROM `tab_tarifs`
 		WHERE `nom_tarif` LIKE '%noir%'
@@ -1332,9 +1185,7 @@ if ($type==1){ //couleur
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
    
     return $result;
     }
@@ -1354,9 +1205,7 @@ $db=opendb();
 if ($result==FALSE)
 	{
       return FALSE;
-	}
-    else
-	{
+	} else {
 	$nb = mysqli_num_rows($result) ;
       return $nb ;
 	}	
@@ -1401,9 +1250,7 @@ $db=opendb();
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
        $row=mysqli_fetch_array($result);
         return $row['nb'] ;
     }
@@ -1428,9 +1275,7 @@ $db=opendb();
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
        $row=mysqli_fetch_array($result);
         return $row['nb'] ;
     }
@@ -1448,9 +1293,7 @@ $db=opendb();
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         $row = mysqli_fetch_array($result);
 	return $row["id_tarif"];
     }
@@ -1472,9 +1315,7 @@ $db=opendb();
     if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         $row = mysqli_fetch_array($result);
         return $row;
     }
@@ -1496,9 +1337,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         $row = mysqli_fetch_array($result);
         return $row['debit'] ;
     }
@@ -1516,9 +1355,7 @@ $db=opendb();
 	if($result == FALSE)
     {
         return FALSE;
-    }
-    else
-    {
+    } else {
         $row = mysqli_fetch_array($result);
         return $row['total'] ;
     }
@@ -1549,9 +1386,7 @@ function getResaByMonth($id,$month,$y)
     if(FALSE == mysqli_num_rows($result))
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         return $result ;
     }
 	
@@ -1571,9 +1406,7 @@ function getResaBy2dates($id,$date1,$date2)
     if(FALSE == mysqli_num_rows($result))
     {
         return FALSE ;
-    }
-    else
-    {
+    } else {
         return $result ;
     }
 	

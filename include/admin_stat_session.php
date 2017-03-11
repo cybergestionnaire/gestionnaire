@@ -13,9 +13,7 @@ if (TRUE == isset($_GET['month']) AND TRUE==is_numeric($_GET['month']) AND $_GET
 	{
 		$month = $_GET['month'] ;
 		$year =$_GET['year'];
-	}
-	else
-	{
+	} else {
 	   $month = date('m');
 	   $year=date('Y');
 	}
@@ -55,9 +53,7 @@ if(!is_dir($dossierimg)){
 		    if ($epn == $key)
 		    {
 			echo "<option  value=\"".$key."\" selected>".$value."</option>";
-		    }
-		    else
-		    {
+		    } else {
 			echo "<option  value=\"".$key."\">".$value."</option>";
 		    }
 		}
@@ -208,7 +204,7 @@ if ($nbcategories>0){
 <?php
 if(isset($_GET["sessionselec"])){
 	$sessionselec=$_GET["sessionselec"];
-	}else{
+	} else {
 		$sessionselec=$session1;
 	}
 	$titresession=getsessionamebyid($sessionselec);
@@ -260,8 +256,7 @@ $statutarray=array(
 <!-- Classement des session par classe d'âge-->
 
 <?php
-}
-else {  echo geterror(37) ;
+} else {  echo geterror(37) ;
 
 }
 ?>
