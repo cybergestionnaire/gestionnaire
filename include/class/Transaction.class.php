@@ -183,4 +183,27 @@ class Transaction
     
     }
     
+    public static function getTransactionByUtilisateurAndType($idUtilisateur, $type) {
+
+        $transaction = null;
+    
+        $db      = Mysql::opendb();
+
+        $idUtilisateur = mysqli_real_escape_string($db, $idUtilisateur);
+        $type       = mysqli_real_escape_string($db, $type);
+        
+        $sql     = "SELECT * FROM tab_transactions WHERE id_user=" . $idUtilisateur . " AND type_transac='" . $type . "'";
+        $result  = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result && mysqli_num_rows($result) == 1) {
+            $transaction = new Transaction(mysqli_fetch_assoc($result));
+            mysqli_free_result($result);
+        }
+        
+        return $transaction;
+    
+    }
+    
+    
 }
