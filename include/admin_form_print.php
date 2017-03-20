@@ -13,7 +13,7 @@ if($id_user=="ext"){ //en cas d'utilisateur qui n'est pas dans la base, utilisat
 	if($userext!=FALSE){
 		$id_user=$userext;
 		$userext=1;
-		}else{
+		} else {
 		echo "Attention l'utilisateur externe n'existe pas !";
 	}
 }
@@ -102,7 +102,7 @@ if($caisse==1){
 	';
 			//debug($date_p);	
 		}
-	}else{
+	} else {
 		while($row = mysqli_fetch_array($tarifs))
 			{
 			//
@@ -182,14 +182,14 @@ if ($caisse==1)
  if (($total-$totalrestant)<0) 
  {
 	$du= "0"; 
- }else {
+ } else {
 	$du=$total-$totalrestant;
  }
  ///en cas de credit positif envoyer valeur
 if ($totalrestant>=$total)
 {
 $paiement=0;
- }else {
+ } else {
 $paiement=1;
 }
 

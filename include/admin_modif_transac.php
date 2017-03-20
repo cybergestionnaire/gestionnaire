@@ -35,7 +35,7 @@ case "adh":
 	$annuler="index.php?a=1&b=2&iduser=".$id_user;
 		if (isset($transac)){
 			$titre="Encaisser l'adh&eacute;sion";
-		}else{
+		} else {
 			$titre="Renouveller ou modifier l'adh&eacute;sion";
 		}
 	
@@ -59,7 +59,7 @@ case "forfait":
 			$forfait_user=$rowf["id_tarif"];
 			$url_redirect="index.php?a=21&b=3&idtransac=".$transac."&typetransac=".$typeTransac."&iduser=".$id_user ;
 			
-		}else{
+		} else {
 			//nouveau forfait a crediter
 			$titre="Encaisser un forfait pour ".$nom." ".$prenom;
 			$tariforfaits=getTarifsbyCat(5);
@@ -79,7 +79,7 @@ case "temps":
 			
 			if (isset($transac)){
 			$url_redirect="index.php?a=21&b=3&idtransac=".$transac."&typetransac=".$typeTransac."&iduser=".$id_user ;
-			}else{
+			} else {
 					$url_redirect="index.php?a=21&b=3&typetransac=".$typeTransac."&iduser=".$id_user ;
 			}
 		$annuler="index.php?a=6&iduser=".$id_user;
@@ -128,7 +128,7 @@ break;
 			$credit_p=round(($_POST["debitprint"] * $tarif['donnee_tarif']),2);
 			$prix=$credit_p;
 			
-		}else{
+		} else {
 			$tarif_p=$print["print_tarif"];
 			$credit_p=$print["print_credit"];
 			$tarif=mysqli_fetch_array(getPrixFromTarif($tarif_p));
@@ -144,7 +144,7 @@ break;
 			//griser les rubrique si c'est du credit unique
 			if($statut_p==2){
 			$disable="disabled /";
-			}else{
+			} else {
 			$disable="";
 			}
 	?>
@@ -167,9 +167,7 @@ break;
 				if ($tarif_p == $key)
 				{
 					echo "<option value=\"".$key."\" selected>".$value."</option>";
-				}
-				else
-				{
+				} else {
 					echo "<option value=\"".$key."\">".$value."</option>";
 				}
 			}
@@ -184,9 +182,7 @@ break;
 				if ($paiement_p == $key)
 				{
 					echo "<option value=\"".$key."\" selected>".$value."</option>";
-				}
-				else
-				{
+				} else {
 					echo "<option value=\"".$key."\">".$value."</option>";
 				}
 			}
@@ -243,9 +239,7 @@ if ($typeTransac=="adh"){
 				if ($tarif == $key)
 				{
 					echo "<option value=\"".$key."\" selected>".$value."</option>";
-				}
-				else
-				{
+				} else {
 					echo "<option value=\"".$key."\">".$value."</option>";
 				}
 			}
@@ -279,9 +273,7 @@ if (($typeTransac=="forfait") OR ($typeTransac=="temps" )){
 				if ($forfait_user == $key)
 				{
 					echo "<option value=\"".$key."\" selected>".$value."</option>";
-				}
-				else
-				{
+				} else {
 					echo "<option value=\"".$key."\">".$value."</option>";
 				}
 			}

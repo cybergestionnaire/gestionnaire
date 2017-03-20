@@ -36,9 +36,7 @@ $s =  $_GET["s"];
             if ($pSujet == $key)
             {
                 echo "<option value=\"".$key."\" selected>".$value."</option>";
-            }
-            else
-            {
+            } else {
                 echo "<option value=\"".$key."\">".$value."</option>";
             }
         }
@@ -83,9 +81,7 @@ if ($pSujet>0)
 						if ($niveau == $key)
 						{
 							echo "<option value=\"".$key."\" selected>".$value."</option>";
-						}
-						else
-						{
+						} else {
 							echo "<option value=\"".$key."\">".$value."</option>";
 						}
 					}
@@ -100,9 +96,7 @@ if ($pSujet>0)
 					if ($categorie == $key)
 					{
 						echo "<option value=\"".$key."\" selected>".$value."</option>";
-					}
-					else
-					{
+					} else {
 						echo "<option value=\"".$key."\">".$value."</option>";
 					}
 				}

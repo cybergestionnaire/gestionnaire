@@ -1,119 +1,118 @@
 <?php
 /*
-     This file is part of Cybermin.
+     This file is part of CyberGestionnaire.
 
-    Cybermin is free software; you can redistribute it and/or modify
+    CyberGestionnaire is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    Cybermin is distributed in the hope that it will be useful,
+    CyberGestionnaire is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Cybermin; if not, write to the Free Software
+    along with CyberGestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
- 2006 Namont Nicolas
- 
-
-  include/post_config.php V0.1
+    2006 Namont Nicolas (Cybermin)
 */
 
-// POST de Configuration du logiciel EPN Connect
+    // POST de Configuration du logiciel EPN Connect
+    require_once("include/class/Espace.class.php");
+    require_once("include/class/Config.class.php");
+    require_once("include/class/ConfigLogiciel.class.php");
+    //debug
+    // error_log("---- _POST ----");
+    // error_log(print_r($_POST, true));
+    // error_log("---- _GET ----");
+    // error_log(print_r($_GET, true));
+    
+    
+    $act      = isset($_GET["act"]) ? $_GET["act"] : '';
+    $idEspace = isset($_GET["idepn"]) ? $_GET["idepn"] : '';
 
-//debug
+    if (isset($_POST['submit'])) {
 
-$act=$_GET["act"];
-$epn=$_GET["idepn"];
+        switch ($_POST["form"]) {
+            case 1:
+                $epnr = $_POST["epn_r"];
+                header("Location:index.php?a=25&epnr=" . $epnr);
+                break;
+    
+            case 2:
+    
+                $id                 = isset($_POST['idconfig'])         ? $_POST['idconfig'] : '';
+                $shiftlog           = isset($_POST['shiftlog'])         ? $_POST['shiftlog'] : '';
+                $insclog            = isset($_POST['insclog'])          ? $_POST['insclog'] : '';
+                $renslog            = isset($_POST['renslog'])          ? $_POST['renslog'] : '';
+                $conexlog           = isset($_POST['conexlog'])         ? $_POST['conexlog'] : '';
+                $bloclog            = isset($_POST['bloclog'])          ? $_POST['bloclog'] : '';
+                $tempslog           = isset($_POST['tempslog'])         ? $_POST['tempslog'] : '';
+                $decouselog         = isset($_POST['decouselog'])       ? $_POST['decouselog'] : '';
+                $fermersessionlog   = isset($_POST['fermersessionlog']) ? $_POST['fermersessionlog'] : '';
+                
+                $activerforfait     = isset($_POST['forfait'])          ? $_POST['forfait'] : '';
+                $inscription_auto   = isset($_POST['inscrip_auto'])     ? $_POST['inscrip_auto'] : '';
+                $message_inscrip    = isset($_POST['message_inscrip'])  ? $_POST['message_inscrip'] : '';
+                $epn                = isset($_POST['epn'])              ? $_POST['epn'] : '';
 
-if(isset($_POST['submit'])){
+                $espace         = Espace::getEspaceById($idEspace);
+                $configLogiciel = $espace->getConfigLogiciel();
+                $config         = $espace->getConfig();
+    
+                if ($configLogiciel->setConfigLogiciel($shiftlog, $insclog, $renslog, $conexlog, $bloclog, $tempslog, $decouselog, $fermersessionlog)  && $config->modifier(
+                        $config->getActiverConsole(),
+                        $config->getName(),
+                        $config->getDefaultTimeUnit(),
+                        $config->getUnit(),
+                        $config->getMaxTime(),
+                        $config->getDefaultMaxTime(),
+                        $config->getIdEspace(),
+                        $inscription_auto,
+                        $message_inscrip,
+                        $config->getNomEspace(),
+                        $activerforfait,
+                        $config->getResaRapide(),
+                        $config->getDureeResaRapide()
+                )) {
+                    header("Location:index.php?a=25&mess=ok&epnr=" . $idEspace) ;
+                } else {
+                    header("Location:index.php?a=25&mess=0&epnr=" . $idEspace);
+                }
+        
+                break;
+    
+            case 4:
+                $idEspace = isset($_POST["epn_r"])   ? $_POST["epn_r"]   : '' ;
+                $console  = isset($_POST["console"]) ? $_POST["console"] : '' ;
 
- switch ($_POST["form"])
-  {
-	case 1:
-	$epnr=$_POST["epn_r"];
-	header("Location:index.php?a=25&act=1&epnr=".$epnr);
-	break;
-	
-	case 2:
-	
-	  $id=$_POST['idconfig'];
-		$shiftlog=$_POST['shiftlog'];
-		$insclog=$_POST['insclog'];
-		$renslog = $_POST['renslog'];
-		$conexlog=$_POST['conexlog'];
-		$bloclog=$_POST['bloclog'];
-		$tempslog=$_POST['tempslog'];
-		$decouselog=$_POST['decouselog'];
-		$fermersessionlog=$_POST['fermersessionlog'];
-		
-		$activerforfait=$_POST['forfait'];
-		$inscription_auto=$_POST['inscrip_auto'];
-		$message_inscrip=$_POST['message_inscrip'];
-		$epn=$_POST['epn'];
-	
+                $espace = Espace::getEspaceById($idEspace);
+                $config = $espace->getConfig();
 
-	//1er enregistrement des paramètres dans tab_config_logiciel
-	if($act==1){
-	
-		$result=addConfiglogiciel($epn,$shiftlog,$insclog,$renslog,$conexlog,$bloclog,$tempslog,$decouselog,$fermersessionlog);
-			if(FALSE==$result)
-			{
-				header("Location:index.php?a=25&mess=0&epnr=".$epn);
-			}
-			else
-			{
-				header("Location:index.php?a=25&mess=ok&epnr=".$epn) ;
-			}
-		}
-		
-		
-		//Modification des paramètres dans tab_config_logiciel
-		if($act==0){
-		
-		$result=updateConfiglogiciel($id,$epn,$shiftlog,$insclog,$renslog,$conexlog,$bloclog,$tempslog,$decouselog,$fermersessionlog);
-			if(FALSE==$result)
-			{
-				header("Location:index.php?a=25&mess=0&epnr=".$epn);
-			}
-			else
-			{
-				header("Location:index.php?a=25&mess=ok&epnr=".$epn) ;
-			}
-		}
-		
-		//dans tous les cas remodifier les paramètres config supplementaires dans tab_config
-		$update=updateConfigForfait($epn,$activerforfait,$inscription_auto,$message_inscrip);
-		if(FALSE==$update){
-			header("Location:index.php?a=25&mess=0&epnr=".$epn);
-			}
-			else
-			{
-				header("Location:index.php?a=25&mess=ok&epnr=".$epn) ;
-			}
-	
-	
-	
-	break;
-	
-	 case 4:
-		  $epnr=$_POST["epn_r"];
-		  $console = $_POST["console"] ;
-		  $result=updateconsolemode($epnr, $console)  ;
-			if(FALSE==$result)
-			{
-				header("Location:index.php?a=25&mess=0&epnr=".$epnr);
-			}
-			else
-			{
-				header("Location:index.php?a=25&mess=ok&epnr=".$epnr) ;
-			}
-			
-	  break;
-}	
-}	
+                if ($config->modifier(
+                        $console,
+                        $config->getName(),
+                        $config->getDefaultTimeUnit(),
+                        $config->getUnit(),
+                        $config->getMaxTime(),
+                        $config->getDefaultMaxTime(),
+                        $config->getIdEspace(),
+                        $config->getInscriptionUsagersAuto(),
+                        $config->getMessageInscription(),
+                        $config->getNomEspace(),
+                        $config->getActivationForfait(),
+                        $config->getResaRapide(),
+                        $config->getDureeResaRapide()
+                    )) {
+                    header("Location:index.php?a=25&mess=ok&epnr=" . $idEspace) ;
+                } else {
+                    header("Location:index.php?a=25&mess=0&epnr=" . $idEspace);
+                }
+ 
+                break;
+        }   
+    }   
 
 ?>

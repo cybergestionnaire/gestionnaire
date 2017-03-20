@@ -7,23 +7,23 @@ function backupbdd()
  include ("./connect_db.php");
  
 new BackupMySQL(array(
-	'username' => $userdb,
-	'passwd' => $passdb,
-	'dbname' => $database
-	));
+    'username' => $userdb,
+    'passwd' => $passdb,
+    'dbname' => $database
+    ));
 
 $sql="INSERT INTO `tab_logs`(`id_log`, `log_type`, `log_date`, `log_MAJ`, `log_valid`, `log_comment`) 
-	VALUES ('','bac' ,NOW(), '1.3','1', 'Backup integral de la base effectue') ";
-	
+    VALUES ('','bac' ,NOW(), '1.9','1', 'Backup integral de la base effectue') ";
+    
 $db=opendb();
 $result = mysqli_query($db,$sql);
 closedb($db);
  
  if(FALSE==$result){ 
-	return FALSE;
-	}else{
-		return TRUE;
-	}
+    return FALSE;
+    } else {
+        return TRUE;
+    }
 }
 
 //*****************************FONCTIONS  PERENNES
@@ -34,15 +34,15 @@ $sql="SELECT `id_log`, `log_type`, `log_date` FROM `tab_logs` WHERE `log_type`='
 $db=opendb();
 $result = mysqli_query($db,$sql);
 closedb($db);
-	if(FALSE==$result){
-		return FALSE;
-	}else{
-		if(mysqli_num_rows($result)==0){
-		return FALSE;
-		}else{
-		return TRUE;
-		}
-	}
+    if(FALSE==$result){
+        return FALSE;
+    } else {
+        if(mysqli_num_rows($result)==0){
+        return FALSE;
+        } else {
+        return TRUE;
+        }
+    }
 }
 
 
@@ -56,26 +56,11 @@ VALUES ('', '".$type."','".$date."','".$version."','1','". $comment."') ";
 $db=opendb();
 $result = mysqli_query($db,$sql);
 closedb($db);
-	if(FALSE==$result){
-		return FALSE;
-	}else{
-		return TRUE;
-	}
-
-}
-
-function modifNumMAJ($value)
-{
-$sql="UPDATE `tab_config` SET `name_config`=".$value;
-
-$db=opendb();
-$result = mysqli_query($db,$sql);
-closedb($db);
-	if(FALSE==$result){
-		return FALSE;
-	}else{
-		return TRUE;
-	}
+    if(FALSE==$result){
+        return FALSE;
+    } else {
+        return TRUE;
+    }
 
 }
 
@@ -103,85 +88,118 @@ function myFlush() {
     flush();
 }
 
-function getMajConfigVersion($idepn)
-{
-$sql="SELECT `name_config` FROM `tab_config` WHERE `id_espace`=".$idepn;
-$db=opendb();
-$result = mysqli_query($db, $sql);
-closedb($db);
-    if ($result == FALSE )
-    {
-        return FALSE ;
-    }
-    else
-    {
-	$row=mysqli_fetch_array($result);
-	return $row["name_config"] ;
-    }
-
-
-}
-
 
 //******** Ajout des tables supplémentaires
+// ***** maj version 1.1 *******
 
-
-function createtabinscriptMAJ()
+function AddTab_courrier()
 {
-$sql="CREATE TABLE IF NOT EXISTS `tab_captcha` (
-  `id_captcha` int(11) NOT NULL AUTO_INCREMENT,
-  `capt_activation` ENUM('N', 'Y') NOT NULL,
-  `capt_code` varchar(500) NOT NULL,
-   PRIMARY KEY (`id_captcha`)
-	) ENGINE=MyISAM ;";
-	
-	$db=opendb();
-	$result = mysqli_query($db,$sql);
-	closedb($db);
-	if(FALSE==$result){	$row="echec"; }else{ $row="OK"; }
-return $row;
+    $sql = "CREATE TABLE IF NOT EXISTS `tab_courriers` (
+            `id_courrier` int(11) NOT NULL AUTO_INCREMENT,
+            `courrier_titre` varchar(150) COLLATE latin1_general_ci NOT NULL,
+            `courrier_text` varchar(800) COLLATE latin1_general_ci NOT NULL,
+            `courrier_name` int(11) NOT NULL,
+            `courrier_type` int(11) NOT NULL,
+            PRIMARY KEY (`id_courrier`)
+            ) ENGINE=MyISAM "; 
+    $db     = opendb();
+    $result = mysqli_query($db,$sql);
+    closedb($db);
+    if(FALSE==$result){ $row="echec"; } else { $row="OK"; }
+    return $row;
 }
+
+function add_courriertest()
+{
+    $sql = "INSERT INTO `tab_courriers` (`id_courrier`, `courrier_titre`, `courrier_text`, `courrier_name`, `courrier_type`) VALUES
+            (1, 'rappel', 'Piqure de rappel', 1, 2),
+            (2, 'rappel', 'Vous etes inscrit(e) a un atelier :', 1, 3),
+            (3, 'rappel', 'N''hesitez pas a nous recontacter aux coordonnees suivantes', 1, 4);";
+    $db     = opendb();
+    $result = mysqli_query($db,$sql);
+    closedb($db);
+    if(FALSE==$result){ $row="echec"; } else { $row="OK"; }
+    return $row;
+}
+
+
+function alterEspace()
+{
+    $sql    = "ALTER TABLE `tab_espace` ADD `mail_espace` VARCHAR( 300 ) NOT NULL";
+    $db     = opendb();
+    $result = mysqli_query($db,$sql);
+    closedb($db);
+    if(FALSE==$result){ $row="echec"; } else { $row="OK"; }
+    return $row;
+}
+
+
+
+
+// ***** maj version 1.2 *******
 
 function Tab_ins1()
 {
-	$sql="ALTER TABLE `tab_inscription_user` CHANGE `equipement_inscription_user` `equipement_inscription_user` VARCHAR( 50 ) NOT NULL ;";
-	$db=opendb();
-	$result = mysqli_query($db,$sql);
-	closedb($db);
-	if(FALSE==$result){	$row="echec"; }else{ $row="OK"; }
-return $row;
+    $sql    = "ALTER TABLE `tab_inscription_user` CHANGE `equipement_inscription_user` `equipement_inscription_user` VARCHAR( 50 ) NOT NULL ;";
+    $db     = opendb();
+    $result = mysqli_query($db,$sql);
+    closedb($db);
+    if(FALSE==$result){ $row="echec"; } else { $row="OK"; }
+    return $row;
 }
 
 function Tab_ins2()
 {
-	$sql="ALTER TABLE `tab_inscription_user` CHANGE `connaissance_inscription_user` `connaissance_inscription_user` INT(11) NOT NULL ;";
-	$db=opendb();
-	$result = mysqli_query($db,$sql);
-	closedb($db);
-	if(FALSE==$result){	$row="echec"; }else{ $row="OK"; }
-return $row;
+    $sql    = "ALTER TABLE `tab_inscription_user` CHANGE `connaissance_inscription_user` `connaissance_inscription_user` INT(11) NOT NULL ;";
+    $db     = opendb();
+    $result = mysqli_query($db,$sql);
+    closedb($db);
+    if(FALSE==$result){ $row="echec"; } else { $row="OK"; }
+    return $row;
 }
 
 function alterMessageMAJ()
 {
-		$sql="ALTER TABLE `tab_messages` CHANGE `mes_date` `mes_date` DATETIME NULL DEFAULT NULL ;";
-	$db=opendb();
-	$result = mysqli_query($db,$sql);
-	closedb($db);
-	if(FALSE==$result){	$row="echec"; }else{ $row="OK"; }
-return $row;
+    $sql    = "ALTER TABLE `tab_messages` CHANGE `mes_date` `mes_date` DATETIME NULL DEFAULT NULL ;";
+    $db     = opendb();
+    $result = mysqli_query($db,$sql);
+    closedb($db);
+    if(FALSE==$result){ $row="echec"; } else { $row="OK"; }
+    return $row;
 }
 
-
+function createtabinscriptMAJ()
+{
+    $sql  = "CREATE TABLE IF NOT EXISTS `tab_captcha` (
+            `id_captcha` int(11) NOT NULL AUTO_INCREMENT,
+            `capt_activation` ENUM('N', 'Y') NOT NULL,
+            `capt_code` varchar(500) NOT NULL,
+            PRIMARY KEY (`id_captcha`)
+            ) ENGINE=MyISAM ;";
+    
+    $db     = opendb();
+    $result = mysqli_query($db,$sql);
+    closedb($db);
+    if (FALSE == $result) {
+        $row = "echec";
+    } else {
+        $row = "OK";
+    }
+    return $row;
+}
 
 function insertCapt()
 {
-	$sql="INSERT INTO `tab_captcha`(`id_captcha`, `capt_activation`, `capt_code`) VALUES (1,'N','') ;";
-		$db=opendb();
-	$result = mysqli_query($db,$sql);
-	closedb($db);
-	if(FALSE==$result){	$row="echec"; }else{ $row="OK"; }
-return $row;
+    $sql    =" INSERT INTO `tab_captcha`(`id_captcha`, `capt_activation`, `capt_code`) VALUES (1,'N','') ;";
+    $db     = opendb();
+    $result = mysqli_query($db,$sql);
+    closedb($db);
+    if (FALSE == $result) {
+        $row = "echec";
+    } else {
+        $row = "OK";
+    }
+    return $row;
 }
 
 

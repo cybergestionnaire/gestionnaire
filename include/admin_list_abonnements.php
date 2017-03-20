@@ -1,19 +1,19 @@
 <?php
 /*
-     This file is part of Cybermin.
+     This file is part of CyberGestionnaire.
 
-    Cybermin is free software; you can redistribute it and/or modify
+    CyberGestionnaire is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    Cybermin is distributed in the hope that it will be useful,
+    CyberGestionnaire is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Cybermin; if not, write to the Free Software
+    along with CyberGestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
  2006 Namont Nicolas
@@ -67,9 +67,7 @@ if (strlen($term)>=2)
     if (FALSE == $result OR mysqli_num_rows($result)==0)
     {
       echo getError(6);
-    }
-    else
-    {
+    } else {
       $nb  = mysqli_num_rows($result);
       if ($nb > 0)
       {
@@ -89,7 +87,7 @@ if (strlen($term)>=2)
 			
                         if($row['status_user']==1){
                             $class="" ;
-                        }else{
+                        } else {
                             $class="inactif" ; }
 			    
 			$forfaits=getForfaitAchete($row["id_user"],"for");// total des ateliers achetés
@@ -102,7 +100,7 @@ if (strlen($term)>=2)
 			$nbrestant=$nbForfait-$nbASpresent; //restant apres dépense
 			if($nbrestant>=0){
 				$nbHorsForfait= "aucun";
-				}else{
+				} else {
 				$nbHorsForfait= abs($nbrestant)."&nbsp;&nbsp;<span class=\"btn bg-red btn-xs\"><i class=\"fa fa-warning\"></i></span>";
 				}
 				
@@ -184,7 +182,7 @@ $result= getLastTransactions();
 				$depense=$rowforfait["depense"];
 				$datetransac=$rowforfait["date_transac"];
 				$reste=$totalachete-$depense;
-			}else{ //aucun forfait en cours
+			} else { //aucun forfait en cours
 				$totalachete=0;
 				$depense=0;
 				$datetransac="0 !";
@@ -202,7 +200,7 @@ $result= getLastTransactions();
 			
 			if($nbrestant>=0){
 				$nbHorsForfait= "0";
-				}else{
+				} else {
 				$nbHorsForfait= "<span class=\"text-red\">".abs($nbrestant)."&nbsp;&nbsp;</span><span class=\"btn bg-red btn-xs\" data-toggle=\"tooltip\" title=\"Ces ateliers n'ont pas &eacute;t&eacute; pay&eacute;s !\"><i class=\"fa fa-warning\"></i></span>";
 				}
 			
@@ -230,9 +228,7 @@ $result= getLastTransactions();
 			
     <?php
 		
-		}
-		
-		else{
+		} else {
 		echo "<div class=\"alert alert-warning alert-dismissable\"><i class=\"fa fa-warning\"></i>
           <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Aucun forfait enregistr&eacute; pour l'instant</div>";
 		}

@@ -145,9 +145,7 @@ if (strlen($term)>=2)
 			
 			echo  geterror(6);
 			echo '</div></div>';
-    }
-    else
-    {
+    } else {
       $nb  = mysqli_num_rows($result);
       if ($nb > 0)
       {
@@ -265,7 +263,7 @@ else // si pas de recherche alors affichage classique
 							 <td>".$prix." </td>";
 						if($row['print_statut']==0){  
 							echo "<td><p class=\"text-red\">".$statut."</p></td> ";
-						}else{
+						} else {
 							echo "<td><p class=\"text-light-blue\">".$statut."</p></td> ";
 						}
 						echo "</tr>";

@@ -11,11 +11,11 @@ $caissier=$_SESSION["iduser"];
 if ($_GET["ext"]==1){
 	if (isset($_POST["nomuser"]))
 	{	$nomuser_p=addslashes($_POST["nomuser"]);
-		}else{
+		} else {
 		$mess= getError(4);
 		//exit;
 	}
-}else{
+} else {
 	$nomuser_p='0';
 }
 
@@ -44,7 +44,7 @@ if ($act !="" AND $act!=3)  // verife si non vide
 						
 						if ($_POST["submit"] =="Encaisser" ){
 							$statut_p="1";
-							}else{
+							} else {
 							$statut_p="0";
 							}
 						
@@ -57,7 +57,7 @@ if ($act !="" AND $act!=3)  // verife si non vide
 						$credit=$somme-$du; // ce qui reste en plus apres deduction de la somme due
 						$Gprint=addPrint($date_p,$id_user,0,0,2,$credit,$nomuser_p,$epn_p,$caissier,$moyen_p);
 							
-				}else{
+				} else {
 				
 				
 				//sinon boucle normale, on ajoute le credit en fonction du tarif
@@ -70,12 +70,12 @@ if ($act !="" AND $act!=3)  // verife si non vide
 						//remise a zero si le credit est deja positif sur le compte et est superieur au total depense
 						if($paiement==0){
 							$credit_p=0;
-							}else{
+							} else {
 							$credit_p=$tab_print[2];
 						}
 						if ($_POST["submit"] =="Encaisser" ){
 							$statut_p="1";
-							}else{
+							} else {
 							$statut_p="0";
 							}
 						if ($debit_p>"0"){
@@ -89,9 +89,7 @@ if ($act !="" AND $act!=3)  // verife si non vide
 				if (FALSE ==$Gprint)
 						 {
 							header("Location: ./index.php?a=21&mesno=0");
-						 }
-						 else
-						 {
+						 } else {
 							header("Location: ./index.php?a=21&b=1&act=&iduser=".$id_user);
 						 }
 				
@@ -102,9 +100,7 @@ if ($act !="" AND $act!=3)  // verife si non vide
 					 if (FALSE == modPrint($id_transac,$date_p,$debit_p,$tarif_p, $statut_p, $credit_p,$nomuser_p, $moyen_p ))
 					 {
 						 header("Location: ./index.php?a=21&mesno=0");
-					 }
-					 else
-					 {
+					 } else {
 						 header("Location: ./index.php?a=21&b=1&iduser=".$id_user."");
 					 }
 				break;
@@ -119,9 +115,7 @@ if ($act !="" AND $act!=3)  // verife si non vide
 						if (FALSE == addPrint($date_p,$id_user,0,0, 2, $credit_p,$nomuser_p,$epn_p,$caissier,$moyen_p ))
 						 {
 							 header("Location: ./index.php?a=21&mesno=0");
-						 }
-						 else
-						 {
+						 } else {
 							 header("Location: ./index.php?a=21&b=1&iduser=".$id_user."");
 						 }
 					

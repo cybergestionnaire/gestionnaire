@@ -18,10 +18,7 @@ if ($act !="" AND $act!=3)  // verife si non vide
     if (!$titrecourrier || !$name )
     {
        $mess = getError(4);
-    }
-	
-    else
-    {
+    } else {
         switch($act)  
         {
             case 1:   // ajout d'un courrier
@@ -29,9 +26,7 @@ if ($act !="" AND $act!=3)  // verife si non vide
                  {
                      
 									header("Location: ./index.php?a=52&mesno=0");
-                 }
-                 else
-                 {
+                 } else {
                     header("Location: ./index.php?a=52");
                  }
             break;
@@ -40,9 +35,7 @@ if ($act !="" AND $act!=3)  // verife si non vide
                  {
 					
                      header("Location: ./index.php?a=52&mesno=0");
-                 }
-                 else
-                 {
+                 } else {
                      header("Location: ./index.php?a=52");
                  }
             break;
@@ -55,9 +48,7 @@ if ($act==3) // supprime un courrier
   if (FALSE == supCourrier($id))
   {
       header("Location: ./index.php?a=52&mesno=0");
-  }
-  else
-  {
+  } else {
       header("Location: ./index.php?a=52");
   }
 }

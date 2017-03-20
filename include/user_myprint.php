@@ -72,7 +72,7 @@ if (TRUE==checkPrint($_SESSION['iduser']))
 				
 					echo "<td><p class=\"text-red\">".$statut."</p></td> 
 					";
-				}else{
+				} else {
 					// transaction enregistrée
 					echo "<td><p class=\"text-light-blue\">".$statut."</p></td> <td>&nbsp;</td>";
 				}
@@ -80,9 +80,7 @@ if (TRUE==checkPrint($_SESSION['iduser']))
 		}
 		echo "</tbody></table></div></div>" ;
 	}
-}
-else
-{
+} else {
 	echo "<h4 class=\"alert_info\">Pas d'historique d'impressions</h4>" ;
 	
 }

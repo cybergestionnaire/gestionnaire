@@ -1,19 +1,19 @@
 <?php
 /*
-     This file is part of Cybermin.
+     This file is part of CyberGestionnaire.
 
-    Cybermin is free software; you can redistribute it and/or modify
+    CyberGestionnaire is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    Cybermin is distributed in the hope that it will be useful,
+    CyberGestionnaire is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Cybermin; if not, write to the Free Software
+    along with CyberGestionnaire; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
  2006 Namont Nicolas
@@ -117,9 +117,7 @@ $epn=$_GET["idepn"];
           if (TRUE == isset($_SESSION['other_user']))
           {
               $reserve = '<dt>R&eacute;servation pour : </dt><dd> '.getUserName($_SESSION['other_user']).'</dd>' ;
-          }
-          else
-          {
+          } else {
               $reserve = '<dt>R&eacute;servation par : </dt><dd> '.getUserName($_SESSION['iduser']).'<dd>' ;
           }
           $step  =  '<dl class="dl-horizontal">'.$reserve.'
@@ -149,9 +147,7 @@ $epn=$_GET["idepn"];
                         if (FALSE == $result OR mysqli_num_rows($result)==0)
                         {
                           echo getError(6);
-                        }
-                        else
-                        {
+                        } else {
                           $nb  = mysqli_num_rows($result);
                           if ($nb > 0)
                           {
@@ -172,10 +168,10 @@ $epn=$_GET["idepn"];
 								$class="text-muted" ;
 									if ($dateadhesion<$aujourdhui){	
 										$info='<small class="badge bg-blue" data-toggle="tooltip" title="adh&eacute;sion &agrave; renouveller"><i class="fa fa-info"></i></small> ';
-									} else{ 
+									} else { 
 										$info='<small class="badge bg-blue" data-toggle="tooltip" title="compte inactif"><i class="fa fa-info"></i></small>';
 									}
-								}else{
+								} else {
 								$class="";
 								$info="";
 								}
