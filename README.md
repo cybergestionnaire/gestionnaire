@@ -10,7 +10,9 @@ Vous pourrez trouver plus d'aide sur le forum suivant : http://animepn.openphpbb
 
 ## nouvelle installation
 
-Merci de consulter la documentation originale pour l'installation :https://maxletesteur.jimdo.com/cyber-gestionnaire/installation-et-param%C3%A9trages/
+Merci de consulter la documentation originale pour l'installation : https://maxletesteur.jimdo.com/cyber-gestionnaire/installation-et-param%C3%A9trages/
+
+Ou reportez vous à la page suivante : https://github.com/ctariel/gestionnaire/wiki/CyberGestionnaire
 
 ## Mise à jour d'un CyberGestionnaire existant
 
