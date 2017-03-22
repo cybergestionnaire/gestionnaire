@@ -34,7 +34,7 @@ $destinataire = array("nom"=>"","adr"=>"","cp"=>'');
 	$destinataire['adr'] = $resultuser['adresse_user'];
 	if($resultuser['ville_user']>16 AND $resultuser['ville_user']<20){
 			$destinataire['cp']="";
-	}else{
+	} else {
 		$destinataire['cp']=$resultuser['code_postale_city']." ".$resultuser['nom_city'];
 	}
 	
@@ -63,7 +63,7 @@ $destinataire = array("nom"=>"","adr"=>"","cp"=>'');
 		$paragraphe=$rowtextesl[3];} else { $paragraphe='';}
 	if($rowtextesl[4]<>'')	{
 		$signature=$rowtextesl[4];} else { $signature='';}
-		}else{
+		} else {
 			$introduction=utf8_decode('Attention aucun texte d\'introduction, aucune signature n\'ont été rentré dans la base, veuillez allez dans la configuration des courriers pour en rentrer d\'urgence !');
 			$paragraphe='';
 			$signature='';
@@ -80,7 +80,7 @@ $destinataire = array("nom"=>"","adr"=>"","cp"=>'');
 			AND status_rel_atelier_user < 2
 			ORDER BY `date_atelier` ASC";
 	$rowatelier = mysqli_query($db, $sqlatelier);
-	if($rowatelier==FALSE){$nba=0 ;}else{$nba=mysqli_num_rows($rowatelier);}
+	if($rowatelier==FALSE){$nba=0 ;} else {$nba=mysqli_num_rows($rowatelier);}
 	
 
 //recuperation de la liste des ateliers en attente
@@ -93,7 +93,7 @@ $destinataire = array("nom"=>"","adr"=>"","cp"=>'');
 		AND status_rel_atelier_user = 2
 		ORDER BY `date_atelier` ASC";
 	$rowatelierattente = mysqli_query($db, $sqlatelierattente);
-	if($rowatelierattente==FALSE){$nbattente=0;}else{$nbattente=mysqli_num_rows($rowatelierattente);}	
+	if($rowatelierattente==FALSE){$nbattente=0;} else {$nbattente=mysqli_num_rows($rowatelierattente);}	
 	
 	/*
 //Recuperation de laliste des sessions //
@@ -108,7 +108,7 @@ $destinataire = array("nom"=>"","adr"=>"","cp"=>'');
 	GROUP BY rel_session_user.`id_session` 
 	";
 	$rowsession = mysqli_query($db, $sqlsession);
-	if($rowsession==FALSE){$nbsess=0;}else{ $nbsess=mysqli_num_rows($rowsession);}	
+	if($rowsession==FALSE){$nbsess=0;} else { $nbsess=mysqli_num_rows($rowsession);}	
 	
 //recuperation de la liste des ateliers en attente
 	$sqlattente="SELECT rel_session_user.`id_session`,`session_titre`,`session_detail`
@@ -120,7 +120,7 @@ $destinataire = array("nom"=>"","adr"=>"","cp"=>'');
 	AND tab_session_sujet.`id_session_sujet`= tab_session.nom_session
 	GROUP BY rel_session_user.`id_session` ";
 	$rowsessionattente = mysqli_query($db, $sqlsessattente);
-	if(mysqli_num_rows($rowsessionattente)==0){	$nbattentesess=0;	}else{$nbattentesess=mysqli_num_rows($rowsessionattente);}
+	if(mysqli_num_rows($rowsessionattente)==0){	$nbattentesess=0;	} else {$nbattentesess=mysqli_num_rows($rowsessionattente);}
 */
 
 //fin des donnees extraites de la base
@@ -211,7 +211,7 @@ function lettreatelier($rowatelier,$nba,$nbattente,$rowatelierattente)
 			$this->SetFont('SourceSansPro-LightItalic','',12);
 		$this->MultiCell(0,5,$contenuatelier2,0,'J',false);
 	 }
-	}else{
+	} else {
 		$this->Write(5,utf8_decode("Vous n'êtes inscrit à aucun atelier actuellement."));
 	}
 	

@@ -50,7 +50,7 @@ if($userrow!=FALSE){
 		
 	}
 	
-}else{
+} else {
 	
 	$csv_output.="Pas d'adhérents enregistrés pour les ateliers cette année'";
 }

@@ -20,7 +20,7 @@
 */
 
 // Desactivation du rapport d'erreur
-//error_reporting(0);
+// error_reporting(0);
 // Affichage des erreurs pour le debuggage
 error_reporting(E_ALL);
 

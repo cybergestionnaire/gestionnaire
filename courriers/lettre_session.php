@@ -39,7 +39,7 @@ require("../fpdf.php");
 		$destinataire['adr'] = $resultuser['adresse_user'];
 	if($resultuser['ville_user']>16 AND $resultuser['ville_user']<20){
 			$destinataire['cp']="";
-	}else{
+	} else {
 		$destinataire['cp']=$resultuser['code_postale_city']." ".$resultuser['nom_city'];
 	}
 	
@@ -62,7 +62,7 @@ require("../fpdf.php");
 		$paragraphe=$rowtextesl[3];} else { $paragraphe='';}
 	if(isset($rowtextesl[4]))	{
 		$signature=$rowtextesl[4];} else { $signature='';}
-		}else{
+		} else {
 			$introduction='Attention aucun texte d\'introduction, aucune signature n\'ont été rentré dans la base, veuillez allez dans la configuration des courriers pour en rentrer d\'urgence !';
 			$paragraphe='';
 			$signature='';
@@ -82,7 +82,7 @@ require("../fpdf.php");
 	";
 	$rowsession = mysqli_query($db, $sqlsession);
 
-if($rowsession==FALSE){$nbses=0;}else{ $nbses=mysqli_num_rows($rowsession);}	
+if($rowsession==FALSE){$nbses=0;} else { $nbses=mysqli_num_rows($rowsession);}	
 	
 	
 //recuperation de la liste des ateliers en attente
@@ -97,7 +97,7 @@ if($rowsession==FALSE){$nbses=0;}else{ $nbses=mysqli_num_rows($rowsession);}
 	$rowsessionattente = mysqli_query($db, $sqlattente);
 	if(mysqli_num_rows($rowsessionattente)==0){
 		$attente=0;
-		}else{
+		} else {
 		$nba=mysqli_num_rows($rowsessionattente);
 		$attente=1;
 	}
@@ -199,8 +199,7 @@ if($rowsession==FALSE){$nbses=0;}else{ $nbses=mysqli_num_rows($rowsession);}
 		
 		$dates="";
 		} 
-	 }
-	 else{
+	 } else {
 		 $courrier->Write(5,"Vous n'êtes inscrit à aucune session actuellement.");
 	 }
 	$courrier->Ln(15);
