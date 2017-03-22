@@ -272,9 +272,7 @@
     $listeAtelier = getMyFutAtelier(date('Y'), date('n'), date('d'));
     $nba = mysqli_num_rows($listeAtelier);
     // la liste des sessions 
-    $futsessionrow  = getFutsessions(0);
-    $nbsessionsprog = mysqli_num_rows($futsessionrow);
-    
+   
     $ateliers   = Atelier::getAteliersFutursByAnnee(date('Y'));
     $sessions   = Session::getSessionsFuturesByAnnee(date('Y'));
     $nbAteliers = count($ateliers);

@@ -47,7 +47,7 @@
             break;
             
             case 2:
-                $result = getFutsessions($_SESSION["idepn"]);
+                //$result = getFutsessions($_SESSION["idepn"]);
                 $sessions = Session::getSessionsFuturesParEspace($_SESSION["idepn"]);
             break;
             

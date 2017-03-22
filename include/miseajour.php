@@ -230,7 +230,7 @@
                             <li>et les courriers</li>
                         </ul>
                     </li>
-                    <li>A été fait également sous le capot : 
+                    <li>A été fait également sous le capot :
                         <ul>
                             <li>Changement du codage des caractères : tout passe en UTF-8 (non-terminé)<br />Cela devrait éviter l'apparition d'artefacts au lieu des caractères accentués.</li>
                             <li>ré-écriture en mode objet pour séparer le modèle de la vue (non terminé)</li>
