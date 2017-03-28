@@ -66,9 +66,7 @@ function getUserStatutAS($iduser,$statut,$type,$statutatelier,$host,$userdb,$pas
 		if($result == FALSE)
 		{
 			return FALSE;
-		}
-		else
-		{
+		} else {
 			
 			return $result;
 		}
@@ -140,7 +138,7 @@ if($nbtotalpresent>0){
 		
 	}
 	
-}else{
+} else {
 	
 	$csv_output.="Pas de présence enregistrée pour l'adhérent";
 }
@@ -170,7 +168,7 @@ if($nbtotalabsent>0){
 		
 	}
 	
-}else{
+} else {
 	
 	$csv_output.="Pas d'absence enregistrée pour l'adhérent";
 }

@@ -40,14 +40,14 @@ $rowprinscription = getPreinsmode();
         <div class="login-logo">
 <?php 
     //debug(mysqli_num_rows(getReseau()));
-    if (mysqli_num_rows(getReseau()) == 0) {
-        echo "Connexion au CyberGestionnaire";
-    } else {
-        $rowreseau  = mysqli_fetch_array(getReseau());
-        $logoreseau = "img/logo/" . $rowsreseau['res_logo'];
-        echo "<img src=" . $logoreseau . ">";
-        echo $rowreseau['res_nom']; 
-    }
+    // if (mysqli_num_rows(getReseau()) == 0) {
+         echo "Connexion au CyberGestionnaire";
+    // } else {
+        // $rowreseau  = mysqli_fetch_array(getReseau());
+        // $logoreseau = "img/logo/" . $rowsreseau['res_logo'];
+        // echo "<img src=" . $logoreseau . ">";
+        // echo $rowreseau['res_nom']; 
+    // }
 ?>
         </div><!-- /.login-logo -->
     

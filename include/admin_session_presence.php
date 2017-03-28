@@ -47,17 +47,6 @@ renvoie le nombre d'inscrits, le nombre de présents et l'id des présents (pour
     $sujet         = $session->getSessionSujet();
     $dateSession   = SessionDate::getSessionDateById($iddate);
     
-    // // recupération des données de la session
-    // $row = getSession($idsession);
-    // //TITRE DE LA SESSION + DETAIL
-    // $nomsession = getNomSession($row["nom_session"]);
-    // //Nombre de places
-    // $nombre_inscrit = countPlaceSession($idsession,0);
-    // //date de la session
-    // $date_session = date('Y-m-d', strtotime(getDatebyNumero($iddate)));
-    // //animateur
-    // $anim = $row["id_anim"];
-
     // modification des présences depuis les archives
     if ($act == 1) {
         $statutdatesession = 1;

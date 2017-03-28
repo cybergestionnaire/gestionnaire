@@ -137,7 +137,7 @@
 <p>A télécharger au choix :</p>
 <a href="http://www.wampserver.com/">WAMPP</a>   / <a href="https://www.apachefriends.org/fr/index.html">XAMPP</a>
 <p class="text-justify">
-NB : pour les ordinateurs windows > à 7, les deux fonctionnent parfaitement pour cybermin; pour les ordinateurs windows XP/vista/7, le serveur apache n'est pas stable et cybermin ne fonctionne pas avec Wampp, préférez donc Xampp.
+NB : pour les ordinateurs windows > à 7, les deux fonctionnent parfaitement pour CyberGestionnaire; pour les ordinateurs windows XP/vista/7, le serveur apache n'est pas stable et CyberGestionnaire ne fonctionne pas avec Wampp, préférez donc Xampp.
 </p><p class="text-justify">
 Téléchargez la bonne version (64 bits ou autre !) et suivez la procédure d'installation. Si vous ne voulez pas surcharger l'odinateur, vous n'êtes pas obligé d'installer le serveur FTP ni le serveur de mail, seuls Apache et Mysql sont obligatoires.
 </p><p class="text-justify">

@@ -23,6 +23,7 @@ require_once("Tarif.class.php");
 require_once("Salle.class.php");
 require_once("Atelier.class.php");
 require_once("Session.class.php");
+require_once("Transaction.class.php");
 
 class Utilisateur
 {
@@ -140,7 +141,20 @@ class Utilisateur
     }
     
     public function getForfaitConsultation() {
-        return Forfait::getForfaitById($this->_idTarifConsultation);
+        
+        // il ne faut pas regarder le forfait mentionné directement dans la table user
+        // mais aller le chercher dans les transacations
+        //return Forfait::getForfaitById($this->_idTarifConsultation);
+        
+        $forfait = null;        
+        $transactionForfait = Transaction::getTransactionByUtilisateurAndType($this->_id, 'temps');
+        
+        if ($transactionForfait !== null) {
+            $forfait = Forfait::getForfaitById($transactionForfait->getIdTarif());
+        }
+
+        return $forfait;
+
     }
     
     public function getLogin() {
@@ -752,11 +766,11 @@ class Utilisateur
             $result = mysqli_query($db,$sql);
             Mysql::closedb($db);
             
-            if (mysqli_num_rows($result) == 1) {
+            if ($result && mysqli_num_rows($result) == 1) {
                 $utilisateur = new Utilisateur(mysqli_fetch_assoc($result));
+                mysqli_free_result($result);
             }
 
-            mysqli_free_result($result);
         }
         
         return $utilisateur;

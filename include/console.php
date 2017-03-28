@@ -20,6 +20,7 @@
     revamped by : CyberGestionnaire-martigues / 2014 SAINT MARTIN Brice
     
 */
+    error_reporting(E_ALL);
     header("Content-Type: text/html; charset=UTF-8");
     //header("Content-Type: text/plain");
 
@@ -96,7 +97,7 @@
                         $dateresa      = date_create_from_format("Y-m-d H:i",$temp);
                         $diff          = time() - date_timestamp_get($dateresa); // difference en secondes
                         $now           = new DateTime();
-                        $interval      = date_diff($datelastetat, $now);
+                        $interval      = date_diff($dateresa, $now);
                         $time          = $interval->format("%d j %hh%im");                       
                         if ($diff < 60) {
                             $time = "<1mm" ;
@@ -120,9 +121,13 @@
 ?>
             </td>
             <td>
-            <?php if($rowInfos["status_user"] == 1) { ?>
+<?php 
+                        if($rowInfos["status_user"] == 1) { 
+?>
                 <a class="btn btn-danger" href="#" onClick="ActionConsole2(affichageAction,'action=2&id_poste=<?php echo $rowPostes["id_computer"] ?>')">Lib&eacute;ration</a>
-            <?php } ?>
+<?php
+                        }
+?>
             </td>
         </tr>
 <?php                  

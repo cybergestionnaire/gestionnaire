@@ -40,9 +40,7 @@ mysqli_close ($db) ;
 if ($resultexterne==FALSE)
 	{
       return FALSE;
-	}
-    else
-	{
+	} else {
 	$row=mysqli_fetch_array($resultexterne);
     $userexterne=$row['id_user'] ;
 	}	
@@ -54,7 +52,7 @@ $row= mysqli_query($db,$sql);
 mysqli_close ($db) ;
 if($row==FALSE){
 	return "inconnu";
-	}else{
+	} else {
 	$result=mysqli_fetch_array($row);
 	$nom=$result["prenom_user"]." ".$result["nom_user"];
 	
@@ -68,16 +66,16 @@ if($nbprint>0){
 		if($userexterne==$row['print_user']){
 			if($row['print_userexterne']==NULL){
 			$name_user="externe".$separator."Non renseigné";
-			}else{
+			} else {
 			$name_user="externe".$separator.$row['print_userexterne'];
 			}
-		}else{
+		} else {
 		$name_user=$row['nom_user'].$separator.$row['prenom_user'];
 		}
 		
 		if($row['print_caissier']==NULL){
 			$caissier="Non renseigné";
-		}else{
+		} else {
 			$caissier=getNomCaissier($row['print_caissier'],$host,$userdb,$passdb,$database);
 		}
 		
@@ -91,7 +89,7 @@ if($nbprint>0){
 	$csv_output .=$separator.$separator.$separator.$separator."Total".$separator.$total;
 	
 	
-}else{
+} else {
 	
 	$csv_output="Pas de données pour le mois demandé";
 }

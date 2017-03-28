@@ -29,8 +29,12 @@
     $id = isset($_GET["idSujet"]) ? $_GET["idSujet"] : '';
 
     if ($s == "del") {//suppression du sujet de la session
-        delSujetSession($id);
-        header ("Location:./index.php?a=29&mesno=24");
+        //delSujetSession($id);
+        $sessionSujet = SessionSujet::getSessionSujetById($id);
+        if ($sessionSujet !== null) {
+            $sessionSujet->supprimer();
+            header ("Location:./index.php?a=29&mesno=24");
+        }
     }
      
     if (isset($_POST["submit_session"])) {

@@ -37,7 +37,7 @@ if($userrow!=FALSE){
 		
 	}
 	
-}else{
+} else {
 	
 	$csv_output.="Pas d'adhérents inscrits a la newsletter";
 }
