@@ -93,10 +93,10 @@
 ?>
     <ul class="sidebar-menu">
         <li class="<?php if ($a == "") { echo "active"; } else { echo "treeview" ;} ?>"><a href="index.php"><i class="fa fa-home"></i><span>Accueil</span></a></li>
-        <li class="treeview"><a href="index.php?m=3&month=<?php echo date('n'); ?>&year=<?php echo date('Y'); ?>&jour=<?php echo date('d') ; ?>&mois=<?php echo date('n'); ?>&annee=<?php echo date('Y'); ?>"><i class="fa fa-calendar"></i><span>Réservations</span></a></li>
+        <li class="treeview"><a href="index.php?m=3&jour=<?php echo date('d') ; ?>&mois=<?php echo date('n'); ?>&annee=<?php echo date('Y'); ?>"><i class="fa fa-calendar"></i><span>Réservations</span></a></li>
 <?php 
-        $consolemode = getConfigConsole($_SESSION["idepn"], "activer_console");
-        if ($consolemode == 1) {
+        $config = Config::getConfig($_SESSION["idepn"]);
+        if ($config->hasActiverConsole()) {
             if ($a == 45) { $class = "active"; } else { $class = "treeview" ;}
             echo '<li class="' . $class . '"><a href="index.php?a=45"><i class="fa fa-dashboard"></i><span>Console</span></a></li>';
         }

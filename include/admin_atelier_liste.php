@@ -63,11 +63,7 @@
             case 2:
                 $ateliers = Atelier::getAteliersParAnneeEtParEspace(date('Y'), $_SESSION["idepn"]);
             break;
-            
-            // reseau pas encore implémenté !!
-            // case 3:
-                // $result1 = getFutAtelier(date('Y'));
-            // break;
+
         }
 
     }
@@ -216,10 +212,7 @@
             case 2:
                 $ateliers2 = Atelier::getAteliersParAnneeEtParEspace(date('Y') + 1, $_SESSION["idepn"]);
             break;
-            
-            // case 3:
-                // $result2 = getFutAtelier(date('Y')+1);
-            // break;
+
         }
 
     }

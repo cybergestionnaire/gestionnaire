@@ -18,6 +18,8 @@
 */
 
 require_once("Mysql.class.php");
+require_once("Utilisateur.class.php");
+require_once("Materiel.class.php");
 
 class Resa
 {
@@ -52,9 +54,16 @@ class Resa
     public function getIdMateriel() {
         return $this->_idMateriel;
     }
-
+    
+    public function getMateriel() {
+        return Materiel::getMaterielById($this->_idMateriel);
+    }
     public function getIdUtilisateur() {
         return $this->_idUtilisateur;
+    }
+    
+    public function getUtilisateur() {
+        return Utilisateur::getUtilisateurById($this->_idUtilisateur);
     }
     
     public function getDateResa() {
@@ -224,6 +233,85 @@ class Resa
         return $resas;
     }
     
+    public static function getResasParJourEtParSalle($date, $idSalle) {
+
+        $resas = null;
+        
+        $db  = Mysql::opendb();
+        
+        $sql = "SELECT tab_resa.* "
+             . "FROM `tab_resa`,`tab_computer` "
+             . "WHERE `dateresa_resa`='" . $date . "' "
+             . "  AND tab_resa.id_computer_resa=tab_computer.id_computer "
+             . "  AND tab_computer.id_salle='" . $idSalle . "' "
+             . "ORDER BY `debut_resa` ASC, id_computer_resa ASC";
+
+        $result = mysqli_query($db,$sql);
+               
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $resas = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $resas[] = new Resa($row);
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $resas;
+    }
+
+    public static function getResasParJourEtParMateriel($date, $idMateriel) {
+
+        $resas = null;
+        
+        $db  = Mysql::opendb();
+        
+        $sql = "SELECT * FROM `tab_resa` "
+             . "WHERE `id_computer_resa`='" . $idMateriel . "' "
+             . "  AND `dateresa_resa`='" . $date . "' "
+             . "ORDER BY `debut_resa` ASC";
+
+        $result = mysqli_query($db,$sql);
+               
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $resas = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $resas[] = new Resa($row);
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $resas;
+    }
+    public static function getProchaineResasParJourEtParMateriel($date, $idMateriel, $heureDebut) {
+
+        $resa = null;
+        
+        $db  = Mysql::opendb();
+        
+        $sql = "SELECT * FROM `tab_resa` "
+             . "WHERE `id_computer_resa`='" . $idMateriel . "' "
+             . "  AND `dateresa_resa`='" . $date . "' "
+             . "  AND debut_resa>" . $heureDebut . " "
+             . "ORDER BY `debut_resa` ASC "
+             . "LIMIT 1";
+        error_log($sql);
+        $result = mysqli_query($db,$sql);
+               
+        Mysql::closedb($db);
+        
+        if ($result && mysql_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+            $resa = new Resa($row);
+            mysqli_free_result($result);
+        }
+        
+        return $resa;
+    }
+
     public static function getStatResaParMois($mois, $annee, $idEspace) {
         
         $stats = array("nombre" => 0, "duree" => 0);
@@ -276,6 +364,8 @@ class Resa
         
         return $stats;
     }
+
+
     
     
 }

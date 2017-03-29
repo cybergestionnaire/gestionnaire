@@ -39,8 +39,8 @@ function opendb()
        return false;
        } else {
         $db->set_charset("utf8");
-    	return $db ;
-	}
+        return $db ;
+    }
 }     
 
 //
@@ -87,10 +87,10 @@ function searchUser($exp)
     $sql="SELECT *
         FROM `tab_user`
         WHERE  `status_user`< 3 
-		AND ( `nom_user` LIKE '%".$exp."%'
+        AND ( `nom_user` LIKE '%".$exp."%'
         OR `prenom_user` LIKE '%".$exp."%'
-		OR `login_user` LIKE '%".$exp."%' )
-		ORDER BY `status_user` ASC, `nom_user` ASC";
+        OR `login_user` LIKE '%".$exp."%' )
+        ORDER BY `status_user` ASC, `nom_user` ASC";
     $db=opendb();
     $result=mysqli_query($db,$sql);
     closedb($db);
@@ -107,7 +107,7 @@ function searchUserRapid($exp)
         FROM `tab_user`
         WHERE ( `nom_user` LIKE '%".$exp."%'
         OR `prenom_user` LIKE '%".$exp."%'
-		OR `login_user` LIKE '%".$exp."%' )
+        OR `login_user` LIKE '%".$exp."%' )
         AND (`status_user`=1 OR `status_user`=2) 
         ORDER BY `status_user` ASC, `nom_user` ASC LIMIT 10";
     $db=opendb();
@@ -137,7 +137,7 @@ function countUser($id)
       case 3: // TOTAL INACTIFS
            $sql = "SELECT `id_user` FROM `tab_user` WHERE `status_user`=2";
       break;
-			case 4: // TOTAL ARCHIVES
+            case 4: // TOTAL ARCHIVES
            $sql = "SELECT `id_user` FROM `tab_user` WHERE `status_user`=6";
       break;
 
@@ -151,26 +151,6 @@ function countUser($id)
   } else {
       $nb = mysqli_num_rows($result) ;
       return $nb ;
-  }
-}
-
-
-//
-// updatePassword()
-// modifie le mot de passe d'un utilisateur
-function updatePassword($id,$pass)
-{
-    $sql="UPDATE `tab_user`
-    SET `pass_user` ='".passwd($pass)."'
-     WHERE `id_user` =".$id." LIMIT 1 ;";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  } else {
-      return TRUE;
   }
 }
 
@@ -394,117 +374,6 @@ function delBookmark($iduser,$idurl)
 //
 //
 
-//tous les ateliers du réseau
-function getFutAtelier($year)
-{
-	if ($year==date('Y')){
-	$sql= "SELECT *
-			FROM `tab_atelier` 
-			WHERE YEAR(`date_atelier`)=".$year." 
-			AND MONTH(`date_atelier`)>= MONTH(NOW())-1
-			ORDER BY `date_atelier` ASC";
-			
-	}else if ($year>date('Y')){
-		$sql= "SELECT *
-			FROM `tab_atelier` 
-			WHERE YEAR(`date_atelier`)=".$year." 
-			AND `statut_atelier`<2
-			ORDER BY `date_atelier` ASC";
-	}		
-	
-	
-		$db=opendb();
-	  $result = mysqli_query($db,$sql);
-	   closedb($db);
-	  if (FALSE == $result)
-	  {
-		  return FALSE ;
-	  } else {
-		return $result;
-	  }
-	
-	
-}
-
-//tous les ateliers par animateur
-function getFutAtelierbyanim($year,$anim)
-{
-	$y=date('Y');
-	
-	if ($year>$y){
-	
-	$sql="SELECT *
-			FROM `tab_atelier` 
-			WHERE YEAR(`date_atelier`)=".$year."
-			AND anim_atelier=".$anim."
-			
-			ORDER BY `date_atelier` ASC";
-	
-	}	else if ($year==$y){
-	
-	$sql= "SELECT *
-			FROM `tab_atelier` 
-			WHERE YEAR(`date_atelier`)=".$year." 
-			AND MONTH( `date_atelier` ) >= MONTH( NOW( ))-1
-			AND anim_atelier=".$anim."
-			ORDER BY `date_atelier` ASC";
-			
-	}	
-		$db=opendb();
-	  $result = mysqli_query($db,$sql);
-	   closedb($db);
-	  if (FALSE == $result)
-	  {
-		  return FALSE ;
-	  } else {
-		return $result;
-	  }
-}
-
-//tous les ateliers par epn
-function getFutAtelierbyepn($year,$epn)
-{
-	$sql= "SELECT *
-			FROM `tab_atelier`, `tab_salle` 
-			WHERE  `salle_atelier`=`id_salle`
-			AND tab_salle.`id_espace`=".$epn."
-			AND YEAR(`date_atelier`)=".$year." 
-			AND `statut_atelier`<2
-			ORDER BY `date_atelier` ASC";
-			
-		$db=opendb();
-	  $result = mysqli_query($db,$sql);
-	   closedb($db);
-	  if (FALSE == $result)
-	  {
-		  return FALSE ;
-	  } else {
-		return $result;
-	  }
-}
-
-
-// retourne les ateliers anciennement programmés ///DEPRECATED
-function getAncAtelier($year)
-{
-if ($year!=date('Y')) { $annee=$year."-12-31"; } else { $annee=date('Y-m-d');}
-
-$sql= "SELECT  *
-		FROM `tab_atelier` 
-		WHERE `date_atelier` BETWEEN '".$year."-01-01' AND '".$annee."'
-		AND statut_atelier>=2
-        ORDER BY `date_atelier` DESC";
-		
-	$db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-	return $result;
-  }
-}
 
 // renvoie les données sujets en fonction de l'id du sujet
 //INNER JOIN tab_atelier_categories AS tab_atelier_sujet.categorie_atelier=tab_atelier_categories.id_atelier_categorie
@@ -512,8 +381,8 @@ $sql= "SELECT  *
 function getSujetById($idsujet)
 {
 $sql="SELECT *
-		FROM tab_atelier_sujet 
-		WHERE id_sujet=".$idsujet."";
+        FROM tab_atelier_sujet 
+        WHERE id_sujet=".$idsujet."";
 $db=opendb();
   $result = mysqli_query($db,$sql);
   closedb($db);
@@ -521,28 +390,10 @@ $db=opendb();
   {
       return FALSE ;
   } else {
-	return $result;
+    return $result;
   }
 }
 
-
-// nombre total d'ateliers programmé par date > aujourdhui
-function getNombreTotAtelier()
-{
-$sql="SELECT COUNT(`id_atelier`) AS nombreT_atelier FROM tab_atelier
-		WHERE `date_atelier`>= '".date('Y-m-d')."' 
-		";
-$db=opendb();
-  $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-  $row= mysqli_fetch_array($result) ;
-	return $row;
-  }
-}
 
 //
 // getAtelier ()
@@ -552,7 +403,7 @@ function getAtelier($id)
   $sql = "SELECT *
           FROM `tab_atelier`
           WHERE `id_atelier`=".$id."
-		  ";
+          ";
   $db=opendb();
   $result = mysqli_query($db,$sql);
   closedb($db);
@@ -562,88 +413,6 @@ function getAtelier($id)
   } else {
       $row = mysqli_fetch_array($result) ;
       return $row;
-  }
-}
-
-//
-// getAllLevel()
-// recupere la liste de tous les niveau (debutant, confirmé...)
-function getAllLevel($x)
-{
-  $sql = "SELECT * FROM `tab_level` ORDER BY `id_level` ASC" ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-		if($x>0){
-		$level = array();
-        $nb= mysqli_num_rows($result);
-        for ($i=1;$i<=$nb;$i++)
-        {
-            $row = mysqli_fetch_array($result);
-            $level[$row["id_level"]] =stripslashes( $row["nom_level"] );
-        }
-        return $level ;
-		} else {
-      return $result;
-	  }
-  }
-}
-
-
-//
-// getAllCategorie()
-// recupere la liste de tous les categorie(Bureautique, ...)
-function getAllCategorie($x)
-{
-  $sql = "SELECT * FROM `tab_atelier_categorie` ORDER BY `id_atelier_categorie` ASC" ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-	if($x>0){
-		$level = array();
-        $nb= mysqli_num_rows($result);
-        for ($i=1;$i<=$nb;$i++)
-        {
-            $row = mysqli_fetch_array($result);
-            $level[$row["id_atelier_categorie"]] = stripslashes($row["label_categorie"]) ;
-        }
-        return $level ;
-	} else {
-	return $result;
-	}
-     
-  }
-}
-
-//
-// getAllsujet()
-// recupere la liste de tous les sujets(Bureautique, ...)
-function getAllSujet()
-{
-  $sql = "SELECT id_sujet, label_atelier FROM `tab_atelier_sujet` ORDER BY `label_atelier` ASC" ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-     $sujet = array();
-        $nb= mysqli_num_rows($result);
-        for ($i=1;$i<=$nb;$i++)
-        {
-            $row = mysqli_fetch_array($result);
-            $sujet[$row["id_sujet"]] = $row["label_atelier"] ;
-        }
-        return $sujet ;
   }
 }
 
@@ -662,122 +431,17 @@ AS nba";
   {
       return FALSE ;
   } else {
-	$row=mysqli_fetch_array($result);
-	if($row['nba']>0){
-		return TRUE;
-	} else {
-		return FALSE;
-	}
+    $row=mysqli_fetch_array($result);
+    if($row['nba']>0){
+        return TRUE;
+    } else {
+        return FALSE;
+    }
   }
 
 
 }
 
-//
-//checkUserAtelier ()
-// verifie si un user est deja inscrit a un atelier ou non
-function checkUserAtelier($idatelier,$iduser)
-{
-  // verifie si le user n'est pas deja inscrit et si il reste des places disponibles.
-  $sql = "SELECT * FROM `rel_atelier_user` WHERE `id_atelier` =".$idatelier." AND `id_user` =".$iduser ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (mysqli_num_rows($result) == 0) // verifie si user deja inscrit
-  {
-      $sql3 = "SELECT `nbplace_atelier` FROM `tab_atelier` WHERE `id_atelier`=".$idatelier ;
-      $db=opendb();
-      $result3 = mysqli_query($db,$sql3);
-      $row = mysqli_fetch_array($result3);
-      closedb($db);
-      if (countPlace($idatelier) < $row["nbplace_atelier"])  // verifie le nombre de place restante
-      {
-          return TRUE ;
-      } else {
-          return FALSE ; //inserer la liste d'attente Attention normalement doit etre FALSE
-      }
-  } else {
-      return FALSE ;
-  }
-}
-
-//
-// countPlace()
-// compte le nombre d'adherent dans un atelier
-function countPlace ($idatelier)
-{
-   $sql = "SELECT `id_rel_atelier_user` FROM `rel_atelier_user` 
-	WHERE `id_atelier`=".$idatelier." 
-	AND `status_rel_atelier_user`= 0 ";
-   $db=opendb();
-   $result = mysqli_query($db,$sql);
-   closedb($db);
-   if (FALSE != $result)
-   {
-      return mysqli_num_rows($result) ;
-   }
-}
-
-// getNombrePresents
-// retrouve le nombre de présents à l'atelier
-function getNombrePresents($idatelier)
-{
-   $sql = "SELECT `nombre_presents` FROM `tab_atelier_stat` WHERE `id_atelier`=".$idatelier ;
-   $db=opendb();
-   $result = mysqli_query($db,$sql);
-   closedb($db);
-   if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-      return $result;
-  }
-}
-
-
-
-//
-// addUserAtelier() -- insertion de la relation forfait : statut 0==inscription
-// inscrit un adherent a un atelier
-function addUserAtelier($idatelier,$idstatut,$iduser,$idtarif)
-{
-  if (FALSE != checkUserAtelier($idatelier,$iduser))
-  {
-      $sql ="INSERT INTO `rel_atelier_user` ( `id_rel_atelier_user` , `id_atelier` , `id_user` , `status_rel_atelier_user` )
-             VALUES ('', '".$idatelier."', '".$iduser."', '".$idstatut."');";
-	$sql2="INSERT INTO `rel_user_forfait`(`id_forfait`, `id_user`, `id_tarif`, `id_atelier`,`id_session`, `statut_forfait`) 
-		VALUES('','".$iduser."','".$idtarif."','".$idatelier."', '0','0')";
-      $db=opendb();
-      $result = mysqli_query($db,$sql);
-        $result2 = mysqli_query($db,$sql2);
-      closedb($db);
-      if (FALSE == $result)
-      {
-          return FALSE ;
-      } else {
-          return TRUE;
-      }
-  } else {
-      return FALSE ;
-  }
-}
-
-
-function addUserAtelierAttente($idatelier,$idstatut,$iduser)
-{
- $sql ="INSERT INTO `rel_atelier_user` ( `id_rel_atelier_user` , `id_atelier` , `id_user` , `status_rel_atelier_user` )
-             VALUES ('', '".$idatelier."', '".$iduser."', '".$idstatut."');";
-      $db=opendb();
-      $result = mysqli_query($db,$sql);
-       closedb($db);
-      if (FALSE == $result)
-      {
-          return FALSE ;
-      } else {
-          return TRUE;
-      }
-
-}
 //
 // delUserAtelier()
 // Desinscription d'un adherent a un atelier
@@ -796,26 +460,7 @@ function delUserAtelier($idatelier,$iduser)
         return TRUE;
     }
 }
-// delUserAtelier()
-// Desinscription d'un adherent a un atelier
-function ModifyUserAtelier($idatelier, $iduser, $statut)
-{
 
-  $sql = "UPDATE `rel_atelier_user` 
-			SET status_rel_atelier_user=".$statut."
-			WHERE `id_user`=".$iduser." AND `id_atelier`=".$idatelier ;
-    $db=opendb();
-    $result = mysqli_query($db,$sql);
-    closedb($db);
-    if (FALSE == $result)
-    {
-        return FALSE ;
-    } else {
-        return TRUE;
-    }
-
-
-}
 
 //
 // getMyAtelier()
@@ -823,42 +468,42 @@ function ModifyUserAtelier($idatelier, $iduser, $statut)
 function getMyAtelier($iduser,$t,$a)
 {
 if ($t==1){ //ateliers futurs
-	  $sql = "SELECT atelier.id_atelier,`id_sujet`,`date_atelier`,`heure_atelier`,duree_atelier,salle_atelier 
-			  FROM `tab_atelier` AS atelier, `rel_atelier_user` AS rel
-			  WHERE atelier.id_atelier = rel.id_atelier
-			  AND `date_atelier`>= '".date('Y-m-d')."'
-			  AND rel.id_user=".$iduser."
-			  AND rel.status_rel_atelier_user=".$a."
-			  ORDER BY `date_atelier` ASC";
-	  $db=opendb();
-	  $result = mysqli_query($db,$sql);
-	   closedb($db);
-	  if (FALSE == $result)
-	  {
-		  return FALSE ;
-	  } else {
-		  return $result;
-	  }
+      $sql = "SELECT atelier.id_atelier,`id_sujet`,`date_atelier`,`heure_atelier`,duree_atelier,salle_atelier 
+              FROM `tab_atelier` AS atelier, `rel_atelier_user` AS rel
+              WHERE atelier.id_atelier = rel.id_atelier
+              AND `date_atelier`>= '".date('Y-m-d')."'
+              AND rel.id_user=".$iduser."
+              AND rel.status_rel_atelier_user=".$a."
+              ORDER BY `date_atelier` ASC";
+      $db=opendb();
+      $result = mysqli_query($db,$sql);
+       closedb($db);
+      if (FALSE == $result)
+      {
+          return FALSE ;
+      } else {
+          return $result;
+      }
  
-	} else { // ancien atelier
-	$sql = "SELECT atelier.id_atelier,`id_sujet`,`date_atelier`,`heure_atelier`
-			  FROM `tab_atelier` AS atelier, `rel_atelier_user` AS rel
-			  WHERE atelier.id_atelier = rel.id_atelier
-			  AND `date_atelier`< '".date('Y-m-d')."'
-			  AND rel.id_user=".$iduser."
-			  ORDER BY `date_atelier` ASC";
-	  $db=opendb();
-	  $result = mysqli_query($db,$sql);
-	  closedb($db);
-	  if (FALSE == $result)
-	  {
-		  return FALSE ;
-	  } else {
-		  return $result;
-	  }
+    } else { // ancien atelier
+    $sql = "SELECT atelier.id_atelier,`id_sujet`,`date_atelier`,`heure_atelier`
+              FROM `tab_atelier` AS atelier, `rel_atelier_user` AS rel
+              WHERE atelier.id_atelier = rel.id_atelier
+              AND `date_atelier`< '".date('Y-m-d')."'
+              AND rel.id_user=".$iduser."
+              ORDER BY `date_atelier` ASC";
+      $db=opendb();
+      $result = mysqli_query($db,$sql);
+      closedb($db);
+      if (FALSE == $result)
+      {
+          return FALSE ;
+      } else {
+          return $result;
+      }
  
 
-	} 
+    } 
 }
 
 // getMysession()
@@ -874,41 +519,18 @@ AND rel.id_datesession= dat.`id_datesession`
 AND rel.`id_session` = dat.`id_session` 
 AND rel.`id_session` = session.`id_session` 
 AND session.status_session=0 ORDER BY dat.date_session ASC";
-		  
+          
   $db=opendb();
   $result = mysqli_query($db,$sql);
    closedb($db);
   if (FALSE == $result)
   {
-	  return FALSE ;
+      return FALSE ;
   } else {
-	  return $result;
+      return $result;
   }
 }
-//renvoie les sessions en attentes de l'adherent
-function getMySessionAttente($iduser)
-{
-$sql = "SELECT rel.`id_session` , rel.`id_datesession` , dat.date_session, `statut_datesession`, status_rel_session, id_salle 
-FROM `rel_session_user` AS rel, tab_session_dates AS dat, tab_session AS session 
-WHERE rel.`id_user` =".$iduser."
-AND `status_rel_session` = 2 
-AND rel.id_datesession= dat.`id_datesession` 
-AND rel.`id_session` = dat.`id_session` 
-AND rel.`id_session` = session.`id_session` 
-AND session.status_session=0 ORDER BY dat.date_session ASC";
-		  
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
-  {
-	  return FALSE ;
-  } else {
-	  return $result;
-  }
 
-
-}
 
 //converti une date en jour de l'annee
 function convertDateJour($jour)
@@ -917,143 +539,6 @@ $jouran=strftime("%j",strtotime($jour)) ;
 return ($jouran);
 }
 
-//
-// getAtelierUser()
-// renvoi les users inscrits a un atelier
-function getAtelierUser($idatelier,$statut)
-{
-if($statut==2){
-  $sql = "SELECT rel.id_user, `nom_user` , `prenom_user`, mail_user, `status_rel_atelier_user`, dateRen_user
-          FROM `tab_user` AS user, `rel_atelier_user` AS rel
-          WHERE rel.id_user = user.id_user
-		  AND rel.status_rel_atelier_user='".$statut."'
-          AND rel.id_atelier ='".$idatelier."'  ORDER BY `id_rel_atelier_user` ASC
-		  ";
-} else {
-  $sql = "SELECT rel.id_user, `nom_user` , `prenom_user`,mail_user, `status_rel_atelier_user`, dateRen_user
-          FROM `tab_user` AS user, `rel_atelier_user` AS rel
-          WHERE rel.id_user = user.id_user
-		  AND rel.status_rel_atelier_user='".$statut."'
-          AND rel.id_atelier ='".$idatelier."'  ORDER BY `nom_user` ASC
-		  ";
-	 }
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-      return $result;
-  }
-}
-
-///renvoie les participants à un atelier validé absents ou présents
-function getAtelierArchivUser($idatelier){
-$sql="SELECT rel.id_user, `nom_user` , `prenom_user`, `status_rel_atelier_user`
-          FROM `tab_user` AS user, `rel_atelier_user` AS rel
-          WHERE rel.id_user = user.id_user
-		  AND rel.status_rel_atelier_user<2
-          AND rel.id_atelier ='".$idatelier."'  ORDER BY `nom_user` ASC ";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-      return $result;
-  }
-}
-
-
-//
-// addAtelier()
-// cree un atelier de formation
-function addAtelier($date,$heure,$duree,$anim,$sujet,$nbplace,$public,$stateAtelier,$salle,$tarif,$statusepnconnect,$clotureatelier)
-{
-  $sql = "INSERT INTO `tab_atelier`(`id_atelier`, `date_atelier`, `heure_atelier`, `duree_atelier`, `anim_atelier`, `id_sujet`, `nbplace_atelier`, `public_atelier`, `statut_atelier`, `salle_atelier`, `tarif_atelier`, `status_atelier`, `cloturer_atelier`)
-  VALUES ('','".$date."','".$heure."','".$duree."','".$anim."','".$sujet."','".$nbplace."','".$public."', '".$stateAtelier."', '".$salle."','".$tarif."','0','0')" ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  $id=mysqli_insert_id($db);
-  
-   closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-      return $id;
-  }
-}
-
-// ModifAtelier()
-// cree un atelier de formation
-function ModifAtelier($id,$date,$heure,$duree,$anim,$sujet,$nbplace,$public,$stateAtelier,$salle,$tarif)
-{
-  $sql = "UPDATE `tab_atelier`
-			SET `date_atelier` ='".$date."',
-			`heure_atelier` ='".$heure."',
-			`duree_atelier` ='".$duree."',
-			`anim_atelier` ='".$anim."',
-			`id_sujet` ='".$sujet."',
-			`nbplace_atelier` ='".$nbplace."',
-			`public_atelier` ='".$public."',	
-			`statut_atelier` ='".$stateAtelier."',
-			`salle_atelier` ='".$salle."',
-			`tarif_atelier`='".$tarif."'
-			
-     WHERE `id_atelier` =".$id." LIMIT 1 ";
-  
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-      return $result;
-  }
-}
-
-
-//
-// delAtelier()
-// supprime un atelier
-function delAtelier($id)
-{
-  $sql = "DELETE FROM `tab_atelier` WHERE `id_atelier`=".$id ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-      return $result;
-  }
-}
-
-
-//retoune le titre d'un atelier en fonction de la programmation
-function getAtelierSujet($idatelier)
-{
-$sql="SELECT `label_atelier` , `categorie_atelier`
-FROM `tab_atelier_sujet` , tab_atelier
-WHERE `tab_atelier_sujet`.`id_sujet` = tab_atelier.`id_sujet`
-AND `id_atelier` =".$idatelier." ";
-$db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-	$row=mysqli_fetch_array($result);
-      return $row;
-  }
-
-}
 
 //
 // Fonction materiel -----------------------------------------------------------
@@ -1114,26 +599,6 @@ function getComputerName($id)
     } 
 }
 
-// renvoi toutes les machines disponibles à la reservation
-function getAllMaterielDispo($salle)
-{
-  $sql = "SELECT `id_computer`,`nom_computer`,`os_computer`,`comment_computer`,`usage_computer`
-         FROM `tab_computer`
-         WHERE `id_salle` ='".$salle."'
-				AND `usage_computer`=1
-         ORDER BY  `nom_computer`
-		 ";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-      return $result;
-  }
-}
-
 // recupere les machines en fonction e certains usages
 function getComputerByUsage($usage)
 {
@@ -1166,8 +631,8 @@ function getComputerByUsage($usage)
 function getAllComputerDispo($salle)
 {
     $sql = "SELECT id_computer,`nom_computer` FROM `tab_computer` 
-	 WHERE `id_salle` ='".$salle."'
-		AND `usage_computer`=1
+     WHERE `id_salle` ='".$salle."'
+        AND `usage_computer`=1
          ORDER BY  `nom_computer`" ;
     $db=opendb();
     $result = mysqli_query($db,$sql);
@@ -1181,10 +646,10 @@ function getAllComputerDispo($salle)
         for ($i=1;$i<=$nb;$i++)
         {
             $row = mysqli_fetch_array($result);
-	    //les postes en intervention n'apparaissent pas dans la liste
-		 if (FALSE ==checkInter($row["id_computer"])){
-		    $comp[$row["id_computer"]] = $row["nom_computer"] ;
-	    }
+        //les postes en intervention n'apparaissent pas dans la liste
+         if (FALSE ==checkInter($row["id_computer"])){
+            $comp[$row["id_computer"]] = $row["nom_computer"] ;
+        }
         }
         return $comp ;
     }
@@ -1241,11 +706,11 @@ function getResa($id_comp,$date_resa,$salle)
             ORDER BY `debut_resa` ASC";
   } else {
     $sql = "SELECT `id_resa`,`id_computer_resa`,`id_user_resa`,`dateresa_resa`,`debut_resa`,`duree_resa`,`date_resa`,`status_resa` 
-	FROM `tab_resa`,`tab_computer` 
-	WHERE `dateresa_resa`='".$date_resa."' 
-	AND tab_resa.id_computer_resa=tab_computer.id_computer 
-	AND tab_computer.id_salle='".$salle."'
-	ORDER BY `debut_resa` ASC, id_computer_resa ASC";
+    FROM `tab_resa`,`tab_computer` 
+    WHERE `dateresa_resa`='".$date_resa."' 
+    AND tab_resa.id_computer_resa=tab_computer.id_computer 
+    AND tab_computer.id_salle='".$salle."'
+    ORDER BY `debut_resa` ASC, id_computer_resa ASC";
   }
   $db=opendb();
   $result = mysqli_query($db,$sql);
@@ -1295,15 +760,15 @@ function checkResa($id)
         return TRUE ;
     } else {
         return FALSE;
-	}
+    }
 }
 //renvoie TRU si utilisateur est venu dans la semaine
 function checkResaSemaine($id, $date1, $date2)
 {
  $sql = "SELECT `id_resa` FROM tab_resa 
-	WHERE `id_user_resa`=".$id."
-	AND dateresa_resa  BETWEEN '".$date1."' AND '".$date2."'
-	";
+    WHERE `id_user_resa`=".$id."
+    AND dateresa_resa  BETWEEN '".$date1."' AND '".$date2."'
+    ";
     $db=opendb();
     $result = mysqli_query($db,$sql) ;
     closedb($db);
@@ -1332,8 +797,8 @@ function getCredit($iduser)
         FROM tab_resa
         INNER JOIN tab_user ON id_user=id_user_resa
         WHERE id_user_resa=".$iduser."
-		 AND status_resa !='1'
-		GROUP BY id_user_resa";
+         AND status_resa !='1'
+        GROUP BY id_user_resa";
 
     $db=opendb();
    $result = mysqli_query($db,$sql) ;
@@ -1353,14 +818,14 @@ $sql= "SELECT SUM(`duree_resa`) AS util, temps_user AS total
         FROM tab_resa
         INNER JOIN tab_user ON id_user=id_user_resa
         WHERE id_user_resa='".$iduser."'
-		 AND status_resa ='1'
-		 AND dateresa_resa  BETWEEN '".$date1."' AND '".$date2."' ";
+         AND status_resa ='1'
+         AND dateresa_resa  BETWEEN '".$date1."' AND '".$date2."' ";
       
-	$db=opendb();
+    $db=opendb();
     $result = mysqli_query($db,$sql) ;
     closedb($db);
     if ($result==FALSE)
-	{
+    {
         return FALSE;
     } else {
         return mysqli_fetch_array($result) ;
@@ -1502,63 +967,22 @@ function getHorDureeSelect($unit,$h1begin,$h1end,$h2begin,$h2end, $idcomp , $dat
 }
 
 
-///pour modifier la duree d'une résa en cours
-function getHorDureeSelect2($duree,$hbegin,$dateResa,$idComp,$epn)
-{
-    
-  // duree maximum d'une reservation dans le fichier config
-  $maxtime = getConfig("maxtime_config","maxtime_default_config",$epn) ;
-  $unit = getConfig("unit_config","unit_default_config",$epn) ;
-  // on verifie si une resa existe apres
-  $sql = "SELECT debut_resa
-          FROM tab_resa
-          WHERE dateresa_resa='".$dateResa."'
-          AND id_computer_resa='".$idComp."'
-          AND debut_resa>".$hbegin."
-          ORDER BY debut_resa ASC
-          LIMIT 1" ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  // on verifie l'existence d'une reservation apres celle demandee
-  if (mysqli_num_rows($result)>0)
-  {// si oui on calcul l'ecart
-    $row = mysqli_fetch_array($result) ;
-    $maxtimedb = $row['debut_resa']-$hbegin ;
-    if ($maxtime>$maxtimedb){
-    $maxtime = $maxtimedb ;
-    }
-  }
-  
-  
-  
-  //select
-  $select  = "<select name=\"duree\">";
-  for ($i=$unit ; $i<=$maxtime ;  $i = $i+$unit)
-  {
-        if ($i == $duree){
-            $select .='<option value="'.$i.'" selected="selected">'.getTime($i).'</option>' ;} else {
-            $select .='<option value="'.$i.'">'.getTime($i).'</option>' ;}
-  }
-  $select .= "</select> ";
 
-  return $select;
-}
 
 // met a jour la duree d'une resa
 // ou le temps decompte
 function updateDureeResa($arrayPost){
     $idResa   = $arrayPost['idResa'];
     $newValue = $arrayPost['duree'];
-		// modification du statut pour les resas avec la console
+        // modification du statut pour les resas avec la console
     /*$status   = $arrayPost['free'] ;
-		if ($status=='on')
+        if ($status=='on')
         $status='1' ;
     else
         $status='0' ;
-			*/
+            */
    $status='1';  
-	 
+     
     $sql = "UPDATE tab_resa SET duree_resa='".$newValue."', status_resa='".$status ."' WHERE id_resa='".$idResa."' LIMIT 1" ;
 
     $db=opendb();
@@ -1585,8 +1009,8 @@ function getResaComp($step,$idcomp,$date_resa,$select)
        case 1:// step 1
             $table  ="<table><tr><td>";
             $table .= "<form method=\"post\" action=\"".$_SERVER["REQUEST_URI"]."\">
-			
-				";
+            
+                ";
            // $table .= "<thead><th>D&eacute;but de la reservation</th></thead>";
             $table .= $select;
             $table .= "</td><td valign=\"top\"><input type=\"hidden\" name=\"step\" value=\"1\">
@@ -1628,7 +1052,7 @@ function addResa($idcomp,$iduser,$date,$debut,$duree)
     $sql = "INSERT INTO tab_resa VALUES('',".$idcomp.",".$iduser.",'".$date."',".$debut.",".$duree.",'".date('Y-m-d')."','1')";
     $db=opendb();
    $result = mysqli_query($db,$sql) ;
-	 $id=mysqli_insert_id($db);
+     $id=mysqli_insert_id($db);
     closedb($db);
     if ($result ==TRUE)
     {
@@ -1641,10 +1065,10 @@ function addResa($idcomp,$iduser,$date,$debut,$duree)
 // ajout de la relation resa / computer / usage 1=resa, 2=atelier
 function insertrelresa($idresa,$usage,$titreatelier)
 {
-	$sql="INSERT INTO `rel_resa_usage`(`id_relresa`, `id_usage`, `id_resa`,`id_titreatelier`) VALUES ('','".$usage."','".$idresa."','".$titreatelier."')";
-	 $db=opendb();
+    $sql="INSERT INTO `rel_resa_usage`(`id_relresa`, `id_usage`, `id_resa`,`id_titreatelier`) VALUES ('','".$usage."','".$idresa."','".$titreatelier."')";
+     $db=opendb();
    $result = mysqli_query($db,$sql) ;
-	
+    
     closedb($db);
     if ($result ==TRUE)
     {
@@ -1652,7 +1076,7 @@ function insertrelresa($idresa,$usage,$titreatelier)
     } else {
         return FALSE;
     }
-	
+    
 }
 
 // renvoi la largeur en % par unité de temps
@@ -1706,196 +1130,6 @@ function getConfig($field,$default_field,$epn)
 }
 
 
-function getConfigConsole($epn,$field){
-$sql="SELECT `".$field."` FROM `tab_config` WHERE `id_espace`=".$epn;
-$db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
- if($result==FALSE){
-	return FALSE;
-	} else {
-	$row= mysqli_fetch_array($result);
-	return $row[$field] ;
-	}
-  
-}
-
-// renvoi un graf de temps en fonction des horaires matin(h1) et apm(h2)
-function getPlanning($dotd,$h1begin,$h1end,$h2begin,$h2end,$epn,$salle)
-{
-  if ($h1begin == 0 AND $h2begin>0) //si fermé le matin
-  {
-      $h1begin = $h2begin ;
-  }
-  if ($h2end == 0 AND $h1begin>0)   //si ferm&eacute; l'apres midi
-  {
-      $h2end = $h1end ;
-  }
-  if ($h1begin == 0 AND $h2end ==0)
-  {
-      return FALSE;
-      exit;
-  }
-  // Initialisation des variables
-
-  $graf          = "" ;
-  $unit          = getConfig("unit_config","unit_default_config",$epn) ; // unitŽ dans la table config
-  $unitLabel     = 30 ;                  // echelle de division du temps pour les labels des heures
-  
-  $h1begin = (floor($h1begin/60)*60); // on recupere l"heure de debut ex : 9h15 =>9h => 540mn
-  if ($h2end != (floor($h2end/60)*60))
-     $h2end = ((floor($h2end/60)*60)+60); // on recupere l"heure de fin ex : 19h15 =>20h
-
-  $nbTotM        = (($h2end-$h1begin)) ; // nombre total de minute d'ouverture
-  $widthPause    = getWidth(($h2begin-$h1end),$nbTotM,$unit)*(60/$unit) ;
-  $positionPause = (getPosition($h1end,$h1begin,getWidthPerUnit($nbTotM,$unit)))*(60/$unit) ;
-  
-  // selection des machines par salle
-   $result = getAllMaterielDispo($salle); 
-  
-  // affichage du resultat
-  if (mysqli_num_rows($result)<1)
-  {
-      $graf = "Aucun ordinateur dans la salle s&eacute;lection&eacute;e, veuillez choisir une autre salle" ;
-  } else {
-      // Creation du tableau
-      $graf .= "<table  class=\"table table-condensed\">" ;
-    
-      // ligne des horaires - echelle au dessus des reservations
-      $graf .= "<tr><td></td><td >" ; 
-      for ($i = 0 ; $i < ($nbTotM/$unitLabel) ; $i++)
-      {
-         if ($i == (($nbTotM/$unitLabel)-1)) // correction bug I.E ...
-         {
-            $largeur = (getWidth(60,$nbTotM,$unitLabel)-2);
-           if (strlen(getTime($h1begin+($i*$unitLabel)))<=3)
-           $graf.= "<div class=\"labelHor\" style=\"width:".$largeur."%;\">|".getTime($h1begin+($i*$unitLabel))."</div>" ;
-           else
-           $graf.= "<div class=\"labelHor1\" style=\"width:".$largeur."%;\">|30</div>" ;
-         }
-         else  // sinon normal
-         {
-           $time = getTime($h1begin+($i*$unitLabel));
-           if (strlen(getTime($h1begin+($i*$unitLabel)))<=3)
-           $graf.= "<div class=\"labelHor\" style=\"width:".getWidth(60,$nbTotM,$unitLabel)."%;\">|".$time."</div>" ;
-           else
-           $graf.= "<div class=\"labelHor1\" style=\"width:".getWidth(60,$nbTotM,$unitLabel)."%;\">|30</div>" ;
-         }
-      }
-      $graf .= "</td></tr>" ;
-
-      //affichage des machines + liste des reservations
-      while ($row = mysqli_fetch_array($result))
-      {
-	//old function affichage par usage//
-          if ($row['NB']=="")
-            $nbCritere='';
-          else
-            $nbCritere=' ('.$row['NB'].')' ;
-          ///
-	  
-          if (strtotime($dotd)<strtotime(date("Y-m-d"))) // pas de reservation sur les dates pass&eacute;es
-          {
-          $graf .= "<tr><td class=\"computer\" >".$row["nom_computer"]."</td>
-                        <td class=\"horaire\">" ;
-          } else {
-              /*if(COUNT($usage)==$row['NB']) // si la recherche est exacte
-              {
-                $graf .= "<tr><td class=\"computer2\"><a href=\"index.php?m=7&idepn=".$epn."&idcomp=".$row["id_computer"]."&nomcomp=".$row["nom_computer"]."&date=".$dotd."\">".$row["nom_computer"]."".$nbCritere."</a></td>
-                            <td class=\"horaire\">" ;
-                $lineExist = TRUE ;         
-                            
-              }
-              else // sinon on affiche les resultats avec les autres criteres de recherche
-              {*/
-	       if (FALSE ==checkInter($row["id_computer"])){ //si pas d'intervention
-	      
-                $graf .= "<tr><td class=\"computer\"><a href=\"index.php?m=7&idepn=".$epn."&idcomp=".$row["id_computer"]."&nomcomp=".$row["nom_computer"]."&date=".$dotd."\">".$row["nom_computer"]."".$nbCritere."</a></td>
-                            <td class=\"horaire\">" ;
-		} else {
-		 $graf .= "<tr><td class=\"computer\"><span data-toggle=\"tooltip\" title=\"Une intervention est en cours sur ce poste, pas de r&eacute;servation possible !\" class=\"text-red\">".$row["nom_computer"]."</span></td>
-                            <td class=\"horaire\">" ;
-		
-		
-		}
-            //  }
-          }
-          
-          // affichage des horaires et des occupations
-          $result2  = getResa($row["id_computer"],$dotd)   ;
-          $width    = 0;
-          $position = 0;
-          $widthTmp = 0;
-          $widthTmp2 = 0;
-          $i=0;
-          while ($row2 = mysqli_fetch_array($result2))
-          {
-            
-            $i=0;
-			
-            // largeur en % du div representant la resa
-            $width        = getWidth($row2["duree_resa"],$nbTotM,$unit)*(60/$unit) ;
-            
-            // recupere la position absolue dans le tableau
-            $positionTmp  = getPosition($row2["debut_resa"],
-                                         $h1begin,
-                                         getWidthPerUnit($nbTotM,
-                                                         $unit));
-            // position en % du div en cours (represente l'ecart avec celui de devant)
-            $position     = ($positionTmp-$widthTmp2)*(60/$unit)-(($unit/60)*$i) ;
-            if($position<0)
-            {
-                $position=0;
-            }
-            // Affichage de la ligne d'une machine;
-            $urlGraf = "#p".$row2["id_user_resa"]; //Ajout lien vers ancre dans la liste//$_SERVER['REQUEST_URI'] ; //."&idResa=".$row2['id_resa'];
-            if ($_SESSION['status']==3 OR $_SESSION['status']==4)
-            { // comment d'admin et d'anim
-				
-                $altGraf = "(".getUserName($row2["id_user_resa"])." - ".getTime($row2["debut_resa"])." &agrave; ".getTime(($row2["debut_resa"])+($row2["duree_resa"])).")" ;
-				
-            } else { // comment d'utilisateur
-                $altGraf = "(".getTime($row2["debut_resa"])." &agrave; ".getTime(($row2["debut_resa"])+($row2["duree_resa"])).")" ;
-            }
-            $graf        .= "<div class=\"unitbusy\" style=\"width:".$width."%;left:".$position."%;\">
-                                <a href=\"".$urlGraf."\" alt=\"".$altGraf."\" title=\"".$altGraf."\">".getUserNameAbrev($row2["id_user_resa"])."</a>
-                            </div>" ;
-            $widthTmp     = ($widthTmp+$width) ;
-            $widthTmp2    = $widthTmp/(60/$unit)  ;
-            ++$i ;
-            //echo $position.'% = (PA:'.$positionTmp.'-W'.$widthTmp.')*(60/'.$unit.') -- width:'.$width.'% -- nbTotM:'.$nbTotM.'<br/>';
-          }
-          // fin de l'affichage des horaires et des occupations
-          $graf .= "</td></tr>" ;
-      }
-      
-      // ligne des horaires - echelle en dessous du tableau de reservation 2
-      $graf .= "<tr><td></td><td >" ;
-      for ($i = 0 ; $i < ($nbTotM/$unitLabel) ; $i++)
-      {
-         if ($i == (($nbTotM/$unitLabel)-1)) // correction bug I.E ...
-         {
-         if (strlen(getTime($h1begin+($i*$unitLabel)))<=3)
-         $graf.= "<div class=\"labelHor\" style=\"width:".(getWidth(60,$nbTotM,$unitLabel)-2)."%;\">|".getTime($h1begin+($i*$unitLabel))."</div>" ;
-         else
-         $graf.= "<div class=\"labelHor1\" style=\"width:".(getWidth(60,$nbTotM,$unitLabel)-2)."%;\">|30</div>" ;
-         }
-         else  // sinon normal
-         {
-         if (strlen(getTime($h1begin+($i*$unitLabel)))<=3)
-         $graf.= "<div class=\"labelHor\" style=\"width:".getWidth(60,$nbTotM,$unitLabel)."%;\">|".getTime($h1begin+($i*$unitLabel))."</div>" ;
-         else
-         $graf.= "<div class=\"labelHor1\" style=\"width:".getWidth(60,$nbTotM,$unitLabel)."%;\">|30</div>" ;
-         }
-      }
-      $graf .= "</td></tr>" ;
-    
-      $graf .= "</table>" ;
-  }
- 
-
-  return $graf ;
-}
 
 // renvoi les horaires d'ouverture en min.
 function getHoraire($day,$epn)
@@ -1903,8 +1137,8 @@ function getHoraire($day,$epn)
   $sql = "SELECT `hor1_begin_horaire`,`hor1_end_horaire`,`hor2_begin_horaire`,`hor2_end_horaire`
           FROM `tab_horaire`
           WHERE `jour_horaire`='".$day."'
-				AND `id_epn`='".$epn."'
-	  " ;
+                AND `id_epn`='".$epn."'
+      " ;
   $db=opendb();
   $result = mysqli_query($db,$sql);
   closedb($db);
@@ -1917,37 +1151,7 @@ function getHoraire($day,$epn)
   }
 }
 
-// renvoi les horaires d'ouverture sous forme d'une phrase.
-function getHoraireTexte($day, $epn)
-{
-  $sql = "SELECT `hor1_begin_horaire`,`hor1_end_horaire`,`hor2_begin_horaire`,`hor2_end_horaire`
-          FROM `tab_horaire`
-          WHERE `jour_horaire`='".$day."'
-		  AND id_epn='".$epn."'
-		  " ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if ($result ==FALSE)
-  {
-      return FALSE ;
-  } else {
-      $row = mysqli_fetch_array($result);
-      if ($row["hor1_begin_horaire"]!=0 AND $row["hor1_end_horaire"]!=0)
-         $horaire = getTime($row["hor1_begin_horaire"])." &agrave; ".getTime($row["hor1_end_horaire"]);
-      else
-         $horaire = "Ferm&eacute; le matin ";
-      if ($row["hor2_begin_horaire"]!=0 AND $row["hor2_end_horaire"]!=0)
-         $horaire .= ", ouvert de ".getTime($row["hor2_begin_horaire"])." &agrave; ".getTime($row["hor2_end_horaire"]) ;
-      else
-         $horaire .= ", Ferm&eacute; l'après midi" ;
 
-      if ($row["hor1_begin_horaire"]!="" AND $row["hor1_end_horaire"]==0 AND $row["hor2_begin_horaire"]==0 AND $row["hor2_end_horaire"]!="")
-         $horaire =  getTime($row["hor1_begin_horaire"])." &agrave; ".getTime($row["hor2_end_horaire"]) ;
-
-      return $horaire  ;
-  }
-}
 
 //
 // breves ----------------------------------------------------------------------
@@ -2037,10 +1241,10 @@ function modBreve($id,$titr,$comment,$visible,$type,$datepublish,$datenews,$epn)
     SET `titre_news` ='".$titr."',
         `comment_news` ='".$comment."',
         `visible_news` ='".$visible."',
-		`type_news` ='".$type."',
-		`date_publish`='".$datepublish."', 
-		`date_news`='".$datenews."',  
-		`id_epn`='".$epn."'
+        `type_news` ='".$type."',
+        `date_publish`='".$datepublish."', 
+        `date_news`='".$datenews."',  
+        `id_epn`='".$epn."'
      WHERE `id_news` =".$id." LIMIT 1 ";
   $db=opendb();
   $result = mysqli_query($db,$sql);
@@ -2078,11 +1282,11 @@ function supBreve($id)
 function getPrintById($iduser)
 {
    
-	$sql="SELECT * FROM tab_print
-		WHERE print_user='".$iduser."'
-		AND (print_statut=0 OR print_statut=1)
-		AND TO_DAYS(NOW()) - TO_DAYS(print_date) <= 360
-		ORDER BY `print_date` DESC ";
+    $sql="SELECT * FROM tab_print
+        WHERE print_user='".$iduser."'
+        AND (print_statut=0 OR print_statut=1)
+        AND TO_DAYS(NOW()) - TO_DAYS(print_date) <= 360
+        ORDER BY `print_date` DESC ";
     
     $db=opendb();
    $result = mysqli_query($db,$sql) ;
@@ -2100,11 +1304,11 @@ function getPrintById($iduser)
 function getPrintdebitType($iduser,$type)
 {
     $sql="SELECT SUM(`print_credit`)AS nbpage, print_statut, donnee_tarif, nom_tarif,id_tarif
-		FROM tab_print,tab_tarifs
-		WHERE print_user=".$iduser." 
-		AND print_tarif=".$type."
-		AND tab_print.print_tarif = tab_tarifs.id_tarif
-				" ;
+        FROM tab_print,tab_tarifs
+        WHERE print_user=".$iduser." 
+        AND print_tarif=".$type."
+        AND tab_print.print_tarif = tab_tarifs.id_tarif
+                " ;
 
     $db=opendb();
   $result = mysqli_query($db,$sql);
@@ -2120,9 +1324,9 @@ function getPrintdebitType($iduser,$type)
 
 function selectIdPrintUser($iduser){
 $sql="SELECT id_print
-		FROM tab_print
-		WHERE print_user='".$iduser."'
-		AND print_statut<=1 ";
+        FROM tab_print
+        WHERE print_user='".$iduser."'
+        AND print_statut<=1 ";
  $db=opendb();
   $result = mysqli_query($db,$sql);
   closedb($db);
@@ -2165,7 +1369,7 @@ function checkPrint($id)
     if (mysqli_num_rows($result)>0){
         return TRUE ;
     } else {
-	
+    
         return FALSE;}
 }
 
@@ -2173,7 +1377,7 @@ function checkPrint($id)
 // ajoute un nouveau credit/debit au compte d'impression
 function addPrint($date_p,$id_user,$debit_p, $tarif_p,$statut_p,$credit_p,$nomuser_p,$epn,$caissier, $moyen_p)
 {
-	$sql="INSERT INTO `tab_print`(`id_print`, `print_date`, `print_user`, `print_debit`, `print_tarif`, `print_statut`, `print_credit`, `print_userexterne`, `print_epn`, `print_caissier`,`print_paiement`) 
+    $sql="INSERT INTO `tab_print`(`id_print`, `print_date`, `print_user`, `print_debit`, `print_tarif`, `print_statut`, `print_credit`, `print_userexterne`, `print_epn`, `print_caissier`,`print_paiement`) 
   VALUES ('','".$date_p."','".$id_user."','".$debit_p."','".$tarif_p."','".$statut_p."','".$credit_p."','".$nomuser_p."','".$epn."','".$caissier."','".$moyen_p."')";
   $db=opendb();
   $result = mysqli_query($db,$sql);
@@ -2196,12 +1400,12 @@ function modPrint($id,$date_p,$debit_p,$tarif_p, $statut_p, $credit_p,$nomuser_p
     SET `print_date` ='".$date_p."',
         `print_debit` ='".$debit_p."',
         `print_tarif` ='".$tarif_p."',
-		`print_statut` ='".$statut_p."',
-		`print_credit` ='".$credit_p."',
-		print_userexterne='".$nomuser_p."',
-		print_paiement='".$moyen_p."'
-	WHERE `id_print` ='".$id."' 
-	 ";
+        `print_statut` ='".$statut_p."',
+        `print_credit` ='".$credit_p."',
+        print_userexterne='".$nomuser_p."',
+        print_paiement='".$moyen_p."'
+    WHERE `id_print` ='".$id."' 
+     ";
   $db=opendb();
   $result = mysqli_query($db,$sql);
   closedb($db);
@@ -2484,87 +1688,94 @@ function getLastDay($year,$month)
 
 
 // renvoi un calendrier du mois et de l'annee donnee
-function getCalendar($year,$month,$epn)
+function getCalendar($year, $month, $day, $epn)
 {
-  $calendar = "" ;
-  // tableau des index des jours
-  $dayArray = array("L","M","M","J","V","S","D") ;
-  //nombre de jour das le mois en cours
-  $nb_jour  = date("t", mktime(0, 0, 0, $month, 1, $year));
-  //epn sélectionné
-	$Pepn=$_SESSION["idepn"];
-	if ($epn==$Pepn){
-	$epn=$epn;
-	} else {
-	$epn=$Pepn;
-	}
-	
-  //Bouton pour la resa a posteriori que animateurs ou admin
-	if($_SESSION["status"]==3 OR $_SESSION["status"]==4){
-		$boutonresa="<a href=\"index.php?a=19\"><i class=\"ion ion-log-in\"></i></a>";
-	} else {
-		$boutonresa="";
-	}
-  //Affichage -------------------------------------
+    $calendar = "" ;
+    // tableau des index des jours
+    $dayArray = array("L","M","M","J","V","S","D") ;
+    //nombre de jour das le mois en cours
+    $nb_jour  = date("t", mktime(0, 0, 0, $month, 1, $year));
+    //epn sélectionné
+    
+    /// GNIIIII ???? à quoi sert de donner l'argument $epn ????
+    // $Pepn = $_SESSION["idepn"];
+    // if ($epn == $Pepn) {
+        // $epn = $epn;
+    // } else {
+        // $epn = $Pepn;
+    // }
+    
+    
+    //Bouton pour la resa a posteriori que animateurs ou admin
+    if ($_SESSION["status"] == 3 OR $_SESSION["status"] == 4){
+        $boutonresa = "<a href=\"index.php?a=19\"><i class=\"ion ion-log-in\"></i></a>";
+    } else {
+        $boutonresa = "";
+    }
+    //Affichage -------------------------------------
 
-  //affichage du mois et de l'année
-   $calendar = "<div align=\"center\" class=\"titreCal\"> <h4 ><a href=\"?m=3&month=".($month-1)."&year=".$year."\"><i class=\"ion-arrow-left-b\"></i></a>&nbsp;&nbsp;<b>".getMonthName($month)." ".$year."</b>
-	 <a href=\"?m=3&month=".($month+1)."&year=".$year."\">&nbsp;&nbsp;<i class=\"ion-arrow-right-b\"></i></a>
-	 &nbsp;&nbsp;&nbsp;&nbsp;".$boutonresa."</h4></div> ";
+    //affichage du mois et de l'année
+    $calendar = "<div align=\"center\" class=\"titreCal\">
+                    <h4 >
+                        <a href=\"?m=3&jour=" . $day . "&mois=" . ($month - 1) . "&annee=" . $year . "\"><i class=\"ion-arrow-left-b\"></i></a>
+                        &nbsp;&nbsp;<b>" . getMonthName($month) . " " . $year . "</b>
+                        <a href=\"?m=3&jour=" . $day . "&mois=".($month+1)."&annee=".$year."\">&nbsp;&nbsp;<i class=\"ion-arrow-right-b\"></i></a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;" . $boutonresa . "
+                    </h4>
+                </div> ";
 
-  $calendar .= "<div class=\"calendar\">" ;
+    $calendar .= "<div class=\"calendar\">" ;
 
-  // affichage du nom des jours
+    // affichage du nom des jours
+    for ($i = 0 ; $i < 7 ; $i++) {
+        $calendar .= "<div class=\"labelDay\">" . $dayArray[$i] . "</div>" ;
+    }
+    $calendar .= "<br>" ;
 
-  for ($i=0 ; $i<7 ;$i++)
-  {
-      $calendar .= "<div class=\"labelDay\">".$dayArray[$i]."</div>" ;
-  }
-  $calendar .= "<br>" ;
+    // affichage des cases vides de debut
+    $firstDay = getFirstDay($year,$month) ;
+    for ($k = 1 ; $k < $firstDay ; $k++) {
+        $calendar .= "<div class=\"labelNum\">&nbsp;</div>" ;
+    }
 
-  // affichage des cases vides de debut
-  $firstDay = getFirstDay($year,$month) ;
-  for ($k = 1 ; $k < $firstDay ; $k++)
-  {
-      $calendar .= "<div class=\"labelNum\">&nbsp;</div>" ;
-  }
-
-  // affichage des jours
-  for ($j = 1 ; $j <= $nb_jour ; $j++)
-  {
-        switch (checkDayOpen2($j,$month,$year,$epn))
-        {
+    // affichage des jours
+    for ($j = 1 ; $j <= $nb_jour ; $j++) {
+        switch (checkDayOpen2($j, $month, $year, $epn)) {
             case "ouvert":
-               if ($month == date ("m") AND $j == date("d"))
-               $calendar .= "<div class=\"labelNumCurrent\"><a href=\"index.php?m=3&month=".$month."&year=".$year."&jour=".$j."&mois=".$month."&annee=".$year."\"><span class=\"cal\">".$j."</span></a></div>" ;
-               else
-               $calendar .= "<div class=\"labelNum\"><a href=\"index.php?m=3&month=".$month."&year=".$year."&jour=".$j."&mois=".$month."&annee=".$year."\"><span class=\"cal\">".$j."</span></a></div>" ;
+                if ($j == $day)
+                    $calendar .= "<div class=\"labelNumCurrent\"><a href=\"index.php?m=3&mois=" . $month . "&annee=" . $year . "&jour=" . $j . "\"><span class=\"cal\">".$j."</span></a></div>" ;
+                else if ($year == date('Y') AND $month == date ("m") AND $j == date("d"))
+                    $calendar .= "<div class=\"labelNumToday\"><a href=\"index.php?m=3&mois=" . $month . "&annee=" . $year . "&jour=" . $j . "\"><span class=\"cal\">".$j."</span></a></div>" ;
+                else 
+                    $calendar .= "<div class=\"labelNum\"><a href=\"index.php?m=3&mois=" . $month . "&annee=" . $year . "&jour=" . $j . "\"><span class=\"cal\">".$j."</span></a></div>" ;
             break;
             case "ferme":
-               if ($month == date ("m") AND $j == date("d"))
-               $calendar .= "<div class=\"labelNumCurrent\">".$j."</div>" ;
-               else
-               $calendar .= "<div class=\"labelNumClose\">".$j."</div>" ;
+                if ($month == date ("m") AND $j == date("d"))
+                    $calendar .= "<div class=\"labelNumCurrent\">".$j."</div>" ;
+                else
+                    $calendar .= "<div class=\"labelNumClose\">".$j."</div>" ;
             break;
             case "ferie":
-               if ($month == date ("m") AND $j == date("d"))
-               $calendar .= "<div class=\"labelNumCurrent\">".$j."</div>" ;
-               else
-               $calendar .= "<div class=\"labelNumOff\">".$j."</div>" ;
+                if ($month == date ("m") AND $j == date("d"))
+                    $calendar .= "<div class=\"labelNumCurrent\">".$j."</div>" ;
+                else
+                    $calendar .= "<div class=\"labelNumOff\">".$j."</div>" ;
             break;
         }
-  }
+    }
 
-  // affichage des cases vides de fin
-  $lastDay = getLastDay($year,$month) ;
-  for ($l = 1 ; $l <= $lastDay ; $l++)
-  {
-      $calendar .= "<div class=\"labelNum\">&nbsp;</div>" ;
-  }
-  $calendar .= "<div style=\"clear:both;font-size:10px;padding-top:3px;\"></div></div>";
+    // affichage des cases vides de fin
+    $lastDay = getLastDay($year ,$month) ;
+    for ($l = 1 ; $l <= $lastDay ; $l++) {
+        $calendar .= "<div class=\"labelNum\">&nbsp;</div>" ;
+    }
+    $calendar .= "<div style=\"clear:both;font-size:10px;padding-top:3px;\"></div></div>";
 
-  return $calendar ;
+    return $calendar ;
 }
+
+
+
 //renvoi le numero du jour de la semaine de 0->lundi a 6->dimanche
 function getDayNum($j,$m,$a)
 {
@@ -2585,8 +1796,8 @@ function checkHoraireDay($j,$m,$y,$epn)
 function checkDayOpen($daynum,$year,$epn)
 {
     $sql = "SELECT id_days_closed, state_days_closed FROM `tab_days_closed` WHERE `year_days_closed`='".$year."' AND `num_days_closed`='".$daynum."' AND `id_epn`='".$epn."'
-		  ";
-	  
+          ";
+      
 $db=opendb();
 $result = mysqli_query($db,$sql);
  closedb($db);
@@ -2609,8 +1820,8 @@ function checkDayOpen2($j,$m,$year,$epn)
           FROM `tab_days_closed`
           WHERE `num_days_closed`='".$daynum."'
           AND `year_days_closed` = '".$year."'
-		  AND `id_epn`='".$epn."'
-		  ";
+          AND `id_epn`='".$epn."'
+          ";
   $db=opendb();
   $result = mysqli_query($db,$sql);
   $row = mysqli_fetch_array($result) ;
@@ -2634,7 +1845,7 @@ function updateDay($daynum,$year,$epn)
   if (TRUE==checkDayOpen($daynum,$year,$epn))
   {
       //debug(checkDayOpen($daynum,$year));
-	  $sql = "INSERT INTO `tab_days_closed` (`id_days_closed`, `year_days_closed`, `num_days_closed`, `state_days_closed`, `id_epn`) VALUES ('','".$year."','".$daynum."','F','".$epn."') ";
+      $sql = "INSERT INTO `tab_days_closed` (`id_days_closed`, `year_days_closed`, `num_days_closed`, `state_days_closed`, `id_epn`) VALUES ('','".$year."','".$daynum."','F','".$epn."') ";
   }
   elseif(FALSE==checkDayOpen($daynum,$year,$epn))
   {
@@ -2797,12 +2008,12 @@ function updateConfig($table,$array,$field,$idvalue,$epn)
 }
 
 function updateresaconfig($epnr, $unitconfig, $maxtime_config,$resarapide, $duree_resarapide){
-	$sql="UPDATE `tab_config` SET 
+    $sql="UPDATE `tab_config` SET 
 `unit_config`='".$unitconfig."',
 `maxtime_config`='".$maxtime_config."',
 `resarapide`='".$resarapide."',
 `duree_resarapide`='". $duree_resarapide."' WHERE `id_espace`=".$epnr;
-	$db=opendb();
+    $db=opendb();
     $result = mysqli_query($db,$sql);
     closedb($db);
     if (FALSE == $result)
@@ -2811,7 +2022,7 @@ function updateresaconfig($epnr, $unitconfig, $maxtime_config,$resarapide, $dure
     } else {
         return TRUE ;
     }
-	
+    
 }
 
 

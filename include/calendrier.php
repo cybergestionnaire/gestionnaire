@@ -22,31 +22,28 @@
  include/calendrier.php V0.1
 */
 
-// on verifie si le mois et l'annee existe et sont de type numerique
-if (TRUE == isset($_GET["month"]) AND TRUE == isset($_GET["year"]) AND TRUE == is_numeric($_GET["month"]) AND TRUE == is_numeric($_GET["year"]))
-{
-        $month = $_GET["month"] ;
-        $year  = $_GET["year"] ;
-        if($month == 13) //annee suivante
-        {
+    // on verifie si le mois et l'annee existe et sont de type numerique
+    if (isset($_GET["jour"]) AND isset($_GET["mois"]) AND isset($_GET["annee"]) AND is_numeric($_GET["jour"]) AND is_numeric($_GET["mois"]) AND is_numeric($_GET["annee"])) {
+        $day   = $_GET["jour"];
+        $month = $_GET["mois"] ;
+        $year  = $_GET["annee"] ;
+        if($month == 13) {//annee suivante
             $month = 1;
             $year++ ;
         }
-        if ($month == 0) //annee precedente
-        {
+        if ($month == 0) { //annee precedente
             $month = 12;
             $year-- ;
         }
-}
-else  // sinon on prend le mois et l'annee en cours
-{
-   $month = date("n") ;
-   $year  = date("Y") ;
-}
-$epn=$_SESSION["idepn"];
 
-echo getCalendar($year,$month,$epn) ;
+    } else { // sinon on prend le mois et l'annee en cours
+        $day   = date("j") ;
+        $month = date("n") ;
+        $year  = date("Y") ;
+    }
+    $epn = $_SESSION["idepn"];
 
+    echo getCalendar($year, $month, $day, $epn) ;
 
 ?>
 

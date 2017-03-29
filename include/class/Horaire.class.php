@@ -31,7 +31,7 @@ class Horaire
     private $_horaire2Fin;
     private $_typeUniteHoraire;
     
-    private $_jours = array("","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche") ;
+    private $_jours = array("", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche") ;
     
     private function __construct($array) {
         $this->_id                  = $array["id_horaire"];
@@ -118,7 +118,7 @@ class Horaire
 
     public static function getHorairesByIdEspace($idEspace) {
         $horaires = null;
-        if ( is_int($idEspace)  && $idEspace != 0) {
+        if ($idEspace != 0) {
             $db       = Mysql::opendb();
             $sql      = "SELECT * FROM `tab_horaire` WHERE `id_epn`=" . $idEspace. " ORDER BY jour_horaire" ;
             $result   = mysqli_query($db,$sql);

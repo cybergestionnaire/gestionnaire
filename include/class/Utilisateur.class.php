@@ -157,6 +157,71 @@ class Utilisateur
 
     }
     
+    public function getTempsUtiliseOuRestant() {
+        $temps['Utilise'] = 0;
+        $temps['Restant'] = 0;
+
+        // Tableau des unit&eacute; d'affectation
+        $tab_unite_temps_affectation = array(
+           1=> 1, //minutes
+           2=> 60 //heures
+        );
+        
+        $forfaitConsultation = $this->getForfaitConsultation();
+
+        if ($forfaitConsultation != null) {
+            //TARIF CONSULTATION
+            $min                   = $tab_unite_temps_affectation[$forfaitConsultation->getUniteConsultation()];
+            $tarifreferencetemps   = $forfaitConsultation->getDureeConsultation() * $min;
+    
+            //modifier le temps comptabilisé en fonction de la frequence_temps_affectation
+            if ($forfaitConsultation->getFrequenceConsultation() == 1) { 
+                //par jour
+                $date1 = date('Y-m-d');
+                $date2 = $date1;
+            }
+            else if($forfaitConsultation->getFrequenceConsultation() == 2 ) { 
+                //par semaine;
+                $semaine = get_lundi_dimanche_from_week(date('W'));
+                $date1   = strftime("%Y-%m-%d", $semaine[0]);
+                $date2   = strftime("%Y-%m-%d", $semaine[1]);
+        
+            }
+            else if($forfaitConsultation->getFrequenceConsultation() == 3) { 
+                //par mois
+                $date1 = date('Y-m') . "-01";
+                $date2 = date('Y-m') . "-31";
+            }
+            
+            $sql = "SELECT SUM(`duree_resa`) AS tempsUtilise " 
+                 . "FROM tab_resa "
+                 . "INNER JOIN tab_user ON id_user=id_user_resa "
+                 . "WHERE id_user_resa='" . $this->_id . "' "
+                 . "  AND status_resa ='1' "
+                 . "  AND dateresa_resa BETWEEN '" . $date1 . "' AND '" . $date2 . "' ";
+      
+            $db     = Mysql::opendb();
+            $result = mysqli_query($db,$sql);
+            Mysql::closedb($db);
+
+            if($result != FALSE) {
+                $row = mysqli_fetch_array($result) ;
+                $temps['Utilise'] = $row["tempsUtilise"];
+                $temps['Restant'] = $tarifreferencetemps - $temps['Utilise'];
+                mysqli_free_result($result);
+            }            
+        }
+        return $temps;
+    }
+    
+    public function getTempsUtilise() {
+        return $this->getTempsUtiliseOuRestant()['Utilise'];
+    }
+
+    public function getTempsRestant() {
+        return $this->getTempsUtiliseOuRestant()['Restant'];
+    }
+   
     public function getLogin() {
         return $this->_login;
     }
@@ -253,8 +318,7 @@ class Utilisateur
         $result = mysqli_query($db,$sql);
         Mysql::closedb($db);
 
-        if($result != FALSE)
-        {
+        if($result != FALSE) {
             $row = mysqli_fetch_array($result) ;
             $avatar = $row["anim_avatar"];
             mysqli_free_result($result);

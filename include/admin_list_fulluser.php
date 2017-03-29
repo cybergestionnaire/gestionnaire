@@ -166,32 +166,14 @@
                 //$tarifreferencetemps = $tarifTemps["nombre_temps_affectation"] * $min;
                 
                 $forfaitConsultation   = $utilisateurRecherche->getForfaitConsultation();
-                $min                   = $tab_unite_temps_affectation[$forfaitConsultation->getUniteConsultation()];
-                $tarifreferencetemps   = $forfaitConsultation->getDureeConsultation() * $min;
                 
-                //modifier le temps comptabilisé en fonction de la frequence_temps_affectation
-                if ($forfaitConsultation->getFrequenceConsultation() == 1) { 
-                    //par jour
-                    $date1 = date('Y-m-d');
-                    $date2 = $date1;
+                if ($forfaitConsultation != null) {
+                    $min                   = $tab_unite_temps_affectation[$forfaitConsultation->getUniteConsultation()];
+                    $tarifreferencetemps   = $forfaitConsultation->getDureeConsultation() * $min;
+            
+                    $restant     = $utilisateur->getTempsrestant();
+                    $rapport     = round(($restant / $tarifreferencetemps)*100);
                 }
-                elseif($forfaitConsultation->getFrequenceConsultation() == 2) { 
-                    //par semaine;
-                    $semaine = get_lundi_dimanche_from_week(date('W'));
-                    $date1   = strftime("%Y-%m-%d", $semaine[0]);
-                    $date2   = strftime("%Y-%m-%d", $semaine[1]);
-                
-                }
-                elseif($forfaitConsultation->getFrequenceConsultation() == 3) { 
-                    //par mois
-                    $date1 = date('Y-m')."-01";
-                    $date2 = date('Y-m')."-31";
-                }
-                
-                //calcul du % de temps restant
-                $resautilise = getTempsCredit($utilisateurRecherche->getId(), $date1, $date2);
-                $restant     = $tarifreferencetemps - $resautilise['util'];
-                $rapport     = round(($restant/$tarifreferencetemps)*100);
                 
                 if($utilisateurRecherche->getStatut() == 2 or $utilisateurRecherche->getStatut() == 6 ) {
                     $class = "text-muted" ;

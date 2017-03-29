@@ -131,35 +131,13 @@
                 $classadh='label label-danger';
             }
                         
-            //TARIF CONSULTATION
             $forfaitConsultation   = $utilisateur->getForfaitConsultation();
-            $min                   = $tab_unite_temps_affectation[$forfaitConsultation->getUniteConsultation()];
-            $tarifreferencetemps   = $forfaitConsultation->getDureeConsultation() * $min;
-             
-            if ($forfaitConsultation != null) {
-        
-                //modifier le temps comptabilisé en fonction de la frequence_temps_affectation
-                if ($forfaitConsultation->getFrequenceConsultation() == 1) { 
-                    //par jour
-                    $date1 = date('Y-m-d');
-                    $date2 = $date1;
-                }
-                else if($forfaitConsultation->getFrequenceConsultation() == 2 ) { 
-                    //par semaine;
-                    $semaine = get_lundi_dimanche_from_week(date('W'));
-                    $date1   = strftime("%Y-%m-%d", $semaine[0]);
-                    $date2   = strftime("%Y-%m-%d", $semaine[1]);
             
-                }
-                else if($forfaitConsultation->getFrequenceConsultation() == 3) { 
-                    //par mois
-                    $date1 = date('Y-m') . "-01";
-                    $date2 = date('Y-m') . "-31";
-                }
-                
-                //debug($tarifreferencetemps);
-                $resautilise = getTempsCredit($utilisateur->getId(), $date1, $date2);
-                $restant     = $tarifreferencetemps - $resautilise['util'];
+            if ($forfaitConsultation != null) {
+                $min                   = $tab_unite_temps_affectation[$forfaitConsultation->getUniteConsultation()];
+                $tarifreferencetemps   = $forfaitConsultation->getDureeConsultation() * $min;
+        
+                $restant     = $utilisateur->getTempsrestant();
                 $rapport     = round(($restant / $tarifreferencetemps)*100);
             }
             //dernière reservation

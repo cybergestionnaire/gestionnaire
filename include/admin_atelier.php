@@ -29,8 +29,7 @@
     $idUser     = isset($_GET["iduser"]) ? $_GET["iduser"] : '';
     $searchuser = isset($_POST["searchuser"]) ? $_POST["searchuser"] : '';
     $idStatut   = isset($_GET["idstatut"]) ? $_GET["idstatut"] : '';
-    // $espaces    = getAllepn();
-    $espaces    = Espace::getEspaces();
+
          
     $mesno = isset($_GET["mesno"]) ? $_GET["mesno"] : '';
     if ($mesno != "") {
@@ -45,23 +44,7 @@
         $salle     = $atelier->getSalle();
         $tarif     = $atelier->getTarif();
         
-        //debut if0
-        //recuperation des variables
-        // $row      = getAtelier($idAtelier,0);
-        // $idsujet  = $row["id_sujet"];
-        // $result   = getSujetById($idsujet);
-        // $rowsujet = mysqli_fetch_array($result);
-        // $anim     = getUserName($row["anim_atelier"]);
-        // $salle    = mysqli_fetch_array(getSalle($row["salle_atelier"]));
-        // $nomsalle = $salle["nom_salle"]." (".$espaces[$salle["id_espace"]].")";
-        // $tarif    = getNomTarif($row["tarif_atelier"]);
-        // $idtarif  = $row["tarif_atelier"];
-        // $statut   = $row["statut_atelier"];
-        // //variable pour les courriers
-        // $idepn            = $salle['id_espace'];
-        // $statusepnconnect = $row["status_atelier"];
-        
-        //actions du formulaire pour inscriptions
+         //actions du formulaire pour inscriptions
         if ($b == 2) {
             if ($atelier->inscrireUtilisateurAvecTarif($idUser, $tarif->getId())) {
                 echo geterror(25);
@@ -69,17 +52,14 @@
         }
         if ($b == 3) {
             if ($atelier->desinscrireUtilisateur($idUser)) {
-            // if (FALSE != delUserAtelier($idAtelier, $idUser)) {
                 echo geterror(27);
             }
         }
         
         if ($b == 4) {
             //test s'il reste une place ou non, si oui enlever de la liste d'attente
-            //if (countPlace($idAtelier) < $row["nbplace_atelier"]) {
             if ($atelier->getNbPlacesRestantes() > 0) {
           
-//                if (FALSE != ModifyUserAtelier($idAtelier, $idUser,0)) {
                 if ($atelier->MAJStatutUtilisateur($idUser, 0)) {
                     echo geterror(26);
                 }
@@ -94,7 +74,6 @@
             <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Pr&eacute;sence valid&eacute;e</div>" ;
         }
         if ($b == 6) { // deplacer de l'inscription à la liste d'attente
-//            if (FALSE != ModifyUserAtelier($idAtelier,$idUser,2)) {
             if ($atelier->MAJStatutUtilisateur($idUser, 2)) {
     
                 echo "<div class=\"alert alert-success alert-dismissable\"><i class=\"fa fa-info\"></i>
@@ -105,7 +84,6 @@
         }
     
         if ($b == 10) {// en liste d'attente
-            //if (FALSE != addUserAtelierAttente($idAtelier,$idStatut,$idUser)) {
                 // attention !! j'ai enlevé le statut ! A voir quand la variable $idStatut est renseignée ( --> _GET["idstatut"])
             if ($atelier->inscrireUtilisateurEnAttente($idUser)) {
                 echo "<div class=\"alert alert-success alert-dismissable\"><i class=\"fa fa-info\"></i>

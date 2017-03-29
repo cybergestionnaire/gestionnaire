@@ -53,7 +53,6 @@
             } else {
                 switch($m) {
                     case 1:   // ajout planification d'un poste
-                        //$idAtelier = addAtelier($date, $heure, $duree, $idAnim, $idSujet, $nbplace, $public, $stateAtelier, $idSalle, $idTarif, 0, 0);
                         $atelier = Atelier::creerAtelier($date, $heure, $duree, intval($idAnim), intval($idSujet), $nbplace, $public, $stateAtelier, intval($idSalle), intval($idTarif), 0, 0);
                         if ($atelier == null) {
                             header("Location: ./index.php?a=11&mesno=0");
