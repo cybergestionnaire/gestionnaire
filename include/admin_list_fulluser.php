@@ -422,10 +422,10 @@
                     
                     //TARIF CONSULTATION
                     $forfaitConsultation   = $utilisateur->getForfaitConsultation();
-                    $min                   = $tab_unite_temps_affectation[$forfaitConsultation->getUniteConsultation()];
-                    $tarifreferencetemps   = $forfaitConsultation->getDureeConsultation() * $min;
                      
                     if ($forfaitConsultation != null) {
+                        $min                   = $tab_unite_temps_affectation[$forfaitConsultation->getUniteConsultation()];
+                        $tarifreferencetemps   = $forfaitConsultation->getDureeConsultation() * $min;
                         
                     //modifier le temps comptabilisé en fonction de la frequence_temps_affectation
                         if ($forfaitConsultation->getFrequenceConsultation() == 1) { 
