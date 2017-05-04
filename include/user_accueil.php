@@ -148,22 +148,25 @@
         <div class="box">
             <div class="box-header"><h3 class="box-title">Au programme cette semaine &agrave; l'EPN</h3></div>
             <div class="box-body">
-            <!-- The time line --> 
-                <ul class="timeline">
 <?php
         $listeAteliers     = Atelier::getAteliersParSemaine(date('Y-m-d'), $_SESSION["idepn"]);
         $listeSessionDates = SessionDate::getSessionDatesParSemaine(date('Y-m-d'), $_SESSION["idepn"]);
         $listeGlobale      = array_merge($listeAteliers, $listeSessionDates );
         
         
-        // tri des ateliers et des sessions en fonction de leur date
-        // error_log(print_r($listeGlobale, true));
-        
 
-        usort($listeGlobale, 'cmp');
-        // error_log(print_r($listeGlobale, true));
         
-        if (count($listeGlobale) > 0 ) {
+        if (count($listeGlobale) > 0 ) { ?>
+                <!-- The time line --> 
+                <ul class="timeline">
+
+<?php
+            // tri des ateliers et des sessions en fonction de leur date
+            // error_log(print_r($listeGlobale, true));
+            
+
+            usort($listeGlobale, 'cmp');
+            // error_log(print_r($listeGlobale, true));
             foreach ($listeGlobale as $AS) {
                 if ($AS instanceof Atelier) {
                     // error_log("Atelier à la date : " . $AS->getDate());
