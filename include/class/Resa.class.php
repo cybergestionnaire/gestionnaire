@@ -77,6 +77,26 @@ class Resa
     public function getDuree() {
         return $this->_duree;
     }
+    
+    public function setDuree($duree) {
+        $success = false;
+        
+        $db = Mysql::opendb();
+        
+        $duree = mysqli_real_escape_string($db, $duree);
+        
+        $sql = "UPDATE tab_resa SET duree_resa='" . $duree . "' WHERE id_resa='" . $this->_id . "'" ;
+        
+        $result = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $this->_duree    = $duree;
+            $success = TRUE;
+        }
+
+        return $success;
+    }
 
     public function getDate() {
         return $this->_date;
@@ -298,12 +318,12 @@ class Resa
              . "  AND debut_resa>" . $heureDebut . " "
              . "ORDER BY `debut_resa` ASC "
              . "LIMIT 1";
-        error_log($sql);
+        //error_log($sql);
         $result = mysqli_query($db,$sql);
                
         Mysql::closedb($db);
         
-        if ($result && mysql_num_rows($result) > 0) {
+        if ($result && mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
             $resa = new Resa($row);
             mysqli_free_result($result);

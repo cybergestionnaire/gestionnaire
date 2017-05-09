@@ -833,41 +833,7 @@ $sql= "SELECT SUM(`duree_resa`) AS util, temps_user AS total
 }
 
 
-// renvoi un select contenant les horaires de reservation
-// @param1 : unitŽ
-// @param2 : Heure d'ouverture matin
-// @param3 : Heure de fermeture matin
-// @param4 : Heure d'ouverture de l'apres midi
-// @param5 : Heure de fermeture de l'apres midi
-function getHorDebutSelect($unit , $h1begin , $h1end , $h2begin , $h2end , $idcomp , $dateResa , $hselected)
-{
-  $select    = "<select name=\"debut\" size=\"15\" >" ;
-  //renvoi le tableau des valeurs deja reservŽes
-  $arrayResa = getResaArray($idcomp,$dateResa,$unit) ;
-  //on boucle pour afficher 
-  //$heureX=strftime("%H",time());
-    
-  $hselected=convertHoraire(strftime("%H",time()))+30; //affichage de l'heure en cours
-  //debug($hselected);
-  for ($i=$h1begin ; $i < $h2end ; $i=$i+$unit)
-  {/*
-      if ($i<$h1end OR $i>=$h2begin)
-      {*/
-         if($i==$hselected)
-         {
-            $select .= "<option value=\"".$i."\" selected>".getTime($i)."</option>";
-         }
-         else if (TRUE==in_array( $i, $arrayResa) OR ($i >=$h1end AND $i<$h2begin))
-         {
-            $select .= "<option value=\"".$i."\" disabled style=\"background-color:#EEEEEE\">".getTime($i)."</option>";
-         } else {
-            $select .= "<option value=\"".$i."\">".getTime($i)."</option>";   
-         }
-     // }
-  }
-  $select .= "</select>";
-  return $select;
-}
+
 
 //renvoi un tableau des heures de debut de resa pour un jour et une machine
 function getResaArray($idcomp,$dateResa,$unit)
@@ -906,65 +872,6 @@ function getResaArray($idcomp,$dateResa,$unit)
 }
     
 
-function getHorDureeSelect($unit,$h1begin,$h1end,$h2begin,$h2end, $idcomp , $dateResa , $hselected,$epn)
-{
-  //select
-  $select  = "<select name=\"duree\" size=\"15\" multiple>";
-  // maxtime = initialisation du temps maximum de reseravtion a partir de l'heure donnee pour la date et la machine demande
-  //requete pour definir la duree maximum par rapport au reservation en base
-  $sql = "SELECT debut_resa
-          FROM tab_resa
-          WHERE dateresa_resa='".$dateResa."'
-          AND id_computer_resa=".$idcomp."
-          AND debut_resa>".$hselected."
-          ORDER BY debut_resa ASC
-          LIMIT 1" ;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  // on verifie l'existence d'une reservation apres celle demandee
-  if (mysqli_num_rows($result)>0)
-  {// si oui on calcul l'ecart
-    $row = mysqli_fetch_array($result) ;
-    $maxtimedb = $row['debut_resa']-$hselected ;
-  } else {
-    $maxtimedb = 9999999;  
-  }
-  
-  // duree maximum d'une reservation dans le fichier config
-  $maxtime = getConfig("maxtime_config","maxtime_default_config",$epn) ;
-  
-  // on verifie si on se trouve dans l'interval du matin
-  if ($hselected<$h1end)
-  {
-      $delta = $h1end-$hselected ; 
-  } 
-  else if($hselected>=$h2begin)
-  {
-      $delta = $h2end-$hselected ;
-  }
-  
-  //temps maximum determine par la config
-  if($maxtimedb<$maxtime)
-    $maxtime = $maxtimedb ;
-  if($delta<$maxtime)
-    $maxtime = $delta ;
-    
-    // on boucle 
-    for ($i=$unit ; $i <= $maxtime ; $i = $i+$unit)
-    {
-        if($i==$_SESSION["duree"])
-        {
-            $select .= "<option value=\"".$i."\" selected>".getTime($i)."</option>";
-        } else {
-            $select .= "<option value=\"".$i."\">".getTime($i)."</option>";
-        }
-    }
-    //$select .= "<option value=\"".getConfig("maxtime_config","maxtime_default_config")."\">".getTime(getConfig("maxtime_config","maxtime_default_config"))."</option>";
-    $select .= "</select> ";
-
-  return $select;
-}
 
 
 
@@ -996,108 +903,24 @@ function updateDureeResa($arrayPost){
     }
 }
 
-//renvoi l'affichage du form de reseravtion pour une machine
-// @param1 : etape 1 ou 2 
-// @param2 : id du computer 
-// @param3 : date du jour de la reseravtion
-// @param4 : select a afficher
-// @return : renvoi l
-function getResaComp($step,$idcomp,$date_resa,$select)
-{
-   switch($step)
-   {
-       case 1:// step 1
-            $table  ="<table><tr><td>";
-            $table .= "<form method=\"post\" action=\"".$_SERVER["REQUEST_URI"]."\">
-            
-                ";
-           // $table .= "<thead><th>D&eacute;but de la reservation</th></thead>";
-            $table .= $select;
-            $table .= "</td><td valign=\"top\"><input type=\"hidden\" name=\"step\" value=\"1\">
-                       <input type=\"submit\" class=\"btn btn-success\" name=\"submit1\" value=\"valider l'&eacute;tape 1\">";
-            $table .= "</form></td></tr></table>";
-       break;
-       case 2: //step 2
-            $table  ="<table><tr><td>";
-            $table .= "<form method=\"post\" action=\"".$_SERVER["REQUEST_URI"]."\">";
-           // $table .= "<div>Durée de la reservation </div>";
-            $table .= $select;
-            $table .= "</td><td valign=\"top\"><input type=\"hidden\" name=\"step\" value=\"2\">
-                               <input type=\"submit\" class=\"btn btn-default\" name=\"retour\" value=\"<<\">
-                               <input type=\"submit\" name=\"submit2\" class=\"btn btn-success\" value=\"valider l'&eacute;tape 2 >>\">";
-            $table .= "</form></td></tr></table>";
-       break;
-   }
-   return $table;
-}
-
-// del resa - supprime une reservation
-function delResa2($id)
-{
-    $sql = "DELETE FROM tab_resa WHERE id_resa = ".$id ;
-    $db=opendb();
-   $result = mysqli_query($db,$sql) ;
-    closedb($db);
-    if ($result ==TRUE)
-    {
-        return TRUE;
-    } else {
-        return FALSE;
-    }
-}
-
-// ajout d'une reservtion dans a base
-function addResa($idcomp,$iduser,$date,$debut,$duree)
-{
-    $sql = "INSERT INTO tab_resa VALUES('',".$idcomp.",".$iduser.",'".$date."',".$debut.",".$duree.",'".date('Y-m-d')."','1')";
-    $db=opendb();
-   $result = mysqli_query($db,$sql) ;
-     $id=mysqli_insert_id($db);
-    closedb($db);
-    if ($result ==TRUE)
-    {
-        return $id;
-    } else {
-        return FALSE;
-    }
-}
-
 // ajout de la relation resa / computer / usage 1=resa, 2=atelier
-function insertrelresa($idresa,$usage,$titreatelier)
-{
-    $sql="INSERT INTO `rel_resa_usage`(`id_relresa`, `id_usage`, `id_resa`,`id_titreatelier`) VALUES ('','".$usage."','".$idresa."','".$titreatelier."')";
-     $db=opendb();
-   $result = mysqli_query($db,$sql) ;
+// Laissé en commentaire le temps de définir si c'est utile ou non...
+
+// function insertrelresa($idresa,$usage,$titreatelier)
+// {
+    // $sql="INSERT INTO `rel_resa_usage`(`id_relresa`, `id_usage`, `id_resa`,`id_titreatelier`) VALUES ('','".$usage."','".$idresa."','".$titreatelier."')";
+     // $db=opendb();
+   // $result = mysqli_query($db,$sql) ;
     
-    closedb($db);
-    if ($result ==TRUE)
-    {
-        return TRUE;
-    } else {
-        return FALSE;
-    }
+    // closedb($db);
+    // if ($result ==TRUE)
+    // {
+        // return TRUE;
+    // } else {
+        // return FALSE;
+    // }
     
-}
-
-// renvoi la largeur en % par unité de temps
-// $nbtot = int en mn
-// $unit  = int en mn
-function getWidthPerUnit($nbTotM,$unit)
-{
-  return (10*$unit)/(6*$nbTotM) ;
-}
-
-//
-function getWidth($duree,$nbtot,$unit)
-{
-  return $duree*(getWidthPerUnit($nbtot,$unit)) ;
-}
-
-// renvoi le decalage en % par rapport a la position en min
-function getPosition($debutresa,$h1begin,$wu)
-{
-  return (($debutresa-$h1begin)*$wu) ;
-}
+// }
 
 // renvoi le nom et le prenom d'un user
 function getUserName($id)

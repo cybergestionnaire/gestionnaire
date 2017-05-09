@@ -299,6 +299,29 @@ class Materiel
         return $materiels; 
     }
     
+    public static function getMaterielFromSalleById($idSalle) {
+        $materiels = null;
+    
+        $db      = Mysql::opendb();
+        $sql     = "SELECT tab_computer.* "
+                . "FROM tab_computer "
+                . "WHERE tab_computer.id_salle = '" . $idSalle . "' "
+                . "ORDER BY `usage_computer` , `nom_computer`";
+        
+        $result  = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $materiels = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $materiels[] = new Materiel($row);
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $materiels; 
+    }
+
     public static function getMaterielLibreFromSalleById($idSalle) {
         $materiels = null;
     

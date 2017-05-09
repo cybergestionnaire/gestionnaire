@@ -383,13 +383,13 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
          $inc="admin_form_sujet_session.php";
         include ("include/post_sujetsession.php");
         break;  
-    case 35:
-        $titre="Modification du sujet d'une session ";
-        $aide="Modification des intitul&eacute;s";
-        $inc="admin_session_modif.php";
-        include ("include/post_sujetsession.php");
+    // case 35:
+        // $titre="Modification du sujet d'une session ";
+        // $aide="Modification des intitul&eacute;s";
+        // $inc="admin_session_modif.php";
+        // include ("include/post_sujetsession.php");
                 
-        break;  
+        // break;  
     
     case 36:
         $titre="Archives des sessions";

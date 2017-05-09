@@ -19,69 +19,59 @@
  2006 Namont Nicolas
  
 */
-
+    // error_log("---- POST ----");
+    // error_log(print_r($_POST, true));
+    // error_log("---- GET  ----");
+    // error_log(print_r($_GET, true));
+    // error_log("----      ----");
 
     // retour 
-    if(TRUE==isset($_POST["retour"]))
-    {
-      $step = $_POST["step"]-1;
+    if(isset($_POST["retour"])) {
+        //normalement, plus de retour possible...
+        $_POST["step"] = $_POST["step"] - 1;
     }
     // etape 1 : choix de l'heure de depart de la resa
-    else if(TRUE==isset($_POST["submit1"]))
-    {
-      if ($_POST['debut']!="")
-      {
-          $_SESSION['debut']=$_POST["debut"] ;
-          $step = $_POST["step"]+1;
-      } else {
-          $step = $_POST['step'] ;
-          $messErr = 'Vous devez s&eacute;lectionner l\'heure de d&eacute;but de votre r&eacute;servation </br>' ;                 
-      }
+    else if(isset($_POST["submit1"])) {
+        if ($_POST['debut'] != "") {
+            $_SESSION['debut'] = $_POST["debut"] ;
+        } else {
+            $messErr = 'Vous devez s&eacute;lectionner l\'heure de d&eacute;but de votre r&eacute;servation </br>' ;                 
+        }
     }
     // etape 2 :  choix de la duree de la resa
-    else if(TRUE==isset($_POST["submit2"]))
-    {
-      if ($_POST['duree']!="")
-      {
-          $_SESSION['duree']=$_POST["duree"] ;
-          $step = $_POST["step"]+1;
-      } else {
-          $step = $_POST['step'] ;
-          $messErr = 'Vous devez s&eacute;lectionner la dur&eacute;e de votre r&eacute;servation </br>' ; 
-      }
+    else if(isset($_POST["submit2"])) {
+        if ($_POST['duree'] != "") {
+            $_SESSION['duree'] = $_POST["duree"] ;
+        } else {
+            $messErr = 'Vous devez s&eacute;lectionner la dur&eacute;e de votre r&eacute;servation </br>' ; 
+        }
     }
     // choix de l'adherent
-    else if(TRUE == isset($_POST['adh_submit']))
-    {
-        $step = $_POST['step'] ;
+    else if(isset($_POST['adh_submit'])) {
         unset($_SESSION["other_user"]);
         $searchuser = $_POST["searchuser"];
     }
-    else if (TRUE == isset($_POST['choose_adh']))
-    {
-        $step = $_POST['step'] ;
+    else if (isset($_POST['choose_adh'])) {
         $_SESSION['other_user'] = $_POST['choose'] ;
     }
     // etape 3 : finalisation de la reservation
-    else if(TRUE==isset($_POST["valider"]))
-    {
-        if (TRUE == is_numeric($_SESSION['other_user']))
-        {
+    else if(isset($_POST["valider"])) {
+        if (is_numeric($_SESSION['other_user'])) {
            $id_user = $_SESSION["other_user"];
         } else {
             $id_user = $_SESSION["iduser"];
         }
-		
-     $idresarel= addResa($_GET["idcomp"],$id_user,$_GET["date"],$_SESSION["debut"],$_SESSION["duree"]);
-			
-			// insertion de la relation usage de poste (resa=1 ou atelier=2)
-		if($idresarel!=FALSE){
-			insertrelresa($idresarel,1,'');
-		}
-		
-      unset($_SESSION["debut"]);
-      unset($_SESSION["duree"]);
-      unset($_SESSION["other_user"]) ;
-      header('Location:'.$_SESSION['resa']['url']) ;
+        
+        // $idresarel= addResa($_GET["idcomp"], $id_user, $_GET["date"], $_SESSION["debut"], $_SESSION["duree"]);
+        $resa =  Resa::creerResa($_GET["idcomp"], $id_user, $_GET["date"], $_SESSION["debut"], $_SESSION["duree"], date('Y-m-d'), '1');
+        // insertion de la relation usage de poste (resa=1 ou atelier=2) -- QUELLE UTILITE ???
+        // if ($resa !== null) {
+            // insertrelresa($idresarel, 1, '');
+        // }
+        
+        unset($_SESSION["debut"]);
+        unset($_SESSION["duree"]);
+        unset($_SESSION["other_user"]) ;
+        header('Location:' . $_SESSION['resa']['url']) ;
     }
 ?>
