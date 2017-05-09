@@ -833,76 +833,6 @@ $sql= "SELECT SUM(`duree_resa`) AS util, temps_user AS total
 }
 
 
-
-
-//renvoi un tableau des heures de debut de resa pour un jour et une machine
-function getResaArray($idcomp,$dateResa,$unit)
-{
-    $sql = "SELECT debut_resa,duree_resa
-            FROM tab_resa
-            WHERE id_computer_resa=".$idcomp."
-            AND dateresa_resa='".$dateResa."'
-            ORDER BY debut_resa" ;
-        
-    $db=opendb() ;
- $result = mysqli_query($db,$sql) ;
-    closedb($db);
-    if ($result != FALSE)
-    {
-        $array = array() ;
-        while($row = mysqli_fetch_array($result))
-        {
-            $array[] = $row['debut_resa'] ;
-            // on cree un tableau contenant selon l'unite la liste des horaires utilise par la reservation
-            $tmpArray = array();
-            $tmpNb    = ($row['duree_resa']/$unit);
-            $debutValue=$row['debut_resa'];
-            for ($i=1 ;$i <=($tmpNb-1) ;++$i )
-            {
-                $debutValue = $debutValue+$unit ;
-                $tmpArray[] = $debutValue ;
-            }
-            $array = array_merge($array,$tmpArray) ;
-        }
-        
-        return $array ;
-    } else {
-        return FALSE ;
-    }
-}
-    
-
-
-
-
-
-// met a jour la duree d'une resa
-// ou le temps decompte
-function updateDureeResa($arrayPost){
-    $idResa   = $arrayPost['idResa'];
-    $newValue = $arrayPost['duree'];
-        // modification du statut pour les resas avec la console
-    /*$status   = $arrayPost['free'] ;
-        if ($status=='on')
-        $status='1' ;
-    else
-        $status='0' ;
-            */
-   $status='1';  
-     
-    $sql = "UPDATE tab_resa SET duree_resa='".$newValue."', status_resa='".$status ."' WHERE id_resa='".$idResa."' LIMIT 1" ;
-
-    $db=opendb();
-    $result = mysqli_query($db,$sql);
-    closedb($db);
-    if (FALSE == $result)
-    {
-        return FALSE;
-    } else {
-        return TRUE;
-    }
-}
-
 // ajout de la relation resa / computer / usage 1=resa, 2=atelier
 // Laissé en commentaire le temps de définir si c'est utile ou non...
 
@@ -1709,146 +1639,6 @@ if ($result == TRUE){
 }
 
 
-// renvoi un calendrier du mois et de l'annee donnee pour determiner les jours feries
-function getCalendarClose($year,$month,$epn)
-{
-  $calendar = "" ;
-  // tableau des index des jours
-  $dayArray = array("L","M","M","J","V","S","D") ;
-  //nombre de jour dans le mois en cours
-  $nb_jour  = date("t", mktime(0, 0, 0, $month, 1, $year));
-$Pepn=$_SESSION["idepn"];
-  //Affichage -------------------------------------
-
-  //affichage du mois et de l'année
-  $calendar = "<br><b><a name=".$month."></a>".getMonthName($month)." ".$year."</b>";
-
-  $calendar .= "<div class=\"calendar2\">" ;
-
-  // affichage du nom des jours
-
-  for ($i=0 ; $i<7 ;$i++)
-  {
-      $calendar .= "<div class=\"labelDay\"><span class=\"cal\">".$dayArray[$i]."</span></div>" ;
-  }
- 
-  // affichage des cases vides de debut
-  $firstDay = getFirstDay($year,$month) ;
-  for ($k = 1 ; $k < $firstDay ; $k++)
-  {
-      $calendar .= "<div class=\"labelNum\">&nbsp;</div>" ;
-  }
-
-  // affichage des jours
-  for ($j = 1 ; $j <= $nb_jour ; $j++)
-  {
-     switch (checkDayOpen2($j,$month,$year,$epn))
-     {
-            case "ouvert":
-               $calendar .= "<div class=\"labelNum\"><span class=\"cal\"><a href=\"".$_SERVER["REQUEST_URI"]."&idday=".getDayNum($j,$month,$year)."#".$month."\">".$j."</a></span></div>" ;
-            break;
-            case "ferme":
-               $calendar .= "<div class=\"labelNumClose\"><span class=\"cal\"><a href=\"".$_SERVER["REQUEST_URI"]."&idday=".getDayNum($j,$month,$year)."#".$month."\">".$j."</a></span></div>" ;
-            break;
-            case "ferie":
-               $calendar .= "<div class=\"labelNumOff\"><span class=\"cal\"><a href=\"".$_SERVER["REQUEST_URI"]."&idday=".getDayNum($j,$month,$year)."#".$month."\">".$j."</a></span></div>" ;
-            break;
-     }
-  }
-
-  // affichage des cases vides de fin
-  $lastDay = getLastDay($year,$month) ;
-  for ($l = 1 ; $l <= $lastDay ; $l++)
-  {
-      $calendar .= "<div class=\"labelNum\">&nbsp;</div>" ;
-  }
-  $calendar .= "</div>";
-
-  return $calendar ;
-}
-//
-// Configuration
-//
-//
-// modifie le titre de l'espace
-function convertHoraire($temps)
-{
-  $h = substr($temps,0,2) ;
-  $m = substr($temps,3,2) ;
-  $conv = (60*$h)+$m ;
-  return $conv ;
-}
-
-//
-function checkHoraire($h1begin,$h1end,$h2begin,$h2end)
-{
-    if ($h1begin!="" AND $h1end=="" AND $h2begin=="" AND $h2end!="") // pas de pause le midi
-       return TRUE;
-    elseif ($h1begin=="" and $h1end=="") // ferme le matin
-       return TRUE;
-    elseif ($h2begin=="" AND $h2end=="") // ferme l'apres smidi
-       return TRUE;
-    elseif ($h1end<$h1begin OR $h2end<$h2begin)  //l'heure de fin inferieur a l'heure de debut
-       return FALSE ;
-    elseif($h1begin=="" AND $h1end!="")     //
-       return FALSE;
-    elseif($h2end=="" AND $h2begin!="")     //
-       return FALSE;
-    elseif($h1end>$h2begin OR $h1end>$h2end OR $h1begin>$h2begin OR $h1begin>$h2end)
-       return FALSE;
-    else
-       return TRUE ;
-}
-
-
-// modifie les champs de la config
-function updateConfig($table,$array,$field,$idvalue,$epn)
-{
-    $sql ="";
-    $sql .="UPDATE `".$table."` SET" ;
-    $nb = count($array) ;
-    $c = 1;
-    foreach($array AS $key=>$value)
-    {
-        if ($c == $nb)
-           $sql .="`".$key."` = '".$value."'" ;
-        else
-           $sql .="`".$key."` = '".$value."'," ;
-        $c = $c+1;
-    }
-    $sql .=" WHERE `".$field."`='".$idvalue."'" ;
-    $sql .=" AND id_espace='".$epn."' ";
-    //echo $sql;
-    $db=opendb();
-    $result = mysqli_query($db,$sql);
-    closedb($db);
-    if (FALSE == $result)
-    {
-        return FALSE ;
-    } else {
-        return TRUE ;
-    }
-}
-
-function updateresaconfig($epnr, $unitconfig, $maxtime_config,$resarapide, $duree_resarapide){
-    $sql="UPDATE `tab_config` SET 
-`unit_config`='".$unitconfig."',
-`maxtime_config`='".$maxtime_config."',
-`resarapide`='".$resarapide."',
-`duree_resarapide`='". $duree_resarapide."' WHERE `id_espace`=".$epnr;
-    $db=opendb();
-    $result = mysqli_query($db,$sql);
-    closedb($db);
-    if (FALSE == $result)
-    {
-        return FALSE ;
-    } else {
-        return TRUE ;
-    }
-    
-}
-
-
 function getCyberName($epn)
 {
     $sql = "SELECT `nom_espace` FROM `tab_espace` WHERE `id_espace`='".$epn."' " ;
@@ -1917,18 +1707,18 @@ $dayArr = array ("Dimanche","lundi","Mardi","Mercredi","Jeudi","Vendredi","Samed
 
 function getDatefr($date) //,$format='D j F à 10h'
 {
-$date0=date('Y-n-j-w',strtotime($date));
-$dateArr=explode("-",$date0);
-$jourfr=$dateArr[3];
-$jour=$dateArr[2];
-$mois=$dateArr[1];
-$annee=$dateArr[0];
-$date1=date('H:i',strtotime($date));
-$heurearr=explode(":",$date1);
-$heure=$heurearr[0].'h'.$heurearr[1];
-$dayArr = array ("Dimanche","lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi");
- 
- return $dayArr[$jourfr]." ".$jour." ".getMonthName($mois)." ".$annee." &agrave; ". $heure;
+    $date0    = date('Y-n-j-w',strtotime($date));
+    $dateArr  = explode("-", $date0);
+    $jourfr   = $dateArr[3];
+    $jour     = $dateArr[2];
+    $mois     = $dateArr[1];
+    $annee    = $dateArr[0];
+    $date1    = date('H:i' ,strtotime($date));
+    $heurearr = explode(":", $date1);
+    $heure    = $heurearr[0] . 'h' . $heurearr[1];
+    $dayArr   = array ("Dimanche", "lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
+
+    return $dayArr[$jourfr] . " " . $jour . " " . getMonthName($mois) . " " . $annee . " &agrave; " . $heure;
 }
 
 // getMonth()
@@ -1990,7 +1780,7 @@ function checkDateFormat($datefr)
 {
     $exp = '^[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}^' ;
 
-    if(preg_match( $exp , $datefr )==1)
+    if(preg_match($exp , $datefr ) == 1)
         return TRUE;
     else
         return FALSE;
@@ -1999,20 +1789,18 @@ function checkDateFormat($datefr)
 function convertDate($datefr)
 {
     $tmp = explode("/",$datefr) ;
-    return $tmp[2].'-'.$tmp[1].'-'.$tmp[0] ;
+    return $tmp[2] . '-' . $tmp[1] . '-' . $tmp[0] ;
 }
 
 //
 // getPourcent($nb,$total)
 // retourne un pourcentage a partir d'un nombre et d'un total
-function getPourcent($nb,$total)
-{
-    if ($nb!="" AND $nb!=0 AND $total!="" AND $total!=0)
-    {
-    $pourcent = round(($nb*100)/$total) ;
-    return $pourcent."%";
+function getPourcent($nb, $total) {
+    if ($nb != "" AND $nb != 0 AND $total != "" AND $total != 0) {
+        $pourcent = round(($nb * 100) / $total) ;
+        return $pourcent . "%";
     } else {
-    return "0";
+        return "0";
     }
 }
 
@@ -2020,34 +1808,28 @@ function getPourcent($nb,$total)
 
 // getError()
 // Affiche un message d'erreur
-function getError($nb)
-{
-include("include/texte/error.php");
-
-$error = "mes_".$nb;
-return "<div>".$$error."</div>";
+function getError($nb) {
+    include("include/texte/error.php");
+    $error = "mes_".$nb;
+    return "<div>".$$error."</div>";
 }
 
 //
 //getTime($temps)
 // retourne l'heure et les minutes a partir du temps en minutes
-function getTime($temps)
-{
-    if($temps < 60)
-    {
-      $heures = 0;
-      $minutes= $temps;
+function getTime($temps) {
+    if($temps < 60) {
+      $heures  = 0;
+      $minutes = $temps;
     } else {
       $heures  = floor(($temps)/60);
       $minutes = $temps-($heures*60) ;
     }
     // creation de la variable time //
-    if ($minutes == 0)
-    {
+    if ($minutes == 0) {
         $time = $heures."h" ;
     } else {
-        if ($heures == 0)
-        {
+        if ($heures == 0) {
             $time = $minutes."mn" ;
         } else {
             $time = $heures."h".$minutes."mn";

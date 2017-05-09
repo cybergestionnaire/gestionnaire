@@ -29,6 +29,7 @@
     
     require_once("include/class/Horaire.class.php");
     require_once("include/class/Config.class.php");
+    require_once("include/class/Resa.class.php");
 
 
     
@@ -74,11 +75,11 @@
     function getHorDebutSelect($unit , $h1begin , $h1end , $h2begin , $h2end , $idcomp , $dateResa , $hselected) {
         $select    = "<select name=\"debut\" size=\"15\" >" ;
         //renvoi le tableau des valeurs deja reservées
-        $arrayResa = getResaArray($idcomp, $dateResa, $unit) ;
+        $arrayResa = Resa::getResaArray($idcomp, $dateResa, $unit) ;
         // on boucle pour afficher 
         // $heureX=strftime("%H",time());
         
-        $hselected = convertHoraire(strftime("%H",time()))+30; //affichage de l'heure en cours
+        $hselected = Horaire::convertHoraire(strftime("%H",time())) + 30; //affichage de l'heure en cours
         //debug($hselected);
         for ($i = $h1begin ; $i < $h2end ; $i = $i + $unit) {/*
           if ($i<$h1end OR $i>=$h2begin)
@@ -162,7 +163,7 @@
     $idEspace = $_GET["idepn"];
     $step     = isset($_POST["step"]) ? $_POST["step"] : 0;
  
-    error_log("step = $step");
+    // error_log("step = $step");
 
     // affichage de form de reservation
     if (is_numeric($_GET["idcomp"])) {

@@ -25,6 +25,7 @@
     // error_log(print_r($_GET, true));
     // error_log("----      ----");
 
+    require_once("include/class/Resa.class.php");
     // retour 
     if(isset($_POST["retour"])) {
         //normalement, plus de retour possible...
@@ -49,7 +50,6 @@
     // choix de l'adherent
     else if(isset($_POST['adh_submit'])) {
         unset($_SESSION["other_user"]);
-        $searchuser = $_POST["searchuser"];
     }
     else if (isset($_POST['choose_adh'])) {
         $_SESSION['other_user'] = $_POST['choose'] ;

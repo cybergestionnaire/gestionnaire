@@ -22,52 +22,69 @@
 
 // POST de Configuration de l'espace
 
-require_once("include/class/Horaire.class.php");
-if (isset($_POST["submit"]) && $_POST["submit"] != "" ) {
-    $epnr   = $_POST["epn_r"];
+    require_once("include/class/Horaire.class.php");
 
-    switch ($_POST["form"]) {
-        case 1: //choix epn pour en modifier les horaires
-            header("Location:index.php?a=42&epnr=".$epnr);
-            break;
-  
-        case 2: //horaire
-            $horaires = Horaire::getHorairesByIdEspace(intval($epnr));
 
-            for ($i = 1 ; $i < 8 ; $i++) {
-                if ( $horaires[$i-1]->modifier($_POST[$i."-h1begin"], $_POST[$i."-h1end"], $_POST[$i."-h2begin"], $_POST[$i."-h2end"]) ) {
-                    
-                    //updateConfig("tab_horaire", $update, "jour_horaire", $i, $epnr) ;
-                    // header("Location:index.php?a=42&mess=ok&epnr=".$epnr) ;
+    function updateresaconfig($epnr, $unitconfig, $maxtime_config,$resarapide, $duree_resarapide) {
+        $sql = "UPDATE `tab_config` SET 
+                `unit_config`='" . $unitconfig . "',
+                `maxtime_config`='" . $maxtime_config . "',
+                `resarapide`='" . $resarapide . "',
+                `duree_resarapide`='" . $duree_resarapide."' WHERE `id_espace`=" . $epnr;
+        $db = opendb();
+        $result = mysqli_query($db,$sql);
+        closedb($db);
+        if (FALSE == $result) {
+            return FALSE ;
+        } else {
+            return TRUE ;
+        }
+    }
+
+    if (isset($_POST["submit"]) && $_POST["submit"] != "" ) {
+        $epnr   = $_POST["epn_r"];
+
+        switch ($_POST["form"]) {
+            case 1: //choix epn pour en modifier les horaires
+                header("Location:index.php?a=42&epnr=".$epnr);
+                break;
+      
+            case 2: //horaire
+                $horaires = Horaire::getHorairesByIdEspace(intval($epnr));
+
+                for ($i = 1 ; $i < 8 ; $i++) {
+                    if ( $horaires[$i-1]->modifier($_POST[$i."-h1begin"], $_POST[$i."-h1end"], $_POST[$i."-h2begin"], $_POST[$i."-h2end"]) ) {
+                        
+                        //updateConfig("tab_horaire", $update, "jour_horaire", $i, $epnr) ;
+                        // header("Location:index.php?a=42&mess=ok&epnr=".$epnr) ;
+                    } else {
+                        header("Location:index.php?a=42&mess=Hwrong&dayline=".$i) ;
+                        exit;
+                    }                
+
+                }
+                break;
+
+            case 3: //reservation minimum
+                //$update = array() ;
+                $unitconfig       = $_POST["unit"] ;
+                $maxtime_config   = $_POST["maxtime"] ;
+                $resarapide       = $_POST["resarapide"] ;
+                $duree_resarapide = $_POST["duree_resarapide"] ;
+                          
+               
+                if(TRUE == updateresaconfig($epnr, $unitconfig, $maxtime_config,$resarapide, $duree_resarapide)) {
+                    header("Location:index.php?a=42&mess=ok&epnr=".$epnr) ;
                 } else {
-                    header("Location:index.php?a=42&mess=Hwrong&dayline=".$i) ;
-                    exit;
-                }                
+                    header("Location:index.php?a=42&mess=Hwrong&epnr=".$epnr) ;
+                }
+               
+                break;
+         
+        
+      }
 
-            }
-            break;
+      //header("Location:index.php?a=42&mess=ok") ;
 
-        case 3: //reservation minimum
-            //$update = array() ;
-            $unitconfig       = $_POST["unit"] ;
-            $maxtime_config   = $_POST["maxtime"] ;
-            $resarapide       = $_POST["resarapide"] ;
-            $duree_resarapide = $_POST["duree_resarapide"] ;
-                      
-           
-            if(TRUE == updateresaconfig($epnr, $unitconfig, $maxtime_config,$resarapide, $duree_resarapide)) {
-                header("Location:index.php?a=42&mess=ok&epnr=".$epnr) ;
-            } else {
-                header("Location:index.php?a=42&mess=Hwrong&epnr=".$epnr) ;
-            }
-           
-            // updateConfig("tab_config",$update,"id_espace",$epnr,$epnr)  ;
-            break;
-     
-    
-  }
-
-  //header("Location:index.php?a=42&mess=ok") ;
-
-}
+    }
 ?>

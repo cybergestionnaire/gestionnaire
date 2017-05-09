@@ -22,27 +22,83 @@
   include/admin_config.php V0.1
 */
 
-// Configuration de l'espace
-require_once("include/class/Espace.class.php");
-require_once("include/class/Config.class.php");
+    // Configuration de l'espace
+    require_once("include/class/Espace.class.php");
+    require_once("include/class/Config.class.php");
 
-if (isset($_GET["mess"]) && $_GET["mess"] == "ok")
-{
-  echo '<div class="alert alert-success alert-dismissable"><i class="fa fa-check"></i>
+
+
+    // renvoi un calendrier du mois et de l'annee donnee pour determiner les jours feries
+    function getCalendarClose($year, $month, $epn) {
+        $calendar = "" ;
+        // tableau des index des jours
+        $dayArray = array("L", "M", "M", "J", "V", "S", "D") ;
+        //nombre de jour dans le mois en cours
+        $nb_jour  = date("t", mktime(0, 0, 0, $month, 1, $year));
+        $Pepn = $_SESSION["idepn"];
+        //Affichage -------------------------------------
+
+        //affichage du mois et de l'année
+        $calendar = "<br><b><a name=" . $month . "></a>" . getMonthName($month) . " " . $year . "</b>";
+
+        $calendar .= "<div class=\"calendar2\">" ;
+
+        // affichage du nom des jours
+
+        for ($i = 0 ; $i < 7 ; $i++) {
+            $calendar .= "<div class=\"labelDay\"><span class=\"cal\">" . $dayArray[$i] . "</span></div>" ;
+        }
+ 
+        // affichage des cases vides de debut
+        $firstDay = getFirstDay($year,$month) ;
+        for ($k = 1 ; $k < $firstDay ; $k++) {
+            $calendar .= "<div class=\"labelNum\">&nbsp;</div>" ;
+        }
+
+        // affichage des jours
+        for ($j = 1 ; $j <= $nb_jour ; $j++) {
+            switch (checkDayOpen2($j, $month, $year, $epn)) {
+                case "ouvert":
+                    $calendar .= "<div class=\"labelNum\"><span class=\"cal\"><a href=\"" . $_SERVER["REQUEST_URI"] . "&idday=" . getDayNum($j, $month, $year) . "#" . $month . "\">" . $j . "</a></span></div>" ;
+            break;
+            case "ferme":
+               $calendar .= "<div class=\"labelNumClose\"><span class=\"cal\"><a href=\"" . $_SERVER["REQUEST_URI"] . "&idday=" . getDayNum($j, $month, $year) . "#" . $month . "\">" . $j . "</a></span></div>" ;
+            break;
+            case "ferie":
+               $calendar .= "<div class=\"labelNumOff\"><span class=\"cal\"><a href=\"" . $_SERVER["REQUEST_URI"] . "&idday=" . getDayNum($j, $month, $year) . "#" . $month . "\">" . $j . "</a></span></div>" ;
+            break;
+            }
+        }
+
+        // affichage des cases vides de fin
+        $lastDay = getLastDay($year,$month) ;
+        for ($l = 1 ; $l <= $lastDay ; $l++) {
+            $calendar .= "<div class=\"labelNum\">&nbsp;</div>" ;
+        }
+        $calendar .= "</div>";
+
+        return $calendar ;
+    }
+
+
+
+
+    if (isset($_GET["mess"]) && $_GET["mess"] == "ok") {
+        echo '<div class="alert alert-success alert-dismissable"><i class="fa fa-check"></i>
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Mise &agrave; jour effectu&eacute;e</div>';
   
-}
-// chargement des valeurs pour l'epn par d&eacute;faut
+    }
+    // chargement des valeurs pour l'epn par d&eacute;faut
 
-$idEspace = isset($_GET['epnr']) ? $_GET['epnr'] : $_SESSION['idepn'];
+    $idEspace = isset($_GET['epnr']) ? $_GET['epnr'] : $_SESSION['idepn'];
 
-// Choix de l'epn   -------------------------------------
-$espaces = Espace::getEspaces();
-//debug($idEspace);
-$dureearray = array("30" => "30 min", "60" => "1 heure", "90" => "1h30", "120" => "2 heures");
+    // Choix de l'epn   -------------------------------------
+    $espaces = Espace::getEspaces();
+    //debug($idEspace);
+    $dureearray = array("30" => "30 min", "60" => "1 heure", "90" => "1h30", "120" => "2 heures");
 
 
-include("include/boites/menu-parametres.php");
+    include("include/boites/menu-parametres.php");
 
 ?>
 

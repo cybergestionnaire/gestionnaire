@@ -386,6 +386,37 @@ class Resa
     }
 
 
-    
-    
+
+    //renvoi un tableau des heures de debut de resa pour un jour et une machine
+    public static function getResaArray($idcomp, $dateResa, $unit) {
+        $array = array() ;
+        
+        $db  = Mysql::opendb();
+        
+        $sql = "SELECT debut_resa,duree_resa "
+             . "FROM tab_resa "
+             . "WHERE id_computer_resa=" . $idcomp . " "
+             . "  AND dateresa_resa='" . $dateResa . "' "
+             . "ORDER BY debut_resa" ;
+        
+        $result = mysqli_query($db,$sql) ;
+
+        Mysql::closedb($db);
+
+        if ($result) {
+            while($row = mysqli_fetch_array($result)) {
+                $array[] = $row['debut_resa'] ;
+                // on cree un tableau contenant selon l'unite la liste des horaires utilise par la reservation
+                $tmpArray   = array();
+                $tmpNb      = ($row['duree_resa'] / $unit);
+                $debutValue = $row['debut_resa'];
+                for ($i = 1 ; $i <= ($tmpNb - 1) ; ++$i ) {
+                    $debutValue = $debutValue+$unit ;
+                    $tmpArray[] = $debutValue ;
+                }
+                $array = array_merge($array, $tmpArray) ;
+            }
+        }
+        return $array ;
+    }
 }
