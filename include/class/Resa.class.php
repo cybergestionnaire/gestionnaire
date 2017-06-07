@@ -252,6 +252,46 @@ class Resa
         
         return $resas;
     }
+    public static function getResasActives() {
+
+        $resas = null;
+    
+        $db      = Mysql::opendb();
+        $sql     = "SELECT * FROM tab_resa WHERE `status_resa` = '0' ORDER BY date_resa ASC, debut_resa ASC";
+        $result  = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        
+        if ($result && mysqli_num_rows($result) > 0) {
+            $resas = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $resas[] = new Resa($row);
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $resas;
+    }
+    
+    public static function getResasDuJour() {
+
+        $resas = null;
+    
+        $db      = Mysql::opendb();
+        $sql     = "SELECT * FROM tab_resa WHERE `status_resa` = '1' and date_resa = DATE( NOW() ) ORDER BY date_resa ASC, debut_resa DESC";
+        $result  = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        
+        if ($result && mysqli_num_rows($result) > 0) {
+            $resas = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $resas[] = new Resa($row);
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $resas;
+    }
+    
     
     public static function getResasParJourEtParSalle($date, $idSalle) {
 

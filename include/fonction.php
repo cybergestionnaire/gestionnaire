@@ -1614,28 +1614,27 @@ function updateDay($daynum,$year,$epn)
 }
 */
 function insertJourFerie($daynum,$year,$epn){
- $sql = "INSERT INTO `tab_days_closed` (`id_days_closed`, `year_days_closed`, `num_days_closed`, `state_days_closed`, `id_epn`) VALUES ('','".$year."','".$daynum."','F','".$epn."') ";
-$db=opendb();
-$result = mysqli_query($db,$sql);
-closedb($db);
-if ($result == TRUE){
-     return TRUE;
-  } else {
-     return FALSE;
-}
+    $sql = "INSERT INTO `tab_days_closed` (`id_days_closed`, `year_days_closed`, `num_days_closed`, `state_days_closed`, `id_epn`) VALUES ('','".$year."','".$daynum."','F','".$epn."') ";
+    $db  = opendb();
+    $result = mysqli_query($db,$sql);
+    closedb($db);
+    if ($result == TRUE){
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
 
 function deleteJourFerie($id){
-   $sql = "DELETE FROM `tab_days_closed` WHERE `id_days_closed`='".$id."' " ;
-$db=opendb();
-$result = mysqli_query($db,$sql);
-closedb($db);
-if ($result == TRUE){
-     return TRUE;
-  } else {
-     return FALSE;
-}
-
+    $sql = "DELETE FROM `tab_days_closed` WHERE `id_days_closed`='".$id."' " ;
+    $db  = opendb();
+    $result = mysqli_query($db,$sql);
+    closedb($db);
+    if ($result == TRUE) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
 
 
@@ -1650,8 +1649,7 @@ function getCyberName($epn)
         return FALSE ;
     } else {
         $row = mysqli_fetch_array($result);
-                
-           return $row["nom_espace"] ;
+        return $row["nom_espace"] ;
     }
 }
 /////deprecated
@@ -1679,8 +1677,7 @@ function getCyberSpec($epn)
     $db=opendb();
     $result = mysqli_query($db,$sql);
     closedb($db);
-    if (FALSE == $result)
-    {
+    if (FALSE == $result) {
         return FALSE ;
     } else {
          return mysqli_fetch_array($result);
@@ -1692,17 +1689,17 @@ function getCyberSpec($epn)
 // Fonction diverses -----------------------------------------------------------
 
 //getDayfr() retourne le jour de la semaine
-function getDayfr($date) //,$format='D j F'
-{
-$date0=date('Y-n-j-w',strtotime($date));
-$dateArr=explode("-",$date0);
-$jourfr=$dateArr[3];
-$jour=$dateArr[2];
-$mois=$dateArr[1];
-$annee=$dateArr[0];
-$dayArr = array ("Dimanche","lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi");
- 
- return $dayArr[$jourfr]." ".$jour." ".getMonthName($mois)." ".$annee ;
+function getDayfr($date) {//,$format='D j F'
+
+    $date0   = date('Y-n-j-w',strtotime($date));
+    $dateArr = explode("-",$date0);
+    $jourfr  = $dateArr[3];
+    $jour    = $dateArr[2];
+    $mois    = $dateArr[1];
+    $annee   = $dateArr[0];
+    $dayArr  = array ("Dimanche","lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi");
+
+    return $dayArr[$jourfr] . " " . $jour . " " . getMonthName($mois) . " " . $annee ;
 }
 
 function getDatefr($date) //,$format='D j F à 10h'
@@ -1731,37 +1728,37 @@ function getMonth($nb)
             $mois = "Janvier";
         break;
         case "2":
-            $mois ="F&eacute;vrier";
+            $mois = "F&eacute;vrier";
         break;
         case "3":
-            $mois ="Mars";
+            $mois = "Mars";
         break;
         case "4":
-            $mois ="Avril";
+            $mois = "Avril";
         break;
         case "5":
-            $mois ="Mai";
+            $mois = "Mai";
         break;
         case "6":
-            $mois ="Juin";
+            $mois = "Juin";
         break;
         case "7":
-            $mois ="Juillet";
+            $mois = "Juillet";
         break;
         case "8":
-            $mois ="Ao&ucirc;t";
+            $mois = "Ao&ucirc;t";
         break;
         case "9":
-            $mois ="Septembre";
+            $mois = "Septembre";
         break;
         case "10":
-            $mois ="Octobre";
+            $mois = "Octobre";
         break;
         case "11":
-            $mois ="Novembre";
+            $mois = "Novembre";
         break;
         case "12":
-            $mois ="D&eacute;cembre";
+            $mois = "D&eacute;cembre";
         break;
     }   
     return $mois;
