@@ -226,6 +226,84 @@
 ?>
             </div><!-- .box-body -->
         </div><!-- .box -->
+        <div class="box">
+            <div class="box-header"><h3 class="box-title">Journal des connexions</h3></div>
+            <div class="box-body">
+<?php
+        $temps = 0;
+        $resasActives = Resa::getResasActives();
+        if ($resasActives !== null) {
+?>
+                <h4>Connexions en cours</h4>
+                <ul>
+                
+<?php
+            foreach($resasActives as $resa) {
+                $utilisateur = $resa->getUtilisateur();
+                $materiel = $resa->getMateriel();
+                $salle = $materiel->getSalle();
+                $espace = $salle->getEspace();
+                
+                $heure     = floor($resa->getDebut() / 60);
+                $minute    = $resa->getDebut() - $heure * 60;
+                if ($minute < 10) {
+                    $temp = $resa->getDate() . " " . $heure . ":0" . $minute;
+                } else {
+                    $temp = $resa->getDate() . " " . $heure . ":" . $minute;
+                }                                
+                $dateresa      = date_create_from_format("Y-m-d H:i",$temp);
+                $diff          = time() - date_timestamp_get($dateresa); // difference en secondes
+                $now           = new DateTime();
+                $interval      = date_diff($dateresa, $now);
+                $time          = $interval->format("%d j %hh%im");                       
+                if ($diff < 60) {
+                    $time = "<1mm" ;
+                }
+
+                
+                
+?>              
+                <li><a href="index.php?a=1&b=2&iduser=<?php echo $utilisateur->getId() ?>"><?php echo htmlentities($utilisateur->getPrenom() . " " . $utilisateur->getNom())?></a> depuis <?php echo $time ?><br /> sur <?php echo htmlentities($espace->getNom() . " / " . $salle->getNom() . " / " . $materiel->getNom()); ?></li>
+<?php                
+                
+            }
+?>
+                </ul>
+<?php
+        }
+?>
+<?php
+        $resasTerminees = Resa::getResasDuJour();
+        if ($resasTerminees !== null) {
+?>
+                <h4>Connexions terminées aujourd'hui</h4>
+                <ul>
+                
+<?php
+            foreach($resasTerminees as $resa) {
+                $utilisateur = $resa->getUtilisateur();
+                $materiel = $resa->getMateriel();
+                $salle = $materiel->getSalle();
+                $espace = $salle->getEspace();
+                
+                $heure     = floor($resa->getDebut() / 60);
+                $minute    = $resa->getDebut() - $heure * 60;
+                if ($minute < 10) {
+                    $temp = $heure . ":0" . $minute;
+                } else {
+                    $temp = $heure . ":" . $minute;
+                }                                
+                
+?>              
+                <li><a href="index.php?a=1&b=2&iduser=<?php echo $utilisateur->getId() ?>"><?php echo htmlentities($utilisateur->getPrenom() . " " . $utilisateur->getNom())?></a> commenc&eacute;e &agrave; <?php echo $temp ?>, dur&eacute;e <?php echo $resa->getDuree() ?>mn<br /> sur <?php echo htmlentities($espace->getNom() . " / " . $salle->getNom() . " / " . $materiel->getNom()); ?></li>
+<?php                
+            }
+?>
+                </ul>
+<?php
+        }
+?>          </div>
+        </div>
     </div><!-- /colonne 1 -->
 
     <div class="col-md-6"> <!-- colonne 2-->
@@ -355,84 +433,6 @@
 ?>
             </div>
         </div><!-- .box -->
-        <div class="box">
-            <div class="box-header"><h3 class="box-title">Journal des connexions</h3></div>
-            <div class="box-body">
-<?php
-        $temps = 0;
-        $resasActives = Resa::getResasActives();
-        if ($resasActives !== null) {
-?>
-                <h4>Connexions en cours</h4>
-                <ul>
-                
-<?php
-            foreach($resasActives as $resa) {
-                $utilisateur = $resa->getUtilisateur();
-                $materiel = $resa->getMateriel();
-                $salle = $materiel->getSalle();
-                $espace = $salle->getEspace();
-                
-                $heure     = floor($resa->getDebut() / 60);
-                $minute    = $resa->getDebut() - $heure * 60;
-                if ($minute < 10) {
-                    $temp = $resa->getDate() . " " . $heure . ":0" . $minute;
-                } else {
-                    $temp = $resa->getDate() . " " . $heure . ":" . $minute;
-                }                                
-                $dateresa      = date_create_from_format("Y-m-d H:i",$temp);
-                $diff          = time() - date_timestamp_get($dateresa); // difference en secondes
-                $now           = new DateTime();
-                $interval      = date_diff($dateresa, $now);
-                $time          = $interval->format("%d j %hh%im");                       
-                if ($diff < 60) {
-                    $time = "<1mm" ;
-                }
-
-                
-                
-?>              
-                <li><a href=http://192.168.10.20/index.php?a=1&b=2&iduser=<?php echo $utilisateur->getId() ?>><?php echo htmlentities($utilisateur->getPrenom() . " " . $utilisateur->getNom())?></a> depuis <?php echo $time ?><br /> sur <?php echo htmlentities($espace->getNom() . " / " . $salle->getNom() . " / " . $materiel->getNom()); ?></li>
-<?php                
-                
-            }
-?>
-                </ul>
-<?php
-        }
-?>
-<?php
-        $resasTerminees = Resa::getResasDuJour();
-        if ($resasActives !== null) {
-?>
-                <h4>Connexions terminées aujourd'hui</h4>
-                <ul>
-                
-<?php
-            foreach($resasTerminees as $resa) {
-                $utilisateur = $resa->getUtilisateur();
-                $materiel = $resa->getMateriel();
-                $salle = $materiel->getSalle();
-                $espace = $salle->getEspace();
-                
-                $heure     = floor($resa->getDebut() / 60);
-                $minute    = $resa->getDebut() - $heure * 60;
-                if ($minute < 10) {
-                    $temp = $heure . ":0" . $minute;
-                } else {
-                    $temp = $heure . ":" . $minute;
-                }                                
-                
-?>              
-                <li><a href=http://192.168.10.20/index.php?a=1&b=2&iduser=<?php echo $utilisateur->getId() ?>><?php echo htmlentities($utilisateur->getPrenom() . " " . $utilisateur->getNom())?></a> commenc&eacute;e &agrave; <?php echo $temp ?>, dur&eacute;e <?php echo $resa->getDuree() ?>mn<br /> sur <?php echo htmlentities($espace->getNom() . " / " . $salle->getNom() . " / " . $materiel->getNom()); ?></li>
-<?php                
-            }
-?>
-                </ul>
-<?php
-        }
-?>          </div>
-        </div>
     </div><!-- /colonne 2-->
     
 </div><!-- /row -->
