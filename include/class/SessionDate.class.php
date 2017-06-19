@@ -337,4 +337,59 @@ class SessionDate
         return $sessionDates;
     }
     
+    public static function getSessionDatesEnCoursParUtilisateurEtParStatut($idUtilisateur, $statut) {
+        $sessionDates = null;
+    
+        $db  = Mysql::opendb();
+        $sql = "SELECT tab_session_dates.* "
+             . "FROM tab_session_dates, tab_session, `rel_session_user` "
+             . "WHERE tab_session_dates.id_datesession = rel_session_user.id_datesession "
+             . "  AND `rel_session_user`.`status_rel_session`=" . $statut . " "
+             . "  AND tab_session_dates.statut_datesession = '0' "
+             . "  AND tab_session.status_session = 0 "
+             . "  AND `rel_session_user`.`id_user`=" . $idUtilisateur;
+                    
+//SELECT tab_session_dates.*, rel_session_user.* FROM tab_session_dates, tab_session, `rel_session_user` WHERE tab_session_dates.id_datesession = rel_session_user.id_datesession AND`rel_session_user`.`status_rel_session`=0   AND tab_session.status_session = 0   AND `rel_session_user`.`id_user`=9                    
+
+        $result = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $sessionDates = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $sessionDates[] = new SessionDate($row);
+            }
+            mysqli_free_result($result);
+        }
+        // error_log("sql = " . $sql);
+        return $sessionDates;
+    }
+    
+    public static function getSessionDatesFermeesParUtilisateurEtParStatut($idUtilisateur, $statut) {
+        $sessionDates = null;
+    
+        $db  = Mysql::opendb();
+        $sql = "SELECT tab_session_dates.* "
+             . "FROM tab_session_dates, tab_session, `rel_session_user` "
+             . "WHERE tab_session_dates.id_datesession = rel_session_user.id_datesession "
+             . "  AND `rel_session_user`.`status_rel_session`=" . $statut . " "
+             . "  AND tab_session.status_session = 1 "
+             . "  AND `rel_session_user`.`id_user`=" . $idUtilisateur;
+                    
+//SELECT tab_session_dates.*, rel_session_user.* FROM tab_session_dates, tab_session, `rel_session_user` WHERE tab_session_dates.id_datesession = rel_session_user.id_datesession AND`rel_session_user`.`status_rel_session`=0   AND tab_session.status_session = 0   AND `rel_session_user`.`id_user`=9                    
+
+        $result = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $sessionDates = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $sessionDates[] = new SessionDate($row);
+            }
+            mysqli_free_result($result);
+        }
+        // error_log("sql = " . $sql);
+        return $sessionDates;
+    }   
+    
 }

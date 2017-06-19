@@ -475,7 +475,7 @@
 </div>
 <?php
     // *********************Page d'accueil sur le compte utilisateur
-    //if ligne 43 !
+    //if ligne 49 !
     } else {
 
         //si inscrit -->vos prochains ateliers
@@ -487,7 +487,7 @@
         //charger la liste des evenements du reseau
         // $listeWeekAtelier = getWeekAteliers(date('Y-m-d'), 0);
         // $nbe              = mysqli_num_rows($listeWeekAtelier);
-        $arrayinscrip     = array(
+        $arrayinscrip   = array(
                                 2=>"Sur la liste d'attente",
                                 0=>"Je suis d&eacute;j&agrave; inscrit"
                             );
@@ -713,11 +713,7 @@
                             <select name="chatdestinataire" class="form-control">
 <?php
             foreach ($animateurs AS $animateur) {
-                if ($anim == $animateur->getId()) {
-                    echo "<option value=\"" . $animateur->getId() . "\" selected>" . htmlentities($animateur->getNom()) ." ". htmlentities($animateur->getPrenom()) . "</option>";
-                } else {
-                    echo "<option value=\"" . $animateur->getId() . "\">" . htmlentities($animateur->getNom()) ." ". htmlentities($animateur->getPrenom()) . "</option>";
-                }
+                echo "<option value=\"" . $animateur->getId() . "\">" . htmlentities($animateur->getNom()) ." ". htmlentities($animateur->getPrenom()) . "</option>";
             }
         
 ?>

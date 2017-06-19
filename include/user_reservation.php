@@ -628,11 +628,9 @@
                     <tbody>
 <?php
             foreach ($resas as $resa) {
-            // while ($rowresa = mysqli_fetch_array($resultresa)) {
                 
                 $utilisateur = $resa->getUtilisateur();
-                //$statususer = getUser($rowresa['id_user_resa']);
-                //if ($statususer['status_user'] == 2) {
+
                 $tarifAdhesion      = $utilisateur->getTarifAdhesion();
                 if ($tarifAdhesion != null){
                     $adhesion       = $tarifAdhesion->getNom();

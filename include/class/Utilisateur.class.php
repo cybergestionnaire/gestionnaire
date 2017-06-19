@@ -475,14 +475,25 @@ class Utilisateur
     public function getSessionsInscrit() {
         return Session::getSessionsParUtilisateurEtParStatut($this->_id, 0);
     }
-
+    
+    public function getSessionDatesInscrit() {
+        return Session::getSessionDatesEnCoursParUtilisateurEtParStatut($this->_id, 0);
+    }
     public function getAteliersPresent() {
         return Atelier::getAteliersParUtilisateurEtParStatut($this->_id, 1);
     }
     
-    public function getSessionsPresent() {
-        return Session::getSessionsParUtilisateurEtParStatut($this->_id, 1);
+    public function getSessionDatesPresent() {
+        return Session::getSessionDatesFermeesParUtilisateurEtParStatut($this->_id, 1);
     }
+    
+    public function getNBAteliersEtSessionsInscrit() {
+        return count($this->getAteliersInscrit()) + count($this->getSessionDatesInscrit());
+    }
+    
+    public function getNBAteliersEtSessionsPresent() {
+        return count($this->getAteliersPresent()) + count($this->getSessionDatesPresent());
+    }    
     
     public function modifier( $dateInscription,
                             $nom,

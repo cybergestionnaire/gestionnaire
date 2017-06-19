@@ -33,8 +33,11 @@ $statusarray=array(
     require_once("include/class/SessionDate.class.php");
     require_once("include/class/StatAtelierSession.class.php");
     
-    // error_log("GET : " . print_r($_GET, true));
-    // error_log("POST : " . print_r($_POST, true));
+    error_log('in post_session_presence.php');
+    error_log("---- POST ----");
+	error_log(print_r($_POST, true));
+	error_log("---- GET  ----");
+	error_log(print_r($_GET, true));
 
     $act = isset($_GET["act"]) ? $_GET["act"] : '';
 

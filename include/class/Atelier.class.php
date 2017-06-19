@@ -797,7 +797,7 @@ class Atelier
         $sql = "SELECT tab_atelier.* "
              . "FROM tab_atelier, `rel_atelier_user` "
              . "WHERE `rel_atelier_user`.`status_rel_atelier_user`=" . $statut . " "
-             . "  AND tab_atelier.statut_atelier = 0 "
+             . "  AND rel_atelier_user.id_atelier = tab_atelier.id_atelier "
              . "  AND `id_user`=" . $idUtilisateur;
 
                     

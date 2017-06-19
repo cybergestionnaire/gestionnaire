@@ -133,8 +133,9 @@
 
             //retrouver toutes les dates actives
             // $datesarray = getDatesSession($idsession);
-
             $sessionDates = SessionDate::getSessionDatesByIdSession($idsession);
+            // $session = Session::getSessionById($idsession);
+            // $sessionDates = $session->getSessionDates();
 
             for ($f = 1 ; $f <= $nbr_date ; $f++) {
                 // $row = mysqli_fetch_array($datesarray);

@@ -310,7 +310,7 @@ class Forfait
             $tempsAffectationOccasionnel = mysqli_real_escape_string($db, $tempsAffectationOccasionnel);
             $nombreAtelier               = mysqli_real_escape_string($db, $nombreAtelier);
 
-            $sql="INSERT INTO `tab_forfait`(`date_creation_forfait`, `type_forfait`, `nom_forfait`, `prix_forfait`, `critere_forfait`, `commentaire_forfait`, `nombre_duree_forfait`, `unite_duree_forfait`, `temps_forfait_illimite`, `date_debut_forfait`, `status_forfait`, `nombre_temps_affectation`, `unite_temps_affectation`, `frequence_temps_affectation`, `temps_affectation_occasionnel`, `nombre_atelier_forfait`) "
+            $sql = "INSERT INTO `tab_forfait`(`date_creation_forfait`, `type_forfait`, `nom_forfait`, `prix_forfait`, `critere_forfait`, `commentaire_forfait`, `nombre_duree_forfait`, `unite_duree_forfait`, `temps_forfait_illimite`, `date_debut_forfait`, `status_forfait`, `nombre_temps_affectation`, `unite_temps_affectation`, `frequence_temps_affectation`, `temps_affectation_occasionnel`, `nombre_atelier_forfait`) "
             . "VALUES ('" . $dateCreation . "', '" . $type . "', '" . $nom . "', '" . $prix . "', '" . $critere . "', '" . $commentaire . "', '" . $dureeValidite . "', '" . $uniteValidite . "', '" . $tempsForfaitIllimite . "', '" . $dateDebut . "', '" . $statut . "', '" . $dureeConsultation . "', '" . $uniteConsultation . "', '" . $frequenceConsultation . "', '" . $tempsAffectationOccasionnel . "', '" . $nombreAtelier . "' )";
 
             $result = mysqli_query($db,$sql);

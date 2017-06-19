@@ -80,7 +80,7 @@
     // $daterenouv = $row["dateRen_user"];
     // $nom        = $row["nom_user"];
     // $prenom     = $row["prenom_user"];
-    // //$temps=$row["temps_user"];
+    // $temps=$row["temps_user"];
     // $tarif      = $row["tarif_user"];
     // $tarifs     = getTarifsbyCat(2);
     // $prixtarif  = $tarifs[$tarif];

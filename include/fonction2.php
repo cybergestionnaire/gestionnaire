@@ -459,24 +459,6 @@ return $row['nb'];
 
 }
 
-//nombre d'ateliers par forfait
-function getNbatelierbytarif($id)
-{
-$sql="SELECT `nb_atelier_forfait` FROM `tab_tarifs` WHERE `id_tarif`=".$id;
-$db=opendb();
- $result = mysqli_query($db,$sql);
- closedb($db);
-	  if (FALSE == $result)
-	  {
-		  return FALSE ;
-	  } else {
-		$row= mysqli_fetch_array($result);
-		return $row['nb_atelier_forfait'];
-	  }
-
-}
-
-
 //Forfait à modifier
 function getForfait($id)
 {
@@ -981,7 +963,7 @@ function getIduserexterne()
 $sql="SELECT `id_user` FROM `tab_user` WHERE `nom_user`='Externe' AND `login_user`='compte_imprim' ";
 $db=opendb();
    $result = mysqli_query($db,$sql);
-	closedb;
+	closedb($db);
 if ($result==FALSE)
 	{
       return FALSE;
@@ -1003,7 +985,7 @@ $sql="SELECT print_date,print_credit,print_tarif,print_statut, nom_user, prenom_
 	";
 	$db=opendb();
    $result = mysqli_query($db,$sql);
-	closedb;
+	closedb($db);
 if ($result==FALSE)
 	{
       return FALSE;
@@ -1014,66 +996,58 @@ if ($result==FALSE)
 }
 
 //**Selectionner les adherents qui impriment
-function getPrintingUsers()
-{
-$sql="SELECT DISTINCT(`print_user`) FROM `tab_print` ";
-$db=opendb();
-   $result = mysqli_query($db,$sql);
-	closedb;
-if ($result==FALSE)
-	{
-      return FALSE;
+function getPrintingUsers() {
+    $sql = "SELECT DISTINCT(`print_user`) FROM `tab_print` ";
+    $db = opendb();
+    $result = mysqli_query($db,$sql);
+    closedb($db);
+    if ($result == FALSE)	{
+        return FALSE;
 	} else {
-	
-     return $result ;
+        return $result ;
 	}
-
 }
 
 //selectionner les adhérents dont le solde est créditeur
-function getPrintingUserswithcredit()
-{
-$sql="SELECT  `print_user` , SUM(`print_credit`) AS credit, SUM(  `print_debit` *  `donnee_tarif` ) AS donnee
-FROM  `tab_print` , tab_tarifs
-WHERE tab_tarifs.`id_tarif` = tab_print.print_tarif
-GROUP BY  `print_user`
-HAVING (credit-donnee) > 0
-";
-$db=opendb();
-   $result = mysqli_query($db,$sql);
-	closedb;
-if ($result==FALSE)
-	{
-      return FALSE;
+function getPrintingUserswithcredit() {
+    $sql = "SELECT  `print_user` , SUM(`print_credit`) AS credit, SUM(  `print_debit` *  `donnee_tarif` ) AS donnee
+            FROM  `tab_print` , tab_tarifs
+            WHERE tab_tarifs.`id_tarif` = tab_print.print_tarif
+            GROUP BY  `print_user`
+            HAVING (credit-donnee) > 0
+        ";
+    $db = opendb();
+    $result = mysqli_query($db,$sql);
+    closedb($db);
+    if ($result==FALSE)	{
+        return FALSE;
 	} else {
-	
-     return $result ;
+        return $result ;
 	}
-
 }
 
-function getAllUserPrintCredit($tarif)
-{
-$sql="SELECT print_user, SUM(`print_debit`) AS debit, nom_user, prenom_user
-	FROM tab_print, tab_user
-	WHERE print_user.tab_print=id_user.tab_user
-	AND print_tarif='".$tarif."'
-	group by print_user
-	ORDER BY print_date DESC
-";
-$db=opendb();
- $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  } else {
-      return $result;
-  }
+function getAllUserPrintCredit($tarif) {
+    $sql = "SELECT print_user, SUM(`print_debit`) AS debit, nom_user, prenom_user
+            FROM tab_print, tab_user
+            WHERE print_user.tab_print=id_user.tab_user
+            AND print_tarif='".$tarif."'
+            group by print_user
+            ORDER BY print_date DESC
+        ";
 
+    $db = opendb();
+    $result = mysqli_query($db,$sql);
+    closedb($db);
+    if (FALSE == $result) {
+        return FALSE;
+    } else {
+        return $result;
+    }
 }
+
+
 // retrouver les impression classee par tarif par user
-function getPrintbyTarif($id,$date,$tarif)
+function getPrintbyTarif($id, $date, $tarif)
 {
 $sql="SELECT id_print,print_debit, print_tarif,donnee_tarif,nom_tarif
 	FROM tab_print, tab_tarifs

@@ -296,10 +296,9 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
             break;
                  
              default: // liste des impressions
-                $titre="Comptes d'impressions";
-                $aide="G&eacute;rer les impressions des adh&eacute;rents";
-                
-                $inc="admin_liste_print.php";
+                $titre = "Comptes d'impressions";
+                $aide  = "G&eacute;rer les impressions des adh&eacute;rents";
+                $inc   = "admin_liste_print.php";
                 break;
              }
     break;

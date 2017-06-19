@@ -598,7 +598,7 @@ class Session
         $sessions = null;
     
         $db  = Mysql::opendb();
-        $sql = "SELECT tab_session.* "
+        $sql = "SELECT DISTINCT tab_session.* "
              . "FROM tab_session, `rel_session_user` "
              . "WHERE `rel_session_user`.`status_rel_session`=" . $statut . " "
              . "  AND tab_session.status_session = 0 "
@@ -615,7 +615,27 @@ class Session
             }
             mysqli_free_result($result);
         }
+       
         return $sessions;
     }
     
+    public static function getSessionDatesEnCoursParUtilisateurEtParStatut($idUtilisateur, $statut) {
+        return SessionDate::getSessionDatesEnCoursParUtilisateurEtParStatut($idUtilisateur, $statut);
+    }
+
+    public static function getSessionDatesFermeesParUtilisateurEtParStatut($idUtilisateur, $statut) {
+        return SessionDate::getSessionDatesFermeesParUtilisateurEtParStatut($idUtilisateur, $statut);
+    }
+    
+    // public static function getSessionDatesUtilisateurInscrit($idUtilisateur) {
+        // return SessionDate::getSessionDatesParUtilisateurEtParStatut($idUtilisateur, 0);
+    // }
+
+    // public static function getSessionDatesUtilisateurPresent($idUtilisateur ) {
+        // return SessionDate::getSessionDatesParUtilisateurEtParStatut($idUtilisateur, 1);
+    // }
+
+    // public static function getSessionDatesUtilisateurAbsent($idUtilisateur) {
+        // return SessionDate::getSessionDatesParUtilisateurEtParStatut($idUtilisateur, 2);
+    // }
 }

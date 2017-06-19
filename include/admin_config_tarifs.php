@@ -396,7 +396,13 @@
             
 <?php 
                 if ($catTarif == 5) {
-                    $dureenumarray = explode('-', $tarifByCat->getDuree());
+                    
+                    if ($tarifByCat->getDuree() == "0") {
+                        $dureenumarray = explode('-', "0-0");
+                    } else {
+                        $dureenumarray = explode('-', $tarifByCat->getDuree());
+
+                    }
                     $duree2 = $dureenumarray[1];
 ?>
         

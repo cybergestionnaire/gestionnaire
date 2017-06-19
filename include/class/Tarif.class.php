@@ -173,7 +173,7 @@ class Tarif
                 $tarif = new Tarif(array(
                     "id_tarif" => mysqli_insert_id($db),
                     "nom_tarif" => $nom,
-                    "donnee_tarif" => $idEspace,
+                    "donnee_tarif" => $prix,
                     "comment_tarif" => $commentaire,
                     "nb_atelier_forfait" => $nbAteliers,
                     "categorie_tarif" => $categorie,
