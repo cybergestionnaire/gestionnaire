@@ -469,22 +469,42 @@ class Utilisateur
     }
 
     public function getAteliersInscrit() {
-        return Atelier::getAteliersParUtilisateurEtParStatut($this->_id, 0);
+        return Atelier::getAteliersOuvertsParUtilisateurEtParStatut($this->_id, 0);
+    }
+
+    public function getAteliersEnAttente() {
+        return Atelier::getAteliersOuvertsParUtilisateurEtParStatut($this->_id, 2);
     }
     
     public function getSessionsInscrit() {
         return Session::getSessionsParUtilisateurEtParStatut($this->_id, 0);
     }
+
+    public function getSessionsEnAttente() {
+        return Session::getSessionsParUtilisateurEtParStatut($this->_id, 2);
+    }
     
     public function getSessionDatesInscrit() {
         return Session::getSessionDatesEnCoursParUtilisateurEtParStatut($this->_id, 0);
     }
+    
+    public function getSessionDatesEnAttente() {
+        return Session::getSessionDatesEnCoursParUtilisateurEtParStatut($this->_id, 2);
+    }
     public function getAteliersPresent() {
-        return Atelier::getAteliersParUtilisateurEtParStatut($this->_id, 1);
+        return Atelier::getAteliersFermesParUtilisateurEtParStatut($this->_id, 1);
     }
     
     public function getSessionDatesPresent() {
         return Session::getSessionDatesFermeesParUtilisateurEtParStatut($this->_id, 1);
+    }
+
+    public function getAteliersAbsent() {
+        return Atelier::getAteliersFermesParUtilisateurEtParStatut($this->_id, 0);
+    }
+    
+    public function getSessionDatesAbsent() {
+        return Session::getSessionDatesFermeesParUtilisateurEtParStatut($this->_id, 0);
     }
     
     public function getNBAteliersEtSessionsInscrit() {

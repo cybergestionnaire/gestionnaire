@@ -599,12 +599,15 @@ class Session
     
         $db  = Mysql::opendb();
         $sql = "SELECT DISTINCT tab_session.* "
-             . "FROM tab_session, `rel_session_user` "
+             . "FROM tab_session, tab_session_dates,`rel_session_user` "
              . "WHERE `rel_session_user`.`status_rel_session`=" . $statut . " "
+             . "  AND tab_session_dates.id_session = tab_session.id_session "
+             . "  AND tab_session.id_session = rel_session_user.id_session "
+             . "  AND tab_session_dates.statut_datesession = 0 "
              . "  AND tab_session.status_session = 0 "
              . "  AND `rel_session_user`.`id_user`=" . $idUtilisateur;
 
-                    
+        // error_log("sql Session:607 = " . $sql);
         $result = mysqli_query($db,$sql);
         Mysql::closedb($db);
         

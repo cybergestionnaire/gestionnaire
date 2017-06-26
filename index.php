@@ -20,9 +20,11 @@
 */
 
 // Desactivation du rapport d'erreur
-// error_reporting(0);
+//error_reporting(0);
 // Affichage des erreurs pour le debuggage
-error_reporting(E_ALL);
+// error_reporting(E_ALL);
+// marre des deprecated de libchart....
+error_reporting(E_ALL ^ E_DEPRECATED);
 
 
 //demarrage de la session
@@ -99,6 +101,10 @@ if (FALSE == isset($_SESSION["login"])) {
         
     <!-- calendar style -->
     <link href="template/style_calendar.css" rel="stylesheet" type="text/css" />
+
+    <!-- styles personnalisés cybergestionnaire -->
+    <link href="css/styles.css" rel="stylesheet" type="text/css" />
+
     <!--FONT SPECIFIC -->
     <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <link href='rome-master/dist/rome.css' rel='stylesheet' type='text/css' />

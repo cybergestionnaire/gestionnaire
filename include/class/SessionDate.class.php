@@ -142,6 +142,22 @@ class SessionDate
         
         return $success;
     } 
+
+    function isUtilisateurPresent($idUtilisateur) {
+        // verifie si le user n'est pas deja inscrit
+        $success = FALSE;
+        
+        $db     = Mysql::opendb();
+        $sql    = "SELECT * FROM `rel_session_user` WHERE `id_datesession` =" . $this->_id . " AND `id_user` =" . $idUtilisateur . " AND status_rel_session = '1'";
+        $result = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+
+        if (mysqli_num_rows($result) == 1) {
+            $success = TRUE;
+        }
+        
+        return $success;
+    } 
     
     public function cloturer() {
         $success = FALSE;
@@ -347,6 +363,7 @@ class SessionDate
              . "  AND `rel_session_user`.`status_rel_session`=" . $statut . " "
              . "  AND tab_session_dates.statut_datesession = '0' "
              . "  AND tab_session.status_session = 0 "
+             . "  AND tab_session_dates.id_session = tab_session.id_session "
              . "  AND `rel_session_user`.`id_user`=" . $idUtilisateur;
                     
 //SELECT tab_session_dates.*, rel_session_user.* FROM tab_session_dates, tab_session, `rel_session_user` WHERE tab_session_dates.id_datesession = rel_session_user.id_datesession AND`rel_session_user`.`status_rel_session`=0   AND tab_session.status_session = 0   AND `rel_session_user`.`id_user`=9                    
@@ -374,10 +391,11 @@ class SessionDate
              . "WHERE tab_session_dates.id_datesession = rel_session_user.id_datesession "
              . "  AND `rel_session_user`.`status_rel_session`=" . $statut . " "
              . "  AND tab_session.status_session = 1 "
+             . "  AND tab_session.id_session = tab_session_dates.id_session "
              . "  AND `rel_session_user`.`id_user`=" . $idUtilisateur;
                     
 //SELECT tab_session_dates.*, rel_session_user.* FROM tab_session_dates, tab_session, `rel_session_user` WHERE tab_session_dates.id_datesession = rel_session_user.id_datesession AND`rel_session_user`.`status_rel_session`=0   AND tab_session.status_session = 0   AND `rel_session_user`.`id_user`=9                    
-
+        
         $result = mysqli_query($db,$sql);
         Mysql::closedb($db);
         

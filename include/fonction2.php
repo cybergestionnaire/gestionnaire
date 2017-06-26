@@ -765,43 +765,6 @@ function getTarifsTemps()
 //
 //////////////********GESTION DES SESSIONS*********///////////////////
 
-//retrouver une session par son id
-function getSujetSessionById($id)
-{
-$sql="SELECT *
-		FROM tab_session_sujet 
-		WHERE id_session_sujet=".$id."";
-$db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-	return $result;
-  }
-
-}
-
-
-//Affichage d'une session
-function getSession($id)
-{
-  $sql = "SELECT *
-          FROM `tab_session`
-          WHERE `id_session`=".$id."
-		  ";
-  $db=opendb();
- $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-      $row = mysqli_fetch_array($result) ;
-      return $row;
-  }
-}
 
 // retourne toutes les dates d'une session
 function getDatesSession($id)

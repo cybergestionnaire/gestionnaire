@@ -273,10 +273,18 @@
     if ($b == 2) {
 ?>
                     <div class="box-tools pull-right">
-                        <a href="index.php?a=6&iduser=<?php echo $idUser; ?>" class="btn  bg-yellow"  data-toggle="tooltip" title="Abonnements"><i class="ion ion-bag"></i></a>                    
-                        <a href="index.php?a=5&b=6&iduser=<?php echo $idUser; ?>" class="btn  bg-blue"  data-toggle="tooltip" title="Participation Ateliers"><i class="fa fa-keyboard-o"></i></a>                  
-                        <a href="index.php?a=9&iduser=<?php echo $idUser; ?>" class="btn bg-maroon"  data-toggle="tooltip" title="Consultation internet"><i class="fa fa-globe"></i></a>
-                        <a href="index.php?a=21&b=1&iduser=<?php echo $idUser; ?>" class="btn bg-navy"  data-toggle="tooltip" title="Compte d'impression"><i class="fa fa-print"></i></a>
+                        <!--<a href="index.php?a=1&b=2&iduser=<?php echo $utilisateur->getId() ?>" class="btn bg-purple btn-sm" data-toggle="tooltip" title="Fiche adh&eacute;rent"><i class="fa fa-edit"></i></a>-->
+                        <a href="index.php?a=6&iduser=<?php echo $utilisateur->getId(); ?>" class="btn  bg-yellow btn-sm"  data-toggle="tooltip" title="Abonnements"><i class="ion ion-bag"></i></a>                    
+                        <a href="index.php?a=9&iduser=<?php echo $utilisateur->getId(); ?>" class="btn bg-maroon btn-sm"  data-toggle="tooltip" title="Consultation internet"><i class="fa fa-globe"></i></a>
+                        <a href="index.php?a=21&b=1&iduser=<?php echo $utilisateur->getId(); ?>" class="btn bg-navy btn-sm"  data-toggle="tooltip" title="Compte d'impression"><i class="fa fa-print"></i></a>
+<?php
+                    if (($utilisateur->getNBAteliersEtSessionsInscrit() + $utilisateur->getNBAteliersEtSessionsPresent()) > 0) {
+                    //if (chechUserAS($utilisateur->getId()) == TRUE) {
+?>
+                        <a href="index.php?a=5&b=6&iduser=<?php echo $utilisateur->getId() ?>" class="btn bg-primary btn-sm" data-toggle="tooltip" title="Inscriptions Ateliers"><i class="fa fa-keyboard-o"></i></a>
+<?php
+                    }           
+?>
                     </div>
 <?php } ?>
                 </div><!-- .box-header -->

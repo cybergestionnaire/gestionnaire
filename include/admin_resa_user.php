@@ -20,7 +20,8 @@
  2012 Florence DAUVERGNE
 
 */
-
+    require_once('include/class/Utilisateur.class.php');
+    require_once('include/class/Resa.class.php');
 
     $id_user   = isset($_GET["iduser"]) ? $_GET["iduser"] : '';
     $datedebut = isset($_POST["datedebut"]) ? $_POST["datedebut"] : '';
@@ -74,19 +75,31 @@
             <div class="box-header">
                 <h3 class="box-title">Réservations de <?php echo htmlentities($utilisateur->getPrenom() . "  " . $utilisateur->getNom()) ;?></h3>
                 <div class="box-tools pull-right">
-                    <a href="index.php?a=1&b=2&iduser=<?php echo $id_user ; ?>"><button class="btn btn-default btn-sm"  data-toggle="tooltip" title="Fiche adhérent"><i class="fa fa-edit"></i></button></a>
-                    <a href="index.php?a=6&iduser=<?php echo $id_user; ?>"><button class="btn btn-default btn-sm"  data-toggle="tooltip" title="Abonnements"><i class="ion ion-bag"></i></button></a>
+                    <a href="index.php?a=1&b=2&iduser=<?php echo $utilisateur->getId() ?>" class="btn bg-purple btn-sm" data-toggle="tooltip" title="Fiche adh&eacute;rent"><i class="fa fa-edit"></i></a>
+                    <a href="index.php?a=6&iduser=<?php echo $utilisateur->getId(); ?>" class="btn  bg-yellow btn-sm"  data-toggle="tooltip" title="Abonnements"><i class="ion ion-bag"></i></a>                    
+                    <!--<a href="index.php?a=9&iduser=<?php echo $utilisateur->getId(); ?>" class="btn bg-maroon btn-sm"  data-toggle="tooltip" title="Consultation internet"><i class="fa fa-globe"></i></a>-->
+                    <a href="index.php?a=21&b=1&iduser=<?php echo $utilisateur->getId(); ?>" class="btn bg-navy btn-sm"  data-toggle="tooltip" title="Compte d'impression"><i class="fa fa-print"></i></a>
+<?php
+    if (($utilisateur->getNBAteliersEtSessionsInscrit() + $utilisateur->getNBAteliersEtSessionsPresent()) > 0) {
+                    //if (chechUserAS($utilisateur->getId()) == TRUE) {
+?>
+                    <a href="index.php?a=5&b=6&iduser=<?php echo $utilisateur->getId() ?>" class="btn bg-primary btn-sm" data-toggle="tooltip" title="Inscriptions Ateliers"><i class="fa fa-keyboard-o"></i></a>
+<?php
+    }           
+?>
                 </div>
             </div>
             <div class="box-body">
      
 
     <?php
-    
-    if (checkResa($id_user)){   
-        // affichage des reservation a venir
-        $result = getResaById($id_user,1) ;
-        if ($result != FALSE) {
+    $resasFutures = Resa::getResasFuturesParIdUtilisateur($id_user);
+    $resasPassees = Resa::getResasParIdUtilisateurEtParMois($id_user, date("m"), date('Y'));
+
+    if ($resasFutures !== null || $resasPassees !== null) {
+
+
+        if ($resasFutures !== null) {
 ?>
                 <p>R&eacute;servations à venir</p>
                 <table class="table">
@@ -95,30 +108,30 @@
                     </thead>
                     <tbody>
 <?php
-                   
-            while($row = mysqli_fetch_array($result)) {
-                echo "<tr><td>".dateFr($row['dateresa_resa'])."</td>
-                    <td>".getTime($row['debut_resa'])."</td>
-                    <td>".getTime(($row['debut_resa']+$row['duree_resa']))."</td>
-                    <td>".getTime($row['duree_resa'])."</td>
-                    <td>".$row['nom_computer']."</td>
-                    </tr>" ;
-            }
+        foreach ($resasFutures as $resa) {
+?>            
+                    <tr>
+                        <td><?php echo dateFr($resa->getDateResa())?></td>
+                        <td><?php echo getTime($resa->getDebut())?></td>
+                        <td><?php echo getTime($resa->getDebut() + $resa->getDuree())?></td>
+                        <td><?php echo getTime($resa->getDuree())?></td>
+                        <td><?php echo htmlentities($resa->getMateriel()->getNom())?></td>
+                    </tr>
+<?php
+        }
+
 ?>
                     </tbody>
                 </table>
 <?php
-        } else {
-            echo "Aucune réservation enregistrée pour les jours prochains</br>";
-        }
-    
+    } else {
+        echo "Aucune réservation enregistrée pour les jours prochains</br>";
+    }
+
         // ARCHIVES DES RESERVATIONS
 
-        //$result = getUserResaById($_SESSION['iduser'],date("m"),date("Y")) ;
-        $result = getResaByMonth($id_user,date("m"),date("Y")) ;
-
-        if ($result != FALSE) {
         // affichage
+        if ($resasPassees !== null) {
 ?>
                 <p>R&eacute;servations archiv&eacute;s (mois en cours)</p>
                 <table class="table">
@@ -126,16 +139,19 @@
                         <tr><th>Date</th><th>Heure de debut</th><th>Heure de fin</th><th>Dur&eacute;e</th><th>Machine r&eacute;serv&eacute;e</th></tr>
                     </thead>
                     <tbody>
-<?php        
-                   
-            while($row = mysqli_fetch_array($result)) {
-        
-                echo "<tr><td>".dateFr($row['dateresa_resa'])."</td>
-                    <td>".getTime($row['debut_resa'])."</td>
-                    <td>".getTime(($row['debut_resa']+$row['duree_resa']))."</td>
-                    <td>".getTime($row['duree_resa'])."</td>
-                    <td>".$row['nom_computer']."</td></tr>" ;
-            }
+<?php
+        foreach ($resasPassees as $resa) {
+?>            
+                    <tr>
+                        <td><?php echo dateFr($resa->getDateResa())?></td>
+                        <td><?php echo getTime($resa->getDebut())?></td>
+                        <td><?php echo getTime($resa->getDebut() + $resa->getDuree())?></td>
+                        <td><?php echo getTime($resa->getDuree())?></td>
+                        <td><?php echo htmlentities($resa->getMateriel()->getNom())?></td>
+                    </tr>
+<?php
+        }
+
 ?>
                     </tbody>
                 </table>
@@ -156,11 +172,11 @@
 
 
         <div class="box box-info">
-            <div class="box-header"><h3 class="box-title">Chercher dans les réservations</h3></div>
+            <div class="box-header"><h3 class="box-title">Chercher dans les r&eacute;servations</h3></div>
             <div class="box-body">
                 <form method="POST" role="form" >
                     <div class="form-group">
-                        <label>Choisissez la période</label>
+                        <label>Choisissez la p&eacute;riode</label>
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
@@ -175,11 +191,12 @@
 <?php
         // debug($_POST["submit"]);
     if (isset($_POST["submit"])) {
-    
-        if( $datedebut != "" AND $datefin != "") {
 
-            $result = getResaBy2dates($id_user,$datedebut,$datefin) ;
-            if ($result != FALSE) {
+        
+        if( $datedebut != "" AND $datefin != "") {
+            $resasPeriode = Resa::getResasParIdUtilisateurEtParPeriode($id_user, $datedebut, $datefin) ;
+
+            if ($resasPeriode !== null) {
                 echo " <p>R&eacute;servations entre ".getDateFr($datedebut)." et ".getDateFr($datefin)."</p>" ;
 ?>
                 <table class="table">
@@ -194,15 +211,18 @@
                     </thead>
                     <tbody>
 <?php
-                   
-                while($row = mysqli_fetch_array($result)) {
-                    echo "<tr><td>".dateFr($row['dateresa_resa'])."</td>
-                          <td>".getTime($row['debut_resa'])."</td>
-                          <td>".getTime(($row['debut_resa']+$row['duree_resa']))."</td>
-                          <td>".getTime($row['duree_resa'])."</td>
-                          <td>".$row['nom_computer']."</td>
-                        </tr>" ;
+                foreach ($resasPeriode as $resa) {
+?>            
+                    <tr>
+                        <td><?php echo dateFr($resa->getDateResa())?></td>
+                        <td><?php echo getTime($resa->getDebut())?></td>
+                        <td><?php echo getTime($resa->getDebut() + $resa->getDuree())?></td>
+                        <td><?php echo getTime($resa->getDuree())?></td>
+                        <td><?php echo htmlentities($resa->getMateriel()->getNom())?></td>
+                    </tr>
+<?php
                 }
+
 ?>
                     </tbody>
                 </table>
@@ -266,38 +286,46 @@
 </div>  
 -->
 <?php
-//Calcul statistique de la consultation par mois
-    if (TRUE==checkResa($id_user))
+    //Calcul statistique de la consultation par mois
+    $resasPassees = Resa::getResasPasseesParIdUtilisateur($id_user, date("Y-m-d"));
+    if ($resasPassees !== null) {
     //debug(checkResa($id_user));
-{   
 ?>
-<div class="box"><div class="box-header"><h3 class="box-title">Statistiques</h3></div>
-  <div class="box-body">
+        <div class="box">
+            <div class="box-header"><h3 class="box-title">Statistiques</h3></div>
+            <div class="box-body">
                  
-  <H5>Cumul par mois (année en cours)</h5>
-         <table class="table table-condensed">
-                <thead><tr> 
-                   <th>Mois</th>
-                   <th>Durée</th>
-                  
-                   </tr></thead><tbody>
+                <H5>Cumul par mois (année en cours)</h5>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr> 
+                            <th>Mois</th>
+                            <th>Durée</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 <?php
-    // 
-     $month = date('n');
-    for ($i=1 ; $i<= $month;++$i){   
-            $result = getUserResabyMonth($id_user,$i,date('Y'));
-            while($row = mysqli_fetch_array($result))
-            {
-            echo "<tr><td>".getMonth($i)."</td>
-                      <td>".getTime($row['duree'])."</td>
-                                      </tr>" ;
+        // 
+        $month = date('n');
+        for ($i=1 ; $i<= $month;++$i){   
+            $resasPassees = Resa::getResasParIdUtilisateurEtParMois($id_user, $i, date('Y'));
+    //        $result = getUserResabyMonth($id_user,$i,date('Y'));
+            $dureeTotale = 0;
+            if ($resasPassees !== null ) {
+                foreach($resasPassees as $resa) {
+                    $dureeTotale += $resa->getDuree();
+                }
             }
-            
+            echo "<tr><td>" . getMonth($i) . "</td><td>" . getTime($dureeTotale) . "</td></tr>" ;
+                
         }
-    
-    echo "</tbody></table></div></div>" ;
-
-}
+?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+<?php
+    }
 ?>
 
 <!--
@@ -312,7 +340,7 @@
 </div>
 -->
 
-</div>
+    </div>
 
 
 </div><!-- /row -->

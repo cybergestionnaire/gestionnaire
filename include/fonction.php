@@ -365,34 +365,6 @@ function delBookmark($iduser,$idurl)
 }
 
 
-
-
-//
-// Fonction Atelier / formation ------------------------------------------------
-//
-//
-
-
-// renvoie les données sujets en fonction de l'id du sujet
-//INNER JOIN tab_atelier_categories AS tab_atelier_sujet.categorie_atelier=tab_atelier_categories.id_atelier_categorie
-
-function getSujetById($idsujet)
-{
-$sql="SELECT *
-        FROM tab_atelier_sujet 
-        WHERE id_sujet=".$idsujet."";
-$db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-    return $result;
-  }
-}
-
-
 //
 // getAtelier ()
 // renvoi les info sur atelier par son ID
@@ -746,20 +718,6 @@ function getResaById($id,$type)
     }
 }
 
-
-// renvoi TRUE si un utilisateur possede des reservations
-function checkResa($id)
-{
-    $sql = "SELECT `id_resa` FROM tab_resa WHERE `id_user_resa`=".$id;
-    $db=opendb();
-   $result = mysqli_query($db,$sql) ;
-    closedb($db);
-    if (mysqli_num_rows($result)>0){
-        return TRUE ;
-    } else {
-        return FALSE;
-    }
-}
 //renvoie TRU si utilisateur est venu dans la semaine
 function checkResaSemaine($id, $date1, $date2)
 {
@@ -1687,7 +1645,7 @@ function getCyberSpec($epn)
 // Fonction diverses -----------------------------------------------------------
 
 //getDayfr() retourne le jour de la semaine
-function getDayfr($date) {//,$format='D j F'
+function getDayFR($date) {//,$format='D j F'
 
     $date0   = date('Y-n-j-w',strtotime($date));
     $dateArr = explode("-",$date0);
@@ -1700,7 +1658,7 @@ function getDayfr($date) {//,$format='D j F'
     return $dayArr[$jourfr] . " " . $jour . " " . getMonthName($mois) . " " . $annee ;
 }
 
-function getDatefr($date) //,$format='D j F à 10h'
+function getDateFR($date) //,$format='D j F à 10h'
 {
     $date0    = date('Y-n-j-w',strtotime($date));
     $dateArr  = explode("-", $date0);

@@ -404,31 +404,6 @@ $db=opendb();
 	return $row['duree'] ;
 }
 
-// retourne le cumul des resa par adh et par mois
-function getUserResabyMonth($iduser,$m,$year)
-{
-	
-$sql="SELECT SUM(`duree_resa`) as duree  
-FROM `tab_resa` 
-WHERE `id_user_resa`='".$iduser."'
-AND YEAR(`dateresa_resa`)= '".$year."'
-AND MONTH(`dateresa_resa`) ='".$m."'
-";
-$db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-if ($result==FALSE)
-	{
-      return FALSE;
-	} else {
-	
-	return $result;
-	
-	}
-	
-}
-
-
 //****
 //*************                STATISTIQUES ADHERENTS                      ************************************************
 //***
@@ -1359,58 +1334,6 @@ $db=opendb();
         $row = mysqli_fetch_array($result);
         return $row['total'] ;
     }
-}
-
-
-///**************STATISTIQUES ATELIER/SESSION PAR ADHERENT*************************////////////
-///
-//
-
-
-
-
-///**************STATISTIQUES RESA PAR ADHERENT*************************////////////
-///  
-
-function getResaByMonth($id,$month,$y)
-{
-	$sql="SELECT `id_resa`,`dateresa_resa`,`debut_resa`,`duree_resa`,nom_computer FROM tab_resa 
-          INNER JOIN tab_computer ON id_computer=id_computer_resa
-          WHERE `id_user_resa`=".$id." 
-		AND MONTH(`dateresa_resa`)=".$month."
-		   AND YEAR(`dateresa_resa`)=".$y."
-		ORDER BY `dateresa_resa` DESC , `debut_resa` DESC";
-     $db=opendb();
-    $result = mysqli_query($db,$sql) ;
-    closedb($db);
-    if(FALSE == mysqli_num_rows($result))
-    {
-        return FALSE ;
-    } else {
-        return $result ;
-    }
-	
-	
-}
-
-function getResaBy2dates($id,$date1,$date2)
-{
-	$sql="SELECT `id_resa`,`dateresa_resa`,`debut_resa`,`duree_resa`,nom_computer FROM tab_resa 
-          INNER JOIN tab_computer ON id_computer=id_computer_resa
-          WHERE `id_user_resa`=".$id." 
-		AND `dateresa_resa` BETWEEN '".$date1."' AND '".$date2."'
-		ORDER BY `dateresa_resa` DESC , `debut_resa` DESC";
-   $db=opendb();
-    $result = mysqli_query($db,$sql) ;
-    closedb($db);
-    if(FALSE == mysqli_num_rows($result))
-    {
-        return FALSE ;
-    } else {
-        return $result ;
-    }
-	
-	
 }
 
 ?>

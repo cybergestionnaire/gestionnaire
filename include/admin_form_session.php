@@ -123,14 +123,6 @@
             $idSalle  = $session->getIdSalle();
             $idTarif  = $session->getIdTarif();
             
-            // $row = getSession($idsession);
-            // $idTitre = $row["nom_session"];
-            // $nbplace = $row["nbplace_session"];
-            // $nbr_date = $row["nbre_dates_sessions"];
-            // $idAnim = $row["id_anim"];
-            // $idSalle = $row["id_salle"];
-            // $idTarif = $row["id_tarif"];
-
             //retrouver toutes les dates actives
             // $datesarray = getDatesSession($idsession);
             $sessionDates = SessionDate::getSessionDatesByIdSession($idsession);

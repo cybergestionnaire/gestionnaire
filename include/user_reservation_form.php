@@ -73,7 +73,6 @@
     // @param4 : Heure d'ouverture de l'apres midi
     // @param5 : Heure de fermeture de l'apres midi
     function getHorDebutSelect($unit , $h1begin , $h1end , $h2begin , $h2end , $idcomp , $dateResa , $hselected) {
-        $select    = "<select name=\"debut\" size=\"15\" >" ;
         //renvoi le tableau des valeurs deja reservées
         $arrayResa = Resa::getResaArray($idcomp, $dateResa, $unit) ;
         // on boucle pour afficher 
@@ -81,25 +80,33 @@
         
         $hselected = Horaire::convertHoraire(strftime("%H",time())) + 30; //affichage de l'heure en cours
         //debug($hselected);
+
+        $select    = "" ;
+        if ($h1begin == $h1end) {
+            $h1begin = $h2begin;
+        }
+            
         for ($i = $h1begin ; $i < $h2end ; $i = $i + $unit) {/*
           if ($i<$h1end OR $i>=$h2begin)
           {*/
-            if($i == $hselected) {
-                $select .= "<option value=\"" . $i . "\" selected>" . getTime($i) . "</option>";
-            } else if (in_array( $i, $arrayResa) OR ($i >= $h1end AND $i < $h2begin)) {
+            if (in_array( $i, $arrayResa) OR ($i >= $h1end AND $i < $h2begin)) {
                 $select .= "<option value=\"" . $i . "\" disabled style=\"background-color:#EEEEEE\">" . getTime($i) . "</option>";
+            } else if ($i == $hselected) {
+                $select .= "<option value=\"" . $i . "\" selected>" . getTime($i) . "</option>";
             } else {
                 $select .= "<option value=\"" . $i . "\">" . getTime($i) . "</option>";   
             }
          // }
         }
-        $select .= "</select>";
+        if ($select != "") {
+            $select = "<select name=\"debut\" size=\"15\" >" . $select . "</select>";
+        } else {
+            $select = "";
+        }
         return $select;
     }
     
     function getHorDureeSelect($unit, $h1begin, $h1end, $h2begin, $h2end, $idcomp, $dateResa, $hselected, $idEspace) {
-        //select
-        $select  = "<select name=\"duree\" size=\"15\" multiple>";
         // maxtime = initialisation du temps maximum de reseravtion a partir de l'heure donnee pour la date et la machine demande
         //requete pour definir la duree maximum par rapport au reservation en base
         $sql = "SELECT debut_resa
@@ -138,8 +145,11 @@
         if ($maxtimedb < $maxtime)
             $maxtime = $maxtimedb ;
 
-        if($delta < $maxtime)
+        if(isset($delta) && $delta < $maxtime)
             $maxtime = $delta ;
+ 
+        //select
+        $select  = "";
     
         // on boucle 
         for ($i = $unit ; $i <= $maxtime ; $i = $i + $unit) {
@@ -150,7 +160,11 @@
             }
         }
         //$select .= "<option value=\"".getConfig("maxtime_config","maxtime_default_config")."\">".getTime(getConfig("maxtime_config","maxtime_default_config"))."</option>";
-        $select .= "</select> ";
+        if ($select != "") {
+            $select = "<select name=\"duree\" size=\"15\" multiple>" . $select . "</select> ";
+        } else {
+            $select = "";
+        }
 
         return $select;
     }
@@ -160,10 +174,10 @@
     $semaine  = get_lundi_dimanche_from_week(date('W'));
     $date1    = strftime("%Y-%m-%d",$semaine[0]);
     $date2    = strftime("%Y-%m-%d",$semaine[1]);
-    $idEspace = $_GET["idepn"];
-    $step     = isset($_POST["step"]) ? $_POST["step"] : 0;
+    $idEspace = isset($_GET["idepn"]) ? $_GET["idepn"] : $_SESSION["idepn"];
+    $etape    = isset($_POST["step"]) ? $_POST["step"] : 0;
  
-    // error_log("step = $step");
+    // error_log("etape = $etape");
 
     // affichage de form de reservation
     if (is_numeric($_GET["idcomp"])) {
@@ -189,17 +203,13 @@
         $horaires = Horaire::getHorairesByIdEspace($idEspace);
       
       
-        switch($step) {
+        switch($etape) {
             case 1: // etape 2 durée
                 $step1 = 'previousStep';
                 $step2 = 'currentStep' ;
                 $titre = 'Choix de la dur&eacute;e de la r&eacute;servation' ;
-          
-                $step  = getResaComp(
-                            2,
-                            $_SESSION['resa']['idcomp'],
-                            $_SESSION['resa']['date'],
-                            getHorDureeSelect( 
+                
+                $select = getHorDureeSelect( 
                                 getConfig("unit_config", "unit_default_config", $idEspace),
                                 $horaires[$dayNum - 1]->getHoraire1Debut(),
                                 $horaires[$dayNum - 1]->getHoraire1Fin(),
@@ -213,8 +223,18 @@
                                 $_SESSION['resa']['date'],
                                 $_SESSION['debut'],
                                 $idEspace
-                                )
-                            );      
+                                );
+
+                if ($select != "") {
+                    $step  = getResaComp(
+                            2,
+                            $_SESSION['resa']['idcomp'],
+                            $_SESSION['resa']['date'],
+                            $select
+                            );
+                } else {
+                    $step = "Pas d'horaires disponibles !";
+                }
             break;
     
             case 2: // etape 3
@@ -333,12 +353,7 @@
             
           
                 $titre = 'Choix de l\'heure de d&eacute;but de la r&eacute;servation'  ;
-          
-                $step  = getResaComp(
-                            1,
-                            $_SESSION['resa']['idcomp'],
-                            $_SESSION['resa']['date'] ,
-                            getHorDebutSelect(
+                $select  =  getHorDebutSelect(
                                 getConfig("unit_config", "unit_default_config", $idEspace),
                                 $horaires[$dayNum - 1]->getHoraire1Debut(),
                                 $horaires[$dayNum - 1]->getHoraire1Fin(),
@@ -352,8 +367,18 @@
                                 $_SESSION['resa']['date'],
                                 //$_SESSION['debut']
                                 0
-                            )
-                         );      
+                            );
+                           
+                if ($select != "") {
+                    $step  = getResaComp(
+                            1,
+                            $_SESSION['resa']['idcomp'],
+                            $_SESSION['resa']['date'] ,
+                            $select
+                            );
+                } else {
+                    $step = "Pas de reservations pour ce jour !";
+                }
             break;
         }
     }

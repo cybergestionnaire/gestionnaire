@@ -295,9 +295,9 @@
     // Fichier de reservation d'un poste
 
     //recuperation des get
-    $jour  = isset($_GET["jour"])  ? $_GET["jour"]  : '1';
-    $mois  = isset($_GET["mois"])  ? $_GET["mois"]  : '1';
-    $annee = isset($_GET["annee"]) ? $_GET["annee"] : '1977';
+    $jour  = isset($_GET["jour"])  ? $_GET["jour"]  : date('d');
+    $mois  = isset($_GET["mois"])  ? $_GET["mois"]  : date('n');
+    $annee = isset($_GET["annee"]) ? $_GET["annee"] : date('Y');
 
 
     if (isset($_SESSION["idSalle_reservation"])) {

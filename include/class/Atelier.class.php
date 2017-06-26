@@ -790,13 +790,39 @@ class Atelier
         return $ateliers;
     }
     
-    public static function getAteliersParUtilisateurEtParStatut($idUtilisateur, $statut) {
+    public static function getAteliersOuvertsParUtilisateurEtParStatut($idUtilisateur, $statut) {
         $ateliers = null;
     
         $db  = Mysql::opendb();
         $sql = "SELECT tab_atelier.* "
              . "FROM tab_atelier, `rel_atelier_user` "
              . "WHERE `rel_atelier_user`.`status_rel_atelier_user`=" . $statut . " "
+             . "  AND tab_atelier.statut_atelier  <> 2 "
+             . "  AND rel_atelier_user.id_atelier = tab_atelier.id_atelier "
+             . "  AND `id_user`=" . $idUtilisateur;
+
+                    
+        $result = mysqli_query($db,$sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $ateliers = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $ateliers[] = new Atelier($row);
+            }
+            mysqli_free_result($result);
+        }
+        return $ateliers;
+    }
+    
+    public static function getAteliersFermesParUtilisateurEtParStatut($idUtilisateur, $statut) {
+        $ateliers = null;
+    
+        $db  = Mysql::opendb();
+        $sql = "SELECT tab_atelier.* "
+             . "FROM tab_atelier, `rel_atelier_user` "
+             . "WHERE `rel_atelier_user`.`status_rel_atelier_user`=" . $statut . " "
+             . "  AND tab_atelier.statut_atelier  = 2 "
              . "  AND rel_atelier_user.id_atelier = tab_atelier.id_atelier "
              . "  AND `id_user`=" . $idUtilisateur;
 

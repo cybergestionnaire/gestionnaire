@@ -460,12 +460,15 @@
 ?>
                     <tr>
                         <td>
-                            <a href="index.php?a=1&b=2&iduser=<?php echo $utilisateur->getId() ?>"><button type="button" class="btn bg-purple btn-sm" data-toggle="tooltip" title="Fiche adh&eacute;rent"><i class="fa fa-edit"></i></button></a>
-                            <a href="index.php?a=6&iduser=<?php echo $utilisateur->getId() ?>"><button type="button" class="btn bg-yellow btn-sm" data-toggle="tooltip" title="transactions"><i class="ion ion-bag"></i></button></a>
+                            <a href="index.php?a=1&b=2&iduser=<?php echo $utilisateur->getId() ?>" class="btn bg-purple btn-sm" data-toggle="tooltip" title="Fiche adh&eacute;rent"><i class="fa fa-edit"></i></a>
+                            <a href="index.php?a=6&iduser=<?php echo $utilisateur->getId(); ?>" class="btn  bg-yellow btn-sm"  data-toggle="tooltip" title="Abonnements"><i class="ion ion-bag"></i></a>                    
+                            <a href="index.php?a=9&iduser=<?php echo $utilisateur->getId(); ?>" class="btn bg-maroon btn-sm"  data-toggle="tooltip" title="Consultation internet"><i class="fa fa-globe"></i></a>
+                            <a href="index.php?a=21&b=1&iduser=<?php echo $utilisateur->getId(); ?>" class="btn bg-navy btn-sm"  data-toggle="tooltip" title="Compte d'impression"><i class="fa fa-print"></i></a>
 <?php
-                    if (chechUserAS($utilisateur->getId()) == TRUE) {
+                    if (($utilisateur->getNBAteliersEtSessionsInscrit() + $utilisateur->getNBAteliersEtSessionsPresent()) > 0) {
+                    //if (chechUserAS($utilisateur->getId()) == TRUE) {
 ?>
-                            &nbsp;<a href="index.php?a=5&b=6&iduser=<?php echo $utilisateur->getId() ?>"><button type="button" class="btn bg-primary btn-sm" data-toggle="tooltip" title="Inscriptions Ateliers"><i class="fa fa-keyboard-o"></i></button></a>
+                            <a href="index.php?a=5&b=6&iduser=<?php echo $utilisateur->getId() ?>" class="btn bg-primary btn-sm" data-toggle="tooltip" title="Inscriptions Ateliers"><i class="fa fa-keyboard-o"></i></a>
 <?php
                     }           
 ?>

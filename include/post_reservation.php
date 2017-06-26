@@ -56,7 +56,7 @@
     }
     // etape 3 : finalisation de la reservation
     else if(isset($_POST["valider"])) {
-        if (is_numeric($_SESSION['other_user'])) {
+        if (isset($_SESSION['other_user']) && is_numeric($_SESSION['other_user'])) {
            $id_user = $_SESSION["other_user"];
         } else {
             $id_user = $_SESSION["iduser"];
