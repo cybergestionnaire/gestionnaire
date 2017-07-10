@@ -25,8 +25,8 @@
     // error_log("---- _GET ----");
     // error_log(print_r($_GET, true));
 
-    include_once("include/class/Atelier.class.php");
-    include_once("include/class/StatAtelierSession.class.php");
+    require_once("include/class/Atelier.class.php");
+    require_once("include/class/StatAtelierSession.class.php");
     
     $idAtelier = isset($_GET["idatelier"]) ? $_GET["idatelier"] : '';
     if (isset($_POST["submit_atelier"]) && $_POST["submit_atelier"] != "") {  // si le formulaire est posté

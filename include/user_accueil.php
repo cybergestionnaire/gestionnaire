@@ -47,12 +47,6 @@
 
      //***** -------------fonctions pour administrateur & animateurs   
     if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
-    //liste des ateliers/evenements de la journee
-        // $listeWeekAtelier = getWeekAteliers(date('Y-m-d'), $_SESSION["idepn"]);
-        // $nbTA             = mysqli_num_rows($listeWeekAtelier);
-
-        // $espaces = getAllepn(); 
-        //$espaces = Espace::getEspaces();
         
         if ($mesno != "") {
             echo getError($mesno);
@@ -485,8 +479,7 @@
         // bouton envoyer message &agrave; animateur
 
         //charger la liste des evenements du reseau
-        // $listeWeekAtelier = getWeekAteliers(date('Y-m-d'), 0);
-        // $nbe              = mysqli_num_rows($listeWeekAtelier);
+
         $arrayinscrip   = array(
                                 2=>"Sur la liste d'attente",
                                 0=>"Je suis d&eacute;j&agrave; inscrit"

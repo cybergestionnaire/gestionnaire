@@ -104,10 +104,10 @@
 <?php   if ($_SESSION['status'] == 4) { ?>
         <li class="<?php if ($a == 41) { echo "active"; } else { echo "treeview" ;} ?>"><a href="index.php?a=41"><i class="fa fa-gears"></i> <span>Configuration</span> </a></li>
 <?php   } ?>        
-        <li class="<?php if ($a == 1 OR $a == 24 OR $a == 23) { echo "active"; } else { echo "treeview" ;} ?>">
+        <li class="<?php if ($a == 1 OR ($a == 5 AND $b == 6) OR $a == 24 OR $a == 23) { echo "active"; } else { echo "treeview" ;} ?>">
             <a href="#"><i class="fa fa-group"></i> <span>Adh&eacute;rents</span><i class="fa fa-angle-left pull-right"></i></a>
             <ul class="treeview-menu">
-                <li class="<?php if ( $a == 1 && $b != 1) { echo "active"; } ?>"><a href="index.php?a=1"><i class="fa fa-angle-double-right"></i>Liste des Adh&eacute;rents</a></li>
+                <li class="<?php if ( ($a == 1 && $b != 1) OR ($a == 5 AND $b == 6)) { echo "active"; } ?>"><a href="index.php?a=1"><i class="fa fa-angle-double-right"></i>Liste des Adh&eacute;rents</a></li>
                 <li class="<?php if ( $a == 1 && $b == 1) { echo "active"; } ?>"><a href="index.php?a=1&b=1"><i class="fa fa-angle-double-right"></i>Cr&eacute;er Adh&eacute;rent</a></li>
                 <li class="<?php if ( $a == 24) { echo "active"; } ?>"><a href="index.php?a=24"><i class="fa fa-angle-double-right"></i>Pr&eacute;inscriptions</a></li>
 <?php   if ($_SESSION['status'] == 4) { ?>
@@ -157,7 +157,7 @@
             </ul>
         </li>
         
-        <li class="<?php if ($a == 5) { echo "active"; } else { echo "treeview" ;} ?>">
+        <li class="<?php if ($a == 5 AND $b != 6) { echo "active"; } else { echo "treeview" ;} ?>">
             <a href="#"><i class="fa fa-bar-chart-o"></i> <span>Statistiques</span><i class="fa fa-angle-left pull-right"></i></a>
             <ul class="treeview-menu">
                 <li class="<?php if ( $a == 5 && $b == 1) { echo "active"; } ?>"><a href="index.php?a=5&b=1"><i class="fa fa-angle-double-right"></i>Adh&eacute;rents</a></li>

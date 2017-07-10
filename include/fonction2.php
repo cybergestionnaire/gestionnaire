@@ -81,99 +81,6 @@ function getLastResaUser($id){
 		
 }
 
-
-///liste des resas pour le mois en cours page user_resa
-function getUserResaById($id,$m,$y)
-{
-$sql="SELECT `id_resa`,`dateresa_resa`,`debut_resa`,`duree_resa`,nom_computer FROM tab_resa 
-          INNER JOIN tab_computer ON id_computer=id_computer_resa
-          WHERE `id_user_resa`=".$id."
-			AND `dateresa_resa` BETWEEN '".$y."-".$m."-01' AND '".$y."-".$m."-31'
-			ORDER BY `dateresa_resa` ASC , `debut_resa` ASC
-	";
-    
-    $db=opendb();
-    $result = mysqli_query($db,$sql);
-     closedb($db);
-    if(FALSE == mysqli_num_rows($result))
-    {
-        return FALSE ;
-    } else {
-        return $result ;
-    }
-}
-
-//Liste les adherents qui ont une reservation en cours
-function Listadhresa($date1,$date2)
-{
-$sql="SELECT id_user_resa, nom_user, prenom_user
-		FROM tab_resa, tab_user
-		WHERE tab_user.id_user=tab_resa.id_user_resa
-		AND dateresa_resa BETWEEN '".$date1."' AND '".$date2."'
-		AND status_resa !=1
-		";
-	$db=opendb();
-    $result = mysqli_query($db,$sql);
-     closedb($db);
-    if(FALSE == $result)
-    {
-        return FALSE ;
-    } else {
-        return $result;
-    }
-
-}
-
-
-//fonction qui calcule le temps credite par semaine
-
-
-// renvoi toutes les reservations des utilisateurs sur 1 semaine
-function getAllResaById($date1,$date2)
-{
-    $sql="SELECT id_resa,`dateresa_resa`,`debut_resa`,`duree_resa`,nom_computer,nom_user, prenom_user
-			FROM tab_resa, tab_user,tab_computer
-			WHERE tab_user.id_user=tab_resa.id_user_resa
-			AND id_computer=id_computer_resa
-			AND dateresa_resa BETWEEN '".$date1."' AND '".$date2."'
-			ORDER BY `dateresa_resa` ASC , `debut_resa` ASC";
-    
-    $db=opendb();
-    $result = mysqli_query($db,$sql);
-     closedb($db);
-    if(FALSE == mysqli_num_rows($result))
-    {
-        return FALSE ;
-    } else {
-        return $result ;
-    }
-}
-
-
-// fonction qui renvoi le total temps des resa d'un utilisateur par semaine
-function getResaUserByWeek($date1,$date2,$iduser)
-{
- $sql="SELECT SUM(duree_resa) AS utilise
-        FROM tab_resa
-        INNER JOIN tab_user ON id_user=id_user_resa
-        WHERE id_user_resa=".$iduser."
-		AND dateresa_resa BETWEEN '".$date1."' AND '".$date2."'
-        ";
-
-    $db=opendb();
-    $result = mysqli_query($db,$sql);
-     closedb($db);
-   if ($result==FALSE)
-	{
-      return FALSE;
-	} else {
-      return  mysqli_fetch_array($result) ;
-	}
-
-}
-
-
-
 function numToDate($quant, $annee)
 {
 	 $date = strtotime("+".($quant)." day", mktime(12, 0, 0, 01, 01, $annee));
@@ -971,23 +878,6 @@ function getPrintingUsers() {
 	}
 }
 
-//selectionner les adhérents dont le solde est créditeur
-function getPrintingUserswithcredit() {
-    $sql = "SELECT  `print_user` , SUM(`print_credit`) AS credit, SUM(  `print_debit` *  `donnee_tarif` ) AS donnee
-            FROM  `tab_print` , tab_tarifs
-            WHERE tab_tarifs.`id_tarif` = tab_print.print_tarif
-            GROUP BY  `print_user`
-            HAVING (credit-donnee) > 0
-        ";
-    $db = opendb();
-    $result = mysqli_query($db,$sql);
-    closedb($db);
-    if ($result==FALSE)	{
-        return FALSE;
-	} else {
-        return $result ;
-	}
-}
 
 function getAllUserPrintCredit($tarif) {
     $sql = "SELECT print_user, SUM(`print_debit`) AS debit, nom_user, prenom_user
@@ -1050,26 +940,7 @@ $db=opendb();
   }
 
 }
-/// retourne les utilisateurs qui n'ont pas payé'
-function getPrintingUserswithdebt()
-{
-$sql="SELECT `print_user`,`print_statut`,`print_debit`,`print_tarif`,`print_date`, (`print_debit`*donnee_tarif) AS debit 
-FROM `tab_print`,tab_tarifs 
-WHERE id_tarif=`print_tarif` 
-AND `print_statut`=0 GROUP BY print_user 
-ORDER BY `print_date` DESC";
-$db=opendb();
- $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  } else {
-    
-     return $result ;
-  }
 
-}
 
 ///retourne tous les utilisateurs qui impriment
 function getAllUserPrint()
@@ -1418,30 +1289,7 @@ $result = mysqli_query($db,$sql);
 	  }
 
 }
-//
-///DEPRECATED
-/*
-function updateAdhesion($transac,$date,$id_user,$adhesiontarif, $statutp)
-{
-$sql="UPDATE `tab_transactions` SET `date_transac`='".$date."',`status_transac`=".$statutp."
-		WHERE `id_transac`=".$transac;
-$db=opendb();
-$result = mysqli_query($db,$sql);
-  closedb($db);
-   if (FALSE == $result)
-	  {
-	      return FALSE ;
-	  } else {
-	  
-	   return TRUE;
-	  }
 
-
-
-}
-
-*/
-////
 
 /**
 //Modification de la situation de l'adhérent après renouvellement adhésion
@@ -1527,42 +1375,6 @@ function modreseau($nom,$adresse,$ville,$tel,$mail,$logo,$courrier,$activation)
       return TRUE;
   }
 	
-}
-
-//
-// getConsole()
-// recupere les postes par salle
-function getConsole($numsalle)
-{
-    $sql="SELECT `nom_computer`, `id_computer` FROM tab_computer WHERE id_salle=".$numsalle." ORDER BY nom_computer;";
-	
-  $db=opendb();
- $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  } else {
-      return $result;
-  }
-}
-
-//
-// getConsoleoccup()
-// recupere les postes par salle
-function getConsoleoccup($numsalle)
-{
-    $sql="SELECT `nom_computer`, `id_computer`, `nom_user`, `prenom_user`, `dateresa_resa`, `debut_resa` FROM tab_user, tab_computer, tab_resa WHERE tab_resa.id_user_resa=tab_user.id_user AND tab_resa.id_computer_resa=tab_computer.id_computer AND tab_computer.id_salle=".$numsalle." AND tab_resa.status_resa=1 ORDER BY `id_computer`;";
-	
-  $db=opendb();
- $result = mysqli_query($db,$sql);
-   closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE;
-  } else {
-      return $result;
-  }
 }
 
 //
@@ -1913,47 +1725,6 @@ if($result == FALSE)
   }
 }
 
-function getEpnSalle($id)
- {
- $sql="SELECT nom_espace, id_salle FROM tab_espace, tab_salle WHERE id_salle='".$id."' 
- AND tab_espace.id_espace=tab_salle.id_espace";
- 
- $db=opendb();
- $result = mysqli_query($db,$sql);
- closedb($db);
-if($result == FALSE)
-  {
-      return FALSE ;
-  } else {
-	 $row=mysqli_fetch_array($result) ;
-      return $row["nom_espace"];
-  }
- 
- }
- 
- //***********Fonctions pour les page Utilisateur lambda *** ////
- function getTestInscript($user,$idatelier,$type)
- {
- if($type=="a"){
-  $sql="SELECT `status_rel_atelier_user` AS statut FROM `rel_atelier_user` WHERE `id_atelier`='".$idatelier."' AND `id_user`='".$user."' ";
- }elseif($type=="s"){
- $sql="SELECT  `status_rel_session` AS statut FROM `rel_session_user` WHERE `id_session`='".$idatelier."' AND `id_user`='".$user."' ";
- }
-$db=opendb();
- $result = mysqli_query($db,$sql);
- closedb($db);
- 
- if(mysqli_num_rows($result) == 0)
-  {
-      return "FALSE" ;
-  } else {
-	 $row=mysqli_fetch_array($result) ;
-     return $row["statut"];
-		
-  }
- 
- }
- 
  function updateNewsletter($iduser,$type)
  {
  $sql="UPDATE `tab_user` SET `newsletter_user`=".$type." WHERE `id_user`=".$iduser;
@@ -2007,41 +1778,7 @@ ORDER BY `mes_date` DESC ";
 	
  }
  
- function updatePreinsmode($activation,$code)
- {
-	
-	$sql="UPDATE `tab_captcha` SET `capt_activation`='".$activation."',`capt_code`='".$code."' ";
-	$db=opendb();
-  	$result = mysqli_query($db, $sql);
-    closedb($db);
-    if ($result == FALSE )
-    {
-        return FALSE ;
-    } else {
-        return TRUE ;
-    }
-	
- }
-// searchUserInsc()
-// recherche un ou des utilisateurs et renvoi le resultat de la recherche
-function searchUserInsc($exp)
-{
-    $sql="SELECT `id_inscription_user` , `nom_inscription_user` , `prenom_inscription_user` , `temps_inscription_user`,`status_inscription_user`, `lastvisit_inscription_user`, `login_inscription_user`, `id_inscription_computer`
-        FROM `tab_inscription_user`
-        WHERE `nom_inscription_user` LIKE '%".$exp."%'
-        OR `prenom_inscription_user` LIKE '%".$exp."%'
-        AND (`status_inscription_user`=1 OR `status_inscription_user`=2) 
-        ORDER BY `status_inscription_user` ASC, `nom_inscription_user` ASC";
-    $db=opendb();
-  	$result = mysqli_query($db, $sql);
-    closedb($db);
-    if ($result == FALSE )
-    {
-        return FALSE ;
-    } else {
-        return $result ;
-    }
-}
+
 //
 // getAllUserInsc()
 // recupere les utilisateurs
@@ -2130,159 +1867,6 @@ VALUES ('','".$date."','".$nom."','".$prenom."','".$sexe."','".$jour."','".$mois
 
 }
 
-function array_put_to_position(&$array, $object, $position, $name = null)
-{
-        $count = 0;
-        $return = array();
-        foreach ($array as $k => $v)
-        {  
-                // insert new object
-                if ($count == $position)
-                {  
-                        if (!$name) $name = $count;
-                        $return[$name] = $object;
-                        $inserted = true;
-                }  
-                // insert old object
-                $return[$k] = $v;
-                $count++;
-        }  
-        if (!$name) $name = $count;
-        if (!$inserted) $return[$name];
-        $array = $return;
-        return $array;
-}
- //**********//
- ///////
- 
- //*********Gestion de la console et epnconnect*******************************//////////////////////////
- 
-//
-// EnvoieMessageSocket()
-// Supprime un utilisateur
-function EnvoieMessageSocket($message, $adresse)
-{
-	//$adresse = "10.8.165.93";
-	$service_port = "18181";
-	if (($socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false) 
-	{
-    	return FALSE;
-	}
-	$result = socket_connect($socket, $adresse, $service_port);
-	if($result==FALSE)
-	{
-		return FALSE;
-	} else {
-		$msg = "menu=4&message=".$message;
-    	socket_write($socket, $msg, strlen($msg));
-		
-		socket_close($socket);
-		
-		return TRUE;
-	}
-}
-
-//
-// AffectationUserSocket()
-// Supprime un utilisateur
-function AffectationUserSocket($id_user, $adresse, $temps)
-{
-	//$adresse = "10.8.165.93";
-	$service_port = "18181";
-	if (($socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false) 
-	{
-    	return FALSE;
-	}
-	$result = socket_connect($socket, $adresse, $service_port);
-	if($result==FALSE)
-	{
-		return FALSE;
-	} else {
-		$msg = "menu=1&id_user=".$id_user."&temps=".$temps."";
-    	socket_write($socket, $msg, strlen($msg));
-
-    	//socket_write($socket, $msg, $longmess);
-		
-		socket_close($socket);
-		
-		return TRUE;
-	}
-}
-
-//
-// LiberationUserSocket()
-// Supprime un utilisateur
-function LibertionUserSocket($adresse)
-{
-	//$adresse = "10.8.165.93";
-	$service_port = "18181";
-	if (($socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false) 
-	{
-    	return FALSE;
-	}
-	$result = socket_connect($socket, $adresse, $service_port);
-	if($result==FALSE)
-	{
-		return FALSE;
-	} else {
-		$msg = "menu=2";
-    	socket_write($socket, $msg, strlen($msg));
-		
-		socket_close($socket);
-		
-		return TRUE;
-	}
-}
-
-//
-// ControlePosteSocket()
-// Supprime un utilisateur
-function ControlePosteSocket($adresse)
-{
-	//$adresse = "10.8.165.93";
-	$service_port = "18181";
-	if (($socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false) 
-	{
-    	return FALSE;
-	}
-	$result = socket_connect($socket, $adresse, $service_port);
-	if($result==FALSE)
-	{
-		return FALSE;
-	} else {
-		$msg = "menu=5";
-    	socket_write($socket, $msg, strlen($msg));
-		
-		socket_close($socket);
-		
-		return TRUE;
-	}
-}
-
-//
-// AffectationAtelierSocket()
-// Supprime un utilisateur
-function AffectationAtelierSocket($adresse)
-{
-	//$adresse = "10.8.165.93";
-	$service_port = "18181";
-	if (($socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false) 
-	{
-    	return FALSE;
-	}
-	$result = socket_connect($socket, $adresse, $service_port);
-	if($result==FALSE)
-	{
-		return FALSE;
-	} else {
-		$msg = "menu=5";
-    	socket_write($socket, $msg, strlen($msg));
-		
-		socket_close($socket);
-		
-		return TRUE;
-	}
-}
 
 ///Ajouter la relation atelier-commputer pour quEPN cpnnect libère la salle !
 function connectAtelierComputer($salle,$idatelier)
@@ -2302,77 +1886,10 @@ AND `usage_computer` =1 ";
     return TRUE;
 	}
 }
-///supprimer la susdite relation si suppression de l'atelier
-function supprimComputerAtelier($idatelier)
-{
-	$sql="DELETE FROM `rel_atelier_computer` WHERE `id_atelier_rel`=".$idatelier;
-	$db=opendb();
-	$result = mysqli_query($db, $sql);
-	closedb($db);
-	if(FALSE==$result){
-		return FALSE;
-	} else {
-	
-    return TRUE;
-	}
-}
 
 
 ///************Fonctions de la page d'accueil ********************///
 //
-//Retourne les ID des ateliers et sessions de la semaine
-function getWeekAteliers($jour,$espace)
-{
-//$sql="SELECT * FROM `tab_atelier` WHERE `date_atelier`='".$jour."' ORDER BY heure_atelier ASC";
-if($espace==0){
-//page utilisateur liste de tous les ateliers/sessions du reseau
-$sql2=" SELECT  `id_atelier` AS id ,date_atelier AS dateAS,'tab_atelier' AS tab_origine,`id_espace`
-FROM  `tab_atelier` , tab_salle
-WHERE WEEK(`date_atelier`) = WEEK('".$jour."') 
-AND statut_atelier=0
-AND tab_atelier.`salle_atelier` = tab_salle.id_salle
-UNION 
-SELECT  tab_session_dates.`id_session` AS id, tab_session_dates.`date_session` AS dateAS, 'tab_session_dates' AS tab_origine,`id_espace`
-FROM tab_session_dates,tab_salle,tab_session
-WHERE WEEK(DATE(  tab_session_dates.date_session )) = WEEK('".$jour."') 
-AND  `statut_datesession`=0
-AND tab_session.`id_salle` = tab_salle.id_salle
-AND tab_session.`id_session` =tab_session_dates.`id_session`
-ORDER BY dateAS ASC 
-";
-} else {
-//adapter donne les ID et le type d'atelier
-$sql2=" SELECT  `id_atelier` AS id ,date_atelier AS dateAS,'tab_atelier' AS tab_origine
-FROM  `tab_atelier` , tab_salle
-WHERE WEEK(`date_atelier`) = WEEK('".$jour."') 
-AND statut_atelier=0
-AND `id_espace` =".$espace."
-AND tab_atelier.`salle_atelier` = tab_salle.id_salle
-UNION 
-SELECT  tab_session_dates.`id_session` AS id, tab_session_dates.`date_session` AS dateAS, 'tab_session_dates' AS tab_origine
-FROM tab_session_dates,tab_salle,tab_session
-WHERE WEEK(DATE(  tab_session_dates.date_session )) = WEEK('".$jour."') 
-AND  `statut_datesession`=0
-AND `id_espace` =".$espace."
-AND tab_session.`id_salle` = tab_salle.id_salle
-AND tab_session.`id_session` =tab_session_dates.`id_session`
-ORDER BY dateAS ASC 
-";
-}
-
- $db=opendb();
-$result = mysqli_query($db, $sql2);
-closedb($db);
-    if ($result == FALSE )
-    {
-        return FALSE ;
-    } else {
-	return $result ;
-    }
-
-
-}
-
 
 // retourne l'id d'un log du jour pour la mose à jour du statut des adherents
 function getLogUser($type)

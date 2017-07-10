@@ -60,11 +60,9 @@
  
 
  <?php
-    //revoir le code sql !!!
-    $result = getPrintingUserswithcredit();
-    $nbpc  = mysqli_num_rows($result);
-    
-    if ($nbpc > 0) {
+    $utilisateursAvecCredit = Utilisateur::getUtilisateursAvecCreditDImpression();
+
+    if (count($utilisateursAvecCredit) > 0) {
 ?>
         <!-- SOLDE CREDITEUR -->
         <div class="box box-success box-solid">
@@ -74,18 +72,17 @@
                     <thead><tr><th>&nbsp;</th><th>Nom</th><th>Pr&eacute;nom</th><th>solde</th></tr></thead>
                     <tbody> 
 <?php
-           
-        for ($i = 0 ; $i < $nbpc ; $i++) {
-            $arrayp     = mysqli_fetch_array($result) ;
-            $nomarray   = getuser($arrayp['print_user']);
-            $credituser = $arrayp['credit']-$arrayp['donnee'];    
-            
-            echo "<tr><td><a href=\"index.php?a=21&b=1&iduser=" . $arrayp['print_user'] . "\"><button type=\"button\" class=\"btn bg-navy sm\"><i class=\"fa fa-print\"></i></button></a></a></td>
-                    <td>" . $nomarray["nom_user"] . "</td>
-                    <td>" . $nomarray["prenom_user"] . "</td>
-                    <td>" . $credituser . "</td>
-                 </tr>";
-                    
+
+        foreach ($utilisateursAvecCredit as $utilisateurAvecCredit) {
+  
+?>            
+                        <tr>
+                            <td><a href="index.php?a=21&b=1&iduser=<?php echo $utilisateurAvecCredit["utilisateur"]->getId() ?>" class="btn bg-navy sm"><i class="fa fa-print"></i></a></td>
+                            <td><?php echo htmlentities($utilisateurAvecCredit["utilisateur"]->getNom()) ?></td>
+                            <td><?php echo htmlentities($utilisateurAvecCredit["utilisateur"]->getPrenom()) ?></td>
+                            <td><?php echo number_format($utilisateurAvecCredit["credit"] - $utilisateurAvecCredit["debit"], 2,',', ' ') ?> &euro;</td>
+                        </tr>
+<?php
         }
 ?>
                 
@@ -98,9 +95,14 @@
     } 
 
     ///adherents a solde debiteur
-    $resultd = getPrintingUserswithdebt();
-    $nbd     = mysqli_num_rows($resultd);
-    if ($nbd > 0) {
+    // $resultd = getPrintingUserswithdebt();
+    // $nbd     = mysqli_num_rows($resultd);
+    // if ($nbd > 0) {
+    $utilisateursAvecDebit = Utilisateur::getUtilisateursAvecDebitDImpression();
+
+    if (count($utilisateursAvecDebit) > 0) {        
+        
+        
 ?>
 
 <!-- SOLDE DEBITEUR -->
@@ -110,22 +112,23 @@
             <div class="box-body">
                 <table class="table"> 
                     <thead>
-                        <tr><th></th><th>Date</th><th>Nom</th><th>Pr&eacute;nom</th><th>solde</th></tr>
+                        <tr><th></th><th>Nom</th><th>Pr&eacute;nom</th><th>solde</th></tr>
                     </thead>
                     <tbody> 
 <?php
-        for ($i = 0 ; $i < $nbd ; $i++) {
-            $arrayd = mysqli_fetch_array($resultd) ;
-            $nomd   = getuser($arrayd['print_user']);
-           
-            echo '<tr>
-                    <td><a href="index.php?a=21&b=1&iduser=' . $arrayd['print_user'] . '"><button type="button" class="btn bg-navy sm"><i class="fa fa-print"></i></button></a></td>
-                    <td>' . $arrayd["print_date"] . '</td>
-                    <td>' . $nomd["nom_user"] . '</td>
-                    <td>' . $nomd["prenom_user"] . '</td>
-                    <td>' . $arrayd["debit"] . '</td>
-                 </tr>';
-           
+        foreach ($utilisateursAvecDebit as $utilisateurAvecDebit) {
+            
+        // for ($i = 0 ; $i < $nbd ; $i++) {
+            // $arrayd = mysqli_fetch_array($resultd) ;
+            // $nomd   = getuser($arrayd['print_user']);
+?>           
+                        <tr>
+                            <td><a href="index.php?a=21&b=1&iduser=<?php echo $utilisateurAvecDebit["utilisateur"]->getId() ?>" class="btn bg-navy sm"><i class="fa fa-print"></i></a></td>
+                            <td><?php echo htmlentities($utilisateurAvecDebit["utilisateur"]->getNom()) ?></td>
+                            <td><?php echo htmlentities($utilisateurAvecDebit["utilisateur"]->getPrenom()) ?></td>
+                            <td class="text-red"><?php echo number_format($utilisateurAvecDebit["credit"] - $utilisateurAvecDebit["debit"], 2,',', ' ') ?> &euro;</td>
+                        </tr>
+<?php
            }
            
 ?>

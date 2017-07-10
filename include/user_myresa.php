@@ -89,11 +89,6 @@
         }
     
 // ARCHIVES DES RESERVATIONS
-
-    //$result = getUserResaById($_SESSION['iduser'],date("m"),date("Y")) ;
-    // $result = getResaById($_SESSION['iduser'],2) ;
-    // if($result!=FALSE)
-    // {
         if ($resasPassees !== null) {
         // affichage
     ?>  

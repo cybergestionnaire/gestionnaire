@@ -277,10 +277,10 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
         switch($b)
             {
             case 1: // D&eacute;tail Compte d'imression d'un adh&eacute;rent
-                $titre  ="Historique d'impression de l'adh&eacute;rent";
-                $aide   ="Historique des impressions d'un adh&eacute;rent, mettre de l'argent sur un compte adh&eacute;rent";
+                $titre  = "Historique d'impression de l'adh&eacute;rent";
+                $aide   = "Historique des impressions d'un adh&eacute;rent, mettre de l'argent sur un compte adh&eacute;rent";
                 // include ("include/post_print.php");  
-                $inc    ="admin_print.php";
+                $inc    = "admin_print.php";
                 break;
             case 2:  // cr&eacute;diter d'un compte d'impression
                 $titre="Cr&eacute;diter ou d&eacute;biter d'un compte d'impression";

@@ -515,6 +515,22 @@ class Utilisateur
         return count($this->getAteliersPresent()) + count($this->getSessionDatesPresent());
     }    
     
+    public function hasPrint() {
+
+        $success = FALSE;
+        $db      = Mysql::opendb();
+        $sql = "SELECT `id_print` FROM tab_print WHERE `print_user`='" . $this->_id . "' ";
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        if (mysqli_num_rows($result) > 0) {
+            $success = TRUE ;
+        }
+
+        return $success;
+    }
+    
+    
+    
     public function modifier( $dateInscription,
                             $nom,
                             $prenom,
@@ -1274,4 +1290,55 @@ class Utilisateur
     } 
     
     
+    public static function getUtilisateursAvecCreditDImpression() {
+        $utilisateurs = null;
+        
+        $db = Mysql::opendb();
+
+        $sql = "SELECT SUM(case when donnee_tarif IS NULL then 0 else donnee_tarif*print_debit end) as debit,
+                   SUM(case when print_statut = 0 then 0 else print_credit end) as credit,
+                   tab_user.*
+                FROM tab_user, tab_print LEFT JOIN tab_tarifs ON tab_print.print_tarif = tab_tarifs.id_tarif 
+                WHERE tab_user.id_user = tab_print.print_user
+                GROUP BY print_user 
+                HAVING (credit-debit) > 0";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $utilisateurs = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = array("utilisateur" => new Utilisateur($row), "credit" => $row["credit"], "debit" => $row["debit"]);
+            }
+        }
+        
+        return $utilisateurs ;
+    }
+    
+    public static function getUtilisateursAvecDebitDImpression() {
+        $utilisateurs = null;
+        
+        $db = Mysql::opendb();
+
+        $sql = "SELECT SUM(case when donnee_tarif IS NULL then 0 else donnee_tarif*print_debit end) as debit,
+                   SUM(case when print_statut = 0 then 0 else print_credit end) as credit,
+                   tab_user.*
+                FROM tab_user, tab_print LEFT JOIN tab_tarifs ON tab_print.print_tarif = tab_tarifs.id_tarif 
+                WHERE tab_user.id_user = tab_print.print_user
+                GROUP BY print_user 
+                HAVING (credit-debit) < 0";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $utilisateurs = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = array("utilisateur" => new Utilisateur($row), "credit" => $row["credit"], "debit" => $row["debit"]);
+            }
+        }
+        
+        return $utilisateurs ;
+    }    
 }
