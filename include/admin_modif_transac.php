@@ -135,7 +135,7 @@
         
         $print = mysqli_fetch_array(getPrintFromID($transac));
         // Si l'utilisateur est externe, affichage du champs avec le nom
-        $userext = getIduserexterne();
+        $userext = Utilisateur::getIduserexterne();
         if ($userext == $print["print_user"]){
             $externe = 1;
         }

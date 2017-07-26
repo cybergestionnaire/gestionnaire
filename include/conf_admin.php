@@ -283,10 +283,10 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
                 $inc    = "admin_print.php";
                 break;
             case 2:  // cr&eacute;diter d'un compte d'impression
-                $titre="Cr&eacute;diter ou d&eacute;biter d'un compte d'impression";
-                $aide="Modifier les entr&eacute;es d'un cr&eacute;dit ou d&eacute;bit.";
+                $titre  = "Cr&eacute;diter ou d&eacute;biter d'un compte d'impression";
+                $aide   = "Modifier les entr&eacute;es d'un cr&eacute;dit ou d&eacute;bit.";
                 include ("include/post_print.php");
-                $inc="admin_form_print.php";
+                $inc    = "admin_form_print.php";
             break;
             case 3:
                  $titre="modifier une transaction";

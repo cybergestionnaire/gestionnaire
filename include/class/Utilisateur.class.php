@@ -24,6 +24,7 @@ require_once("Salle.class.php");
 require_once("Atelier.class.php");
 require_once("Session.class.php");
 require_once("Transaction.class.php");
+require_once("Impression.class.php");
 
 class Utilisateur
 {
@@ -529,7 +530,53 @@ class Utilisateur
         return $success;
     }
     
-    
+    public function getImpressionDebit() {
+
+        $printDebit = 0;
+        
+        $db  = Mysql::opendb();
+        $sql = "SELECT SUM(print_debit*donnee_tarif) as debit
+                FROM tab_print, tab_tarifs
+                WHERE print_user=" . $this->_id . " 
+                  AND print_statut<=1
+                  AND tab_print.print_tarif = tab_tarifs.id_tarif
+                ";
+
+        $result = mysqli_query($db,$sql);
+
+        Mysql::closedb($db);
+
+        if ($result)  {
+            $print      = mysqli_fetch_array($result);
+            $printDebit = $print['debit'] ;
+        }
+        return $printDebit;
+    }
+
+    public function getImpressionCredit() {
+        $printCredit = 0;
+        
+        $db  = Mysql::opendb();
+        
+        $sql = "SELECT SUM(`print_credit`) AS credit 
+                FROM `tab_print`
+                WHERE `print_user`='" . $this->_id . "'
+                  AND `print_statut`>=1
+                  ";
+
+        $result = mysqli_query($db,$sql);
+
+        Mysql::closedb($db);
+        if ($result) {
+            $row = mysqli_fetch_array($result);
+            $printCredit = $row["credit"]  ;
+        }
+        return $printCredit;
+    }
+
+    public function getImpressions() {
+        return Impression::getImpressionsByIdUtilisateur($this->_id);
+    }
     
     public function modifier( $dateInscription,
                             $nom,
@@ -1340,5 +1387,24 @@ class Utilisateur
         }
         
         return $utilisateurs ;
-    }    
+    }
+    
+    public static function getIduserexterne() {
+        $idUtilisateur = 0;
+        
+        $db  = Mysql::opendb();
+
+        $sql = "SELECT `id_user` FROM `tab_user` WHERE `nom_user`='Externe' AND `login_user`='compte_imprim' ";
+        
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $row = mysqli_fetch_array($result);
+            $idUtilisateur = $row['id_user'] ;
+        }
+
+        return $idUtilisateur;
+    }
+    
 }

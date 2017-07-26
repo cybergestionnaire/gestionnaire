@@ -1,6 +1,6 @@
 <?php
 /*
-     This file is part of CyberGestionnaire.
+    This file is part of CyberGestionnaire.
 
     CyberGestionnaire is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -39,10 +39,15 @@
 
     //supprimer la transaction
     if ($act == 3) {
-        if (FALSE == supPrint($idprint)) {
-            header("Location: ./index.php?a=21&b=1&iduser=" . $id_user . "&mesno=0");
+        $impression = Impression::getImpressionById($idprint);
+        
+        // if (FALSE == supPrint($idprint)) {
+        if ($impression->supprimer()) {
+            // header("Location: ./index.php?a=21&b=1&iduser=" . $id_user . "&mesno=0");
+            echo getError(0);
         } else {
-            header("Location: ./index.php?a=21&b=1&iduser=" . $id_user . "&mesno=45");
+            // header("Location: ./index.php?a=21&b=1&iduser=" . $id_user . "&mesno=45");
+            echo getError(45);
             $act = "";
         }
     }
@@ -57,15 +62,15 @@
     // if (checkPrint($id_user)) {
     if ($utilisateur->hasPrint()) {
         // infos utilisateur
-        $rown = getuser($id_user);
+        // $rown = getuser($id_user);
     
-        $totalprint = getDebitUser($id_user);
-        $credituser = getCreditUser($id_user);    
-        $restant    = $credituser - $totalprint;
+        // $totalprint = getDebitUser($id_user);
+        // $credituser = getCreditUser($id_user);    
+        $restant    = $utilisateur->getImpressionCredit() - $utilisateur->getImpressionDebit();
         
         // Si l'utilisateur est externe, affichage du champs avec le nom
         $externe = 0;
-        $userext = getIduserexterne();
+        $userext = Utilisateur::getIduserexterne();
         if ($userext == $id_user) {
             $externe = 1;
         }
@@ -74,23 +79,23 @@
 <div class="row">
     <section class="col-lg-4 connectedSortable">
         <div class="box box-primary">
-            <div class="box-header"><h3 class="box-title">Compte des impressions de <?php echo $rown['prenom_user'] ?>&nbsp;<?php echo $rown['nom_user'] ?></h3></div>
+            <div class="box-header"><h3 class="box-title">Compte des impressions de <?php echo htmlentities($utilisateur->getPrenom() . " " . $utilisateur->getNom())  ?></h3></div>
             <div class="box-body">
-                <h4><b><?php echo $totalprint ?></b>  &euro; ont &eacute;t&eacute; d&eacute;pens&eacute;s.</h4>
-                <h4><b><?php echo $credituser; ?></b> &euro; ont &eacute;t&eacute; cr&eacute;dit&eacute;s.</h4>
+                <h4><b><?php echo $utilisateur->getImpressionDebit() ?></b>  &euro; ont &eacute;t&eacute; d&eacute;pens&eacute;s.</h4>
+                <h4><b><?php echo $utilisateur->getImpressionCredit() ?></b> &euro; ont &eacute;t&eacute; cr&eacute;dit&eacute;s.</h4>
                 <br>
 <?php
-        if (($credituser - $totalprint) > 0) {
+        if (($restant) > 0) {
             echo '<h4><span class="text-green">cr&eacute;dit restant sur le compte : ' . $restant . ' &euro; </span></h4>';
-        } else if (($credituser - $totalprint) < 0) {
+        } else if (($restant) < 0) {
             echo '<h4><span class="text-red">Le compte est d&eacute;biteur de ' . $restant . ' &euro; </span></h4>';
-        } else if (($credituser - $totalprint) == 0) {
+        } else if (($restant) == 0) {
             echo '<h4>Aucun cr&eacute;dit restant sur le compte</h4>';
         }
 ?>
             </div>
-            <div class="box-footer"><a href="index.php?a=21&b=2&act=&caisse=0&iduser=<?php echo $id_user;?>"><input type="submit" value="Ajouter une transaction" class="btn btn-primary"></a></div>
-            <div class="box-footer"><a href="index.php?a=21"><button class="btn btn-default" type="submit"> <i class="fa fa-arrow-circle-left"></i> Retour &agrave; la liste des transactions</button></a></div>
+            <div class="box-footer"><a href="index.php?a=21&b=2&act=&caisse=0&iduser=<?php echo  $utilisateur->getId();?>"><input type="submit" value="Ajouter une transaction" class="btn btn-primary"></a></div>
+            <div class="box-footer"><a href="index.php?a=21" class="btn btn-default" type="submit"> <i class="fa fa-arrow-circle-left"></i> Retour &agrave; la liste des transactions</a></div>
         </div>
     </section>
         
@@ -99,11 +104,14 @@
     
         // ARCHIVES DES impressions
 
-        $result = getPrintById($id_user) ;
+        $impressions = $utilisateur->getImpressions();
+
+        // $result = getPrintById($id_user) ;
         //debug(mysql_fetch_array($result));
-        $credituser = getCreditPrintId($id_user);
-        $nbc = mysqli_num_rows($credituser);
-        if (($result != FALSE) OR ($nbc  >0)) {
+        // $credituser = getCreditPrintId($id_user);
+        // $nbc = mysqli_num_rows($credituser);
+        // if (($result != FALSE) OR ($nbc  >0)) {
+        if ($impressions !== null && count($impressions) > 0 ) {
             // affichage
 ?>
     <section class="col-lg-6 connectedSortable">
@@ -126,42 +134,47 @@
                             <th>statut</th><th></th></thead>
         
 <?php              
-            while($row = mysqli_fetch_array($result)) {
-                // retrouver le tarif
-                $tarif  = mysqli_fetch_array(getPrixFromTarif($row['print_tarif']));
-                $prix   = round(($row['print_debit'] * $tarif['donnee_tarif']),2);
-                $statut = $statutPrint[$row['print_statut']];
-                ///ajout utilisateur externe
-                if ($externe == 1) {
-                    $nomexterne = $row['print_userexterne'];
-                }
+            // while($row = mysqli_fetch_array($result)) {
+            foreach ($impressions as $impression) {
+                if ($impression->getStatut() != 2) {
+                
+                    // retrouver le tarif
+                    // $tarif  = mysqli_fetch_array(getPrixFromTarif($row['print_tarif']));
+                    // $prix   = round(($row['print_debit'] * $tarif['donnee_tarif']),2);
+                    // $statut = $statutPrint[$row['print_statut']];
+                    $tarif = $impression->getTarif();
+                    ///ajout utilisateur externe
+                    if ($externe == 1) {
+                        $nomexterne = $row['print_userexterne'];
+                    }
 ?>
                             <tr>
-                                <td><?php echo $row['print_date'] ?></td>
-                                <td><?php echo $row['print_debit'] ?></td>
-                                <td><?php echo $tarif['donnee_tarif'] ?></td>
-                                <td><?php echo $prix ?> &nbsp;&euro;</td>
+                                <td><?php echo $impression->getDate() ?></td>
+                                <td><?php echo $impression->getNombreImpression() ?></td>
+                                <td><?php echo number_format($tarif->getDonnee(), 2, ',',' ') ?> &euro;</td>
+                                <td><?php echo number_format($impression->getNombreImpression() * $tarif->getDonnee(), 2, ',',' ') ?> &nbsp;&euro;</td>
 <?php
-                if($externe==1){
-                    echo '<td>'.$nomexterne.'</td>';
-                }
-            
-                if ($row['print_statut'] == 0) { 
+                    if ($externe == 1) {
+                        echo '<td>' . $nomexterne . '</td>';
+                    }
+                
+                    if ($impression->getStatut() == 0) { 
                     //modification autoris&eacute;e tant que la transaction n'est pas encaissée
 ?>
-                                <td><p class="text-red"><?php echo $statut ?></p></td> 
+                                <td><p class="text-red"><?php echo $statutPrint[$impression->getStatut()] ?></p></td> 
                                 <td>
-                                    <a href="index.php?a=21&b=3&typetransac=p&idtransac=<?php echo $row['id_print'] ?>&iduser=<?php echo $id_user ?>"><button type="button" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></button></a>
-                                    <a href="index.php?a=21&b=1&act=3&idprint=<?php echo $row['id_print'] ?>&iduser=<?php echo $id_user ?>"><button type="button" class="btn btn-warning btn-sm"><i class="fa fa-trash-o"></i></button></a>
+                                    <a href="index.php?a=21&b=3&typetransac=p&idtransac=<?php echo $impression->getId() ?>&iduser=<?php echo $id_user ?>" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
+                                    <a href="index.php?a=21&b=1&act=3&idprint=<?php echo $impression->getId() ?>&iduser=<?php echo $id_user ?>" class="btn btn-warning btn-sm"><i class="fa fa-trash-o"></i></a>
                                 </td>
 <?php
-                } else {
-                    // transaction enregistrée
-                    echo "<td><p class=\"text-light-blue\">" . $statut . "</p></td> <td>&nbsp;</td>";
-                }
+                    } else {
+                        // transaction enregistrée
+                        echo "<td><p class=\"text-light-blue\">" . $statutPrint[$impression->getStatut()] . "</p></td> <td>&nbsp;</td>";
+                    }
 ?>
                             </tr>
 <?php
+                }
             }
 ?>
                         </table>
@@ -172,15 +185,15 @@
                             <thead><tr><th>Date</th><th>Cr&eacute;dit ajout&eacute;</th><th></th></tr></thead>
 <?php
         
-            if ($nbc > 0) {
-                while($row2 = mysqli_fetch_array($credituser)) {
+            foreach ($impressions as $impression) {
+                if ($impression->getStatut() == 2) {
 ?>
                             <tr>
-                                <td>".$row2['print_date']."</td>
-                                <td>".$row2['print_credit']."</td>
+                                <td><?php echo $impression->getDate() ?></td>
+                                <td><?php echo number_format($impression->getCredit(), 2, ',',' ') ?> &euro;</td>
                                 <td>
-                                    <a href="index.php?a=21&b=3&typetransac=p&idtransac=<?php echo $row2['id_print'] ?>&iduser=<?php echo $id_user ?>"><button type="button" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></button></a>
-                                    <a href="index.php?a=21&b=1&act=3&idprint=<?php echo $row2['id_print'] ?>&iduser=<?php echo $id_user ?>"><button type="button" class="btn btn-warning btn-sm"><i class="fa fa-trash-o"></i></button></a>
+                                    <a href="index.php?a=21&b=3&typetransac=p&idtransac=<?php echo $impression->getId() ?>&iduser=<?php echo $id_user ?>" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
+                                    <a href="index.php?a=21&b=1&act=3&idprint=<?php echo $impression->getId() ?>&iduser=<?php echo $id_user ?>" class="btn btn-warning btn-sm"><i class="fa fa-trash-o"></i></a>
                                 </td>
                             </tr>
 <?php
@@ -203,9 +216,11 @@
     } else {
         // si le compte d'impression est vide
         // arrivee depuis la page des resas
-        $rown     = getuser($id_user);
-        $nom_p    = $rown['nom_user'];
-        $prenom_p = $rown['prenom_user'];
+        
+        $utilisateur = Utilisateur::getUtilisateurById($id_user);
+        // $rown     = getuser($id_user);
+        // $nom_p    = $rown['nom_user'];
+        // $prenom_p = $rown['prenom_user'];
     
         echo "  <div class=\"col-md-3 col-sm-6 col-xs-12\">";
         echo geterror(40);
@@ -214,10 +229,10 @@
 <div class="row">
     <section class="col-lg-6 connectedSortable">
         <div class="box box-primary">
-            <div class="box-header"><h3 class="box-title">Compte des impressions de <?php echo $prenom_p; ?>&nbsp;<?php echo $nom_p; ?></h3></div>
+            <div class="box-header"><h3 class="box-title">Compte des impressions de <?php echo htmlentities($utilisateur->getPrenom()); ?>&nbsp;<?php echo htmlentities($utilisateur->getNom()); ?></h3></div>
             <div class="box-body"><p>Entrez une transaction pour initialiser le compte d'impression</p></div>
             <div class="box-footer"><a href="index.php?a=21&b=2&act=&caisse=0&iduser=<?php echo $id_user; ?>"><input type="submit" value="Ajouter une transaction" class="btn btn-primary"></a></div>
-            <div class="box-footer"><a href="index.php?a=21"><button class="btn btn-default" type="submit"> <i class="fa fa-arrow-circle-left"></i> Retour &agrave; la liste des transactions</button></a></div>
+            <div class="box-footer"><a href="index.php?a=21" class="btn btn-default" type="submit"> <i class="fa fa-arrow-circle-left"></i> Retour &agrave; la liste des transactions</a></div>
         </div>
     </section>
 </div>

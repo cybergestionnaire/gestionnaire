@@ -189,10 +189,10 @@
 ?>
                         <tr class="<?php echo $class ?>">
                             <td><?php echo $i ?></td>
-                            <td><?php echo $utilisateurRecherche->getNom() ?></td>
-                            <td><?php echo $utilisateurRecherche->getPrenom() ?></td>
+                            <td><?php echo htmlentities($utilisateurRecherche->getNom()) ?></td>
+                            <td><?php echo htmlentities($utilisateurRecherche->getPrenom()) ?></td>
                             
-                            <td><?php echo $utilisateurRecherche->getLogin() ?></td>
+                            <td><?php echo  htmlentities($utilisateurRecherche->getLogin()) ?></td>
                             <td><?php echo $age ?> ans</td>
                             <td><?php echo $lasteresa ?></td>
                             <td><?php echo $statutarray[$utilisateurRecherche->getStatut()] ?></td>

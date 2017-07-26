@@ -43,7 +43,6 @@
         $db->set_charset("utf8");
         $salle = $_POST['id_salle'];
                     
-        //$resultPostes = getConsole($salle);
         //récupération de la liste d'ordinateur dans la salle demandé
         $sql = "SELECT `nom_computer`, `id_computer`, `adresse_ip_computer`,`date_lastetat_computer`, `lastetat_computer`, `usage_computer` FROM tab_computer WHERE id_salle=".$salle." ORDER BY nom_computer;";
         $resultPostes = mysqli_query($db, $sql);
@@ -168,7 +167,7 @@
                     $debutresa = date("G")*60 + intval(date("i"));    
                     mysqli_close ($db) ;
 ?>
-                <a class="btn btn-success" href="index.php?m=7&idepn=<?php echo $epn ?>&idcomp=<?php echo $id_poste ?>&nomcomp=<?php echo $nomcomp ?>&date=<?php echo $dateresa ?>&debut=<?php echo $debutresa ?>">Affectation</a>
+                <a class="btn btn-success" href="index.php?m=7&idepn=<?php echo $epn ?>&idcomp=<?php echo $id_poste ?>&nomcomp=<?php echo $nomcomp ?>&date=<?php echo $dateresa ?>&debut=<?php echo $debutresa ?>">R&eacute;servation</a>
             <?php } ?>
             </td>
         </tr>

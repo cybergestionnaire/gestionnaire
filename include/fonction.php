@@ -1082,24 +1082,6 @@ function checkPrint($id)
         return FALSE;}
 }
 
-// addPrint()
-// ajoute un nouveau credit/debit au compte d'impression
-function addPrint($date_p,$id_user,$debit_p, $tarif_p,$statut_p,$credit_p,$nomuser_p,$epn,$caissier, $moyen_p)
-{
-    $sql="INSERT INTO `tab_print`(`id_print`, `print_date`, `print_user`, `print_debit`, `print_tarif`, `print_statut`, `print_credit`, `print_userexterne`, `print_epn`, `print_caissier`,`print_paiement`) 
-  VALUES ('','".$date_p."','".$id_user."','".$debit_p."','".$tarif_p."','".$statut_p."','".$credit_p."','".$nomuser_p."','".$epn."','".$caissier."','".$moyen_p."')";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if($result == FALSE)
-  {
-      return FALSE ;
-  } else {
-      return TRUE ;
-  }
-}
-
-
 //
 // modPrint()
 // modifie un credit debit
@@ -1128,24 +1110,6 @@ function modPrint($id,$date_p,$debit_p,$tarif_p, $statut_p, $credit_p,$nomuser_p
 
 
 //
-// getPrintid()
-// recupere un credit a partir d'un id
-function getPrintid($id_p)
-{
-  $sql = "SELECT * FROM `tab_print`
-             WHERE `id_print`=".$id_p;
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if ($result ==FALSE)
-  {
-      return FALSE ;
-  } else {
-      $row = mysqli_fetch_array($result);
-      return $row  ;
-  }
-}
-//
 // retrouve les credits d'impression positifs...quand l'usager a mis de l'argent en plus en ope unique
 function getCreditPrintId($id)
 {
@@ -1159,24 +1123,6 @@ $db=opendb();
   } else {
      
       return $result  ;
-  }
-}
-
-//
-// supBreve()
-// ajoute une breve
-function supPrint($id_p)
-{
-  $sql ="DELETE FROM `tab_print` WHERE `id_print`=".$id_p." 
-  ";
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if ($result == FALSE)
-  {
-      return FALSE ;
-  } else {
-      return TRUE  ;
   }
 }
 
@@ -1198,30 +1144,6 @@ $db=opendb();
 
 }
 
-
-//
-// usages ----------------------------------------------------------------------
-//
-
-
-//renvoi le nom des usages d'une machine
-function getUsageNameById($idcomp)
-{
-    $sql = 'SELECT TU.nom_usage
-            FROM rel_usage_computer AS RUC 
-            INNER JOIN tab_usage AS TU ON TU.id_usage = RUC.id_usage            
-            WHERE id_computer='.$idcomp.'' ;
-
-    $db=opendb();
-    $result = mysqli_query($db,$sql);
-    closedb($db);
-    if ($result==FALSE)
-    {
-        return FALSE ;
-    } else {
-        return $result;    
-    }
-}
 
 //
 // Interventions ---------------------------------------------------------------

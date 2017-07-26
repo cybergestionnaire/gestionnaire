@@ -149,8 +149,10 @@
 
     if (strlen($term) >= 2){
         // Recherche d'un adherent
-        $result = searchUser($term);
-        if (FALSE == $result OR mysqli_num_rows($result) == 0)     {
+
+        $utilisateursRecherche = Utilisateur::searchUtilisateurs($term);
+        $nbUtilisateursRecherche = count($utilisateursRecherche);
+        if ($utilisateursRecherche == null OR $nbUtilisateursRecherche == 0) {
 ?>
         <div class="box box-success">
             <div class="box-header"><h3 class="box-title">R&eacute;sultats de la recherche: 0</h3>
@@ -176,11 +178,10 @@
         </div>
 <?php
         } else {
-            $nb  = mysqli_num_rows($result);
-            if ($nb > 0) {
+
 ?>
         <div class="box box-success">
-            <div class="box-header"><h3 class="box-title">R&eacute;sultats de la recherche: <?php echo $nb ?></h3>
+            <div class="box-header"><h3 class="box-title">R&eacute;sultats de la recherche : <?php echo $nbUtilisateursRecherche ?></h3>
                 <div class="box-tools">
                     <div class="input-group">
                         <form method="post" action="index.php?a=21">
@@ -198,15 +199,13 @@
                     <thead><tr><th></th><th></th></thead> 
 <?php 
         
-                for ($i = 1 ; $i <= $nb ; $i++) {
-                    $row = mysqli_fetch_array($result) ;
+            foreach($utilisateursRecherche as $utilisateurRecherche) {
 ?>
                     <tr>
-                        <td><a href="index.php?a=21&b=1&iduser=<?php echo $row['id_user'] ?>"><button type="button" class="btn bg-navy sm"><i class="fa fa-print"></i></button></a></td>
-                        <td><?php echo $row['prenom_user'] . '&nbsp;' . $row['nom_user'] ?></td>
+                        <td><a href="index.php?a=21&b=1&iduser=<?php echo $utilisateurRecherche->getId() ?>" class="btn bg-navy sm"><i class="fa fa-print"></i></a></td>
+                        <td><?php echo htmlentities($utilisateurRecherche->getPrenom()) . '&nbsp;' . htmlentities($utilisateurRecherche->getNom()) ?></td>
                     </tr>
 <?php
-                }
             }
 ?>
                 </table>
@@ -236,9 +235,13 @@
             <div class="box-body">
 <?php 
     // les adherents qui impriment récemment
-        $result = getAllUserPrint();
+        // $result = getAllUserPrint();
+        
+        $impressions = Impression::getImpressionsDuJour();
     
-        if (FALSE == $result) {
+    
+        // if (FALSE == $result) {
+        if ($impressions === null ) {
 ?>
                 <br>
                 <div class="col-xs-6">
@@ -250,9 +253,10 @@
                     
 <?php
         } else { // affichage du resultat
-            $nb  = mysqli_num_rows($result);
+            // $nb  = mysqli_num_rows($result);
     
-            if ($nb > 0) {
+            // if ($nb > 0) {
+            if (count($impressions) > 0) {
 ?>
     
         
@@ -269,23 +273,27 @@
                     </thead> 
             
 <?php
+                $totalprintday = 0;
+                foreach ($impressions as $impression) {
              
-                for ($i = 1 ; $i <= $nb ; $i++) {
-                    $row = mysqli_fetch_array($result) ;
-                
-                    $tarif  = mysqli_fetch_array(getPrixFromTarif($row['print_tarif']));
-                    $prix   = round(($row['print_debit'] * $tarif['donnee_tarif']),2);
-                    $statut = $statutPrint[$row['print_statut']];
+                // for ($i = 1 ; $i <= $nb ; $i++) {
+                    // $row = mysqli_fetch_array($result) ;
+                    $utilisateur = $impression->getUtilisateur();
+                    $tarif       = $impression->getTarif();
+                    // $tarif  = mysqli_fetch_array(getPrixFromTarif($row['print_tarif']));
+                    // $prix   = round(($row['print_debit'] * $tarif['donnee_tarif']),2);
+                    $prix   = $impression->getNombreImpression() * $tarif->getDonnee();
+                    $statut = $statutPrint[$impression->getStatut()];
                     $totalprintday = $totalprintday + $prix;
 ?>                    
                     <tr>
-                        <td><a href="index.php?a=21&b=1&iduser=<?php echo $row["print_user"] ?>"><button type="button" class="btn bg-navy sm" title="compte d'impression"><i class="fa fa-print"></i></button></a></td>
-                        <td><?php echo $row["nom_user"] ?></td>
-                        <td><?php echo $row["prenom_user"] ?></td>
-                        <td><?php echo $row["print_date"] ?></td>
-                        <td><?php echo $prix ?></td>
+                        <td><a href="index.php?a=21&b=1&iduser=<?php echo $utilisateur->getId() ?>" class="btn bg-navy sm" title="compte d'impression"><i class="fa fa-print"></i></a></td>
+                        <td><?php echo htmlentities($utilisateur->getNom()) ?></td>
+                        <td><?php echo htmlentities($utilisateur->getPrenom()) ?></td>
+                        <td><?php echo $impression->getDate(); ?></td>
+                        <td><?php echo number_format($prix, 2, ',',' '); ?>&nbsp;&euro;</td>
 <?php
-                    if ($row['print_statut'] == 0) {  
+                    if ($impression->getStatut() == 0) {  
                         echo "<td><p class=\"text-red\">" . $statut . "</p></td> ";
                     } else {
                         echo "<td><p class=\"text-light-blue\">" . $statut . "</p></td> ";
@@ -295,7 +303,7 @@
 <?php                        
                 }
 ?>
-                    <tr><td></td><td></td><td></td><td></td><td><?php echo $totalprintday ?> € (total jour)</td><td></td></tr>
+                    <tr><td></td><td></td><td></td><td></td><td><?php echo number_format($totalprintday, 2, ',',' '); ?> &euro; (total jour)</td><td></td></tr>
                 </table>
 <?php
             }

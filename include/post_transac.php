@@ -18,11 +18,11 @@
 */
 
     ///**********Fichier de modification d'une transaction *************///
-    error_log('in post_transac.php');
-    error_log("---- POST ----");
-	error_log(print_r($_POST, true));
-	error_log("---- GET  ----");
-	error_log(print_r($_GET, true));
+    // error_log('in post_transac.php');
+    // error_log("---- POST ----");
+    // error_log(print_r($_POST, true));
+    // error_log("---- GET  ----");
+    // error_log(print_r($_GET, true));
     
     require_once("include/class/Utilisateur.class.php");
     require_once("include/class/Tarif.class.php");
@@ -36,21 +36,21 @@
     //debug($statutp);
 
     switch ($typeTransac) {
-        ///impressions	
+        ///impressions  
 
         case "p":
             $datep    = $_POST["date"];
             $debitp   = $_POST["debitprint"];
             $tarifp   = $_POST["tarifprint"];
             $creditp  = $_POST["creditprint"];
-        //	$statutp = $_POST["statutprint"];
+        //  $statutp = $_POST["statutprint"];
             $nomuserp = $_POST["nomuser"];
             $moyen_p  = $_POST["moyen_paiement"];
             
             if (isset($_POST["submit"])){
                 if($_POST["statutprint"]<2){
-                    if ($_POST["submit"]=="Encaisser"){
-                        $statutp="1";
+                    if ($_POST["submit"] == "Encaisser"){
+                        $statutp = "1";
                         } else {
                         $statutp="0";
                         }
@@ -68,7 +68,7 @@
             }
         break;
 
-	
+    
         ///renouvellement adhésion
         case "adh":
             
@@ -140,7 +140,7 @@
                         header("Location: ./index.php?a=6&mesno=0&iduser=".$id_user."");
                     } else {
                         header("Location: ./index.php?a=6&iduser=".$id_user."");
-                    }	
+                    }   
                 } else {
                     //creation
                     //$idtransac = addForfaitUser($type_transac, $id_user, $idTarif, $nbreforfait, $date, $statutp);
@@ -169,7 +169,7 @@
                         //
                         //addRelforfaitUser($id_user, $idtransac, $nbatelier, $depense, $statutp);
                         header("Location: ./index.php?a=6&iduser=" . $id_user . "");
-                    }	
+                    }   
                 }
             }
 
@@ -207,7 +207,7 @@
                             }
                          
                          header("Location: ./index.php?a=6&iduser=".$id_user."");
-                     }	
+                     }  
                      
                      
                 } else {
