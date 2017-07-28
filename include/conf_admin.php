@@ -289,10 +289,10 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
                 $inc    = "admin_form_print.php";
             break;
             case 3:
-                 $titre="modifier une transaction";
-                  $aide="Transactions diverses";
-                 include ("include/post_transac.php");
-                 $inc="admin_modif_transac.php";
+                $titre  = "modifier une transaction";
+                $aide   = "Transactions diverses";
+                include ("include/post_transac.php");
+                $inc    = "admin_modif_transac.php";
             break;
                  
              default: // liste des impressions

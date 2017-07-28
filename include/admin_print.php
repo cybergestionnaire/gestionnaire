@@ -81,14 +81,14 @@
         <div class="box box-primary">
             <div class="box-header"><h3 class="box-title">Compte des impressions de <?php echo htmlentities($utilisateur->getPrenom() . " " . $utilisateur->getNom())  ?></h3></div>
             <div class="box-body">
-                <h4><b><?php echo $utilisateur->getImpressionDebit() ?></b>  &euro; ont &eacute;t&eacute; d&eacute;pens&eacute;s.</h4>
-                <h4><b><?php echo $utilisateur->getImpressionCredit() ?></b> &euro; ont &eacute;t&eacute; cr&eacute;dit&eacute;s.</h4>
+                <h4><b><?php echo number_format($utilisateur->getImpressionDebit(), 2, ',', ' ') ?></b>  &euro; ont &eacute;t&eacute; d&eacute;pens&eacute;s.</h4>
+                <h4><b><?php echo number_format($utilisateur->getImpressionCredit(), 2, ',', ' ') ?></b> &euro; ont &eacute;t&eacute; cr&eacute;dit&eacute;s.</h4>
                 <br>
 <?php
         if (($restant) > 0) {
             echo '<h4><span class="text-green">cr&eacute;dit restant sur le compte : ' . $restant . ' &euro; </span></h4>';
         } else if (($restant) < 0) {
-            echo '<h4><span class="text-red">Le compte est d&eacute;biteur de ' . $restant . ' &euro; </span></h4>';
+            echo '<h4><span class="text-red">Le compte est d&eacute;biteur de ' . number_format($restant, 2, ',', ' ') . ' &euro; </span></h4>';
         } else if (($restant) == 0) {
             echo '<h4>Aucun cr&eacute;dit restant sur le compte</h4>';
         }

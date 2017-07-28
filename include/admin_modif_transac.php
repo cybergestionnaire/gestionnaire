@@ -17,6 +17,12 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+    // error_log('in admin_modif_transac.php -------------------------');
+    // error_log("---- POST ----");
+    // error_log(print_r($_POST, true));
+    // error_log("---- GET  ----");
+    // error_log(print_r($_GET, true));
+
     // formulaire de modification de transaction
 
     require_once("include/class/Utilisateur.class.php");
@@ -51,14 +57,14 @@
         case "p" : 
 
             $url_redirect = "index.php?a=21&b=3&idtransac=" . $transac . "&typetransac=" . $typeTransac . "&iduser=" . $id_user ;
-            $annuler      = "index.php?a=21&b=1&caisse=&act=&iduser=".$id_user;
-            $titre        = "Modification d'une impression pour " . $prenom . " " . $nom . " ";
+            $annuler      = "index.php?a=21&b=1&caisse=&act=&iduser=" . $id_user;
+            $titre        = "Modification d'une impression pour " . htmlentities($prenom . " " . $nom) . " ";
     
         break;
         //les adhesions
         case "adh":
-            $url_redirect = "index.php?a=21&b=3&typetransac=".$typeTransac."&iduser=".$id_user  ;
-            $annuler      = "index.php?a=1&b=2&iduser=".$id_user;
+            $url_redirect = "index.php?a=21&b=3&typetransac=" . $typeTransac . "&iduser=" . $id_user  ;
+            $annuler      = "index.php?a=1&b=2&iduser="  .$id_user;
             if ($transac != '') {
                 $titre = "Encaisser l'adh&eacute;sion";
             } else {
@@ -133,18 +139,26 @@
     // Modification d'une impression
     if ($typeTransac == "p") {
         
-        $print = mysqli_fetch_array(getPrintFromID($transac));
+        $impression = Impression::getImpressionById($transac);
+        // $print = mysqli_fetch_array(getPrintFromID($transac));
         // Si l'utilisateur est externe, affichage du champs avec le nom
         $userext = Utilisateur::getIduserexterne();
-        if ($userext == $print["print_user"]){
+        // if ($userext == $print["print_user"]){
+        $externe = 0;
+        if ($userext == $impression->getIdUtilisateur()) {
             $externe = 1;
         }
 
-        $date_p     = $print["print_date"];
-        $statut_p   = $print["print_statut"];
-        $paiement_p = $print["print_paiement"];
+        // $date_p     = $print["print_date"];
+        // $statut_p   = $print["print_statut"];
+        // $paiement_p = $print["print_paiement"];
+        $date_p     = $impression->getDate();
+        $statut_p   = $impression->getStatut();
+        $paiement_p = $impression->getPaiement();
+        
         // recuperation des tarifs disponibles
-        $tarifs     = getTarifsbyCat(1); //1= impressions
+        // $tarifs     = getTarifsbyCat(1); //1= impressions
+        $tarifs = Tarif::getTarifsByCategorie(1);
         //le prix indicatif
         
     //  debug($_POST);
@@ -152,18 +166,17 @@
         if(isset($_POST["recalculer"])){
             
             $debit_p  = $_POST["debitprint"];
-            $tarif_p  = $_POST["tarifprint"];
-            $tarif    = mysqli_fetch_array(getPrixFromTarif($tarif_p));
-            $credit_p = round(($_POST["debitprint"] * $tarif['donnee_tarif']),2);
+            $tarif_p  = Tarif::getTarifById($_POST["tarifprint"]);
+            // $tarif    = mysqli_fetch_array(getPrixFromTarif($tarif_p));
+            $credit_p = round(($_POST["debitprint"] * $tarif_p->getDonnee()),2);
             $prix     = $credit_p;
             
         } else {
-            $tarif_p  = $print["print_tarif"];
-            $credit_p = $print["print_credit"];
-            $tarif    = mysqli_fetch_array(getPrixFromTarif($tarif_p));
-        
-            $prix     = round(($debit_p * $tarif['donnee_tarif']),2);
-            $debit_p  = $print["print_debit"];
+            $tarif_p  = $impression->getTarif();
+            $credit_p = $impression->getCredit();
+            // $tarif    = mysqli_fetch_array(getPrixFromTarif($tarif_p));
+            $debit_p  = $impression->getNombreImpression();
+            $prix     = round(($debit_p * $tarif_p->getDonnee()), 2);
         }
         /*
         if($credit_p==0){
@@ -199,11 +212,12 @@
                             <div class="col-xs-6">    
                                 <select name="tarifprint" class="form-control" <?php echo $disable; ?>>
 <?php
-        foreach ($tarifs AS $key => $value) {
-            if ($tarif_p == $key) {
-                echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
+        // foreach ($tarifs AS $key => $value) {
+        foreach ($tarifs as $tarif) {
+            if ($tarif_p->getId() == $tarif->getId()) {
+                echo "<option value=\"" . $tarif->getId() . "\" selected>" . htmlentities($tarif->getNom() . ' (' . number_format($tarif->getDonnee(), 2, ',',' ')) . " &euro;)</option>";
             } else {
-                echo "<option value=\"" . $key . "\">" . $value . "</option>";
+                echo "<option value=\"" . $tarif->getId() . "\">" . htmlentities($tarif->getNom() . ' (' . number_format($tarif->getDonnee(), 2, ',',' ')) . " &euro;)</option>";
             }
         }
 ?>

@@ -126,7 +126,7 @@
                             <td><a href="index.php?a=21&b=1&iduser=<?php echo $utilisateurAvecDebit["utilisateur"]->getId() ?>" class="btn bg-navy sm"><i class="fa fa-print"></i></a></td>
                             <td><?php echo htmlentities($utilisateurAvecDebit["utilisateur"]->getNom()) ?></td>
                             <td><?php echo htmlentities($utilisateurAvecDebit["utilisateur"]->getPrenom()) ?></td>
-                            <td class="text-red"><?php echo number_format($utilisateurAvecDebit["credit"] - $utilisateurAvecDebit["debit"], 2,',', ' ') ?> &euro;</td>
+                            <td class="text-red"><?php echo number_format($utilisateurAvecDebit["credit"] - $utilisateurAvecDebit["debit"], 2, ',', ' ') ?> &euro;</td>
                         </tr>
 <?php
            }

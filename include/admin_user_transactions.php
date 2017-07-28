@@ -191,7 +191,7 @@
     
 <?php
     /// forfait atelier utilisateur
-    $tariforfaits = getTarifsbyCat(5);
+    // $tariforfaits = getTarifsbyCat(5);
     
     $rowtransaction = getAllForfaitUser($id_user,"for");
     $nbf = mysqli_num_rows($rowtransaction);

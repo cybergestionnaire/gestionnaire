@@ -26,6 +26,7 @@
     
     require_once("include/class/Utilisateur.class.php");
     require_once("include/class/Tarif.class.php");
+    require_once("include/class/Impression.class.php");
 
     $id_user     = isset($_GET["iduser"])       ? $_GET["iduser"] : '';
     $transac     = isset($_GET["idtransac"])    ? $_GET["idtransac"] : '';
@@ -39,32 +40,31 @@
         ///impressions  
 
         case "p":
-            $datep    = $_POST["date"];
-            $debitp   = $_POST["debitprint"];
-            $tarifp   = $_POST["tarifprint"];
-            $creditp  = $_POST["creditprint"];
-        //  $statutp = $_POST["statutprint"];
-            $nomuserp = $_POST["nomuser"];
-            $moyen_p  = $_POST["moyen_paiement"];
-            
             if (isset($_POST["submit"])){
-                if($_POST["statutprint"]<2){
-                    if ($_POST["submit"] == "Encaisser"){
+                $datep    = isset($_POST["date"])          ? $_POST["date"] : "";
+                $debitp   = isset($_POST["debitprint"])    ? $_POST["debitprint"] : "";
+                $tarifp   = isset($_POST["tarifprint"])    ? $_POST["tarifprint"] : "";
+                $creditp  = isset($_POST["creditprint"])   ? $_POST["creditprint"] : "";
+            //  $statutp = $_POST["statutprint"];
+                $nomuserp = isset($_POST["nomuser"])        ? $_POST["nomuser"] : "";
+                $moyen_p  = isset($_POST["moyen_paiement"]) ? $_POST["moyen_paiement"] : "";
+
+                if ($statutp < 2) {
+                    if ($_POST["submit"] == "Encaisser") {
                         $statutp = "1";
-                        } else {
-                        $statutp="0";
-                        }
-                } else {
-                    $statutp=2;
+                    } else {
+                        $statutp = "0";
                     }
-            
-            if (FALSE == modPrint($transac,$datep,$debitp,$tarifp, $statutp, $creditp,$nomuserp,$moyen_p))
-                 {
-                 header("Location: ./index.php?a=21&mesno=0");
-                 } else {
-                    header("Location: ./index.php?a=21&b=1&iduser=".$id_user."");
-                 }
-         
+                } else {
+                    $statutp = "2";
+                }
+                $impression = Impression::getImpressionById($transac);
+                // if (FALSE == modPrint($transac,$datep,$debitp,$tarifp, $statutp, $creditp,$nomuserp,$moyen_p)) {
+                if ($impression->modifier($datep, $impression->getIdUtilisateur(), $debitp, $tarifp, $statutp, $creditp, $nomuserp, $impression->getIdEspace(), $impression->getIdCaissier(), $moyen_p)) {
+                    header("Location: ./index.php?a=21&mesno=0");
+                } else {
+                    header("Location: ./index.php?a=21&b=1&iduser=" . $id_user . "");
+                }
             }
         break;
 
@@ -72,19 +72,19 @@
         ///renouvellement adhésion
         case "adh":
             
-            $daterenouv=$_POST["daterenouv"];
-            $datetransac=$_POST["date"];
-            $adhesiontarif=$_POST["tarif_adh"];
-            $transac=$_POST["idtransac"];
-            $type_transac="adh";
+            $daterenouv    = $_POST["daterenouv"];
+            $datetransac   = $_POST["date"];
+            $adhesiontarif = $_POST["tarif_adh"];
+            $transac       = $_POST["idtransac"];
+            $type_transac  = "adh";
             
-                if (TRUE == isset($_POST["submit"])){
+            if (isset($_POST["submit"])) {
                     
-                    if ($_POST["submit"] =="Encaisser" ){
-                        $statutp="1";
-                        } else {
-                        $statutp="0";
-                        }
+                if ($_POST["submit"] == "Encaisser" ) {
+                    $statutp="1";
+                } else {
+                    $statutp="0";
+                }
                 
             //renouvellement et nouvelle inscription, entrée dans la tab_ransac de la nouvelle transaction
             
