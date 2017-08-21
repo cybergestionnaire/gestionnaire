@@ -138,16 +138,21 @@ class Utilisateur
     }
     
     public function getIdTarifConsultation() {
-        return $this->_idTarifConsultation;
+        // return $this->_idTarifConsultation;
+        return $this->getTransactionForfait()->getIdTarif();
     }
     
+    public function getTransactionForfait() {
+        return Transaction::getTransactionByUtilisateurAndType($this->_id, 'temps');
+    }
+
     public function getForfaitConsultation() {
         
         // il ne faut pas regarder le forfait mentionné directement dans la table user
         // mais aller le chercher dans les transacations
         //return Forfait::getForfaitById($this->_idTarifConsultation);
         
-        $forfait = null;        
+        $forfait = null;
         $transactionForfait = Transaction::getTransactionByUtilisateurAndType($this->_id, 'temps');
         
         if ($transactionForfait !== null) {
@@ -167,7 +172,6 @@ class Utilisateur
            1=> 1, //minutes
            2=> 60 //heures
         );
-        
         $forfaitConsultation = $this->getForfaitConsultation();
 
         if ($forfaitConsultation != null) {
@@ -363,6 +367,25 @@ class Utilisateur
         
         return $success;
     }
+
+    public function updateStatut($statut, $dateRenouvellement, $idTarif) {
+        $success = FALSE;
+        $db      = Mysql::opendb();
+
+        $sql     = "UPDATE `tab_user` "
+                 . "SET `status_user` = " . $statut . ", "
+                 . "    `tarif_user`  = " . $idTarif . ", "
+                 . "    `dateRen_user`= '" . $dateRenouvellement . "' "
+                 . "WHERE `id_user`=" . $this->_id . " ";
+        
+        $result  = mysqli_query($db, $sql);
+        if ($result) {
+            $success = TRUE;
+        }
+        Mysql::closedb($db);
+        
+        return $success;
+    }
     
     
     public function canUpdateLogin($login) {
@@ -477,6 +500,15 @@ class Utilisateur
         return Atelier::getAteliersOuvertsParUtilisateurEtParStatut($this->_id, 2);
     }
     
+    public function getAteliersPresent() {
+        return Atelier::getAteliersFermesParUtilisateurEtParStatut($this->_id, 1);
+    }
+
+    public function getAteliersAbsent() {
+        return Atelier::getAteliersFermesParUtilisateurEtParStatut($this->_id, 0);
+    }
+    
+
     public function getSessionsInscrit() {
         return Session::getSessionsParUtilisateurEtParStatut($this->_id, 0);
     }
@@ -492,18 +524,11 @@ class Utilisateur
     public function getSessionDatesEnAttente() {
         return Session::getSessionDatesEnCoursParUtilisateurEtParStatut($this->_id, 2);
     }
-    public function getAteliersPresent() {
-        return Atelier::getAteliersFermesParUtilisateurEtParStatut($this->_id, 1);
-    }
     
     public function getSessionDatesPresent() {
         return Session::getSessionDatesFermeesParUtilisateurEtParStatut($this->_id, 1);
     }
 
-    public function getAteliersAbsent() {
-        return Atelier::getAteliersFermesParUtilisateurEtParStatut($this->_id, 0);
-    }
-    
     public function getSessionDatesAbsent() {
         return Session::getSessionDatesFermeesParUtilisateurEtParStatut($this->_id, 0);
     }
@@ -515,6 +540,51 @@ class Utilisateur
     public function getNBAteliersEtSessionsPresent() {
         return count($this->getAteliersPresent()) + count($this->getSessionDatesPresent());
     }    
+    
+    //retourne le nombre d'ateliers issus de forfaits déjà archivés
+    function getNbForfaitsArchives() {
+        $somme = -1;
+        
+        $db    = Mysql::opendb();
+
+        $sql   = "SELECT SUM(`total_atelier`) as nb FROM `rel_user_forfait` WHERE `statut_forfait`=2 AND `id_user`=" . $this->_id;
+
+        $result = mysqli_query($db, $sql);
+
+        Mysql::closedb($db);
+
+        if ($result) {
+            $row   = mysqli_fetch_array($result);
+            $somme = $row['nb'];
+        }
+
+        return $somme;
+    }
+    
+    function getNombreForfaitsAteliers() {
+        $somme = -1;
+        
+        $db    = Mysql::opendb();
+        $sql = "SELECT SUM(nbr_forfait*nb_atelier_forfait) AS total "
+             . "FROM `tab_transactions` , tab_tarifs "
+             . "WHERE `id_user` ='" . $this->_id . "' "
+             . "  AND type_transac='for' "
+             . "  AND `status_transac` = 1 "
+             . "  AND tab_transactions.id_tarif = tab_tarifs.id_tarif";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        ///rappel statut transaction, encaissé=1, en attente=0, terminé=2
+        if ($result) {
+            $row = mysqli_fetch_array($result);
+            if ($row['total'] != NULL) {
+                $somme = $row['total'];
+            }
+        }
+        
+        return $somme;
+    }
+    
     
     public function hasPrint() {
 
@@ -576,6 +646,10 @@ class Utilisateur
 
     public function getImpressions() {
         return Impression::getImpressionsByIdUtilisateur($this->_id);
+    }
+    
+    public function getTransactionsEnAttente() {
+        return Transaction::getTransactionsEnAttenteByIdutilisateur($this->_id);
     }
     
     public function modifier( $dateInscription,
@@ -1406,5 +1480,43 @@ class Utilisateur
 
         return $idUtilisateur;
     }
+
+    public static function archiver($idUtilisateur) {
+
+        $success = false;
+        
+        if (intval($idUtilisateur) > 0) {
+            $db  = Mysql::opendb();
+
+            $sql = "UPDATE tab_user SET status_user='6' WHERE id_user=" . $idUtilisateur;
+        
+            $result = mysqli_query($db, $sql);
+            Mysql::closedb($db);
+            
+            if ($result) {
+                $success = true;
+            }
+        }
+
+        return $success;
+    }
+    
+/*    public static function getUtilisateursLastTransactions() {
+        $utilisateurs = null;
+
+        $db  = Mysql::opendb();
+
+        $sql = "SELECT distinct(`id_user`) FROM `tab_transactions` WHERE `id_tarif`> 1 AND `type_transac`='for' ORDER BY `date_transac` DESC";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        if ($result) {
+             // do something !
+        }
+    } */
+    
+    
+   
+    
     
 }

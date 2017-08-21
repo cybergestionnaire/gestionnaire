@@ -27,6 +27,7 @@
 
     require_once("include/class/Utilisateur.class.php");
     require_once("include/class/Tarif.class.php");
+    require_once("include/class/Forfait.class.php");
     
     // récuperation des variables
 
@@ -71,7 +72,7 @@
                 $titre = "Renouveller ou modifier l'adh&eacute;sion";
             }
     
-            // $tarif         = $utilisateur->getIdTarifAdhesion();
+            $idTarif         = $utilisateur->getIdTarifAdhesion();
             // $tarifs        = getTarifsbyCat(2);
             // $adhesiontarif = $tarifs[$tarif];
             $adhesiontarif = $utilisateur->getTarifAdhesion();
@@ -80,17 +81,21 @@
     
             //les forfaits pour les ateliers
         case "forfait":
-            $annuler = "index.php?a=6&iduser=" . $id_user;
-            $forfaitsAteliers = Tarif::getTarifsByCategorie(5);
+            $annuler  = "index.php?a=6&iduser=" . $id_user;
+            $tarifsAtelier = Tarif::getTarifsByCategorie(5);
             if ($transac != '') {
                 //modification d'une transaction
                 $titre        = "Modifier/Encaisser un forfait pour " . htmlentities($nom) . " " . htmlentities($prenom);
                 //$tariforfaits = getTarifsbyCat(5);
-                $rowf         = getForfait($transac);
-                $nbrforfait   = $rowf["nbr_forfait"];
-                $datef        = $rowf["date_transac"];
-                $forfait_user = $rowf["id_tarif"];
-                $url_redirect = "index.php?a=21&b=3&idtransac=".$transac."&typetransac=".$typeTransac."&iduser=".$id_user ;
+                $transaction  = Transaction::getTransactionById($transac);
+                $nbrforfait   = $transaction->getNombreForfait();
+                $datef        = $transaction->getDate();
+                $forfait_user = $transaction->getIdTarif();
+                // $rowf         = getForfait($transac);
+                // $nbrforfait   = $rowf["nbr_forfait"];
+                // $datef        = $rowf["date_transac"];
+                // $forfait_user = $rowf["id_tarif"];
+                $url_redirect = "index.php?a=21&b=3&idtransac=" . $transac . "&typetransac=" . $typeTransac . "&iduser=" . $id_user ;
                 
             } else {
                 //nouveau forfait a crediter
@@ -107,21 +112,19 @@
 
         //les forfaits temps consultation
         case "temps":
-            $titre   = "Ajouter du temps de consultation pour ".$nom." ".$prenom;
-                    
+            $titre    = "Ajouter du temps de consultation pour ".$nom." ".$prenom;
+            $forfaits = Forfait::getForfaits();
             if ($transac != '') {
-                $url_redirect = "index.php?a=21&b=3&idtransac=".$transac."&typetransac=".$typeTransac."&iduser=".$id_user ;
+                $url_redirect = "index.php?a=21&b=3&idtransac=" . $transac . "&typetransac=" . $typeTransac . "&iduser=" . $id_user ;
             } else {
-                $url_redirect="index.php?a=21&b=3&typetransac=".$typeTransac."&iduser=".$id_user ;
+                $url_redirect = "index.php?a=21&b=3&typetransac=" . $typeTransac . "&iduser=" . $id_user ;
             }
-            $annuler      = "index.php?a=6&iduser=".$id_user;
-            $tariforfaits = getTarifsTemps();
+            $annuler      = "index.php?a=6&iduser=" . $id_user;
             $forfait_user = $temps;
                     
-            $datef         = date("Y-m-d");
-            $nbrforfait    = 1;
-            
-                
+            $datef        = date("Y-m-d");
+            $nbrforfait   = 1;
+
         break;
     }
 
@@ -234,9 +237,9 @@
 <?php
         foreach ($paiementmoyen AS $key=>$value) {
             if ($paiement_p == $key) {
-                echo "<option value=\"".$key."\" selected>".$value."</option>";
+                echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
             } else {
-                echo "<option value=\"".$key."\">".$value."</option>";
+                echo "<option value=\"" . $key . "\">" . $value . "</option>";
             }
         }
 ?>
@@ -275,14 +278,17 @@
 
     // transaction adhesion ****//
     if ($typeTransac == "adh") {
-        $dateinsc   = $row["date_insc_user"];
-        $daterenouv = $row["dateRen_user"];
+        // $dateinsc   = $row["date_insc_user"];
+        // $daterenouv = $row["dateRen_user"];
+        $dateinsc   = $utilisateur->getDateInscription();
+        $daterenouv = $utilisateur->getDateRenouvellement();
         //date de renouvellement adhesion automatiquement crée
         $today = date("Y-m-d");
         $daterenouv2 = date_create($today);
         date_add($daterenouv2, date_interval_create_from_date_string('365 days'));
         $daterenouv2 = date_format($daterenouv2, 'Y-m-d');
         $tarifadhs   = getTarifsbyCat(2);
+        $tarifsAdhesion = Tarif::getTarifsByCategorie(2);
 
 ?>
                     <div class="form-group">
@@ -311,11 +317,18 @@
                         <label>renouvellement de l'adh&eacute;sion au tarif: </label>
                         <select name="tarif_adh" class="form-control" >
 <?php
-        foreach ($tarifadhs AS $key => $value) {
-            if ($tarif == $key) {
-                echo "<option value=\"".$key."\" selected>".$value."</option>";
+        // foreach ($tarifadhs AS $key => $value) {
+            // if ($tarif == $key) {
+                // echo "<option value=\"".$key."\" selected>".$value."</option>";
+            // } else {
+                // echo "<option value=\"".$key."\">".$value."</option>";
+            // }
+        // }
+        foreach ($tarifsAdhesion AS $tarif) {
+            if ($tarif->getId() == $idTarif) {
+                echo "<option value=\"" . $tarif->getId() . "\" selected>" . htmlentities($tarif->getNom() . ' (' . number_format($tarif->getDonnee(), 2, ',',' ')) . " &euro;)</option>";
             } else {
-                echo "<option value=\"".$key."\">".$value."</option>";
+                echo "<option value=\"" . $tarif->getId() . "\">" . htmlentities($tarif->getNom() . ' (' . number_format($tarif->getDonnee(), 2, ',',' ')) . " &euro;)</option>";
             }
         }
 ?>
@@ -351,12 +364,22 @@
                 // echo "<option value=\"".$key."\">".$value."</option>";
             // }
         // }
-        
-        foreach ($forfaitsAteliers as $forfait) {
-            if ($forfait_user == $forfait->getId()) {
-                echo "<option value=\"" . $forfait->getId() . "\" selected>" . htmlentities($forfait->getNom()) . " (" . $forfait->getDonnee() . "€) </option>";
-            } else {
-                echo "<option value=\"" . $forfait->getId() . "\">" . htmlentities($forfait->getNom()) . " (" . $forfait->getDonnee() . "€) </option>";
+        if ($typeTransac == "forfait") {
+            foreach ($tarifsAtelier as $forfait) {
+                if ($forfait_user == $forfait->getId()) {
+                    echo "<option value=\"" . $forfait->getId() . "\" selected>" . htmlentities($forfait->getNom()) . " (" . $forfait->getDonnee() . "€) </option>";
+                } else {
+                    echo "<option value=\"" . $forfait->getId() . "\">" . htmlentities($forfait->getNom()) . " (" . $forfait->getDonnee() . "€) </option>";
+                }
+            }
+        }
+        if ($typeTransac == "temps") {
+            foreach ($forfaits as $forfait) {
+                if ($forfait_user == $forfait->getId()) {
+                    echo "<option value=\"" . $forfait->getId() . "\" selected>" . htmlentities($forfait->getNom()) . " (" . $forfait->getPrix() . "€) </option>";
+                } else {
+                    echo "<option value=\"" . $forfait->getId() . "\">" . htmlentities($forfait->getNom()) . " (" . $forfait->getPrix() . "€) </option>";
+                }
             }
         }
 ?>
@@ -385,8 +408,7 @@
                 <div class="box-footer">
                     <input type="submit" value="En attente" name="submit" class="btn bg-purple ">
                     <input type="submit" value="Encaisser" name="submit" class="btn btn-primary">
-                    <a href="<?php echo $annuler; ?>">
-                    <input type="submit" value="Annuler" name="Annuler" class="btn btn-default"></a>
+                    <a href="<?php echo $annuler; ?>"><input type="submit" value="Annuler" name="Annuler" class="btn btn-default"></a>
                 </div><!-- fin footer-->
             </form>
         </div><!-- fin box-->

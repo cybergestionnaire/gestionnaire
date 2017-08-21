@@ -118,7 +118,6 @@
     //tarif connexion internet
     $rowtemps   = getTransactemps($id_user);
     $temps      = $rowtemps["id_tarif"];
-    //$tariftemps = getTarifsTemps();
     $forfaits   = Forfait::getForfaits();
 
     // Les status

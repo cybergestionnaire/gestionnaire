@@ -161,10 +161,6 @@
     </tr>\r\n" ;
 
     // affichage
-    
-    //for ($i = 1 ; $i < 8 ; $i++) {
-        
-        //$row = getHoraire($i,$idEspace) ;
       
     foreach($horaires as $horaire) {
         if (isset($_GET["dayline"]) && $horaire->getIdJour() == $_GET["dayline"]) {
@@ -348,7 +344,6 @@
                         <select class="form-control" name="duree_resarapide">
 <?php
     $dureerr  = $config->getDureeResaRapideOrUnitDefault();
-//    $dureerr  = getConfig("duree_resarapide", "unit_default_config", $idEspace);  // <--- ????? pourquoi revenir sur unit_default en cas d'échec ?
 
     foreach ($dureearray as $key=>$value) {
         if ($dureerr == $key) {

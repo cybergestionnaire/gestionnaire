@@ -18,11 +18,11 @@
 */
 
     ///**********Fichier de modification d'une transaction *************///
-    // error_log('in post_transac.php');
-    // error_log("---- POST ----");
-    // error_log(print_r($_POST, true));
-    // error_log("---- GET  ----");
-    // error_log(print_r($_GET, true));
+    error_log('in post_transac.php');
+    error_log("---- POST ----");
+    error_log(print_r($_POST, true));
+    error_log("---- GET  ----");
+    error_log(print_r($_GET, true));
     
     require_once("include/class/Utilisateur.class.php");
     require_once("include/class/Tarif.class.php");
@@ -72,51 +72,70 @@
         ///renouvellement adhésion
         case "adh":
             
-            $daterenouv    = $_POST["daterenouv"];
-            $datetransac   = $_POST["date"];
-            $adhesiontarif = $_POST["tarif_adh"];
-            $transac       = $_POST["idtransac"];
+            $daterenouv    = isset($_POST["daterenouv"]) ? $_POST["daterenouv"] : "";
+            $datetransac   = isset($_POST["date"])       ? $_POST["date"] : "";
+            $adhesiontarif = isset($_POST["tarif_adh"])  ? $_POST["tarif_adh"] : "";
+            $idTransac     = isset($_POST["idtransac"])  ? $_POST["idtransac"] : "";
             $type_transac  = "adh";
             
             if (isset($_POST["submit"])) {
                     
                 if ($_POST["submit"] == "Encaisser" ) {
-                    $statutp="1";
+                    $statutp = "1";
                 } else {
-                    $statutp="0";
+                    $statutp = "0";
                 }
                 
-            //renouvellement et nouvelle inscription, entrée dans la tab_ransac de la nouvelle transaction
-            
-            if (FALSE == addAdhesion($datetransac,$type_transac,$id_user,$adhesiontarif, $statutp))
-                             {
-                                 header("Location: ./index.php?a=1&mesno=0");
-                             } else {
-                                //modification de la date de renouvellement dans tab_user, actualisation du statut et du tarif
-                                
-                            if(FALSE==modifUserStatut($id_user,1, $daterenouv, $adhesiontarif))
-                                {
-                                     header("Location: ./index.php?a=1&mesno=0");
-                                } else {
-                                    header("Location: ./index.php?a=1&b=2&iduser=".$id_user."&mesno=26");
-                                }
-                             }
-                        
+                //renouvellement et nouvelle inscription, entrée dans la tab_transac de la nouvelle transaction
+                
+                $updateStatus = false;
+                if ($idTransac == "") {
+                    // nouvelle transaction
                     
+                    // note : si une transaction est en attente, et qu'on fait un changement
+                    // d'adhésion, une nouvelle transaction est créée, mais la transaction précédante reste en attente...
+                    
+                    if (Transaction::creerTransaction($type_transac, $id_user, $adhesiontarif, "1", $datetransac,$statutp)) {
+                        //modification de la date de renouvellement dans tab_user, actualisation du statut et du tarif
+                        $updateStatus = true;
+                    } else {
+                        error_log("post_transac.php : échec création de la transaction !");
+                        header("Location: ./index.php?a=1&mesno=0");
+                    }
+                } else {
+                    // transaction existante
+                    $transaction = Transaction::getTransactionById($idTransac);
+                    if ($transaction->modifier($type_transac, $id_user, $adhesiontarif, "1", $datetransac,$statutp)) {
+                        $updateStatus = true;
+                    } else {
+                        error_log("post_transac.php : échec modification de la transaction !");
+                        header("Location: ./index.php?a=1&mesno=0");
+                    }
                 }
+                
+                if ($updateStatus) {
+                    $utilisateur = Utilisateur::getUtilisateurById($id_user);
+                    if ($utilisateur->updateStatut(1, $daterenouv, $adhesiontarif)) {
+                        header("Location: ./index.php?a=1&b=2&iduser=" . $id_user . "&mesno=26");
+                    } else {
+                        error_log("post_transac.php : échec mise à jour du statut !");
+                        header("Location: ./index.php?a=1&mesno=0");
+                    }
+                }
+            }
 
           break;
 
         
         ///forfait
         case "forfait":
-            error_log("Dans forfait !");
+            // error_log("Dans forfait !");
             //recuperation
             if (isset($_POST["submit"])) {
                 error_log("Submit set !");
-                $date          = $_POST["date"];
-                $idTarif       = $_POST["tarif_forfait"];
-                $nbredeforfait = $_POST["nbrf"];
+                $date          = isset($_POST["date"])          ? $_POST["date"] : "";
+                $idTarif       = isset($_POST["tarif_forfait"]) ? $_POST["tarif_forfait"] : "";
+                $nbredeforfait = isset($_POST["nbrf"])          ? $_POST["nbrf"] : "";
                 
                 $tarif = Tarif::getTarifById($idTarif);
                 
@@ -143,31 +162,34 @@
                     }   
                 } else {
                     //creation
-                    //$idtransac = addForfaitUser($type_transac, $id_user, $idTarif, $nbreforfait, $date, $statutp);
-                    //$transaction = Transaction::creerTransaction($type_transac, intval($id_user), $idTarif, $nbreforfait, $date, $statutp);
-                    $transaction = 0;
+                    // $idtransac = addForfaitUser($type_transac, $id_user, $idTarif, $nbreforfait, $date, $statutp);
+                    $transaction = Transaction::creerTransaction($type_transac, intval($id_user), $idTarif, $nbredeforfait, $date, $statutp);
                     if ($transaction === null ) {
                          header("Location: ./index.php?a=6&mesno=0&iduser=" . $id_user . "");
                     } else {
-                        ///verifier avant la participation aux ateliers et inscrementer pour régulariser !
-                        $avalid  = getnbASUserEncours($id_user, 1);// total des ateliers et session validés
+                        ///verifier avant la participation aux ateliers et incrementer pour régulariser !
+                        //$avalid  = getnbASUserEncours($id_user, 1);// total des ateliers et session validés
                         $utilisateur = Utilisateur::getUtilisateurById($id_user);
-                        error_log("NbASEnCours = " . $avalid );
-                        error_log("utilsateurASI -> " . $utilisateur->getNBAteliersEtSessionsInscrit());
-                        error_log("utilsateurAI -> " . count($utilisateur->getAteliersInscrit()));
-                        error_log("utilsateurSI -> " . count($utilisateur->getSessionDatesInscrit()));
-                        error_log("utilsateurASP -> " . $utilisateur->getNBAteliersEtSessionsPresent());
-                        error_log("utilsateurAP -> " . count($utilisateur->getAteliersPresent()));
-                        error_log("utilsateurSP -> " . count($utilisateur->getSessionDatesPresent()));
-                        $farchiv = getFUserArchiv($id_user);//anciens forfaits archivés à décompter..
+                        $avalid = $utilisateur->getNBAteliersEtSessionsPresent();
+                        // error_log("NbASEnCours = " . $avalid );
+                        // error_log("utilsateurASI -> " . $utilisateur->getNBAteliersEtSessionsInscrit());
+                        // error_log("utilsateurAI -> " . count($utilisateur->getAteliersInscrit()));
+                        // error_log("utilsateurSI -> " . count($utilisateur->getSessionDatesInscrit()));
+                        // error_log("utilsateurASP -> " . $utilisateur->getNBAteliersEtSessionsPresent());
+                        // error_log("utilsateurAP -> " . count($utilisateur->getAteliersPresent()));
+                        // error_log("utilsateurSP -> " . count($utilisateur->getSessionDatesPresent()));
+                        // $farchiv = getFUserArchiv($id_user);//anciens forfaits archivés à décompter..
+                        $farchiv = $utilisateur->getNbForfaitsArchives();
                         $reste   = $avalid - $farchiv;
                         if ($reste > 0) {
                             $depense = $reste;
                         } else {
                             $depense = 0;
                         }
-                        //
-                        //addRelforfaitUser($id_user, $idtransac, $nbatelier, $depense, $statutp);
+                        
+                        // laissé pour compatibilité avec EPN-Connect
+                        addRelforfaitUser($id_user, $transaction->getId(), $nbatelier, $depense, $statutp);
+                        
                         header("Location: ./index.php?a=6&iduser=" . $id_user . "");
                     }   
                 }
@@ -177,60 +199,61 @@
 
         case "temps" :
         //recuperation
-            $date=$_POST["date"];
-            $tarif_forfait=$_POST["tarif_forfait"];
-            $nbreforfait=1;
-            $type_transac="temps";
-            $transac=$_GET["idtransac"];
-            $nbatelier=0;
             
-            if (TRUE == isset($_POST["submit"])){
+            if (isset($_POST["submit"])) {
+                $date          = isset($_POST["date"]) ? $_POST["date"] : '';
+                $tarif_forfait = isset($_POST["tarif_forfait"]) ? $_POST["tarif_forfait"] : '';
+                $nbreforfait   = 1;
+                $type_transac  = "temps";
+                $transac       = isset($_GET["idtransac"]) ? $_GET["idtransac"] : '';
+                $nbatelier     = 0;
                     
-                if ($_POST["submit"] =="Encaisser" ){
-                        $statutp="1"; //en cours
-                        } else {
-                        $statutp="0"; // en attente de paiement
-                        }
+                if ($_POST["submit"] =="Encaisser" ) {
+                    $statutp="1"; //en cours
+                } else {
+                    $statutp="0"; // en attente de paiement
+                }
             
-            if(isset($transac)){
-            //modification
-                    $rowtransacuser=getForfait($transac);
-                    $statut0=$rowtransacuser['status_transac'];
-                    if (FALSE == modifForfaitUser($transac,$tarif_forfait,$date,$nbreforfait,$statutp,$nbatelier))
-                     {
-                         header("Location: ./index.php?a=6&mesno=0&iduser=".$id_user."");
-                     } else {
-                        if($statut0==0 and $statutp==1){ 
-                                addrelconsultationuser(1,$tarif_forfait,$id_user);//ajouter la relation pour activer-epnconnect
-                            }else if($statut0==1 and $statutp==1){
-                                addrelconsultationuser(2,$tarif_forfait,$id_user);//modifier la relation si car forfait a changé..
-                            }
+                if($transac != '') {
+                    //modification
+                    $rowtransacuser = getForfait($transac);
+                    $statut0        = $rowtransacuser['status_transac'];
+                    if (FALSE == modifForfaitUser($transac,$tarif_forfait,$date,$nbreforfait,$statutp,$nbatelier)) {
+                        header("Location: ./index.php?a=6&mesno=0&iduser=" . $id_user . "");
+                    } else {
+                        // inutile dans cybergestionnaire. Laissé pour EPN-Connect
+                        if($statut0 == 0 and $statutp == 1){ 
+                                addrelconsultationuser(1, $tarif_forfait, $id_user);//ajouter la relation pour activer-epnconnect
+                        } else if($statut0 == 1 and $statutp == 1){
+                                addrelconsultationuser(2, $tarif_forfait, $id_user);//modifier la relation si car forfait a changé..
+                        }
                          
-                         header("Location: ./index.php?a=6&iduser=".$id_user."");
-                     }  
-                     
-                     
+                        header("Location: ./index.php?a=6&iduser=" . $id_user . "");
+                    }  
                 } else {
                     //creation
-                $idtransac=addForfaitUser($type_transac,$id_user,$tarif_forfait,$nbreforfait,$date,$statutp);
-                
-                if (FALSE ==$idtransac )
-                     {
-                         header("Location: ./index.php?a=6&mesno=0&iduser=".$id_user."");
-                     } else {
-                            //n'ajouter la relation pour epnconnect que si c'est encaissé
-                            if($statutp==1){
-                             addrelconsultationuser(1,$tarif_forfait,$id_user);
-                         }
-                            header("Location: ./index.php?a=6&mesno=26&iduser=".$id_user."");
-                     }
+                    // creerTransaction($type, $idUtilisateur, $idTarif, $nombreForfait, $date, $statut)
+                    $transaction = Transaction::creerTransaction($type_transac, $id_user, $tarif_forfait, $nbreforfait, $date, $statutp);
                     
+                    //$idtransac = addForfaitUser($type_transac,$id_user,$tarif_forfait,$nbreforfait,$date,$statutp);
+                
+                    // if (FALSE == $idtransac ) {
+                    if ($transaction === null ) {
+                        header("Location: ./index.php?a=6&mesno=0&iduser=" . $id_user . "");
+                    } else {
+                        
+                        // inutile dans cybergestionnaire. Casse peut-être EPN Connect
+                        //n'ajouter la relation pour epnconnect que si c'est encaissé
+                        if($statutp == 1){
+                             addrelconsultationuser(1, $tarif_forfait, $id_user);
+                        }
+                        header("Location: ./index.php?a=6&mesno=26&iduser=" . $id_user . "");
                     }
+                    
+                }
             }
 
-
         break;
-
 
     }
 ?>

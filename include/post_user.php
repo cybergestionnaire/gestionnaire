@@ -137,7 +137,10 @@
                                     // error_log("---- erreur lors de la création des transactions ! ----");
                                 // }
                                 
-                                 //ajout de la relation forfait-consultation dans rel_forfait_user
+                                
+                                // Inutile dans CyberGestionnaire, laissé pour compatibilité avec EPN-Connect
+                                
+                                //ajout de la relation forfait-consultation dans rel_forfait_user
                                 if (FALSE == addrelconsultationuser(1, $temps, $utilisateur->getId())) {
                                     header("Location:" . $urlRedirect . "&mesno=0");
                                 } else {

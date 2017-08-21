@@ -46,7 +46,7 @@
     
     $nom          = $utilisateur->getPrenom() . " " . $utilisateur->getNom();
     $equip        = $utilisateur->getEquipement();
-    $equipement   = explode(";",$equip);
+    $equipement   = explode("-", $equip);
     $utilisation  = $utilisateur->getUtilisation();
     $connaissance = $utilisateur->getConnaissance();
     $infos        = $utilisateur->getInfo();
@@ -74,11 +74,16 @@
         7 => "Pas de connexion Internet"
         );
 
+        
     $equipements = '';
-    foreach ($equipement AS $key=>$value) {
-        $equipements = $equipements . $equipementarray[$value] . " / ";
+    if ($equip == $equipement[0]) {
+        // pas d'équippement !
+        $equipements = 'Equipements non renseign&eacute;s';
+    } else {
+        foreach ($equipement AS $key=>$value) {
+            $equipements = $equipements . $equipementarray[$value] . " / ";
+        }
     }
-
         
     // type d'utilisation défini
     $utilisationarray = array (
@@ -97,7 +102,9 @@
 
     // si b=3 desinscription a un atelier
     if ($act == 1) {
-        delUserAtelier($_GET["idatelier"], $id_user) ;
+        $atelier = Atelier::getAtelierById($idAtelier);
+        $atelier->desinscrireUtilisateur($_SESSION["iduser"]); 
+        // delUserAtelier($_GET["idatelier"], $id_user) ;
         echo geterror() ;
     }
 
@@ -145,7 +152,6 @@
                     <a href="index.php?a=21&b=1&iduser=<?php echo $utilisateur->getId(); ?>" class="btn bg-navy btn-sm"  data-toggle="tooltip" title="Compte d'impression"><i class="fa fa-print"></i></a>
 <?php
     if (($utilisateur->getNBAteliersEtSessionsInscrit() + $utilisateur->getNBAteliersEtSessionsPresent()) > 0) {
-                    //if (chechUserAS($utilisateur->getId()) == TRUE) {
 ?>
                     <a href="index.php?a=5&b=6&iduser=<?php echo $utilisateur->getId() ?>" class="btn bg-primary btn-sm" data-toggle="tooltip" title="Inscriptions Ateliers"><i class="fa fa-keyboard-o"></i></a>
 <?php

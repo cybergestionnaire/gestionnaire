@@ -79,7 +79,7 @@ class Transaction
         $statut        = mysqli_real_escape_string($db, $statut);
 
         $sql = "UPDATE `tab_transactions` "
-            . "SET `type_transac` = '" . $nom . "', `id_user` = '" . $idUtilisateur . "', `id_tarif` = '" . $idTarif . "', `nbr_forfait` = '" . $nombreForfait . "', `date_transac` = '" . $date . "', `status_transac` = '" . $statut . "' "
+            . "SET `type_transac` = '" . $type . "', `id_user` = '" . $idUtilisateur . "', `id_tarif` = '" . $idTarif . "', `nbr_forfait` = '" . $nombreForfait . "', `date_transac` = '" . $date . "', `status_transac` = '" . $statut . "' "
             . "WHERE `id_transac` = " . $this->_id;
 
         $result = mysqli_query($db,$sql);
@@ -115,7 +115,7 @@ class Transaction
     public static function creerTransaction($type, $idUtilisateur, $idTarif, $nombreForfait, $date, $statut) {
         $transaction = null;
         if ( $type != ""
-            && (is_int($idUtilisateur) && $idUtilisateur != 0)
+            && $idUtilisateur != 0
         ) {
             $db = Mysql::opendb();
             
@@ -129,8 +129,8 @@ class Transaction
 
             $sql = "INSERT INTO `tab_transactions` (`type_transac`,`id_user`,`id_tarif`,`nbr_forfait`,`date_transac`,`status_transac`) "
                  . "VALUES ('" . $type . "', '" . $idUtilisateur."', '" . $idTarif."', '" . $nombreForfait . "', '" . $date . "', '" . $statut . "') " ;
-                 
-            $result = mysqli_query($db,$sql);
+
+                 $result = mysqli_query($db,$sql);
             
             if ($result)
             {
@@ -205,5 +205,27 @@ class Transaction
     
     }
     
-    
+    public static function getTransactionsEnAttenteByIdutilisateur($idUtilisateur) {
+        $transactions = null;
+        
+        $db  = Mysql::opendb();
+ 
+        $idUtilisateur = mysqli_real_escape_string($db, $idUtilisateur);
+
+        $sql = "SELECT * FROM `tab_transactions` WHERE `status_transac` = 0 AND `id_user`=" . $idUtilisateur;
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        
+        if ($result && mysqli_num_rows($result) > 0) {
+            $transactions = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $transactions[] = new Transaction($row);
+            }
+            mysqli_free_result($result);
+        }
+        
+        return $transactions;
+    }
+   
 }

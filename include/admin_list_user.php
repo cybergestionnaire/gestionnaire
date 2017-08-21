@@ -151,7 +151,7 @@
                                 <a href="index.php?a=1&b=2&iduser=<?php echo $utilisateur->getId() ?>"><button type="button" class="btn bg-purple btn-sm" data-toggle="tooltip" title="Fiche adh&eacute;rent"><i class="fa fa-edit"></i></button></a>
                                 <a href="index.php?a=6&iduser=<?php echo $utilisateur->getId() ?>"><button type="button" class="btn bg-yellow btn-sm" data-toggle="tooltip" title="transactions"><i class="ion ion-bag"></i></button></a>
     <?php
-            if (chechUserAS($utilisateur->getId()) == TRUE) {
+            if (($utilisateur->getNBAteliersEtSessionsInscrit() + $utilisateur->getNBAteliersEtSessionsPresent()) > 0) {
 ?>
                             &nbsp;<a href="index.php?a=5&b=6&iduser=<?php echo $utilisateur->getId() ?>"><button type="button" class="btn bg-primary btn-sm" data-toggle="tooltip" title="Inscriptions Ateliers"><i class="fa fa-keyboard-o"></i></button></a>
 <?php

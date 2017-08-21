@@ -81,7 +81,6 @@
                     <a href="index.php?a=21&b=1&iduser=<?php echo $utilisateur->getId(); ?>" class="btn bg-navy btn-sm"  data-toggle="tooltip" title="Compte d'impression"><i class="fa fa-print"></i></a>
 <?php
     if (($utilisateur->getNBAteliersEtSessionsInscrit() + $utilisateur->getNBAteliersEtSessionsPresent()) > 0) {
-                    //if (chechUserAS($utilisateur->getId()) == TRUE) {
 ?>
                     <a href="index.php?a=5&b=6&iduser=<?php echo $utilisateur->getId() ?>" class="btn bg-primary btn-sm" data-toggle="tooltip" title="Inscriptions Ateliers"><i class="fa fa-keyboard-o"></i></a>
 <?php
@@ -247,44 +246,7 @@
 
 <!-- right column -->
     <div class="col-md-4">
-<!--
-<div class="box"><div class="box-header"><h3 class="box-title">Infos sur le compte</h3></div>
-  <div class="box-body">
-<?php
 
-    // if (TRUE==checkResaSemaine($id_user,strftime("%Y-%m-%d",$date1), strftime("%Y-%m-%d",$date2)))
-    // {
-        // $row=getTempsCredit($id_user, strftime("%Y-%m-%d",$date1), strftime("%Y-%m-%d",$date2));
-        // //debug(strftime("%Y-%m-%d",$date2));
-        // debug($row['temps_user']);
-        // if ($row['total']==999)
-        // {
-            // $total = 'illimit&eacute;' ;
-            // $reste = $total ;
-        // } else {
-            // $total = getTime($row['total']);
-            // $utilise=$row['util'];
-            // $reste = getTime($row['total']-$utilise) ;
-            
-            // //$reste = getTime($row['total']-$row['util']) ;
-        // }
-    // } else {
-        // $total=getTime(300);
-        // $utilise=0;
-        // $reste=$total;
-    // }
-        // echo " 
-                // <h5>Semaine du ".strftime("%d/%m/%Y",$date1)." au ".strftime("%d/%m/%Y",$date2)." </h5>
-                // <p>Cr&eacute;dit temps total par semaine :<b> ".$total." </b></p>
-                // <p>Cr&eacute;dit temps utilis&eacute; cette semaine : ".getTime($utilise)."</p>
-                // <p>Cr&eacute;dit temps restant cette semaine : <b>".$reste." </b></p>
-                
-                
-              // ";
-    ?>
-    </div>
-</div>  
--->
 <?php
     //Calcul statistique de la consultation par mois
     $resasPassees = Resa::getResasPasseesParIdUtilisateur($id_user, date("Y-m-d"));
@@ -307,7 +269,7 @@
 <?php
         // 
         $month = date('n');
-        for ($i=1 ; $i<= $month;++$i){   
+        for ($i = 1 ; $i<= $month  ;++$i) {   
             $resasPassees = Resa::getResasParIdUtilisateurEtParMois($id_user, $i, date('Y'));
     //        $result = getUserResabyMonth($id_user,$i,date('Y'));
             $dureeTotale = 0;

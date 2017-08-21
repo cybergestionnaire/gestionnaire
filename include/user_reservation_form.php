@@ -85,8 +85,12 @@
         if ($h1begin == $h1end) {
             $h1begin = $h2begin;
         }
-            
-        for ($i = $h1begin ; $i < $h2end ; $i = $i + $unit) {/*
+        if ($h2end < $h1end) {
+            $h2end = $h1end;
+        }
+        
+        for ($i = $h1begin ; $i < $h2end ; $i = $i + $unit) {
+            /*
           if ($i<$h1end OR $i>=$h2begin)
           {*/
             if (in_array( $i, $arrayResa) OR ($i >= $h1end AND $i < $h2begin)) {
@@ -100,9 +104,8 @@
         }
         if ($select != "") {
             $select = "<select name=\"debut\" size=\"15\" >" . $select . "</select>";
-        } else {
-            $select = "";
         }
+        
         return $select;
     }
     
@@ -131,7 +134,6 @@
   
         // duree maximum d'une reservation dans le fichier config
         $config  = Config::getConfig($idEspace);
-        //$maxtime = getConfig("maxtime_config","maxtime_default_config",$idEspace) ;
         $maxtime = $config->getMaxTimeOrDefaultMaxTime();
         
         // on verifie si on se trouve dans l'interval du matin
@@ -159,11 +161,8 @@
                 $select .= "<option value=\"" . $i . "\">" . getTime($i) . "</option>";
             }
         }
-        //$select .= "<option value=\"".getConfig("maxtime_config","maxtime_default_config")."\">".getTime(getConfig("maxtime_config","maxtime_default_config"))."</option>";
         if ($select != "") {
             $select = "<select name=\"duree\" size=\"15\" multiple>" . $select . "</select> ";
-        } else {
-            $select = "";
         }
 
         return $select;
@@ -198,7 +197,7 @@
       
       
         //  affichage des etapes
-        // $row    = getHoraire( date("N",strtotime($_SESSION['resa']['date'])), $idEspace ) ;
+
         $dayNum = date("N",strtotime($_SESSION['resa']['date']));
         $horaires = Horaire::getHorairesByIdEspace($idEspace);
       
@@ -209,16 +208,12 @@
                 $step2 = 'currentStep' ;
                 $titre = 'Choix de la dur&eacute;e de la r&eacute;servation' ;
                 
-                $select = getHorDureeSelect( 
-                                getConfig("unit_config", "unit_default_config", $idEspace),
+                $select = getHorDureeSelect(
+                                $config->getTimeUnit(),
                                 $horaires[$dayNum - 1]->getHoraire1Debut(),
                                 $horaires[$dayNum - 1]->getHoraire1Fin(),
                                 $horaires[$dayNum - 1]->getHoraire2Debut(),
                                 $horaires[$dayNum - 1]->getHoraire2Fin(),
-                                // $row["hor1_begin_horaire"],
-                                // $row["hor1_end_horaire"],
-                                // $row["hor2_begin_horaire"],
-                                // $row["hor2_end_horaire"],
                                 $_SESSION['resa']['idcomp'],
                                 $_SESSION['resa']['date'],
                                 $_SESSION['debut'],
@@ -245,9 +240,11 @@
           
                 // affichage
                 if (isset($_SESSION['other_user'])) {
-                    $reserve = '<dt>R&eacute;servation pour : </dt><dd> ' . getUserName($_SESSION['other_user']) . '</dd>' ;
+                    $utilisateur = Utilisateur::getUtilisateurById($_SESSION['other_user']);
+                    $reserve = '<dt>R&eacute;servation pour : </dt><dd> ' . htmlentities($utilisateur->getPrenom() . " " . $utilisateur->getNom()) . '</dd>' ;
                 } else {
-                    $reserve = '<dt>R&eacute;servation par : </dt><dd> ' . getUserName($_SESSION['iduser']) . '<dd>' ;
+                    $utilisateur = Utilisateur::getUtilisateurById($_SESSION['iduser']);
+                    $reserve = '<dt>R&eacute;servation par : </dt><dd> ' . htmlentities($utilisateur->getPrenom() . " " . $utilisateur->getNom()) . '<dd>' ;
                 }
                 $step  =  '<dl class="dl-horizontal">' . $reserve . '
                     <dt>prevue le : </dt><dd> ' . dateFr($_SESSION['resa']['date'] ) . '<dd>
@@ -272,35 +269,20 @@
                     //affichage du resultat de la recherche
                     if ($searchuser != "" and strlen($searchuser) > 2) {
                         // Recherche d'un adherent
-                        //$result = searchUser($searchuser);
                         
                         $utilisateursRecherche = Utilisateur::searchUtilisateurs($searchuser);
                         $nbUtilisateursRecherche = count($utilisateursRecherche);
 
                         if ($utilisateursRecherche == null OR $nbUtilisateursRecherche == 0) {
-                        //if (FALSE == $result OR mysqli_num_rows($result) == 0) {
                             echo getError(6);
                         } else {
-                            // $nb  = mysqli_num_rows($result);
-                            // if ($nb > 0) {
+
                             if ($nbUtilisateursRecherche > 0) {
                                 $test  = "<b>R&eacute;sultats de la recherche: " . $nbUtilisateursRecherche . "</b>";
                                 $test .= '<table class="table"><thead>
                                     <tr><th>&nbsp;</th><th>Nom, Pr&eacute;nom</th><th>Login</th><th>Temps restant</th><th>Infos</th></tr></thead><tbody>';
                                 foreach($utilisateursRecherche as $utilisateurRecherche) {
-                                // for ($i = 0 ; $i < $nb ; $i++) {
-                                    // $row = mysqli_fetch_array($result) ;
-                                   //donnees utlisateur
-                                    //$age = date('Y')-$row["annee_naissance_user"];
-                                    //$temps        = getTempsCredit($row["id_user"], $date1, $date2);
-                                    
-                                    // $tarifAdhesion      = Tarif::getTarifById($utilisateurRecherche->getIdTarifAdhesion());
-                                    // if ($tarifAdhesion != null){
-                                        // $adhesion       = $tarifAdhesion->getNom();
-                                    // } else {
-                                        // $adhesion       = '';
-                                    // }
-                                    
+
                                     $dateadhesion = strtotime($utilisateurRecherche->getDateRenouvellement());
                                     $aujourdhui   = strtotime(date('Y-m-d'));
                                     
@@ -354,15 +336,11 @@
           
                 $titre = 'Choix de l\'heure de d&eacute;but de la r&eacute;servation'  ;
                 $select  =  getHorDebutSelect(
-                                getConfig("unit_config", "unit_default_config", $idEspace),
+                                $config->getTimeUnit(),
                                 $horaires[$dayNum - 1]->getHoraire1Debut(),
                                 $horaires[$dayNum - 1]->getHoraire1Fin(),
                                 $horaires[$dayNum - 1]->getHoraire2Debut(),
                                 $horaires[$dayNum - 1]->getHoraire2Fin(),
-                                // $row["hor1_begin_horaire"],
-                                // $row["hor1_end_horaire"],
-                                // $row["hor2_begin_horaire"],
-                                // $row["hor2_end_horaire"],
                                 $_SESSION['resa']['idcomp'],
                                 $_SESSION['resa']['date'],
                                 //$_SESSION['debut']

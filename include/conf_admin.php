@@ -181,9 +181,9 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
     
     ///LES abonnements enregistr&eacute;s
     case 8:
-        $titre="Liste des adh&eacute;rents avec forfait atelier";
+        $titre  = "Liste des adh&eacute;rents avec forfait atelier";
         include ("fonction_stat.php");
-        $inc="admin_list_abonnements.php";
+        $inc    = "admin_list_abonnements.php";
     break;
     
     /// Liste des resrvation d'un adh&eacute;rent page statistique + liste

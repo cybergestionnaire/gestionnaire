@@ -30,45 +30,19 @@
     //recuperation des tarifs categorieTarif(2)=adhesion
     // $tarifs       = getTarifsbyCat(2);
     $tarif        = Tarif::getTarifById($utilisateur->getIdTarifAdhesion());
-    //recuperation des tarifs pour la consultation internet
-    // $tariftemps   = getTarifsTemps();
     
     $lasteresa    = getLastResaUser($utilisateur->getId());
     
     if ($lasteresa == FALSE) {$lasteresa = "NC";}
     
     //TARIF CONSULTATION
-    // $tarifTemps          = getForfaitConsult($row["id_user"]);
-    // $min                 = $tab_unite_temps_affectation[$tarifTemps["unite_temps_affectation"]];
-    // $tarifreferencetemps = $tarifTemps["nombre_temps_affectation"]*$min;
-    $forfait             = $utilisateur->getForfaitConsultation();
+    $forfait = $utilisateur->getForfaitConsultation();
     if ($forfait != null) {
 
         $uniteForfait        = $forfait->getUniteConsultation();
         $tarifreferencetemps = $forfait->getDureeConsultation()* $uniteForfait;
 
-        //modifier le temps comptabilise en fonction de la frequence_temps_affectation
-        if ($forfait->getFrequenceConsultation() == 1) { 
-            //par jour
-            $date1 = date('Y-m-d');
-            $date2 = $date1;
-        }
-        else if($forfait->getFrequenceConsultation() == 2) { 
-            //par semaine;
-            $semaine = get_lundi_dimanche_from_week(date('W'));
-            $date1   = strftime("%Y-%m-%d",$semaine[0]);
-            $date2   = strftime("%Y-%m-%d",$semaine[1]);
-
-        }
-        else if($forfait->getFrequenceConsultation() == 3) { 
-            //par mois
-            $date1 = date('Y-m')."-01";
-            $date2 = date('Y-m')."-31";
-        }
-
-        //debug($tarifreferencetemps);
-        $resautilise = getTempsCredit($utilisateur->getId(), $date1, $date2);
-        $restant     = $tarifreferencetemps - $resautilise['util'];
+        $restant     = $utilisateur->getTempsRestant();
         $rapport     = round(($restant / $tarifreferencetemps) * 100);
     }
 

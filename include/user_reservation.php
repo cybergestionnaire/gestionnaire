@@ -70,7 +70,6 @@
         // Initialisation des variables
 
         $graf          = "" ;
-        //$unit          = getConfig("unit_config", "unit_default_config", $epn) ; // unité dans la table config
 
         $config        = Config::getConfig($_SESSION["idepn"]);
         $unit          = $config->getDureeResaRapideOrUnitDefault();
@@ -343,7 +342,6 @@
     if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 1) {
         
         $salles = Salle::getSalles();
-        // $allsalles = getAllsalles();
         // $idEspace  = $_SESSION["idepn"];
         if ($idSalle == '' and !is_null($salles)) {
             $idSalle = $salles[0]->getId();  //premiere salle par défaut, il serait sans doute opportun de vérifier l'espace d'appartenance pour l'utilisateur,
@@ -430,7 +428,6 @@
 
             if (strlen($term) >= 2) {
                 // Recherche d'un adherent
-                //$result = searchUserRapid($term);
                 $utilisateursRecherche = Utilisateur::searchUtilisateurs($term);
                 $nb = count($utilisateursRecherche);
                 if ($nb <= 0) {   
@@ -493,10 +490,6 @@
                     $heure = date('G') * 60 + $min;
         
 
-                    //retrouver la liste des postes
-                    //$salle=1;
-                    
-                    //$poster = getAllComputerDispo($idSalle);
                     $postesLibres = Materiel::getMaterielLibreFromSalleById($idSalle);
 ?>
             

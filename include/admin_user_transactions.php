@@ -22,6 +22,7 @@
 ***********///// Transactions de l'adhérent **********************/
 
     require_once("include/class/Utilisateur.class.php");
+    require_once("include/class/Forfait.class.php");
 
     /* renouvellement adhésion
     lien vers impressions
@@ -29,11 +30,7 @@
     achat de forfait de consultation internet */
 
     $id_user = isset($_GET["iduser"]) ? $_GET["iduser"] : '';
-    //gestion des erreurs
-    $mesno = isset($_GET["mesno"]) ? $_GET["mesno"] : '';
-    if ($mesno != "") {
-        echo getError($mesno);
-    }
+
 
 // Tableau des unité d'affectation
     $tab_unite_temps_affectation = array(
@@ -51,17 +48,19 @@
         
     // suppression d'un forfait d'un compte usager
     if (isset($_GET["act"])) {
-        $transac = $_GET["transac"];
+        $transac = isset($_GET["transac"]) ? $_GET["transac"] : '' ;
         $act     = $_GET["act"];
         if ($act == "del") {
-            if (FALSE == delForfait($transac)) {
-                header("Location: ./index.php?a=6&mesno=0&iduser=".$id_user);
-            } else {
-                //
+            $transaction = Transaction::getTransactionById($transac);
+            // if (FALSE == delForfait($transac)) {
+            if ($transaction->supprimer()) {
+                // Inutile dans CyberGestionnaire, laissé pour compatibilité avec EPN-Connect
                 if ($_GET["type"] == "temps") {
                     delreluserforfaittemps($id_user);
                 }
-                header("Location: ./index.php?a=6&mesno=35&iduser=".$id_user);
+                $mesno = 35;
+            } else {
+                $mesno = 0;
             }
         }
     }
@@ -86,52 +85,72 @@
     // $prixtarif  = $tarifs[$tarif];
             
     // //paiements en attente adhesion
-    $paiementAttente = Testpaiement($id_user);
+    //$paiementAttente = Testpaiement($id_user);
+    $transactionsEnAttente = $utilisateur->getTransactionsEnAttente();
+    
     //affichage du bouton renouvellement si -7 jours
 
     $datetime1 = date_create($utilisateur->getDateRenouvellement());
     $datetime2 = date_create(date("Y-m-d"));
-    $interval   = date_diff($datetime2, $datetime1);
+    $interval  = date_diff($datetime2, $datetime1);
 
     //Statut de la transaction
     $forfaitArray = array(
-        0=>"En attente de paiement",
-        1=>"Pay&eacute;",
-        2=>"Archiv&eacute;"
+        0 => "En attente de paiement",
+        1 => "Pay&eacute;",
+        2 => "Archiv&eacute;"
         );
     //statut des forfaits ateliers  
     $arraystatutforfait = array(
-        1=>"En cours",
-        2=>"Termin&eacute;"
+        1 => "En cours",
+        2 => "Termin&eacute;"
         );
         
-    //recuperation des tarifs pour la consultation internet
-    $tariftemps = getTarifsTemps();
-
-        
+       
     // //nombre d'inscriptions en cours + lien vers historique atelier
     // $ateliersInscrit = $utilisateur->getAteliersInscrit();
     // $sessionsInscrit = $utilisateur->getSessionsInscrit();
     
+    
     // $nbASencours = count($ateliersInscrit) + count($sessionsInscrit);
 
     // $ateliersPresent = $utilisateur->getAteliersPresent();
-    // $sessionsPresent = $utilisateur->getSessionsPresent();
-    
+    // $sessionsPresent = $utilisateur->getSessionDatesPresent();
+     
     // $nbvalide = count($ateliersPresent) + count($sessionsPresent);
     
-    $nbASencours = getnbASUserEncours($id_user,0) ; // 0= inscription en cours non validée
+    
+    // $nbASencours = getnbASUserEncours($id_user,0) ; // 0= inscription en cours non validée
+    $nbASencours = $utilisateur->getNBAteliersEtSessionsInscrit() ;
+    // error_log("Ancienne ASenCours = " . $nbASencours);
     //nombre d'inscriptions validées hors forfait
-    $nbvalide    = getnbASUservalidees($id_user); // 1= total inscrit et validé
-    $nbForfait   = getForfaitAchete($id_user,"for"); // total des ateliers achetés
+    // $nbvalide    = getnbASUservalidees($id_user); // 1= total inscrit et validé
+    // error_log("Ancienne nbvalide = " . $nbvalide);
+    $nbvalide    = $utilisateur->getNBAteliersEtSessionsPresent(); // 1= total inscrit et validé
+    // error_log("Nouvelle ASenCours = " . $utilisateur->getNBAteliersEtSessionsInscrit());
+    // error_log("Nouvelle nbvalide = " . $utilisateur->getNBAteliersEtSessionsPresent());
+
+
+    // $nbForfait   = getForfaitAchete($id_user, "for"); // total des ateliers achetés
+    $nbForfait  = $utilisateur->getNombreForfaitsAteliers();
     $nbrestant   = $nbForfait - $nbvalide; //restant apres dépense
 
-     if ($nbrestant >= 0) {
+
+    $depense = 0;
+    $achete  = 0;
+
+
+    if ($nbrestant >= 0) {
         $nbHorsForfait = "aucune";
     } else {
-        $nbHorsForfait= "<span class=\"text-red\">".abs($nbrestant)."&nbsp;&nbsp;</span><span class=\"btn bg-red btn-xs\" data-toggle=\"tooltip\" title=\"Ces ateliers n'ont pas &eacute;t&eacute; pay&eacute;s !\"><i class=\"fa fa-warning\"></i></span>";
+        $nbHorsForfait = "<span class=\"text-red\">" . abs($nbrestant) . "&nbsp;&nbsp;</span><span class=\"btn bg-red btn-xs\" data-toggle=\"tooltip\" title=\"Ces ateliers n'ont pas &eacute;t&eacute; pay&eacute;s !\"><i class=\"fa fa-warning\"></i></span>";
     }
 
+    //gestion des erreurs
+    $mesno = isset($_GET["mesno"]) ? $_GET["mesno"] : '';
+    if ($mesno != "") {
+        echo getError($mesno);
+    }
 ?>
 <div class="row"> <!-- division en 3 rows par ligne -->
 
@@ -147,12 +166,24 @@
                     <dt>Renouvellement pr&eacute;vu </dt><dd> le <span class="text-red"><b><?php echo dateFR($utilisateur->getDateRenouvellement()) ;?></b></span></dd>
                 </dl>
 <?php
-    if (mysqli_num_rows($paiementAttente)) {
-        $row = mysqli_fetch_array($paiementAttente);
-        if (in_array($tarif,$row)) {
-            echo "<p class=\"lead\"><span class=\"text-red\">Attention le paiement est toujours en attente</span></p>
-                 <a href=\"index.php?a=21&b=3&typetransac=adh&idtransac=".$row["id_transac"]."&iduser=".$id_user." \"><input type=\"submit\" value=\"Encaisser\" class=\"btn bg-default\"></a>
-                ";
+    // if (mysqli_num_rows($paiementAttente)) {
+        // $row = mysqli_fetch_array($paiementAttente);
+        // if (in_array($tarif,$row)) {
+            // echo "<p class=\"lead\"><span class=\"text-red\">Attention le paiement est toujours en attente</span></p>
+                 // <a href=\"index.php?a=21&b=3&typetransac=adh&idtransac=".$row["id_transac"]."&iduser=".$id_user." \"><input type=\"submit\" value=\"Encaisser\" class=\"btn bg-default\"></a>
+                // ";
+        // }
+    // }
+    
+    // code à vérifier !!!
+    
+    if ($transactionsEnAttente !== null) {
+        foreach ($transactionsEnAttente as $transactionEnAttente) {
+            if ($transactionEnAttente->getType() == "adh") {
+                echo "<p class=\"lead\"><span class=\"text-red\">Attention le paiement est toujours en attente</span></p>
+                    <a href=\"index.php?a=21&b=3&typetransac=adh&idtransac=" . $transactionEnAttente->getId() . "&iduser=" . $id_user . " \"><input type=\"submit\" value=\"Encaisser\" class=\"btn bg-default\"></a>
+                    ";
+            }
         }
     }
 ?>
@@ -181,7 +212,7 @@
             <div class="box-body">
                 <p>Inscription en cours et non valid&eacute;es : <b><?php echo $nbASencours ; ?></b>
 <?php
-    if (chechUserAS($utilisateur->getId()) == TRUE) {
+    if (($utilisateur->getNBAteliersEtSessionsInscrit() + $utilisateur->getNBAteliersEtSessionsPresent()) > 0) {
 ?>
                 &nbsp;&nbsp;&nbsp;&nbsp;<a href="index.php?a=5&b=6&iduser=<?php echo $utilisateur->getId();?>" class="btn btn-primary btn-xs">Voir les inscriptions</a></p>
 <?php
@@ -193,7 +224,7 @@
     /// forfait atelier utilisateur
     // $tariforfaits = getTarifsbyCat(5);
     
-    $rowtransaction = getAllForfaitUser($id_user,"for");
+    $rowtransaction = getAllForfaitUser($id_user, "for");
     $nbf = mysqli_num_rows($rowtransaction);
     
     if ($nbf == 0) {
@@ -274,36 +305,19 @@
             <div class="box-body">
     
 <?php
-    $transactemps = getTransactemps($id_user);
+    // $transactemps = getTransactemps($id_user);
 
-    if (TRUE == $transactemps) {
-        //TARIF CONSULTATION
-        $tarifTemps          = getForfaitConsult($id_user);
-        $min                 = $tab_unite_temps_affectation[$tarifTemps["unite_temps_affectation"]];
-        $tarifreferencetemps = $tarifTemps["nombre_temps_affectation"]*$min;
-                
-        //modifier le temps comptabilisé en fonction de la frequence_temps_affectation
-        if($tarifTemps["frequence_temps_affectation"]==1){ 
-                //par jour
-                $date1 = date('Y-m-d');
-                $date2 = $date1;
-        }else if($tarifTemps["frequence_temps_affectation"]==2){ 
-                //par semaine;
-                $semaine = get_lundi_dimanche_from_week(date('W'));
-                $date1   = strftime("%Y-%m-%d",$semaine[0]);
-                $date2   = strftime("%Y-%m-%d",$semaine[1]);
-        
-        }else if($tarifTemps["frequence_temps_affectation"]==3){ 
-                //par mois
-                $date1 = date('Y-m')."-01";
-                $date2 = date('Y-m')."-31";
-        }
-            
-        //debug($tarifreferencetemps);
-        $resautilise = getTempsCredit($id_user,$date1,$date2);
-        $restant     = $tarifreferencetemps-$resautilise['util'];
-        $rapport     = round(($restant/$tarifreferencetemps)*100);
+    $transaction = $utilisateur->getTransactionForfait();
+    $forfait     = $utilisateur->getForfaitConsultation();
 
+    if ($forfait !== null) {
+
+
+        $min                   = $tab_unite_temps_affectation[$forfait->getUniteConsultation()];
+        $tarifreferencetemps   = $forfait->getDureeConsultation() * $min;
+
+        $restant     = $utilisateur->getTempsrestant();
+        $rapport     = round(($restant / $tarifreferencetemps)*100);
 ?>
     
                 <div class="table">
@@ -311,18 +325,18 @@
                         <thead><th>Nom</th><th>Date d'achat</th><th>Validit&eacute; </th><th>Statut</th><th></th></thead>
                         <tbody>
                             <tr>
-                                <td><?php echo $tariftemps[ $transactemps["id_tarif"]] ; ?> </td>
-                                <td><?php echo $transactemps["date_transac"] ; ?> </td>
+                                <td><?php echo htmlentities($forfait->getNom()) . " (" . number_format($forfait->getPrix(), 2, ",", " ") ; ?> &euro;)</td>
+                                <td><?php echo $transaction->getDate() ; ?> </td>
                                 <td>
                                     <?php echo $rapport." % (".getTime($restant).")"; ?>
                                     <div class="progress progress-sm active">
-                                        <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="<?php echo $rapport ?>" aria-valuemin="0" aria-valuemax="100" style="<?php echo "width:".$rapport."%"; ?>"></div>
+                                        <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="<?php echo $rapport ?>" aria-valuemin="0" aria-valuemax="100" style="<?php echo "width:" . $rapport . "%"; ?>"></div>
                                     </div>
                                 </td>
-                                <td><?php echo $forfaitArray[$transactemps["status_transac"]] ; ?> </td>
+                                <td><?php echo $forfaitArray[$transaction->getStatut()] ; ?> </td>
                                 <td>
-                                    <a href="index.php?a=21&b=3&typetransac=temps&idtransac=<?php echo $transactemps["id_transac"] ?>&iduser=<?php echo $id_user; ?>" ><button type="button"  data-toggle="tooltip"  title="Modifier" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></button></a>
-                                    &nbsp;<a href="index.php?a=6&act=del&type=temps&transac=<?php echo $transactemps["id_transac"]; ?>&iduser=<?php echo $id_user; ?>"><button type="submit" name="submit" class="btn btn-warning btn-sm"  data-toggle="tooltip"  title="Supprimer"><i class="fa fa-trash-o"></i></button></a>
+                                    <a href="index.php?a=21&b=3&typetransac=temps&idtransac=<?php echo $transaction->getId() ?>&iduser=<?php echo $id_user; ?>" ><button type="button"  data-toggle="tooltip"  title="Modifier" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></button></a>
+                                    &nbsp;<a href="index.php?a=6&act=del&type=temps&transac=<?php echo $transaction->getId(); ?>&iduser=<?php echo $id_user; ?>"><button type="submit" name="submit" class="btn btn-warning btn-sm"  data-toggle="tooltip"  title="Supprimer"><i class="fa fa-trash-o"></i></button></a>
                                 </td>
                             </tr>
                         </tbody>

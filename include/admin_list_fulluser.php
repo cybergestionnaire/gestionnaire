@@ -63,7 +63,9 @@
 
         if ($nbusersarchiv > 0) { 
             for($i = 0 ; $i < $nbusersarchiv ; $i++) {
-                moduserstatus($arrayusers[$i], 6); //6=archivé statistique
+                // $utilisateur = Utilisateur::getUtilisateurById($arrayusers[$i]);
+                // $utilisateur->archiver();
+                Utilisateur::archiver($arrayusers[$i]);
             }
             
             echo '<div class="row"><div class="col-md-4">';
@@ -161,17 +163,13 @@
                 }
                 
                 //TARIF CONSULTATION
-                //$tarifTemps          = getForfaitConsult($utilisateurRecherche->getId());
-                //$min                 = $tab_unite_temps_affectation[$tarifTemps["unite_temps_affectation"]];
-                //$tarifreferencetemps = $tarifTemps["nombre_temps_affectation"] * $min;
-                
                 $forfaitConsultation   = $utilisateurRecherche->getForfaitConsultation();
                 
                 if ($forfaitConsultation != null) {
                     $min                   = $tab_unite_temps_affectation[$forfaitConsultation->getUniteConsultation()];
                     $tarifreferencetemps   = $forfaitConsultation->getDureeConsultation() * $min;
             
-                    $restant     = $utilisateur->getTempsrestant();
+                    $restant     = $utilisateurRecherche->getTempsRestant();
                     $rapport     = round(($restant / $tarifreferencetemps)*100);
                 }
                 
@@ -220,7 +218,7 @@
                                 <a href="index.php?a=1&b=2&iduser=<?php echo $utilisateurRecherche->getId() ?>"><button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="fiche adh&eacute;rent"><i class="fa fa-edit"></i></button></a>
                                 &nbsp;<a href="index.php?a=6&iduser=<?php echo $utilisateurRecherche->getId() ?>"><button type="button" class="btn bg-yellow btn-sm"  data-toggle="tooltip" title="Abonnements"><i class="ion ion-bag"></i></button></a>
 <?php                            
-                if (chechUserAS($utilisateurRecherche->getId()) == TRUE) {
+                if (($utilisateur->getNBAteliersEtSessionsInscrit() + $utilisateur->getNBAteliersEtSessionsPresent()) > 0) {
 ?>
                                 &nbsp;<a href="index.php?a=5&b=6&iduser=<?php echo $utilisateurRecherche->getId() ?>"><button type="button" class="btn bg-primary btn-sm" data-toggle="tooltip" title="Autres inscriptions"><i class="fa fa-keyboard-o"></i></button></a>
 <?php
@@ -427,28 +425,7 @@
                         $min                   = $tab_unite_temps_affectation[$forfaitConsultation->getUniteConsultation()];
                         $tarifreferencetemps   = $forfaitConsultation->getDureeConsultation() * $min;
                         
-                    //modifier le temps comptabilisé en fonction de la frequence_temps_affectation
-                        if ($forfaitConsultation->getFrequenceConsultation() == 1) { 
-                            //par jour
-                            $date1 = date('Y-m-d');
-                            $date2 = $date1;
-                        }
-                        else if($forfaitConsultation->getFrequenceConsultation() == 2 ) { 
-                            //par semaine;
-                            $semaine = get_lundi_dimanche_from_week(date('W'));
-                            $date1   = strftime("%Y-%m-%d", $semaine[0]);
-                            $date2   = strftime("%Y-%m-%d", $semaine[1]);
-                    
-                        }
-                        else if($forfaitConsultation->getFrequenceConsultation() == 3) { 
-                            //par mois
-                            $date1 = date('Y-m') . "-01";
-                            $date2 = date('Y-m') . "-31";
-                        }
-                        
-                        //debug($tarifreferencetemps);
-                        $resautilise = getTempsCredit($utilisateur->getId(), $date1, $date2);
-                        $restant     = $tarifreferencetemps - $resautilise['util'];
+                        $restant     = $utilisateur->getTempsRestant();
                         $rapport     = round(($restant / $tarifreferencetemps)*100);
                     }
                     //dernière reservation
@@ -466,7 +443,6 @@
                             <a href="index.php?a=21&b=1&iduser=<?php echo $utilisateur->getId(); ?>" class="btn bg-navy btn-sm"  data-toggle="tooltip" title="Compte d'impression"><i class="fa fa-print"></i></a>
 <?php
                     if (($utilisateur->getNBAteliersEtSessionsInscrit() + $utilisateur->getNBAteliersEtSessionsPresent()) > 0) {
-                    //if (chechUserAS($utilisateur->getId()) == TRUE) {
 ?>
                             <a href="index.php?a=5&b=6&iduser=<?php echo $utilisateur->getId() ?>" class="btn bg-primary btn-sm" data-toggle="tooltip" title="Inscriptions Ateliers"><i class="fa fa-keyboard-o"></i></a>
 <?php
