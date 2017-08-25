@@ -59,13 +59,10 @@
 
     //------------------------------------------------
     //Affichage historique d'impression et credit de l'utilisateur
-    // if (checkPrint($id_user)) {
     if ($utilisateur->hasPrint()) {
         // infos utilisateur
         // $rown = getuser($id_user);
-    
-        // $totalprint = getDebitUser($id_user);
-        // $credituser = getCreditUser($id_user);    
+
         $restant    = $utilisateur->getImpressionCredit() - $utilisateur->getImpressionDebit();
         
         // Si l'utilisateur est externe, affichage du champs avec le nom
@@ -86,7 +83,7 @@
                 <br>
 <?php
         if (($restant) > 0) {
-            echo '<h4><span class="text-green">cr&eacute;dit restant sur le compte : ' . $restant . ' &euro; </span></h4>';
+            echo '<h4><span class="text-green">cr&eacute;dit restant sur le compte : ' . number_format($restant, 2, ',', ' ') . ' &euro; </span></h4>';
         } else if (($restant) < 0) {
             echo '<h4><span class="text-red">Le compte est d&eacute;biteur de ' . number_format($restant, 2, ',', ' ') . ' &euro; </span></h4>';
         } else if (($restant) == 0) {
@@ -106,11 +103,6 @@
 
         $impressions = $utilisateur->getImpressions();
 
-        // $result = getPrintById($id_user) ;
-        //debug(mysql_fetch_array($result));
-        // $credituser = getCreditPrintId($id_user);
-        // $nbc = mysqli_num_rows($credituser);
-        // if (($result != FALSE) OR ($nbc  >0)) {
         if ($impressions !== null && count($impressions) > 0 ) {
             // affichage
 ?>
@@ -139,9 +131,6 @@
                 if ($impression->getStatut() != 2) {
                 
                     // retrouver le tarif
-                    // $tarif  = mysqli_fetch_array(getPrixFromTarif($row['print_tarif']));
-                    // $prix   = round(($row['print_debit'] * $tarif['donnee_tarif']),2);
-                    // $statut = $statutPrint[$row['print_statut']];
                     $tarif = $impression->getTarif();
                     ///ajout utilisateur externe
                     if ($externe == 1) {

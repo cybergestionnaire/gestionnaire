@@ -62,8 +62,6 @@
     }
 
     // boucler pour faire le total des dépenses et du credit
-    // $totalprint = getDebitUser($id_user);
-    // $credituser = getCreditUser($id_user);
     $totalprint = $utilisateur->getImpressionDebit();
     $credituser = $utilisateur->getImpressionCredit();
     //total credite

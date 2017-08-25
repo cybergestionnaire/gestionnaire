@@ -25,15 +25,16 @@
     require_once("include/class/Forfait.class.php");
 
     // Page de gestion du compte d'un utilisateur
-    //$row        = getUser($_SESSION["iduser"]);
     $utilisateur  = Utilisateur::getUtilisateurById($_SESSION["iduser"]);
     //recuperation des tarifs categorieTarif(2)=adhesion
-    // $tarifs       = getTarifsbyCat(2);
     $tarif        = Tarif::getTarifById($utilisateur->getIdTarifAdhesion());
     
-    $lasteresa    = getLastResaUser($utilisateur->getId());
+    // $lasteresa    = getLastResaUser($utilisateur->getId());
+    $lasteresa    = $utilisateur->getLastResa();
     
-    if ($lasteresa == FALSE) {$lasteresa = "NC";}
+    
+    
+    if ($lasteresa == null) {$lasteresa = "NC";}
     
     //TARIF CONSULTATION
     $forfait = $utilisateur->getForfaitConsultation();
@@ -46,14 +47,6 @@
         $rapport     = round(($restant / $tarifreferencetemps) * 100);
     }
 
-    // if (FALSE != isset($row["id_user"])) {
-        // if ($row["sexe_user"] == "F") {
-            // $imgprofile = 'img/avatar/female.png' ;
-        // }
-        // else {
-            // $imgprofile = "img/avatar/male.png" ;
-        // }
-    // }
     $imgprofile = "img/avatar/" . $utilisateur->getAvatar();
 
     //Affichage d'une erreur si erreur il y a
@@ -92,7 +85,7 @@
             <div class="tab-content">
                 <div class="active tab-pane" id="activity">
                     <dl class="dl-horizontal">
-                        <dt>Derni&egrave;re consultation </dt><dd>le <?php echo getDayfr($lasteresa); ?></dd>
+                        <dt>Derni&egrave;re consultation </dt><dd>le <?php echo $lasteresa == "NC" ? "NC" : getDayfr($lasteresa->getDateResa()); ?></dd>
                         <dt>Tarif / Temps restant<dt><dd><span class="badge bg-blue"><?php echo htmlentities($forfait->getNom()) ?></span>&nbsp;&nbsp;<?php echo getTime($restant); ?></dd>
                         <dt>Adh&eacute;sion </dt><dd>A renouveller le <?php echo getDayfr($utilisateur->getDateRenouvellement()); ?></dd>
                         <dt>Au tarif de </dt><dd><?php echo $tarif->getNom() ?> (<?php echo $tarif->getDonnee() ?> €)</dd>

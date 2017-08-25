@@ -35,9 +35,6 @@
                    2=> "En programmation",
                    3=> "Annul&eacute;" );
 
-    $espaces = getAllepn();
-    // $espaces = Espace::getEspaces();
-
     // si b =2 inscription a un atelier
     if ($b == 2) {
         $atelier = Atelier::getAtelierById($idAtelier);

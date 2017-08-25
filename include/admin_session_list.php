@@ -27,14 +27,12 @@
 
     //$c==variable pour le changement de vue d'atelier
     $c = isset($_GET['c']) ? $_GET['c'] : '';
-    //$espaces = getAllepn();
-    //$espaces = Espace::getEspaces();
+
     
     //CHERCHER LES SESSIONS
 
 
     if ($_SESSION["status"] == 4) {
-        // $result = getFutsessions();
         $sessions = Session::getSessionsNonCloturees();
     }
     if ($_SESSION["status"] == 3) {
@@ -42,18 +40,16 @@
         switch ($c) {
             default :
             case 1:
-                // $result = getFutsessionsbyanim($anim);
                 $sessions = Session::getSessionsFuturesParAnimateur($_SESSION["iduser"]);
             break;
             
             case 2:
-                //$result = getFutsessions($_SESSION["idepn"]);
                 $sessions = Session::getSessionsFuturesParEspace($_SESSION["idepn"]);
             break;
             
             // réseau pas encore implémenté
             // case 3:
-                // $result = getFutsessions(0);
+
             // break;
         }
 

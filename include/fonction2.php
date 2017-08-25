@@ -195,41 +195,6 @@ if ($y==date('Y')){
 
 ///////////***********Transaction sur les ateliers, gestion des forfaits ***************///
 ///
-///les 50 dernières transactions
-function getLastTransactions()
-{
-
-$sql="SELECT distinct(`id_user`) FROM `tab_transactions` WHERE `id_tarif`> 1 AND `type_transac`='for' ORDER BY `date_transac` DESC";
-$db=opendb();
- $result = mysqli_query($db,$sql);
-      closedb($db);
-      if (FALSE == $result)
-      {
-          return FALSE ;
-      } else {
-        return $result;
-      }
-
-
-}
-
-//Touts les Forfaits actifs d'un utlisateur
-function getAllForfaitUser($id,$type)
-{
-
-$sql="SELECT * from `tab_transactions` WHERE id_user='".$id."' AND  type_transac='".$type."' ";
-
-$db=opendb();
- $result = mysqli_query($db,$sql);
-      closedb($db);
-      if (FALSE == $result)
-      {
-          return FALSE ;
-      } else {
-        return $result;
-      }
-
-}
 
 //gorfait utilise par l'adherent
 function getForfaitUtilise($iduser,$tarif)
@@ -248,121 +213,8 @@ $db=opendb();
 
 }
 
-
-///*****
-// DEPRECATED
-function getForfaitUserValid($iduser)
-{
-$sql="SELECT rel.`id_forfait`, `total_atelier`, `depense`, `statut_forfait`,`date_transac`,`status_transac` FROM `rel_user_forfait` as rel, tab_transactions as trans 
-WHERE rel.`id_user`=".$iduser." AND rel.`id_transac`=trans.`id_transac`
-AND rel.`statut_forfait` =1
-";
-
-$db=opendb();
- $result = mysqli_query($db,$sql);
-
- closedb($db);
-    
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-    $row=  mysqli_fetch_array($result);
-    return $row;
-  }
-
-
-}
-
-
-function getForfaitAchete($iduser,$type)
-{
-$sql="SELECT SUM(nbr_forfait*nb_atelier_forfait) AS total
-FROM `tab_transactions` , tab_tarifs
-WHERE `id_user` ='".$iduser."'
-AND type_transac='".$type."'
-AND `status_transac` =1
-AND tab_transactions.id_tarif = tab_tarifs.id_tarif";
-$db=opendb();
-$result = mysqli_query($db,$sql);
-closedb($db);
-///rappel statut transaction, encaissé=1, en attente=0, terminé=2
-  if (FALSE == $result)
-      {
-          return FALSE ;
-      } else {
-            
-        $row= mysqli_fetch_array($result);
-        if($row['total']==NULL){
-        return 0;
-        } else {
-        return $row['total'];
-        }
-      }
-
-
-}
 //////*****
 
-//getnbASUserEncours  calcule le nombre d'atelier et de session dont l'inscription est en cours ou validée
-function getnbASUserEncours($iduser,$statut)
-{
-$sql="SELECT count(`id_rel_atelier_user`)as atelier FROM `rel_atelier_user` WHERE `status_rel_atelier_user`=".$statut." AND `id_user`=".$iduser;
-$sql2="SELECT count(`id_rel_session`) as session FROM `rel_session_user`, tab_session WHERE `status_rel_session`=".$statut." AND tab_session.status_session=".$statut."  AND `id_user`=".$iduser." AND tab_session.id_session = rel_session_user.id_session ";
-
-$db=opendb();
- $result = mysqli_query($db,$sql);
- $result2 = mysqli_query($db,$sql2);
- closedb($db);
-      if ((FALSE == $result) AND (FALSE==$result2))
-      {
-          return FALSE ;
-      } else {
-        $row= mysqli_fetch_array($result);
-        $row2= mysqli_fetch_array($result2);
-        $nbre=$row["atelier"]+$row2["session"];
-        return $nbre;
-      }
-
-}
-
-//getnbASUserEncours  calcule le nombre d'atelier et de session dont l'inscription est validée
-function getnbASUservalidees($iduser)
-{
-$sql="SELECT count(`id_rel_atelier_user`) as atelier FROM `rel_atelier_user` WHERE `status_rel_atelier_user`=1 AND `id_user`=".$iduser;
-$sql2="SELECT count(`id_rel_session`)as session  FROM `rel_session_user` WHERE `status_rel_session`=1   AND `id_user`=".$iduser."  ";
-
-$db=opendb();
- $result = mysqli_query($db,$sql);
- $result2 = mysqli_query($db,$sql2);
- closedb($db);
-      if ((FALSE == $result) AND (FALSE==$result2))
-      {
-          return FALSE ;
-      } else {
-        $row= mysqli_fetch_array($result);
-        $row2= mysqli_fetch_array($result2);
-        $nbre=$row["atelier"]+$row2["session"];
-        return $nbre;
-      }
-
-}
-//retourne le nombre d'ateliers issus de forfaits déjà archivés
-function getFUserArchiv($iduser)
-{
-$sql="SELECT SUM(`total_atelier`) as nb FROM `rel_user_forfait` WHERE `statut_forfait`=2 AND `id_user`=".$iduser;
-$db=opendb();
- $result = mysqli_query($db,$sql);
- closedb($db);
-if (FALSE == $result)
-{
-  return FALSE ;
-} else {
-$row= mysqli_fetch_array($result);
-return $row['nb'];
-}
-
-}
 
 //Forfait à modifier
 function getForfait($id)
@@ -426,40 +278,6 @@ return TRUE;
 }
 }
 
-function delreluserforfaittemps($iduser)
-{
-    $sql="DELETE FROM `rel_forfait_user` WHERE `id_user`='".$iduser."' ";
-    $db=opendb();
-$result = mysqli_query($db,$sql);
-closedb($db);
-if (FALSE == $result)
-{
-  return FALSE ;
-} else {
-return TRUE;
-}
-}
-
-// insérer le forfait acheté, et la relation pour le décompte des ateliers du forfait
-function addForfaitUser($type_transac,$id_user,$tarif_forfait,$nbreforfait,$date,$statutp)
-{
-
-$sql="INSERT INTO `tab_transactions`(`id_transac`, `type_transac`, `id_user`, `id_tarif`, `nbr_forfait`, `date_transac`, `status_transac`) VALUES ('','".$type_transac."','".$id_user."','".$tarif_forfait."','".$nbreforfait."','".$date."','".$statutp."')";
-
-$db=opendb();
-$result = mysqli_query($db,$sql);
-$idtransac=mysqli_insert_id($db);
-
-closedb($db);
-if (FALSE == $result)
-{
-  return FALSE ;
-} else {
-return $idtransac;
-}
-
-}
-
 function addRelforfaitUser($id_user,$idtransac,$nbatelier,$depense,$statutp)
 {
     
@@ -518,116 +336,6 @@ $db=opendb();
       }
 
 }
-
-//FORFAIT ATELIERS 
-//**Retoune le forfait atelier en cours pour l'adherent
-
-function getForfaitUserEncours($iduser)
-{
-$sql="SELECT `id_forfait`,`total_atelier`,`depense` FROM `rel_user_forfait` WHERE `id_user`=".$iduser." AND `statut_forfait`=1";
-$db=opendb();
-      $result = mysqli_query($db,$sql);
-      closedb($db);
-      if (FALSE == $result)
-      {
-          return FALSE ;
-      } else {
-        $row=mysqli_fetch_array($result);
-        return $row;
-      }
-
-}
-
-//incrementer le nombre depense
-function updateForfaitdepense($id)
-{
-    $sql="UPDATE `rel_user_forfait` SET `depense`=depense+1 
-    WHERE `id_forfait`='".$id."' 
-    ";
-
-    $db=opendb();
-      $result = mysqli_query($db,$sql);
-      closedb($db);
-      if (FALSE == $result)
-      {
-          return FALSE ;
-      } else {
-        return TRUE;
-      }
-
-}
-
-//retirer un atelier du forfait en cours
-function DeleteOneFromForfait($id,$iduser)
-{
-
-$sql="UPDATE `rel_user_forfait` SET `depense`=`depense`-1 WHERE `id_user`=".$iduser." AND `id_forfait`=".$id." ";
-    $db=opendb();
-      $result = mysqli_query($db,$sql);
-      closedb($db);
-      if (FALSE == $result)
-      {
-          return FALSE ;
-      } else {
-        return TRUE;
-      }
-
-
-}
-
-//cloturer le forfait en cours d'un adherent
-function clotureforfaitUser($depense,$idforfait)
-{
-$sql="UPDATE `rel_user_forfait` 
-SET `depense`=".$depense.",
-`statut_forfait`=2 
-WHERE `id_forfait`=".$idforfait." ";
-$db=opendb();
-      $result = mysqli_query($db,$sql);
-      closedb($db);
-      if (FALSE == $result)
-      {
-          return FALSE ;
-      } else {
-        return TRUE;
-      }
-
-
-}
-//determiner le statut d'un forfait
-function getForfaitDonnesbyID($id,$iduser)
-{
-$sql="SELECT `id_forfait`, `total_atelier`, `depense`, `statut_forfait` FROM `rel_user_forfait` WHERE `id_user`=".$iduser." AND `id_transac`=".$id;
-$db=opendb();
-      $result = mysqli_query($db,$sql);
-      closedb($db);
-      if (FALSE == $result)
-      {
-          return FALSE ;
-      } else {
-        $row=mysqli_fetch_array($result);
-        return $row;
-      }
-}
-
-
-//del forfait retirer un forfait d'un compte
-function delForfait($id)
-{
-$sql="DELETE FROM `tab_transactions` WHERE `id_transac`=".$id;
-$db=opendb();
-      $result = mysqli_query($db,$sql);
-      closedb($db);
-      if (FALSE == $result)
-      {
-          return FALSE ;
-      } else {
-        return TRUE;
-      }
-
-
-}
-
 
 //
 //////////////********GESTION DES SESSIONS*********///////////////////
@@ -996,27 +704,6 @@ $sql="UPDATE `tab_as_stat` SET `inscrits`=".$inscrit.",`presents`=".$present.",`
 //////////
 /// Gestion des tarifs //////
 
-
-// retourne le prix et le nom du tarif à partir du tarif sélectionné
-function getPrixFromTarif($id)
-{
-
-$sql=" SELECT `donnee_tarif`,`nom_tarif`
-FROM `tab_tarifs`
-WHERE `id_tarif`='".$id."'
- ";
-$db=opendb();
-$result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-    
-    return $result ;
-  }
-}
-
 function getTarifs($cat)
 {
 $sql="SELECT * FROM `tab_tarifs` WHERE `categorie_tarif`='".$cat."' AND `id_tarif`>1 ORDER BY `id_tarif` ASC";
@@ -1030,32 +717,6 @@ $sql="SELECT * FROM `tab_tarifs` WHERE `categorie_tarif`='".$cat."' AND `id_tari
        //  $row = mysqli_fetch_array($result);
         return $result ;
       }
-}
-
-
-function getTarifsbyCat($t)
-{
-
-$sql=" SELECT id_tarif, nom_tarif,donnee_tarif
-FROM  `tab_tarifs` 
-WHERE  `categorie_tarif` ='".$t."'
-ORDER BY `id_tarif` ASC";
-$db=opendb();
-$result = mysqli_query($db,$sql);
-  closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-      $tarif = array();
-        $nb= mysqli_num_rows($result);
-        for ($i=1;$i<=$nb;$i++)
-        {
-            $row = mysqli_fetch_array($result);
-            $tarif[$row["id_tarif"]] = $row["nom_tarif"]." (".$row["donnee_tarif"]." &euro;)";
-        }
-        return $tarif ;
-  }
 }
 
 function getNomTarif($id)

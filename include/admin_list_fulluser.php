@@ -144,11 +144,7 @@
                 $aujourdhui         = date_create(date('Y-m-d'));
                 $daterenouvellement = date_create($utilisateurRecherche->getDateRenouvellement());
                 
-                // $age                = date('Y')-$row["annee_naissance_user"];
-                // $adhesion           = getNomTarif($row["tarif_user"]);
-                // $aujourdhui         = date_create(date('Y-m-d'));
-                // $daterenouvellement = date_create($row["dateRen_user"]);
-                $interval = date_diff($aujourdhui,$daterenouvellement);
+                $interval = date_diff($aujourdhui, $daterenouvellement);
                 //debug($interval->format('%R%a'));
                 if ($utilisateurRecherche->getStatut() == 1) {
                     if ($daterenouvellement <= $aujourdhui) {
@@ -180,8 +176,9 @@
                 }
                 
                 //dernière reservation
-                $lasteresa = getLastResaUser($utilisateurRecherche->getId());
-                if ($lasteresa == FALSE) {
+                // $lasteresa = getLastResaUser($utilisateurRecherche->getId());
+                $lasteresa = $utilisateurRecherche->getLastResa();
+                if ($lasteresa == null) {
                     $lasteresa = "NC";
                 }
 ?>
@@ -192,7 +189,7 @@
                             
                             <td><?php echo  htmlentities($utilisateurRecherche->getLogin()) ?></td>
                             <td><?php echo $age ?> ans</td>
-                            <td><?php echo $lasteresa ?></td>
+                            <td><?php echo $lasteresa == "NC" ? "Inconnu" : getDayfr($lasteresa->getDateResa()); ?></td>
                             <td><?php echo $statutarray[$utilisateurRecherche->getStatut()] ?></td>
                             <td><span class="<?php echo $classadh ?>"><?php echo $adhesion ?></span></td>
                             <td>
@@ -399,7 +396,6 @@
                     $utilisateur = $utilisateurs[$i];
                     $age = $utilisateur->getAge();
                     //ADHESION
-                    // $adhesion = getNomTarif($utilisateur->getIdTarifAdhesion());
                     $tarif              = Tarif::getTarifById($utilisateur->getIdTarifAdhesion());
                     $adhesion           = $tarif != null ? $tarif->getNom() : '' ;
                     $aujourdhui         = date_create(date('Y-m-d'));
@@ -429,8 +425,10 @@
                         $rapport     = round(($restant / $tarifreferencetemps)*100);
                     }
                     //dernière reservation
-                    $lasteresa = getLastResaUser($utilisateur->getId());
-                    if ($lasteresa == FALSE) {
+                    // $lasteresa = getLastResaUser($utilisateur->getId());
+                    $lasteresa = $utilisateur->getLastResa();
+
+                    if ($lasteresa == null) {
                         $lasteresa = "NC";
                     }
                     //debug($lasteresa);
@@ -454,7 +452,7 @@
                         <td><?php echo htmlentities($utilisateur->getPrenom()) ?></td>
                         <td><?php echo htmlentities($utilisateur->getLogin()) ?></td>
                         <td><?php echo $age ?> ans</td>
-                        <td><?php echo $lasteresa ?></td>
+                        <td><?php echo $lasteresa == "NC" ? "Inconnu" : getDayfr($lasteresa->getDateResa()); ?></td>
                         <td><span class="<?php echo $classadh ?>"><?php echo $adhesion ?></span></td>
                         <td>
 <?php                        

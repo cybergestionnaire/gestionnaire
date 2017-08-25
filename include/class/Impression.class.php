@@ -241,11 +241,11 @@ class Impression
         $impressions = null;
     
         $db      = Mysql::opendb();
-        $sql     = "SELECT * FROM tab_print
-                    WHERE print_user='" . $idUtilisateur . "'
-                      AND TO_DAYS(NOW()) - TO_DAYS(print_date) <= 360
-                    ORDER BY `print_date` DESC ";
-                    
+        $sql     = "SELECT * FROM tab_print "
+                 . "WHERE print_user='" . $idUtilisateur . "' "
+                 . "  AND TO_DAYS(NOW()) - TO_DAYS(print_date) <= 360 "
+                 . "ORDER BY `print_date` DESC ";
+
         $result  = mysqli_query($db,$sql);
         
         Mysql::closedb($db);

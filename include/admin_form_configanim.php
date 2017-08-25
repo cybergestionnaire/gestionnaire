@@ -55,7 +55,6 @@
     }    
 
     // recupere les espaces
-    // $espaces     = getAllepn();
     $espaces  = Espace::getEspaces();
     //recupere les salles
     $salles   = Salle::getSalles();

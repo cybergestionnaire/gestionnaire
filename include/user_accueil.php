@@ -645,7 +645,6 @@
                     <!-- chat item -->
 <?php
             $animateurs   = Utilisateur::getAnimateurs();
-            //$listeAnim    = getAllAnim();
             $listeMessage = readMyMessage($_SESSION["iduser"]);
             $nb           = mysqli_num_rows($listeMessage);
             $urlRedirect  = "index.php";

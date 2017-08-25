@@ -120,24 +120,12 @@
                 
             break;
                 
-                /*
-            case 2:   // modifie une transaction
-                 if (FALSE == modPrint($id_transac,$date_p,$debit_p,$tarif_p, $statut_p, $credit_p,$nomuser_p, $moyen_p ))
-                 {
-                     header("Location: ./index.php?a=21&mesno=0");
-                 } else {
-                     header("Location: ./index.php?a=21&b=1&iduser=".$id_user."");
-                 }
-            break;
-                
-                */
-                
             case 4: //crediter le compte d'impression
                 $credit_p = isset($_POST["credit"]) ? $_POST["credit"] : "";
                 $date_p   = isset($_POST["datec"]) ? $_POST["datec"] : "";
+                $moyen_p  = isset($_POST["moyen_paiement"]) ? $_POST["moyen_paiement"] : "";
                 //statut 2 == credit uniquement
                 if (isset($credit_p)) {
-                    // if (FALSE == addPrint($date_p, $id_user, 0, 0, 2, $credit_p, $nomuser_p, $epn_p, $caissier,$moyen_p )) {
                     if (Impression::creerImpression($date_p, $id_user, 0, 0, 2, $credit_p, $nomuser_p, $epn_p, $caissier,$moyen_p ) !== null) {
                         header("Location: ./index.php?a=21&mesno=0");
                     } else {

@@ -33,11 +33,11 @@ $statusarray=array(
     require_once("include/class/SessionDate.class.php");
     require_once("include/class/StatAtelierSession.class.php");
     
-    error_log('in post_session_presence.php');
-    error_log("---- POST ----");
-	error_log(print_r($_POST, true));
-	error_log("---- GET  ----");
-	error_log(print_r($_GET, true));
+    // error_log('in post_session_presence.php');
+    // error_log("---- POST ----");
+    // error_log(print_r($_POST, true));
+    // error_log("---- GET  ----");
+    // error_log(print_r($_GET, true));
 
     $act = isset($_GET["act"]) ? $_GET["act"] : '';
 
@@ -49,26 +49,27 @@ $statusarray=array(
         $sessionDate = SessionDate::getSessionDateById($iddate);
         $session     = $sessionDate->getSession();
         
-               
         // on remet tout le monde en inscrit
         foreach ($sessionDate->getUtilisateursPresents() as $utilisateur) {
             $sessionDate->inscrireUtilisateurInscrit($utilisateur->getId());
-            $depense = getForfaitUserEncours($utilisateur->getId());
-            if ($depense != FALSE) {
-                DeleteOneFromForfait($depense["id_forfait"], $utilisateur->getId());
+            
+            $forfaitAtelier = $utilisateur->getForfaitsAtelier()[0];
+            if ($forfaitAtelier !== null) {
+                $forfaitAtelier->decremente();
             }
         }
         
         $nbInscritsDepart = $sessionDate->getNbUtilisateursInscrits();
         
         foreach ($_POST['present_'] as $present) {
+            $utilisateur = Utilisateur::getUtilisateurById($present);
             $sessionDate->inscrireUtilisateurPresent($present);
-            $depense = getForfaitUserEncours($present);
-            if ($depense != FALSE) {
-                if ($depense["depense"] + 1 == $depense["total_atelier"]) {
-                    clotureforfaitUser($depense["total_atelier"], $depense["id_forfait"]);
+            $forfaitAtelier = $utilisateur->getForfaitsAtelier()[0];
+            if ($forfaitAtelier !== null) {
+                if ($forfaitAtelier->getDepense() + 1 == $forfaitAtelier->getTotal()) {
+                    $forfaitAtelier->cloturer();
                 } else {
-                    updateForfaitdepense($depense["id_forfait"]);
+                    $forfaitAtelier->incremente();
                 }
             }
         }

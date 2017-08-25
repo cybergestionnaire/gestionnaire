@@ -72,9 +72,7 @@
                 $titre = "Renouveller ou modifier l'adh&eacute;sion";
             }
     
-            $idTarif         = $utilisateur->getIdTarifAdhesion();
-            // $tarifs        = getTarifsbyCat(2);
-            // $adhesiontarif = $tarifs[$tarif];
+            $idTarif       = $utilisateur->getIdTarifAdhesion();
             $adhesiontarif = $utilisateur->getTarifAdhesion();
     
         break;
@@ -86,7 +84,6 @@
             if ($transac != '') {
                 //modification d'une transaction
                 $titre        = "Modifier/Encaisser un forfait pour " . htmlentities($nom) . " " . htmlentities($prenom);
-                //$tariforfaits = getTarifsbyCat(5);
                 $transaction  = Transaction::getTransactionById($transac);
                 $nbrforfait   = $transaction->getNombreForfait();
                 $datef        = $transaction->getDate();
@@ -99,9 +96,7 @@
                 
             } else {
                 //nouveau forfait a crediter
-                $titre        = "Encaisser un forfait pour ". htmlentities($nom) . " " . htmlentities($prenom);
-                // $tariforfaits = getTarifsbyCat(5);
-                // $forfait_user = getAllForfaitUser($id_user,"for");
+                $titre        = "Encaisser un forfait pour " . htmlentities($nom) . " " . htmlentities($prenom);
                 $forfait_user = 0; // inutile ?
                 $datef        = date("Y-m-d");
                 $nbrforfait   = 1;
@@ -112,7 +107,7 @@
 
         //les forfaits temps consultation
         case "temps":
-            $titre    = "Ajouter du temps de consultation pour ".$nom." ".$prenom;
+            $titre    = "Ajouter du temps de consultation pour " . htmlentities($nom) . " " . htmlentities($prenom);
             $forfaits = Forfait::getForfaits();
             if ($transac != '') {
                 $url_redirect = "index.php?a=21&b=3&idtransac=" . $transac . "&typetransac=" . $typeTransac . "&iduser=" . $id_user ;
@@ -160,7 +155,7 @@
         $paiement_p = $impression->getPaiement();
         
         // recuperation des tarifs disponibles
-        // $tarifs     = getTarifsbyCat(1); //1= impressions
+        //1= impressions
         $tarifs = Tarif::getTarifsByCategorie(1);
         //le prix indicatif
         
@@ -170,14 +165,12 @@
             
             $debit_p  = $_POST["debitprint"];
             $tarif_p  = Tarif::getTarifById($_POST["tarifprint"]);
-            // $tarif    = mysqli_fetch_array(getPrixFromTarif($tarif_p));
             $credit_p = round(($_POST["debitprint"] * $tarif_p->getDonnee()),2);
             $prix     = $credit_p;
             
         } else {
             $tarif_p  = $impression->getTarif();
             $credit_p = $impression->getCredit();
-            // $tarif    = mysqli_fetch_array(getPrixFromTarif($tarif_p));
             $debit_p  = $impression->getNombreImpression();
             $prix     = round(($debit_p * $tarif_p->getDonnee()), 2);
         }
@@ -287,7 +280,6 @@
         $daterenouv2 = date_create($today);
         date_add($daterenouv2, date_interval_create_from_date_string('365 days'));
         $daterenouv2 = date_format($daterenouv2, 'Y-m-d');
-        $tarifadhs   = getTarifsbyCat(2);
         $tarifsAdhesion = Tarif::getTarifsByCategorie(2);
 
 ?>

@@ -18,11 +18,11 @@
 */
 
     ///**********Fichier de modification d'une transaction *************///
-    error_log('in post_transac.php');
-    error_log("---- POST ----");
-    error_log(print_r($_POST, true));
-    error_log("---- GET  ----");
-    error_log(print_r($_GET, true));
+    // error_log('in post_transac.php');
+    // error_log("---- POST ----");
+    // error_log(print_r($_POST, true));
+    // error_log("---- GET  ----");
+    // error_log(print_r($_GET, true));
     
     require_once("include/class/Utilisateur.class.php");
     require_once("include/class/Tarif.class.php");
@@ -59,7 +59,6 @@
                     $statutp = "2";
                 }
                 $impression = Impression::getImpressionById($transac);
-                // if (FALSE == modPrint($transac,$datep,$debitp,$tarifp, $statutp, $creditp,$nomuserp,$moyen_p)) {
                 if ($impression->modifier($datep, $impression->getIdUtilisateur(), $debitp, $tarifp, $statutp, $creditp, $nomuserp, $impression->getIdEspace(), $impression->getIdCaissier(), $moyen_p)) {
                     header("Location: ./index.php?a=21&mesno=0");
                 } else {
@@ -132,7 +131,6 @@
             // error_log("Dans forfait !");
             //recuperation
             if (isset($_POST["submit"])) {
-                error_log("Submit set !");
                 $date          = isset($_POST["date"])          ? $_POST["date"] : "";
                 $idTarif       = isset($_POST["tarif_forfait"]) ? $_POST["tarif_forfait"] : "";
                 $nbredeforfait = isset($_POST["nbrf"])          ? $_POST["nbrf"] : "";
@@ -152,7 +150,7 @@
                 } else {
                     $statutp = "0"; // en attente de paiement
                 }
-                error_log("transac = " . $transac );
+
                 if ($transac != '') {
                     //modification
                     if (FALSE == modifForfaitUser($transac, $idTarif, $date, $nbredeforfait, $statutp, $nbatelier)) {
@@ -162,13 +160,11 @@
                     }   
                 } else {
                     //creation
-                    // $idtransac = addForfaitUser($type_transac, $id_user, $idTarif, $nbreforfait, $date, $statutp);
                     $transaction = Transaction::creerTransaction($type_transac, intval($id_user), $idTarif, $nbredeforfait, $date, $statutp);
                     if ($transaction === null ) {
                          header("Location: ./index.php?a=6&mesno=0&iduser=" . $id_user . "");
                     } else {
                         ///verifier avant la participation aux ateliers et incrementer pour régulariser !
-                        //$avalid  = getnbASUserEncours($id_user, 1);// total des ateliers et session validés
                         $utilisateur = Utilisateur::getUtilisateurById($id_user);
                         $avalid = $utilisateur->getNBAteliersEtSessionsPresent();
                         // error_log("NbASEnCours = " . $avalid );
@@ -178,7 +174,6 @@
                         // error_log("utilsateurASP -> " . $utilisateur->getNBAteliersEtSessionsPresent());
                         // error_log("utilsateurAP -> " . count($utilisateur->getAteliersPresent()));
                         // error_log("utilsateurSP -> " . count($utilisateur->getSessionDatesPresent()));
-                        // $farchiv = getFUserArchiv($id_user);//anciens forfaits archivés à décompter..
                         $farchiv = $utilisateur->getNbForfaitsArchives();
                         $reste   = $avalid - $farchiv;
                         if ($reste > 0) {
@@ -187,7 +182,7 @@
                             $depense = 0;
                         }
                         
-                        // laissé pour compatibilité avec EPN-Connect
+                        // A REVOIR !!!!
                         addRelforfaitUser($id_user, $transaction->getId(), $nbatelier, $depense, $statutp);
                         
                         header("Location: ./index.php?a=6&iduser=" . $id_user . "");
@@ -232,10 +227,8 @@
                     }  
                 } else {
                     //creation
-                    // creerTransaction($type, $idUtilisateur, $idTarif, $nombreForfait, $date, $statut)
                     $transaction = Transaction::creerTransaction($type_transac, $id_user, $tarif_forfait, $nbreforfait, $date, $statutp);
-                    
-                    //$idtransac = addForfaitUser($type_transac,$id_user,$tarif_forfait,$nbreforfait,$date,$statutp);
+
                 
                     // if (FALSE == $idtransac ) {
                     if ($transaction === null ) {

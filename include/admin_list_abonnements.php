@@ -60,13 +60,13 @@
 
 <?php
       // Les adhérents // MODIF 2012 : liste des 25 derniers inscrits......
-    $result = getLastTransactions();
-    //debug($result);
-    if (FALSE == $result) {
+    
+    $utilisateurs = Utilisateur::getUtilisateursAvecUnForfaitAtelierEnCours();
+
+    if ($utilisateurs === null) {
         echo getError(6);
     } else { // affichage du resultat
-        $nb  = mysqli_num_rows($result);
-        // debug($nb);
+        $nb  = count($utilisateurs);
     
         if ($nb > 0) {
 ?>
@@ -101,57 +101,42 @@
                     </thead>
                     <tbody> 
 <?php
-            for ($i = 0 ; $i < $nb ; $i++) {
-                $row = mysqli_fetch_array($result) ;
-                //debug($row);
-                $nom = getUser($row["id_user"]);
-            
-                //total forfait acheté en cours ! statut = 1 !!
-                $rowforfait = getForfaitUserValid($row["id_user"]);
-                if ($rowforfait != false) {
-                    $totalachete = $rowforfait["total_atelier"];
-                    $depense     = $rowforfait["depense"];
-                    $datetransac = $rowforfait["date_transac"];
-                    $reste       = $totalachete - $depense;
-                } else { //aucun forfait en cours
-                    $totalachete = 0;
-                    $depense     = 0;
-                    $datetransac = "0 !";
-                    $reste       = 0;
-                }
-            
-                //participation en cours
-                $inscrit     = getnbASUserEncours($row["id_user"],0); //0= pas validé encore
-                $nbASpresent = getnbASUservalidees($row['id_user']);// 1= présence validée & depensé
-            
-            
-                //nombre d'inscriptions validées hors forfait
-                $nbForfait = getForfaitAchete($row['id_user'],"for"); // total des ateliers achetés
-                $nbrestant = $nbForfait-$nbASpresent; //restant apres dépense
+            foreach ($utilisateurs as $utilisateur) {
+                $forfaitAtelier = $utilisateur->getForfaitsAtelier()[0];
+                $transaction    = $forfaitAtelier->getTransaction();
                 
+                $nbASInscrit    = $utilisateur->getNBAteliersEtSessionsInscrit();
+                
+                $nbASPresent    = $utilisateur->getNBAteliersEtSessionsPresent();
+                $nbForfait      = $utilisateur->getNbForfaitsArchives();
+                $nbrestant      = $nbForfait - $nbASPresent;
                 if ($nbrestant >= 0) {
                     $nbHorsForfait = "0";
                 } else {
-                    $nbHorsForfait = "<span class=\"text-red\">".abs($nbrestant)."&nbsp;&nbsp;</span><span class=\"btn bg-red btn-xs\" data-toggle=\"tooltip\" title=\"Ces ateliers n'ont pas &eacute;t&eacute; pay&eacute;s !\"><i class=\"fa fa-warning\"></i></span>";
+                    $nbHorsForfait = "<span class=\"text-red\">" . abs($nbrestant) . "&nbsp;&nbsp;</span><span class=\"btn bg-red btn-xs\" data-toggle=\"tooltip\" title=\"Ces ateliers n'ont pas &eacute;t&eacute; pay&eacute;s !\"><i class=\"fa fa-warning\"></i></span>";
                 }
-            
-                echo "<tr class=\"".$class."\">
-                    <td>".$nom["nom_user"]."</td>
-                    <td>".$nom["prenom_user"]."</td>
-                    <td>".$datetransac."</td>
-                    <td>".$totalachete."</td>
-                    
-                    <td>".$depense."</td>
-                    <td>".$reste."</td>
-                    <td>".$inscrit."</td>
-                    <td>".$nbHorsForfait."</td>
-                    <td><a href=\"index.php?a=6&iduser=".$row["id_user"]."\" class=\"btn  bg-yellow btn-sm\"  data-toggle=\"tooltip\" title=\"Abonnements\"><i class=\"ion ion-bag\"></i></a>
-                    <a href=\"index.php?a=5&b=6&iduser=".$row["id_user"]."\"  class=\"btn bg-green btn-sm\"  data-toggle=\"tooltip\" title=\"Historique ateliers\"><i class=\"fa fa-keyboard-o\"></i></a>
-                    <!--<a href=\"lettre_atelier.php?user=".$row['id_user']."&epn=".$epn."\" target=\"_blank\"  class=\"btn btn-info sm\"  data-toggle=\"tooltip\" title=\"Imprimer les inscriptions\"><i class=\"fa  fa-envelope\"></i></a>-->
-                    </td>
-                     </tr>";
-            
-            }
+                
+?>
+                        <tr class="<?php echo $class ?>">
+                            <td><?php echo htmlentities($utilisateur->getNom()) ?></td>
+                            <td><?php echo htmlentities($utilisateur->getPrenom()) ?></td>
+                            <td><?php echo $transaction->getDate() ?></td>
+                            <td><?php echo $forfaitAtelier->getTotal() ?></td>
+                            
+                            <td><?php echo $forfaitAtelier->getDepense() ?></td>
+                            <td><?php echo $forfaitAtelier->getTotal() - $forfaitAtelier->getDepense() ?></td>
+                            <td><?php echo $nbASInscrit ?></td>
+                            <td><?php echo $nbHorsForfait ?></td>
+                            <td>
+                                <a href="index.php?a=6&iduser=<?php echo $utilisateur->getId() ?>" class="btn  bg-yellow btn-sm"  data-toggle="tooltip" title="Abonnements"><i class="ion ion-bag"></i></a>
+                                <a href="index.php?a=5&b=6&iduser=<?php echo $utilisateur->getId() ?>"  class="btn bg-green btn-sm"  data-toggle="tooltip" title="Historique ateliers"><i class="fa fa-keyboard-o"></i></a>
+                                <!--<a href="lettre_atelier.php?user=<?php echo $utilisateur->getId() ?>&epn=<?php echo $epn ?>" target="_blank"  class="btn btn-info sm"  data-toggle="tooltip" title="Imprimer les inscriptions"><i class="fa  fa-envelope"></i></a>-->
+                            </td>
+                        </tr>
+<?php
+                     }
+
+
             ?>
                     </tbody> 
                 </table>

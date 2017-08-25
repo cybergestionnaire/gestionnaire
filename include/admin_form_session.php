@@ -25,7 +25,6 @@
     $idsession  = isset($_GET["idsession"]) ? $_GET["idsession"] : '';
     $m          = isset($_GET["m"]) ? $_GET["m"] : '';
 
-    // $sessionsujet = getAllSujetSession() ;
     $sessionSujets = SessionSujet::getSessionSujets();
     if ($_SESSION["status"] == 4 ) {
         $salles        = Salle::getSalles();
@@ -35,12 +34,6 @@
     $animateurs    = Utilisateur::getAnimateurs();
     $tarifs        = Tarif::getTarifsByCategorie(5);
     
-    //recupérer les animateurs
-    // $allanim      = getAllAnim();
-    //récupérer les salles
-    // $allsalles    = getAllSalleAtelier();
-    //recuperation des tarifs categorieTarif(5)=forfait atelier
-    // $tarifs       = getTarifsbyCat(5);
     //statuts des dates
     $statusarray  = array(
         0=>"Atelier En cours",

@@ -25,6 +25,8 @@ require_once("Atelier.class.php");
 require_once("Session.class.php");
 require_once("Transaction.class.php");
 require_once("Impression.class.php");
+require_once("Resa.class.php");
+require_once("ForfaitAtelier.class.php");
 
 class Utilisateur
 {
@@ -139,11 +141,20 @@ class Utilisateur
     
     public function getIdTarifConsultation() {
         // return $this->_idTarifConsultation;
-        return $this->getTransactionForfait()->getIdTarif();
+        return $this->getTransactionForfaitConsultation()->getIdTarif();
     }
     
-    public function getTransactionForfait() {
-        return Transaction::getTransactionByUtilisateurAndType($this->_id, 'temps');
+    public function getTransactionForfaitsAteliers() {
+        return Transaction::getTransactionsByUtilisateurAndType($this->_id, 'for');
+    }
+
+    public function getTransactionForfaitConsultation() {
+        $transaction = null;
+        $transactions = Transaction::getTransactionsByUtilisateurAndType($this->_id, 'temps');
+        if ($transactions !== null) {
+            $transaction = $transactions[0];
+        }
+        return $transaction;
     }
 
     public function getForfaitConsultation() {
@@ -153,7 +164,7 @@ class Utilisateur
         //return Forfait::getForfaitById($this->_idTarifConsultation);
         
         $forfait = null;
-        $transactionForfait = Transaction::getTransactionByUtilisateurAndType($this->_id, 'temps');
+        $transactionForfait = $this->getTransactionForfaitConsultation();
         
         if ($transactionForfait !== null) {
             $forfait = Forfait::getForfaitById($transactionForfait->getIdTarif());
@@ -561,8 +572,12 @@ class Utilisateur
         return $somme;
     }
     
-    function getNombreForfaitsAteliers() {
-        $somme = -1;
+    public function getForfaitsAtelier() {
+        return ForfaitAtelier::getForfaitsAtelierByIdUtilisateur($this->_id);
+    }
+    
+    public function getNombreForfaitsAteliers() {
+        $somme = 0;
         
         $db    = Mysql::opendb();
         $sql = "SELECT SUM(nbr_forfait*nb_atelier_forfait) AS total "
@@ -650,6 +665,10 @@ class Utilisateur
     
     public function getTransactionsEnAttente() {
         return Transaction::getTransactionsEnAttenteByIdutilisateur($this->_id);
+    }
+    
+    public function getLastResa() {
+        return Resa::getLastResaFromUtilisateur($this->_id);
     }
     
     public function modifier( $dateInscription,
@@ -1516,7 +1535,25 @@ class Utilisateur
     } */
     
     
-   
+    public static function getUtilisateursAvecUnForfaitAtelierEnCours() {
+        $utilisateurs = null;
+        
+        $db = Mysql::opendb();
+
+        $sql = "SELECT tab_user.* FROM tab_user, rel_user_forfait WHERE rel_user_forfait.id_user = tab_user.id_user AND rel_user_forfait.statut_forfait = 1";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            $utilisateurs = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+        
+        return $utilisateurs ;
+    }
     
     
 }

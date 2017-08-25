@@ -28,8 +28,6 @@
     require_once("include/class/Atelier.class.php");
     require_once("include/class/StatAtelierSession.class.php");
 
-//$idAtelier  = isset($_GET["idatelier"]) ? $_GET["idatelier"] : '' ;
-
     if (isset($_POST["valider_presence"])) {  // si le formulaire est posté
 
         //recuperation des variables
@@ -45,8 +43,10 @@
         
         foreach ($utilisateursPresents as $utilisateur) {
             $atelier->inscrireUtilisateurInscrit($utilisateur->getId());
-            $depense = getForfaitUserEncours($utilisateur->getId());
-            DeleteOneFromForfait($depense["id_forfait"], $utilisateur->getId());
+            $forfaitAtelier = $utilisateur->getForfaitsAtelier()[0];
+            if ($forfaitAtelier !== null) {
+                $forfaitAtelier->decremente();
+            }
         }      
         
         $inscritsAuDepart = $atelier->getNbUtilisateursInscrits();
@@ -62,11 +62,14 @@
                     if (in_array($utilisateur->getId(), $_POST['present_'])) {
                         // error_log("inscription présent de " . $utilisateur->getNom());
                         $atelier->inscrireUtilisateurPresent($utilisateur->getId());
-                        $depense = getForfaitUserEncours($utilisateur->getId());
-                        if ($depense["depense"]+1 == $depense["total_atelier"]) {
-                            clotureforfaitUser($depense["total_atelier"], $depense["id_forfait"]);
-                        } else {
-                            updateForfaitdepense($depense["id_forfait"]);
+
+                        $forfaitAtelier = $utilisateur->getForfaitsAtelier()[0];
+                        if ($forfaitAtelier !== null) {
+                            if ($forfaitAtelier->getDepense() + 1 == $forfaitAtelier->getTotal()) {
+                                $forfaitAtelier->cloturer();
+                            } else {
+                                $forfaitAtelier->incremente();
+                            }
                         }
                     }
         
@@ -93,11 +96,13 @@
                     if (in_array($utilisateur->getId(), $_POST['present_'])) {
                         $atelier->inscrireUtilisateurPresent($utilisateur->getId());
 
-                        $depense = getForfaitUserEncours($utilisateur->getId());
-                        if($depense["depense"] + 1 == $depense["total_atelier"]) {
-                            clotureforfaitUser($depense["total_atelier"], $depense["id_forfait"]);
-                        } else {
-                            updateForfaitdepense($depense["id_forfait"]);
+                        $forfaitAtelier = $utilisateur->getForfaitsAtelier()[0];
+                        if ($forfaitAtelier !== null) {
+                            if ($forfaitAtelier->getDepense() + 1 == $forfaitAtelier->getTotal()) {
+                                $forfaitAtelier->cloturer();
+                            } else {
+                                $forfaitAtelier->incremente();
+                            }
                         }
                     }
                 }

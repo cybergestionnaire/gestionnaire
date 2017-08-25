@@ -128,8 +128,6 @@
                                 $mess = getError(4);
                             } else {
                                 //enregistrement des transactions choisies
-                                //addForfaitUser("temps", $utilisateur->getId(), $temps, 1, date('Y-m-d'), 1); //forfait temps
-                                //addForfaitUser("adh", $utilisateur->getId(), $tarif, 1, date('Y-m-d'), 1); //adhésion
                                 $transac1 = Transaction::creerTransaction("temps", intval($utilisateur->getId()), $temps, 1, date('Y-m-d'), 1); //forfait temps
                                 $transac2 = Transaction::creerTransaction("adh", intval($utilisateur->getId()), $idTarif, 1, date('Y-m-d'), 1); //adhésion
     

@@ -18,6 +18,7 @@
 */
 
 require_once("Mysql.class.php");
+require_once("Tarif.class.php");
 
 class Transaction
 {
@@ -53,6 +54,10 @@ class Transaction
 
     public function getIdTarif() {
         return $this->_idTarif;
+    }
+
+    public function getTarif() {
+        return Tarif::getTarifById($this->_idTarif);
     }
     
     public function getNombreForfait() {
@@ -101,9 +106,14 @@ class Transaction
     public function supprimer() {
         $success = false;
         $db     = Mysql::opendb();
-        $sql   = "DELETE FROM `tab_transactions` WHERE `id_transac`=" . $this->_id;
-        $result = mysqli_query($db, $sql);
-        if ($result) {
+        
+        // vérification des relations
+        $sql  = "DELETE FROM rel_user_forfait WHERE id_transac=". $this->_id;
+        $sql2 = "DELETE FROM `tab_transactions` WHERE `id_transac`=" . $this->_id;
+        
+        $result  = mysqli_query($db, $sql);
+        $result2 = mysqli_query($db, $sql2);
+        if ($result && $result2) {
             $success = true;
         }
         Mysql::closedb($db);
@@ -183,9 +193,9 @@ class Transaction
     
     }
     
-    public static function getTransactionByUtilisateurAndType($idUtilisateur, $type) {
+    public static function getTransactionsByUtilisateurAndType($idUtilisateur, $type) {
 
-        $transaction = null;
+        $transactions = null;
     
         $db      = Mysql::opendb();
 
@@ -193,15 +203,20 @@ class Transaction
         $type       = mysqli_real_escape_string($db, $type);
         
         $sql     = "SELECT * FROM tab_transactions WHERE id_user=" . $idUtilisateur . " AND type_transac='" . $type . "'";
+        
+        // error_log("sql = $sql");
         $result  = mysqli_query($db,$sql);
         Mysql::closedb($db);
         
-        if ($result && mysqli_num_rows($result) == 1) {
-            $transaction = new Transaction(mysqli_fetch_assoc($result));
+        if ($result && mysqli_num_rows($result) > 0) {
+            $transactions = array();
+            while($row = mysqli_fetch_assoc($result)) {
+                $transactions[] = new Transaction($row);
+            }
             mysqli_free_result($result);
         }
-        
-        return $transaction;
+        // error_log("getTransactionsByUtilisateurAndType = " . print_r($transactions, true));
+        return $transactions;
     
     }
     

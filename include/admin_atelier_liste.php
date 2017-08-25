@@ -45,7 +45,6 @@
             3=> "Annul&eacute;"
         );
 
-    //$espaces = getAllepn();
     $espaces = Espace::getEspaces();
                 
                 

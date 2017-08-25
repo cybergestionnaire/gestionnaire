@@ -20,7 +20,12 @@
 
 
 ***********///// Transactions de l'adhérent **********************/
-
+    // error_log('in admin_user_transactions.php -------------------------');
+    // error_log("---- POST ----");
+    // error_log(print_r($_POST, true));
+    // error_log("---- GET  ----");
+    // error_log(print_r($_GET, true));
+    
     require_once("include/class/Utilisateur.class.php");
     require_once("include/class/Forfait.class.php");
 
@@ -52,12 +57,7 @@
         $act     = $_GET["act"];
         if ($act == "del") {
             $transaction = Transaction::getTransactionById($transac);
-            // if (FALSE == delForfait($transac)) {
             if ($transaction->supprimer()) {
-                // Inutile dans CyberGestionnaire, laissé pour compatibilité avec EPN-Connect
-                if ($_GET["type"] == "temps") {
-                    delreluserforfaittemps($id_user);
-                }
                 $mesno = 35;
             } else {
                 $mesno = 0;
@@ -74,18 +74,8 @@
     } else {
         $prixtarif = "<span class=\"text-success\"><b>" . $tarif->getNom() . "(" . $tarif->getDonnee() . " &euro;)</b></span>";
     }
-    // $row        = getUser($id_user);
-    // $dateinsc   = $row["date_insc_user"];
-    // $daterenouv = $row["dateRen_user"];
-    // $nom        = $row["nom_user"];
-    // $prenom     = $row["prenom_user"];
-    // $temps=$row["temps_user"];
-    // $tarif      = $row["tarif_user"];
-    // $tarifs     = getTarifsbyCat(2);
-    // $prixtarif  = $tarifs[$tarif];
             
     // //paiements en attente adhesion
-    //$paiementAttente = Testpaiement($id_user);
     $transactionsEnAttente = $utilisateur->getTransactionsEnAttente();
     
     //affichage du bouton renouvellement si -7 jours
@@ -108,37 +98,17 @@
         
        
     // //nombre d'inscriptions en cours + lien vers historique atelier
-    // $ateliersInscrit = $utilisateur->getAteliersInscrit();
-    // $sessionsInscrit = $utilisateur->getSessionsInscrit();
-    
-    
-    // $nbASencours = count($ateliersInscrit) + count($sessionsInscrit);
 
-    // $ateliersPresent = $utilisateur->getAteliersPresent();
-    // $sessionsPresent = $utilisateur->getSessionDatesPresent();
-     
-    // $nbvalide = count($ateliersPresent) + count($sessionsPresent);
-    
-    
-    // $nbASencours = getnbASUserEncours($id_user,0) ; // 0= inscription en cours non validée
     $nbASencours = $utilisateur->getNBAteliersEtSessionsInscrit() ;
-    // error_log("Ancienne ASenCours = " . $nbASencours);
+
     //nombre d'inscriptions validées hors forfait
-    // $nbvalide    = getnbASUservalidees($id_user); // 1= total inscrit et validé
-    // error_log("Ancienne nbvalide = " . $nbvalide);
+
     $nbvalide    = $utilisateur->getNBAteliersEtSessionsPresent(); // 1= total inscrit et validé
-    // error_log("Nouvelle ASenCours = " . $utilisateur->getNBAteliersEtSessionsInscrit());
-    // error_log("Nouvelle nbvalide = " . $utilisateur->getNBAteliersEtSessionsPresent());
 
-
-    // $nbForfait   = getForfaitAchete($id_user, "for"); // total des ateliers achetés
     $nbForfait  = $utilisateur->getNombreForfaitsAteliers();
     $nbrestant   = $nbForfait - $nbvalide; //restant apres dépense
 
-
-    $depense = 0;
-    $achete  = 0;
-
+    $buyable = true;
 
     if ($nbrestant >= 0) {
         $nbHorsForfait = "aucune";
@@ -222,12 +192,9 @@
     
 <?php
     /// forfait atelier utilisateur
-    // $tariforfaits = getTarifsbyCat(5);
-    
-    $rowtransaction = getAllForfaitUser($id_user, "for");
-    $nbf = mysqli_num_rows($rowtransaction);
-    
-    if ($nbf == 0) {
+    $forfaitsAtelier = $utilisateur->getForfaitsAtelier();
+
+    if ($forfaitsAtelier === null) {
         echo "<p>l'adh&eacute;rent n'a souscrit &agrave; aucun forfait atelier</p>";
     } else {
 ?>
@@ -238,42 +205,32 @@
                             <th>Nom du Tarif</th><th>Date d'achat</th><th>Nbr</th><th>D&eacute;pens&eacute;</th><th>Statut</th><th></th><th></th>
                         </thead>
 <?php
-    
-        for ($f = 0 ; $f < $nbf ; $f++) {
-            $rowf = mysqli_fetch_array($rowtransaction);
-        
-            $nomTarif = getNomTarif($rowf["id_tarif"]);
-        
-            //**** le chiffre issu de la table rel
-            $rowforfait    = getForfaitDonnesbyID($rowf['id_transac'],$id_user);
-            $achete        = $rowforfait["total_atelier"];
-            $depense       = $rowforfait["depense"];
-            $statutachat   = $forfaitArray[$rowf['status_transac']];
-            $statutforfait = $arraystatutforfait[$rowforfait["statut_forfait"]];
-                
+
+        foreach ($forfaitsAtelier as $forfaitAtelier) {
+            $transaction = $forfaitAtelier->getTransaction();
 ?>
                         <tr>
-                            <td><?php echo $nomTarif; ?></td>
-                            <td><?php echo $rowf["date_transac"]; ?></td>
-                            <td><?php echo $achete; ?></td>
-                            <td><?php echo $depense; ?></td>
-                            <td><?php echo $statutachat ; ?></td>
-                            <td><?php echo $statutforfait ; ?></td>
+                            <td><?php echo $transaction->getTarif()->getNom(); ?></td>
+                            <td><?php echo $transaction->getDate(); ?></td>
+                            <td><?php echo $forfaitAtelier->getTotal(); ?></td>
+                            <td><?php echo $forfaitAtelier->getDepense(); ?></td>
+                            <td><?php echo $forfaitArray[$transaction->getStatut()] ; ?></td>
+                            <td><?php echo $arraystatutforfait[$forfaitAtelier->getStatut()] ; ?></td>
                             <td>
             
 <?php
-            if ($rowf['status_transac'] < 2) {
+            if ($forfaitAtelier->getStatut() < 2) {
+                // forfait atelier en cours, empecher un autre achat !
+                $buyable = false;
 ?>
-                                <a href="index.php?a=21&b=3&typetransac=forfait&idtransac=<?php echo $rowf["id_transac"]; ?>&iduser=<?php echo $id_user; ?>" ><button type="button"  data-toggle="tooltip"  title="Modifier/Encaisser" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></button></a>
-                                <a href="index.php?a=6&act=del&transac=<?php echo $rowf["id_transac"]; ?>&iduser=<?php echo $id_user; ?>"><button type="submit" name="submit" class="btn btn-warning btn-sm"  data-toggle="tooltip"  title="Supprimer"><i class="fa fa-trash-o"></i></button></a>
+                                <a href="index.php?a=21&b=3&typetransac=forfait&idtransac=<?php echo $transaction->getId(); ?>&iduser=<?php echo $id_user; ?>" ><button type="button"  data-toggle="tooltip"  title="Modifier/Encaisser" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></button></a>
+                                <a href="index.php?a=6&act=del&transac=<?php echo $transaction->getId(); ?>&iduser=<?php echo $id_user; ?>"><button type="submit" name="submit" class="btn btn-warning btn-sm"  data-toggle="tooltip"  title="Supprimer"><i class="fa fa-trash-o"></i></button></a>
             
 <?php
             } 
 ?>
                             </td>
                         </tr>
-    
-    
 <?php
         }
 ?>
@@ -284,7 +241,7 @@
 ?>
             </div>
 <?php
-    if ($depense == $achete) {
+    if ($buyable) {
 ?>
             <div class="box-footer">
                 <a href="index.php?a=21&b=3&typetransac=forfait&iduser=<?php echo $id_user ; ?>"><button type="submit" value="" class="btn btn-success"><i class="fa fa-cart-plus"></i>&nbsp; Ajouter un forfait</button></a>
@@ -307,7 +264,7 @@
 <?php
     // $transactemps = getTransactemps($id_user);
 
-    $transaction = $utilisateur->getTransactionForfait();
+    $transaction = $utilisateur->getTransactionForfaitConsultation();
     $forfait     = $utilisateur->getForfaitConsultation();
 
     if ($forfait !== null) {

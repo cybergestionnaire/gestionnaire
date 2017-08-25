@@ -129,7 +129,6 @@
     );
         
     //recuperation des tarifs categorieTarif(2)=adhesion
-    //$tarifs     = getTarifsbyCat(2);
     $tarifs      = Tarif::getTarifsByCategorie(2);
     //recupere la csp -- Ajout
     $professions = CSP::getCSPs();

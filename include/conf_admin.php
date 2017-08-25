@@ -165,10 +165,10 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
     break;
     
     case 6:
-      $titre="Les transactions de l'adh&eacute;rent";
-         $aide="Mouvements archiv&eacute;s sur le compte de l'adh&eacute;rent : impressions, ateliers, achats divers";
+        $titre = "Les transactions de l'adh&eacute;rent";
+        $aide  = "Mouvements archiv&eacute;s sur le compte de l'adh&eacute;rent : impressions, ateliers, achats divers";
         // include("include/post_url.php") ;
-         $inc="admin_user_transactions.php";
+         $inc  = "admin_user_transactions.php";
     break;
     
     //parametrages animateurs influant sur les stats : categories ateliers
@@ -205,22 +205,22 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
     
     //*** GESTION DES ATELIERS **///
     case 11:
-         $titre="Liste des ateliers";
-         $aide="Creer, et administrer des ateliers de formations pour vos adh&eacute;rents";
-         //include ("include/post_atelier.php");
-         $inc="admin_atelier_liste.php";
+        $titre = "Liste des ateliers";
+        $aide  = "Creer, et administrer des ateliers de formations pour vos adh&eacute;rents";
+        //include ("include/post_atelier.php");
+        $inc   = "admin_atelier_liste.php";
     break;
     case 12:
-        $titre="Planification d'un atelier";
-        $aide="Creer, et administrer des ateliers de formations pour vos adh&eacute;rents";
+        $titre = "Planification d'un atelier";
+        $aide  = "Creer, et administrer des ateliers de formations pour vos adh&eacute;rents";
         include ("include/post_atelier.php");
-        $inc="admin_form_atelier.php";
+        $inc   = "admin_form_atelier.php";
     break;
     case 13:
-        $titre="D&eacute;tail d'un atelier";
-        $aide="G&eacute;rer les participants &agrave; l'atelier";
+        $titre = "D&eacute;tail d'un atelier";
+        $aide  = "G&eacute;rer les participants &agrave; l'atelier";
         //include ("include/post_atelier_presence.php");
-        $inc="admin_atelier.php";
+        $inc   = "admin_atelier.php";
     break;
    
     case 14:

@@ -164,7 +164,7 @@ class AtelierSujet
         $result = mysqli_query($db,$sql);
         
         if ($result) {
-            $atelierSujet = new AtelierSujet(array("id_sujet" => mysqli_insert_id($db), "label_categorie" => $label, "content_atelier" => $content, "ressource_atelier" => $ressource, "niveau_atelier" => $idNiveau, "categorie_atelier" => $idCategorie));
+            $atelierSujet = new AtelierSujet(array("id_sujet" => mysqli_insert_id($db), "label_atelier" => $label, "content_atelier" => $content, "ressource_atelier" => $ressource, "niveau_atelier" => $idNiveau, "categorie_atelier" => $idCategorie));
         }
         
         Mysql::closedb($db);

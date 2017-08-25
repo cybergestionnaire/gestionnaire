@@ -95,9 +95,6 @@
     } 
 
     ///adherents a solde debiteur
-    // $resultd = getPrintingUserswithdebt();
-    // $nbd     = mysqli_num_rows($resultd);
-    // if ($nbd > 0) {
     $utilisateursAvecDebit = Utilisateur::getUtilisateursAvecDebitDImpression();
 
     if (count($utilisateursAvecDebit) > 0) {        
@@ -235,12 +232,9 @@
             <div class="box-body">
 <?php 
     // les adherents qui impriment récemment
-        // $result = getAllUserPrint();
-        
+    
         $impressions = Impression::getImpressionsDuJour();
-    
-    
-        // if (FALSE == $result) {
+
         if ($impressions === null ) {
 ?>
                 <br>
@@ -253,9 +247,7 @@
                     
 <?php
         } else { // affichage du resultat
-            // $nb  = mysqli_num_rows($result);
-    
-            // if ($nb > 0) {
+
             if (count($impressions) > 0) {
 ?>
     
@@ -276,12 +268,9 @@
                 $totalprintday = 0;
                 foreach ($impressions as $impression) {
              
-                // for ($i = 1 ; $i <= $nb ; $i++) {
-                    // $row = mysqli_fetch_array($result) ;
+
                     $utilisateur = $impression->getUtilisateur();
                     $tarif       = $impression->getTarif();
-                    // $tarif  = mysqli_fetch_array(getPrixFromTarif($row['print_tarif']));
-                    // $prix   = round(($row['print_debit'] * $tarif['donnee_tarif']),2);
                     $prix   = $impression->getNombreImpression() * $tarif->getDonnee();
                     $statut = $statutPrint[$impression->getStatut()];
                     $totalprintday = $totalprintday + $prix;

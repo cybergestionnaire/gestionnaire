@@ -141,8 +141,11 @@
                 $rapport     = round(($restant / $tarifreferencetemps)*100);
             }
             //dernière reservation
-            $lasteresa = getLastResaUser($utilisateur->getId());
-            if ($lasteresa == FALSE) {
+            // $lasteresa = getLastResaUser($utilisateur->getId());
+
+            $lasteresa = $utilisateur->getLastResa();
+            
+            if ($lasteresa == null) {
                 $lasteresa = "NC";
             }
 ?>
@@ -163,7 +166,7 @@
                             <td><?php echo htmlentities($utilisateur->getPrenom()) ?></td>
                             <td><?php echo htmlentities($utilisateur->getLogin()) ?></td>
                             <td><?php echo $age ?> ans</td>
-                            <td><?php echo $lasteresa ?></td>
+                            <td><?php echo $lasteresa == "NC" ? "Inconnu" : getDayfr($lasteresa->getDateResa()); ?></td>
                             <td><span class="<?php echo $classadh ?>"><?php echo $adhesion ?></span></td>
                             <td>
 <?php                        

@@ -223,44 +223,41 @@
             </div>
             <div class="box-body">
                 <table class="table">
-                    <thead><th>Fiche</th><th>Nom, pr&eacute;nom</th><th><span data-toggle="tooltip" title="<?php echo $tooltipinfo; ?>">Inscriptions/Forfait</span></th><th></th></thead>
+                    <thead><th>Fiche</th><th>Nom, pr&eacute;nom</th><th><span data-toggle="tooltip" title="<?php echo $tooltipinfo; ?>">Inscriptions (Forfaits achet&eacute;s/d&eacute;j&agrave; utilis&eacute;s)</span></th><th></th></thead>
 <?php
             $bccusers = "";
             foreach ($utilisateursinscritsOuPresents as $utilisateur) {
             
-                $nbASencours = getnbASUserEncours($utilisateur->getId(), 0) ; 
-            
+                $nbASencours = $utilisateur->getNBAteliersEtSessionsInscrit();
+
                 // construction des BCCmail
                 if ($utilisateur->getMail() <> '') {
                     $bccusers = $bccusers . $utilisateur->getMail() . ";";
                 }
-            
+                
+                
+                $affichage = "";
                 //mise en place tarification
                 if ($testTarifAtelier > 1) { 
                 
-                    // 1= présence validée & depensé sur forfait en cours
-                    $forfaitencours     = getForfaitUserEncours($utilisateur->getId());
-                    $depenseactuel      = $forfaitencours["depense"]; //restant apres dépense
-                    $nbactuelsurforfait = $forfaitencours["total_atelier"];
-                    //nombre d'inscriptions validées hors forfait
-                    $nbtotalforfait     = getForfaitAchete($utilisateur->getId(), 'adh'); //nbr total acheté !
-                    $nbASpresent        = getnbASUservalidees($utilisateur->getId()); //nbr total validé
-                    $nbhorsforfait      = $nbtotalforfait - $nbASpresent; //restant hors forfait
-                
-                    //debug($nbrestant);
-            
-                    if (FALSE == $forfaitencours) { //gestion hors forfait
-                        if ($nbhorsforfait == 0) {
-                            $depense = "0";
+                    $forfaitsAtelier    = $utilisateur->getForfaitsAtelier();
+                    $depenseactuel      = 0;
+                    $nbactuelsurforfait = 0;
+                    
+                    if ($forfaitsAtelier !== null ) {
+                        foreach ($forfaitsAtelier as $forfaitAtelier) {
+                            $depenseactuel      = $depenseactuel + $forfaitAtelier->getDepense();
+                            $nbactuelsurforfait = $nbactuelsurforfait + $forfaitAtelier->getTotal();
                         }
-                        elseif ($nbhorsforfait < 0) {
-                            $depense = "<span class=\"text-red\">" . abs($nbhorsforfait) . " Hors forfait</span>";
-                        }
-                        $affichage = $nbASencours . "/ " . $depense;
-                    } else {
-                        //affichage avec forfait en cours
-                        $affichage = $nbASencours . "/ " . $depenseactuel . " sur " . $nbactuelsurforfait;
                     }
+
+                    if ($depenseactuel + $nbASencours > $nbactuelsurforfait) {
+                        // on dépasse les forfaits achetés !
+                        $affichage = $nbASencours . " (<span class=\"text-red\">" . $nbactuelsurforfait . " / " . $depenseactuel . ") Hors forfait</span>";
+                    } else {
+                        $affichage = $nbASencours . " (" . $nbactuelsurforfait . " / " . $depenseactuel . ")";
+                    }
+                    
                 } else { // sans le forfait, affichage des autres inscriptions
                     $affichage = $nbASencours;
                 }
@@ -349,7 +346,7 @@
                 echo "<p>R&eacute;sultats de la recherche: " . $nb . "</p>";
 ?>
                 <table class="table table-hover">
-                    <thead><tr><th>Nom, Pr&eacute;nom</th><th>Inscriptions/Forfait</th><th></th></tr></thead>
+                    <thead><tr><th>Nom, Pr&eacute;nom</th><th>Inscriptions<br />(Forfaits achet&eacute;s/d&eacute;j&agrave; utilis&eacute;s)</th><th></th></tr></thead>
                     <tbody>
 <?php
                 foreach ($utilisateursRecherche as $utilisateur) {
@@ -357,33 +354,25 @@
                     $statutuser = $utilisateur->getStatut();
                     //mise en place tarification
                     if ($testTarifAtelier > 1) { 
-                        $nbASencours = getnbASUserEncours($utilisateur->getId(), 0) ; 
-                        // 1= présence validée & depensé sur forfait en cours
-                        $forfaitencours     = getForfaitUserEncours($utilisateur->getId());
-                        $depenseactuel      = $forfaitencours["depense"]; //restant apres dépense
-                        $nbactuelsurforfait = $forfaitencours["total_atelier"];
-                        //nombre d'inscriptions validées hors forfait
-                        $nbtotalforfait = getForfaitAchete($utilisateur->getId(), 'adh'); //nbr total acheté !
-                        $nbASpresent    = getnbASUservalidees($utilisateur->getId()); //nbr total validé
-                        $nbhorsforfait  = $nbtotalforfait - $nbASpresent; //restant hors forfait
-        
-                        //debug($nbrestant);
-        
-                        if (FALSE == $forfaitencours) { //gestion hors forfait
-                            if ($nbhorsforfait == 0) {
-                                $depense = "0";
+                        $nbASencours = $utilisateur->getNBAteliersEtSessionsInscrit();
+
+                        $forfaitsAtelier    = $utilisateur->getForfaitsAtelier();
+                        $depenseactuel      = 0;
+                        $nbactuelsurforfait = 0;
+                        
+                        if ($forfaitsAtelier !== null ) {
+                            foreach ($forfaitsAtelier as $forfaitAtelier) {
+                                $depenseactuel      = $depenseactuel + $forfaitAtelier->getDepense();
+                                $nbactuelsurforfait = $nbactuelsurforfait + $forfaitAtelier->getTotal();
                             }
-                            elseif ($nbhorsforfait < 0) {
-                                $depense = "<span class=\"text-red\">" . abs($nbhorsforfait) . " Hors forfait</span>";
-                            }
-                            $affichage = $nbASencours . "/ " . $depense;
-                        } else {
-                            //affichage avec forfait en cours
-                            $affichage = $nbASencours . "/ " . $depenseactuel . " sur " . $nbactuelsurforfait;
-            
                         }
         
-        
+                        if ($depenseactuel + $nbASencours > $nbactuelsurforfait) {
+                            // on dépasse les forfaits achetés !
+                            $affichage = $nbASencours . "<br />(<span class=\"text-red\">" . $nbactuelsurforfait . " / " . $depenseactuel . ") Hors forfait</span>";
+                        } else {
+                            $affichage = $nbASencours . "<br />(" . $nbactuelsurforfait . " / " . $depenseactuel . ")";
+                        }        
                     } else { // sans le forfait, affichage des autres inscriptions
                         $affichage = $nbASencours;
                     }

@@ -252,16 +252,16 @@ class Atelier
             $sql = "INSERT INTO `rel_atelier_user` ( `id_atelier` , `id_user` , `status_rel_atelier_user` )
              VALUES ('" . $this->_id . "', '" . $idUtilisateur . "', '0');";
 
-            $sql2 = "INSERT INTO `rel_user_forfait`(`id_forfait`, `id_user`, `id_tarif`, `id_atelier`,`id_session`, `statut_forfait`) 
-            VALUES('','" . $idUtilisateur . "','" . $idTarif . "','" . $this->_id . "', '0', '0')";
+            // probleme !!!! Les requetes récupérées dans la version 1.2 sont foireuses, les champs ne correpondent pas à la table !
+            // $sql2 = "INSERT INTO `rel_user_forfait`(`id_forfait`, `id_user`, `id_tarif`, `id_atelier`,`id_session`, `statut_forfait`) 
+            // VALUES('','" . $idUtilisateur . "','" . $idTarif . "','" . $this->_id . "', '0', '0')";
 
             $db = opendb();
             $result  = mysqli_query($db, $sql);
-            $result2 = mysqli_query($db, $sql2);
+            // $result2 = mysqli_query($db, $sql2);
             Mysql::closedb($db);
             
             if ($result) { // TODO : vérifier que les 2 requetes ont réussies ! Nécéssite sans doute une transaction.
-
                 $success = TRUE;
             }
         }

@@ -564,4 +564,25 @@ class Resa
         }
         return $array ;
     }
+    
+    public static function getLastResaFromUtilisateur($idUtilisateur) {
+        $resa = null;
+        
+        $db  = Mysql::opendb();
+        
+        $sql = "SELECT * FROM `tab_resa` WHERE `id_user_resa`=" . $idUtilisateur . " AND dateresa_resa IN (select MAX(`dateresa_resa`) FROM `tab_resa` WHERE `id_user_resa`=" . $idUtilisateur . ")";
+        
+        $result = mysqli_query($db,$sql);
+               
+        Mysql::closedb($db);
+        
+        if ($result && mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+            $resa = new Resa($row);
+            mysqli_free_result($result);
+        }
+        
+        return $resa;        
+    }
+    
 }
