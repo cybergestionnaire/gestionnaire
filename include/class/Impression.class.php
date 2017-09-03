@@ -180,7 +180,6 @@ class Impression
             $idCaissier       = mysqli_real_escape_string($db, $idCaissier);
             $paiement         = mysqli_real_escape_string($db, $paiement);
 
-
             $sql = "INSERT INTO `tab_print` (`print_date`,`print_user`,`print_debit`,`print_tarif`,`print_statut`,`print_credit`,`print_userexterne`,`print_epn`,`print_caissier`,`print_paiement`) "
                  . "VALUES ('" . $date . "', '" . $idUtilisateur."', '" . $nombreImpression."', '" . $idTarif . "', '" . $statut . "', '" . $credit . "', '" . $userExterne . "', '" . $idEspace . "', '" . $idCaissier . "', '" . $paiement . "') " ;
                  
