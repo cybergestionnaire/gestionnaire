@@ -22,8 +22,8 @@ require_once("Mysql.class.php");
 require_once("Espace.class.php");
 require_once("Tarif.class.php");
 
-class Impression {
-
+class Impression
+{
     private $_id;
     private $_date;
     private $_idUtilisateur;
@@ -36,7 +36,8 @@ class Impression {
     private $_idCaissier;
     private $_paiement;
 
-    public function __construct($array) {
+    public function __construct($array)
+    {
         $this->_id = $array["id_print"];
         $this->_date = $array["print_date"];
         $this->_idUtilisateur = $array["print_user"];
@@ -50,68 +51,84 @@ class Impression {
         $this->_paiement = $array["print_paiement"];
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getDate() {
+    public function getDate()
+    {
         return $this->_date;
     }
 
-    public function getIdUtilisateur() {
+    public function getIdUtilisateur()
+    {
         return $this->_idUtilisateur;
     }
 
-    public function getUtilisateur() {
+    public function getUtilisateur()
+    {
         return Utilisateur::getUtilisateurById($this->_idUtilisateur);
     }
 
-    public function getNombreImpression() {
+    public function getNombreImpression()
+    {
         return $this->_nombreImpression;
     }
 
-    public function getIdTarif() {
+    public function getIdTarif()
+    {
         return $this->_idTarif;
     }
 
-    public function getTarif() {
+    public function getTarif()
+    {
         return Tarif::getTarifById($this->_idTarif);
     }
 
-    public function getStatut() {
+    public function getStatut()
+    {
         return $this->_statut;
     }
 
-    public function getCredit() {
+    public function getCredit()
+    {
         return $this->_credit;
     }
 
-    public function getUserExterne() {
+    public function getUserExterne()
+    {
         return $this->_userExterne;
     }
 
-    public function getIdEspace() {
+    public function getIdEspace()
+    {
         return $this->_idEspace;
     }
 
-    public function getEspace() {
+    public function getEspace()
+    {
         return Espace::getEspaceById($this->_idEspace);
     }
 
-    public function getIdCaissier() {
+    public function getIdCaissier()
+    {
         return $this->_idCaissier;
     }
 
-    public function getCaissier() {
+    public function getCaissier()
+    {
         return Utilisateur::getUtilisateurById($this->_idCaissier);
     }
 
-    public function getPaiement() {
+    public function getPaiement()
+    {
         return $this->_paiement;
     }
 
-    public function modifier($date, $idUtilisateur, $nombreImpression, $idTarif, $statut, $credit, $userExterne, $idEspace, $idCaissier, $paiement) {
-        $success = FALSE;
+    public function modifier($date, $idUtilisateur, $nombreImpression, $idTarif, $statut, $credit, $userExterne, $idEspace, $idCaissier, $paiement)
+    {
+        $success = false;
         $db = Mysql::opendb();
 
         $date = mysqli_real_escape_string($db, $date);
@@ -143,13 +160,14 @@ class Impression {
             $this->_idCaissier = $idCaissier;
             $this->_paiement = $paiement;
 
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
         $success = false;
         $db = Mysql::opendb();
         $sql = "DELETE FROM `tab_print` WHERE `id_print`=" . $this->_id;
@@ -162,7 +180,8 @@ class Impression {
         return $success;
     }
 
-    public static function creerImpression($date, $idUtilisateur, $nombreImpression, $idTarif, $statut, $credit, $userExterne, $idEspace, $idCaissier, $paiement) {
+    public static function creerImpression($date, $idUtilisateur, $nombreImpression, $idTarif, $statut, $credit, $userExterne, $idEspace, $idCaissier, $paiement)
+    {
         $impression = null;
         if ($idUtilisateur != 0
         ) {
@@ -194,7 +213,8 @@ class Impression {
         return $impression;
     }
 
-    public static function getImpressionById($id) {
+    public static function getImpressionById($id)
+    {
         $impression = null;
 
         if ($id != 0) {
@@ -215,8 +235,8 @@ class Impression {
         return $impression;
     }
 
-    public static function getImpressions() {
-
+    public static function getImpressions()
+    {
         $impressions = null;
 
         $db = Mysql::opendb();
@@ -235,7 +255,8 @@ class Impression {
         return $impressions;
     }
 
-    public static function getImpressionsByIdUtilisateur($idUtilisateur) {
+    public static function getImpressionsByIdUtilisateur($idUtilisateur)
+    {
         $impressions = null;
 
         $db = Mysql::opendb();
@@ -259,11 +280,13 @@ class Impression {
         return $impressions;
     }
 
-    public static function getImpressionsDuJour() {
+    public static function getImpressionsDuJour()
+    {
         return self::getImpressionsByDate("CURDATE()");
     }
 
-    public static function getImpressionsByDate($date) {
+    public static function getImpressionsByDate($date)
+    {
         $impressions = null;
 
         $db = Mysql::opendb();
@@ -287,5 +310,4 @@ class Impression {
 
         return $impressions;
     }
-
 }

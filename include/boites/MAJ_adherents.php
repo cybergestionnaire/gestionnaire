@@ -1,17 +1,17 @@
 <?php
 // verifier les abonnements des adherent et mettre a jour le statut actif
 $majadh = getLogUser('adh');
-$logadh = FALSE;
+$logadh = false;
 if (mysqli_num_rows($majadh) == 0) {
     $listAdhinactifs = getAdhInactif(date('Y-m-d'));
     $updateA = updateUserStatut(); // les usagers dont la date de renouvellement est du jour.
-    //ajout d'un log 
-    if ($updateA <> FALSE) { //maj type 1 == update tab_user
+    //ajout d'un log
+    if ($updateA <> false) { //maj type 1 == update tab_user
         $logadh = addLog(date('Y-m-d H:i'), "adh", '1', 'Mise &agrave; jour des adhesions adherents du jour');
     }
 }
 
-if ($logadh == TRUE) {
+if ($logadh == true) {
     ?>
     <div class="col-md-4">
         <div class="alert alert-success alert-dismissable">

@@ -24,7 +24,7 @@
 
 // formulaire de gestion des breves
 
-if (FALSE == isset($id)) {  // creation
+if (false == isset($id)) {  // creation
     $post_url = "index.php?a=4&b=1&act=1";
     $label_bouton = "Cr&eacute;er une br&egrave;ve";
     $datenews = date("Y-m-d H:i");
@@ -93,7 +93,7 @@ $arraytype = array(
                     <div class="form-group"><label>Type</label>
                         <select name="type" class="form-control" >
                             <?php
-                            foreach ($arraytype AS $key => $value) {
+                            foreach ($arraytype as $key => $value) {
                                 if ($type == $key) {
                                     echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                 } else {
@@ -110,7 +110,7 @@ $arraytype = array(
                     <div class="form-group"><label>Epn li&eacute;</label>
                         <select name="idepn" class="form-control" >
                             <?php
-                            foreach ($espaces AS $key => $value) {
+                            foreach ($espaces as $key => $value) {
                                 if ($epn == $key) {
                                     echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                 } else {

@@ -90,7 +90,7 @@ $forfaitArray = array(
     1 => "Pay&eacute;",
     2 => "Archiv&eacute;"
 );
-//statut des forfaits ateliers  
+//statut des forfaits ateliers
 $arraystatutforfait = array(
     1 => "En cours",
     2 => "Termin&eacute;"
@@ -160,7 +160,7 @@ if ($mesno != "") {
             </div><!-- .box-body -->
             <div class="box-footer">
                 <?php
-                if (($interval->format('%a')) < 10 OR ( $utilisateur->getDateRenouvellement() < date("Y-m-d"))) {
+                if (($interval->format('%a')) < 10 or ($utilisateur->getDateRenouvellement() < date("Y-m-d"))) {
                     echo "<a href=\"index.php?a=21&b=3&typetransac=adh&iduser=" . $id_user . " \"><input type=\"submit\" value=\"Renouveller l'adh&eacute;sion\" class=\"btn bg-default\"></a>";
                 }
                 ?>
@@ -185,7 +185,7 @@ if ($mesno != "") {
                         ?>
                         &nbsp;&nbsp;&nbsp;&nbsp;<a href="index.php?a=5&b=6&iduser=<?php echo $utilisateur->getId(); ?>" class="btn btn-primary btn-xs">Voir les inscriptions</a></p>
                     <?php
-                }
+                    }
                 ?>
                 <p>Inscription valid&eacute;es hors forfait : <b><?php echo $nbHorsForfait; ?></b></p>
 
@@ -205,8 +205,7 @@ if ($mesno != "") {
                             </thead>
                             <?php
                             foreach ($forfaitsAtelier as $forfaitAtelier) {
-                                $transaction = $forfaitAtelier->getTransaction();
-                                ?>
+                                $transaction = $forfaitAtelier->getTransaction(); ?>
                                 <tr>
                                     <td><?php echo $transaction->getTarif()->getNom(); ?></td>
                                     <td><?php echo $transaction->getDate(); ?></td>
@@ -219,19 +218,16 @@ if ($mesno != "") {
                                         <?php
                                         if ($forfaitAtelier->getStatut() < 2) {
                                             // forfait atelier en cours, empecher un autre achat !
-                                            $buyable = false;
-                                            ?>
+                                            $buyable = false; ?>
                                             <a href="index.php?a=21&b=3&typetransac=forfait&idtransac=<?php echo $transaction->getId(); ?>&iduser=<?php echo $id_user; ?>" ><button type="button"  data-toggle="tooltip"  title="Modifier/Encaisser" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></button></a>
                                             <a href="index.php?a=6&act=del&transac=<?php echo $transaction->getId(); ?>&iduser=<?php echo $id_user; ?>"><button type="submit" name="submit" class="btn btn-warning btn-sm"  data-toggle="tooltip"  title="Supprimer"><i class="fa fa-trash-o"></i></button></a>
 
                                             <?php
-                                        }
-                                        ?>
+                                        } ?>
                                     </td>
                                 </tr>
                                 <?php
-                            }
-                            ?>
+                            } ?>
                         </table>
                     </div>
                     <?php
@@ -266,14 +262,11 @@ if ($mesno != "") {
                 $forfait = $utilisateur->getForfaitConsultation();
 
                 if ($forfait !== null) {
-
-
                     $min = $tab_unite_temps_affectation[$forfait->getUniteConsultation()];
                     $tarifreferencetemps = $forfait->getDureeConsultation() * $min;
 
                     $restant = $utilisateur->getTempsrestant();
-                    $rapport = round(($restant / $tarifreferencetemps) * 100);
-                    ?>
+                    $rapport = round(($restant / $tarifreferencetemps) * 100); ?>
 
                     <div class="table">
                         <table class="table">
@@ -299,15 +292,15 @@ if ($mesno != "") {
                     </div>
                 </div><!-- .box-body -->
                 <?php
-            } else {
-                ?>
+                } else {
+                    ?>
                 <p>Aucun achat de temps pour l'instant</p>
                 <div class="box-footer"> 
                     <a href="index.php?a=21&b=3&typetransac=temps&iduser=<?php echo $id_user; ?>"><button type="submit" value="" class="btn bg-orange"><i class="fa fa-clock-o"></i>&nbsp;Ajouter du temps de consultation</button></a>
                 </div>  
             </div><!-- .box -->
             <?php
-        }
+                }
         ?>
 
 

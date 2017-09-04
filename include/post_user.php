@@ -75,7 +75,7 @@ if ($act != "") {
     }
 
     // suppression d'un user
-    if ($act == 'del' AND $_SESSION['status'] == 4) {
+    if ($act == 'del' and $_SESSION['status'] == 4) {
         $utilisateur = Utilisateur::getutilisateurById($idUser);
         $utilisateur->supprimer();
         $idUser = '';
@@ -83,7 +83,7 @@ if ($act != "") {
         header("Location:" . $urlRedirect . "");
     }
 
-    //error_log("avant test"); 
+    //error_log("avant test");
     //error_log("nom = {$nom} / prenom = {$prenom} / annee = {$annee} / mois = {$mois} / adresse = {$adresse} / login = {$loginn} / sexe = {$sexe}");
     // Traitement des champs a insérer
     if ($nom == '' || $prenom == '' || $annee == '' || $adresse == '' || $loginn == '' || $sexe == '') {
@@ -100,7 +100,30 @@ if ($act != "") {
                         $dateNaissance = $annee . "-" . $mois . "-" . $jour;
 
                         $utilisateur = Utilisateur::creerUtilisateur(
-                                        $date, $nom, $prenom, $sexe, $dateNaissance, $adresse, intval($idVille), $tel, $mail, $temps, $loginn, $pass, intval($status), date('Y-m-d'), $csp, $equipement, $utilisation, $connaissance, $info, $idTarif, $daterenouv, intval($idEspace), $newsletter);
+                                        $date,
+                            $nom,
+                            $prenom,
+                            $sexe,
+                            $dateNaissance,
+                            $adresse,
+                            intval($idVille),
+                            $tel,
+                            $mail,
+                            $temps,
+                            $loginn,
+                            $pass,
+                            intval($status),
+                            date('Y-m-d'),
+                            $csp,
+                            $equipement,
+                            $utilisation,
+                            $connaissance,
+                            $info,
+                            $idTarif,
+                            $daterenouv,
+                            intval($idEspace),
+                            $newsletter
+                        );
 
                         if ($utilisateur == null) {
                             $mess = getError(4);
@@ -113,7 +136,7 @@ if ($act != "") {
                             // }
                             // Inutile dans CyberGestionnaire, laissé pour compatibilité avec EPN-Connect
                             //ajout de la relation forfait-consultation dans rel_forfait_user
-                            if (FALSE == addrelconsultationuser(1, $temps, $utilisateur->getId())) {
+                            if (false == addrelconsultationuser(1, $temps, $utilisateur->getId())) {
                                 header("Location:" . $urlRedirect . "&mesno=0");
                             } else {
                                 header("Location:" . $urlRedirect . "&mesno=18");
@@ -140,7 +163,30 @@ if ($act != "") {
                         $pass = $utilisateur->getMotDePasse();
                     }
                     if ($utilisateur->modifier(
-                                    $utilisateur->getDateInscription(), $nom, $prenom, $sexe, $annee . "-" . $mois . "-" . $jour, $adresse, intval($idVille), $tel, $mail, $utilisateur->getIdTarifConsultation(), $loginn, $pass, intval($status), $lastvisit, $csp, $equipement, $utilisation, $connaissance, $info, $utilisateur->getIdTarifAdhesion(), $utilisateur->getDateRenouvellement(), intval($idEspace), $newsletter)) {
+                                    $utilisateur->getDateInscription(),
+                        $nom,
+                        $prenom,
+                        $sexe,
+                        $annee . "-" . $mois . "-" . $jour,
+                        $adresse,
+                        intval($idVille),
+                        $tel,
+                        $mail,
+                        $utilisateur->getIdTarifConsultation(),
+                        $loginn,
+                        $pass,
+                        intval($status),
+                        $lastvisit,
+                        $csp,
+                        $equipement,
+                        $utilisation,
+                        $connaissance,
+                        $info,
+                        $utilisateur->getIdTarifAdhesion(),
+                        $utilisateur->getDateRenouvellement(),
+                        intval($idEspace),
+                        $newsletter
+                    )) {
                         header("Location:" . $urlRedirect . "&mesno=42");
                     } else {
                         header("Location:" . $urlRedirect . "&mesno=0");
@@ -153,4 +199,3 @@ if ($act != "") {
         }
     }
 }
-?>

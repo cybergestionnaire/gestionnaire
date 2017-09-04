@@ -62,24 +62,23 @@ if ($_GET["act"] == "del") {
 
 
         <?php
-        if (FALSE != checkBookmark($_SESSION["iduser"])) {
+        if (false != checkBookmark($_SESSION["iduser"])) {
             ?>
             <div class="box box-success"> <div class="box-header"><h3 class="box-title">Mes liens favoris</h3></div>
                 <div class="box-body">
                     <table class="table"> <thead><tr> <th>Theme</th><th>Titre du lien</th><th>Sup.</th></tr></thead><tbody>
                             <?php
                             $result = getBookmark($_SESSION["iduser"]);
-                            if ($result != FALSE) {
-                                $nb = mysqli_num_rows($result);
-                                for ($i = 1; $i <= $nb; $i++) {
-                                    $row = mysqli_fetch_array($result);
-                                    echo "<tr>
+            if ($result != false) {
+                $nb = mysqli_num_rows($result);
+                for ($i = 1; $i <= $nb; $i++) {
+                    $row = mysqli_fetch_array($result);
+                    echo "<tr>
            			<td>" . $row["Flabel"] . "</td>
            			<td>&nbsp;<a href=\"" . $row["Furl"] . "\" target=\"_blank\">" . $row["Ftitre"] . "</a></td>
                     <td width=\"15\"><a href=\"index.php?m=5&act=del&idurl=" . $row["Fid"] . "\"><button type=\"button\" class=\"btn bg-red sm\"><i class=\"fa fa-trash-o\"></i></button></a></td></tr>";
-                                }
-                            }
-                            ?>
+                }
+            } ?>
                         </tbody></table></div></div>
 
             <?php
@@ -93,7 +92,7 @@ if ($_GET["act"] == "del") {
                         <thead><tr> <th>Theme</th><th>Titre du lien</th></tr></thead><tbody>
                             <?php
                             $result = getBookmark(0); // 0 = valeur pour les liens du cyber
-                            if ($result != FALSE) {
+                            if ($result != false) {
                                 $nb = mysqli_num_rows($result);
                                 for ($i = 1; $i <= $nb; $i++) {
                                     $row = mysqli_fetch_array($result);

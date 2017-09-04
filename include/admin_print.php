@@ -70,8 +70,7 @@ if ($utilisateur->hasPrint()) {
     $userext = Utilisateur::getIduserexterne();
     if ($userext == $id_user) {
         $externe = 1;
-    }
-    ?>
+    } ?>
 
     <div class="row">
         <section class="col-lg-4 connectedSortable">
@@ -84,12 +83,11 @@ if ($utilisateur->hasPrint()) {
                     <?php
                     if (($restant) > 0) {
                         echo '<h4><span class="text-green">cr&eacute;dit restant sur le compte : ' . number_format($restant, 2, ',', ' ') . ' &euro; </span></h4>';
-                    } else if (($restant) < 0) {
+                    } elseif (($restant) < 0) {
                         echo '<h4><span class="text-red">Le compte est d&eacute;biteur de ' . number_format($restant, 2, ',', ' ') . ' &euro; </span></h4>';
-                    } else if (($restant) == 0) {
+                    } elseif (($restant) == 0) {
                         echo '<h4>Aucun cr&eacute;dit restant sur le compte</h4>';
-                    }
-                    ?>
+                    } ?>
                 </div>
                 <div class="box-footer"><a href="index.php?a=21&b=2&act=&caisse=0&iduser=<?php echo $utilisateur->getId(); ?>"><input type="submit" value="Ajouter une transaction" class="btn btn-primary"></a></div>
                 <div class="box-footer"><a href="index.php?a=21" class="btn btn-default" type="submit"> <i class="fa fa-arrow-circle-left"></i> Retour &agrave; la liste des transactions</a></div>
@@ -102,9 +100,8 @@ if ($utilisateur->hasPrint()) {
 
         $impressions = $utilisateur->getImpressions();
 
-        if ($impressions !== null && count($impressions) > 0) {
-            // affichage
-            ?>
+    if ($impressions !== null && count($impressions) > 0) {
+        // affichage ?>
             <section class="col-lg-6 connectedSortable">
                 <div class="box box-primary">
                     <div class="nav-tabs-custom">
@@ -120,8 +117,7 @@ if ($utilisateur->hasPrint()) {
                                     <?php
                                     if ($externe == 1) {
                                         echo "<th>Nom Pr&eacute;nom</th>";
-                                    }
-                                    ?>
+                                    } ?>
                                     <th>statut</th><th></th></thead>
 
                                     <?php
@@ -134,8 +130,7 @@ if ($utilisateur->hasPrint()) {
                                             ///ajout utilisateur externe
                                             if ($externe == 1) {
                                                 $nomexterne = $row['print_userexterne'];
-                                            }
-                                            ?>
+                                            } ?>
                                             <tr>
                                                 <td><?php echo $impression->getDate() ?></td>
                                                 <td><?php echo $impression->getNombreImpression() ?></td>
@@ -146,8 +141,8 @@ if ($utilisateur->hasPrint()) {
                                                     echo '<td>' . $nomexterne . '</td>';
                                                 }
 
-                                                if ($impression->getStatut() == 0) {
-                                                    //modification autoris&eacute;e tant que la transaction n'est pas encaissée
+                                            if ($impression->getStatut() == 0) {
+                                                //modification autoris&eacute;e tant que la transaction n'est pas encaissée
                                                     ?>
                                                     <td><p class="text-red"><?php echo $statutPrint[$impression->getStatut()] ?></p></td> 
                                                     <td>
@@ -155,16 +150,14 @@ if ($utilisateur->hasPrint()) {
                                                         <a href="index.php?a=21&b=1&act=3&idprint=<?php echo $impression->getId() ?>&iduser=<?php echo $id_user ?>" class="btn btn-warning btn-sm"><i class="fa fa-trash-o"></i></a>
                                                     </td>
                                                     <?php
-                                                } else {
-                                                    // transaction enregistrée
-                                                    echo "<td><p class=\"text-light-blue\">" . $statutPrint[$impression->getStatut()] . "</p></td> <td>&nbsp;</td>";
-                                                }
-                                                ?>
+                                            } else {
+                                                // transaction enregistrée
+                                                echo "<td><p class=\"text-light-blue\">" . $statutPrint[$impression->getStatut()] . "</p></td> <td>&nbsp;</td>";
+                                            } ?>
                                             </tr>
                                             <?php
                                         }
-                                    }
-                                    ?>
+                                    } ?>
                                 </table>
                             </div><!-- /.tab-pane -->
 
@@ -185,8 +178,7 @@ if ($utilisateur->hasPrint()) {
                                             </tr>
                                             <?php
                                         }
-                                    }
-                                    ?>
+                                    } ?>
 
                                 </table>
                             </div><!-- /.tab-pane -->
@@ -196,23 +188,21 @@ if ($utilisateur->hasPrint()) {
             </section>
 
             <?php
-        }
-        ?>
+    } ?>
     </div>
     <?php
 } else {
-    // si le compte d'impression est vide
-    // arrivee depuis la page des resas
+        // si le compte d'impression est vide
+        // arrivee depuis la page des resas
 
-    $utilisateur = Utilisateur::getUtilisateurById($id_user);
-    // $rown     = getuser($id_user);
-    // $nom_p    = $rown['nom_user'];
-    // $prenom_p = $rown['prenom_user'];
+        $utilisateur = Utilisateur::getUtilisateurById($id_user);
+        // $rown     = getuser($id_user);
+        // $nom_p    = $rown['nom_user'];
+        // $prenom_p = $rown['prenom_user'];
 
-    echo "  <div class=\"col-md-3 col-sm-6 col-xs-12\">";
-    echo geterror(40);
-    echo "</div>";
-    ?>  
+        echo "  <div class=\"col-md-3 col-sm-6 col-xs-12\">";
+        echo geterror(40);
+        echo "</div>"; ?>  
     <div class="row">
         <section class="col-lg-6 connectedSortable">
             <div class="box box-primary">
@@ -224,5 +214,5 @@ if ($utilisateur->hasPrint()) {
         </section>
     </div>
     <?php
-}
+    }
 ?>

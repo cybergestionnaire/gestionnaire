@@ -85,8 +85,7 @@ $nb2 = count($statAteliers);
                 <tbody>
                     <?php
                     foreach ($statAteliers as $statAtelier) {
-                        $sujet = $statAtelier->getAtelierSession()->getSujet();
-                        ?>
+                        $sujet = $statAtelier->getAtelierSession()->getSujet(); ?>
                         <tr>
                             <td><?php echo getDatefr($statAtelier->getdateAtelierSession()) ?></td>
                             <td><a href="index.php?a=16&b=4&act=1&idatelier=<?php echo $statAtelier->getidAtelierSession() ?>"><?php echo htmlentities($sujet->getlabel()) ?></a></td>
@@ -96,16 +95,15 @@ $nb2 = count($statAteliers);
                             <td><?php echo $statAtelier->getNbEnAttente() ?></td>
                         </tr>
                         <?php
-                    }
-                    ?>
+                    } ?>
                 </tbody>
             </table>
         </div><!-- .box-body -->
         <?php
-    } else {
-        ?>
+        } else {
+            ?>
         <div class="alert alert-info alert-dismissable"><i class="fa fa-info"></i><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Aucune formation archiv&eacute;e cette ann&eacute;e</div>
                 <?php
-            }
+        }
             ?>
 </div><!-- .box -->

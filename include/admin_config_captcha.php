@@ -27,8 +27,6 @@ require_once("include/class/Captcha.class.php");
 $captcha = Captcha::getCaptcha();
 
 if (isset($_POST["submit"])) {
-
-
     $valid = isset($_POST["preinc"]) ? $_POST["preinc"] : '';
     $code = isset($_POST["code"]) ? $_POST["code"] : '';
 

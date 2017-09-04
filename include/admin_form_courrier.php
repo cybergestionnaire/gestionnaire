@@ -75,7 +75,7 @@ $arraytype = array(
                     <div class="form-group"><label>Courrier rattach&eacute;</label>
                         <select name="courrier_name" class="form-control" >
                             <?php
-                            foreach ($arrayname AS $key => $value) {
+                            foreach ($arrayname as $key => $value) {
                                 if ($name == $key) {
                                     echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                 } else {
@@ -88,7 +88,7 @@ $arraytype = array(
                     <div class="form-group"><label>Type de contenu</label>
                         <select name="courrier_type" class="form-control" >
                             <?php
-                            foreach ($arraytype AS $key => $value) {
+                            foreach ($arraytype as $key => $value) {
                                 if ($type == $key) {
                                     echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                 } else {

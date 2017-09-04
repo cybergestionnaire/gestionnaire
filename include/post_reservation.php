@@ -27,13 +27,13 @@
 // error_log("----      ----");
 
 require_once("include/class/Resa.class.php");
-// retour 
+// retour
 if (isset($_POST["retour"])) {
     //normalement, plus de retour possible...
     $_POST["step"] = $_POST["step"] - 1;
 }
 // etape 1 : choix de l'heure de depart de la resa
-else if (isset($_POST["submit1"])) {
+elseif (isset($_POST["submit1"])) {
     if ($_POST['debut'] != "") {
         $_SESSION['debut'] = $_POST["debut"];
     } else {
@@ -41,7 +41,7 @@ else if (isset($_POST["submit1"])) {
     }
 }
 // etape 2 :  choix de la duree de la resa
-else if (isset($_POST["submit2"])) {
+elseif (isset($_POST["submit2"])) {
     if ($_POST['duree'] != "") {
         $_SESSION['duree'] = $_POST["duree"];
     } else {
@@ -49,13 +49,13 @@ else if (isset($_POST["submit2"])) {
     }
 }
 // choix de l'adherent
-else if (isset($_POST['adh_submit'])) {
+elseif (isset($_POST['adh_submit'])) {
     unset($_SESSION["other_user"]);
-} else if (isset($_POST['choose_adh'])) {
+} elseif (isset($_POST['choose_adh'])) {
     $_SESSION['other_user'] = $_POST['choose'];
 }
 // etape 3 : finalisation de la reservation
-else if (isset($_POST["valider"])) {
+elseif (isset($_POST["valider"])) {
     if (isset($_SESSION['other_user']) && is_numeric($_SESSION['other_user'])) {
         $id_user = $_SESSION["other_user"];
     } else {
@@ -74,4 +74,3 @@ else if (isset($_POST["valider"])) {
     unset($_SESSION["other_user"]);
     header('Location:' . $_SESSION['resa']['url']);
 }
-?>

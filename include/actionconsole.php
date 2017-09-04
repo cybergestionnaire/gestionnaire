@@ -7,9 +7,9 @@ header("Content-Type: text/plain");
 
 if (isset($_GET["action"])) {
     if (!empty($_GET["action"])) {
-        include ("../connect_db.php");
+        include("../connect_db.php");
 
-        if ($port == "" OR FALSE == is_numeric($port)) {
+        if ($port == "" or false == is_numeric($port)) {
             $port = "3306";
         }
 
@@ -21,13 +21,13 @@ if (isset($_GET["action"])) {
         if ($action == 1) { //affectation usagers
             if (isset($_GET["id_poste"]) && !empty($_GET["id_poste"])) {
                 $id_poste = $_GET["id_poste"];
-            } else if (isset($_GET["id_user"]) && !empty($_GET["id_user"])) {
+            } elseif (isset($_GET["id_user"]) && !empty($_GET["id_user"])) {
                 $id_user = $_GET["id_user"];
-            } else if (isset($_GET["dureeaffect"]) && !empty($_GET["dureeaffect"])) {
+            } elseif (isset($_GET["dureeaffect"]) && !empty($_GET["dureeaffect"])) {
                 $dureeaffect = $_GET["dureeaffect"];
-            } else if (isset($_GET["id_atelier"]) && !empty($_GET["id_atelier"])) {
+            } elseif (isset($_GET["id_atelier"]) && !empty($_GET["id_atelier"])) {
                 $id_atelier = $_GET["id_atelier"];
-            } else if (isset($_GET["message"]) && !empty($_GET["message"])) {
+            } elseif (isset($_GET["message"]) && !empty($_GET["message"])) {
                 $message = $_GET["message"];
             }
 
@@ -38,7 +38,7 @@ if (isset($_GET["action"])) {
             $sql = "INSERT INTO `tab_resa` (`id_resa`, `id_computer_resa`, `id_user_resa`, `dateresa_resa`,`debut_resa`, `duree_resa`, `date_resa`, `status_resa`) VALUES('', '" . $id_poste . "', '" . $id_user . "', '" . $date . "', '" . $debut . "', '" . $duree . "', '" . $date . "', '0');";
             $result = mysqli_query($db, $sql);
             //$result = $db->query($sql);
-        } else if ($action == 2) {//liberation usagers
+        } elseif ($action == 2) {//liberation usagers
             if (isset($_GET["id_poste"]) && !empty($_GET["id_poste"])) {
                 $id_poste = $_GET["id_poste"];
             }
@@ -66,7 +66,7 @@ if (isset($_GET["action"])) {
                 $dureetotal = $heurereel - $heureresa;  //duree total en minutes
             }
             //lendemain
-            else if ($diffjour == 1) {
+            elseif ($diffjour == 1) {
                 if ($heurereel < $heureresa) { //moins de 24 h
                     $duree1 = 1439 - $heureresa;    //temps j1 (en minutes)
                     $dureetotal = $duree1 + $heurereel; //duree total en minutes
@@ -76,7 +76,7 @@ if (isset($_GET["action"])) {
                 }
             }
             //jour d'apres
-            else if ($diffjour > 1) {
+            elseif ($diffjour > 1) {
                 if ($heurereel < $heureresa) {  //moins de 24 h
                     $diffjour--;    //on retire un jour non revolu
                     $duree1 = 1439 - $heureresa;    //temps j1 en minutes
@@ -95,4 +95,3 @@ if (isset($_GET["action"])) {
         mysqli_close($db);
     }
 }
-?>

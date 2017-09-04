@@ -24,7 +24,7 @@ $detail = '';
 $idNiveau = '';
 $idCategorie = '';
 $btnLabel = "Cr&eacute;er le sujet de session";
-$action = "new"; //création par défaut   
+$action = "new"; //création par défaut
 
 $idSujet = isset($_GET["idSujet"]) ? $_GET["idSujet"] : '';
 if ($idSujet != '' && $s != "del") {

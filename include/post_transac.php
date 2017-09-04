@@ -38,7 +38,7 @@ $statutp = isset($_POST["statutprint"]) ? $_GET["statutprint"] : '';
 //debug($statutp);
 
 switch ($typeTransac) {
-    ///impressions  
+    ///impressions
 
     case "p":
         if (isset($_POST["submit"])) {
@@ -79,7 +79,6 @@ switch ($typeTransac) {
         $type_transac = "adh";
 
         if (isset($_POST["submit"])) {
-
             if ($_POST["submit"] == "Encaisser") {
                 $statutp = "1";
             } else {
@@ -153,7 +152,7 @@ switch ($typeTransac) {
 
             if ($transac != '') {
                 //modification
-                if (FALSE == modifForfaitUser($transac, $idTarif, $date, $nbredeforfait, $statutp, $nbatelier)) {
+                if (false == modifForfaitUser($transac, $idTarif, $date, $nbredeforfait, $statutp, $nbatelier)) {
                     header("Location: ./index.php?a=6&mesno=0&iduser=" . $id_user . "");
                 } else {
                     header("Location: ./index.php?a=6&iduser=" . $id_user . "");
@@ -192,7 +191,7 @@ switch ($typeTransac) {
 
         break;
 
-    case "temps" :
+    case "temps":
         //recuperation
 
         if (isset($_POST["submit"])) {
@@ -213,13 +212,13 @@ switch ($typeTransac) {
                 //modification
                 $rowtransacuser = getForfait($transac);
                 $statut0 = $rowtransacuser['status_transac'];
-                if (FALSE == modifForfaitUser($transac, $tarif_forfait, $date, $nbreforfait, $statutp, $nbatelier)) {
+                if (false == modifForfaitUser($transac, $tarif_forfait, $date, $nbreforfait, $statutp, $nbatelier)) {
                     header("Location: ./index.php?a=6&mesno=0&iduser=" . $id_user . "");
                 } else {
                     // inutile dans cybergestionnaire. Laissé pour EPN-Connect
                     if ($statut0 == 0 and $statutp == 1) {
                         addrelconsultationuser(1, $tarif_forfait, $id_user); //ajouter la relation pour activer-epnconnect
-                    } else if ($statut0 == 1 and $statutp == 1) {
+                    } elseif ($statut0 == 1 and $statutp == 1) {
                         addrelconsultationuser(2, $tarif_forfait, $id_user); //modifier la relation si car forfait a changé..
                     }
 
@@ -247,4 +246,3 @@ switch ($typeTransac) {
 
         break;
 }
-?>

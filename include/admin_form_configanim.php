@@ -121,7 +121,7 @@ $filesavatararray = array_values($filesavatararray); //réindexer le tableau apr
                         <label>EPN de rattachement *</label>
                         <select name="epn_r" class="form-control" >
                             <?php
-                            foreach ($espaces AS $espace) {
+                            foreach ($espaces as $espace) {
                                 if ($idEspace == $espace->getId()) {
                                     echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
                                 } else {

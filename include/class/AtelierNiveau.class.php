@@ -21,13 +21,14 @@
 
 require_once("Mysql.class.php");
 
-class AtelierNiveau {
-
+class AtelierNiveau
+{
     private $_id;
     private $_code;
     private $_nom;
 
-    private function __construct($array) {
+    private function __construct($array)
+    {
         $this->_id = $array["id_level"];
         $this->_code = $array["code_level"];
         $this->_nom = $array["nom_level"];
@@ -37,15 +38,18 @@ class AtelierNiveau {
      * Accesseurs basiques
      */
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getCode() {
+    public function getCode()
+    {
         return $this->_code;
     }
 
-    public function getNom() {
+    public function getNom()
+    {
         return $this->_nom;
     }
 
@@ -53,8 +57,9 @@ class AtelierNiveau {
      * Fonctions de l'objet
      */
 
-    public function modifier($code, $nom) {
-        $success = FALSE;
+    public function modifier($code, $nom)
+    {
+        $success = false;
         $db = Mysql::opendb();
 
         $code = mysqli_real_escape_string($db, $code);
@@ -71,13 +76,14 @@ class AtelierNiveau {
             $this->_code = $code;
             $this->_nom = $nom;
 
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
         $db = Mysql::opendb();
         $sql = "DELETE FROM `tab_level` WHERE `id_level`=" . $this->_id;
         $result = mysqli_query($db, $sql);
@@ -91,8 +97,8 @@ class AtelierNiveau {
      * Fonctions statiques
      */
 
-    public static function getAtelierNiveauById($id) {
-
+    public static function getAtelierNiveauById($id)
+    {
         $atelierNiveau = null;
 
         if ($id != 0) {
@@ -112,7 +118,8 @@ class AtelierNiveau {
         return $atelierNiveau;
     }
 
-    public static function creerAtelierNiveau($code, $nom) {
+    public static function creerAtelierNiveau($code, $nom)
+    {
         $atelierNiveau = null;
 
         $db = Mysql::opendb();
@@ -133,7 +140,8 @@ class AtelierNiveau {
         return $atelierNiveau;
     }
 
-    public static function getAtelierNiveaux() {
+    public static function getAtelierNiveaux()
+    {
         $atelierNiveaux = null;
 
         $db = Mysql::opendb();
@@ -151,5 +159,4 @@ class AtelierNiveau {
 
         return $atelierNiveaux;
     }
-
 }

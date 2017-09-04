@@ -29,7 +29,7 @@ $b = isset($_GET['b']) ? $_GET['b'] : '';
 $act = isset($_GET['act']) ? $_GET['act'] : '';
 
 //recuperation du formulaire epn
-if ($b == 1 OR $b == 2) {
+if ($b == 1 or $b == 2) {
     $idEspace = isset($_GET["idespace"]) ? $_GET["idespace"] : '';
     $nom = isset($_POST["nom"]) ? $_POST["nom"] : '';
     $adresse = isset($_POST["adresse"]) ? $_POST["adresse"] : '';
@@ -39,7 +39,7 @@ if ($b == 1 OR $b == 2) {
     $couleur = isset($_POST["ecouleur"]) ? $_POST["ecouleur"] : '';
     $logoespace = isset($_POST["elogo"]) ? $_POST["elogo"] : '';
     $mail = isset($_POST["mail"]) ? $_POST["mail"] : '';
-} else if ($b == 3 OR $b == 4) {
+} elseif ($b == 3 or $b == 4) {
     $nom = isset($_POST["nomreseau"]) ? $_POST["nomreseau"] : '';
     $adresse = isset($_POST["adressereseau"]) ? $_POST["adressereseau"] : '';
     $ville = isset($_POST["villereseau"]) ? $_POST["villereseau"] : '';
@@ -52,7 +52,7 @@ if ($b == 1 OR $b == 2) {
 
 //b=1 b=2 pour les espaces, b=3 b=4 pour le reseau
 
-if ($act != "" AND $act != 3) { // verife si non vide
+if ($act != "" and $act != 3) { // verife si non vide
     // Traitement des champs a ins�rer
     if (!$nom || !$ville || !$mail || !$adresse) {
         $mess = getError(4);
@@ -82,7 +82,7 @@ if ($act != "" AND $act != 3) { // verife si non vide
 
 
             case 4: // modification du nom du reseau par defaut
-                if (FALSE == modreseau($nom, $adresse, $ville, $tel, $mail, $logo, $courrier, $activation)) {
+                if (false == modreseau($nom, $adresse, $ville, $tel, $mail, $logo, $courrier, $activation)) {
                     echo getError(0);
                 } else {
                     header("Location:index.php?a=43&mesno=14");
@@ -114,4 +114,3 @@ if ($act == 3) { // supprime un espace
             break;
     }
 }
-?>

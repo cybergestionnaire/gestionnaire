@@ -23,8 +23,8 @@ require_once("Mysql.class.php");
 require_once("include/class/AtelierNiveau.class.php");
 require_once("include/class/AtelierCategorie.class.php");
 
-class AtelierSujet {
-
+class AtelierSujet
+{
     private $_id;
     private $_label;
     private $_content;
@@ -32,7 +32,8 @@ class AtelierSujet {
     private $_idNiveau;
     private $_idCategorie;
 
-    private function __construct($array) {
+    private function __construct($array)
+    {
         $this->_id = $array["id_sujet"];
         $this->_label = $array["label_atelier"];
         $this->_content = $array["content_atelier"];
@@ -45,35 +46,43 @@ class AtelierSujet {
      * Accesseurs basiques
      */
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getLabel() {
+    public function getLabel()
+    {
         return $this->_label;
     }
 
-    public function getContent() {
+    public function getContent()
+    {
         return $this->_content;
     }
 
-    public function getRessource() {
+    public function getRessource()
+    {
         return $this->_ressource;
     }
 
-    public function getIdNiveau() {
+    public function getIdNiveau()
+    {
         return $this->_idNiveau;
     }
 
-    public function getNiveau() {
+    public function getNiveau()
+    {
         return AtelierNiveau::getAtelierNiveauById($this->_idNiveau);
     }
 
-    public function getIdCategorie() {
+    public function getIdCategorie()
+    {
         return $this->_idCategorie;
     }
 
-    public function getCategorie() {
+    public function getCategorie()
+    {
         return AtelierCategorie::getAtelierCategorieById($this->_idCategorie);
     }
 
@@ -81,8 +90,9 @@ class AtelierSujet {
      * Fonctions de l'objet
      */
 
-    public function modifier($label, $content, $ressource, $idNiveau, $idCategorie) {
-        $success = FALSE;
+    public function modifier($label, $content, $ressource, $idNiveau, $idCategorie)
+    {
+        $success = false;
         $db = Mysql::opendb();
 
         $label = mysqli_real_escape_string($db, $label);
@@ -107,13 +117,14 @@ class AtelierSujet {
             $this->_ressource = $ressource;
             $this->_idNiveau = $idNiveau;
             $this->_idCategorie = $idCategorie;
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
         $db = Mysql::opendb();
         $sql = "DELETE FROM `tab_atelier_sujet` WHERE `id_sujet`=" . $this->_id;
         $result = mysqli_query($db, $sql);
@@ -127,8 +138,8 @@ class AtelierSujet {
      * Fonctions statiques
      */
 
-    public static function getAtelierSujetById($id) {
-
+    public static function getAtelierSujetById($id)
+    {
         $atelierSujet = null;
 
         if ($id != 0) {
@@ -148,7 +159,8 @@ class AtelierSujet {
         return $atelierSujet;
     }
 
-    public static function creerAtelierSujet($label, $content, $ressource, $idNiveau, $idCategorie) {
+    public static function creerAtelierSujet($label, $content, $ressource, $idNiveau, $idCategorie)
+    {
         $atelierSujet = null;
 
         $db = Mysql::opendb();
@@ -172,7 +184,8 @@ class AtelierSujet {
         return $atelierSujet;
     }
 
-    public static function getAtelierSujets() {
+    public static function getAtelierSujets()
+    {
         $atelierSujets = null;
 
         $db = Mysql::opendb();
@@ -190,5 +203,4 @@ class AtelierSujet {
 
         return $atelierSujets;
     }
-
 }

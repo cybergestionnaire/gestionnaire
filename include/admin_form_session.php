@@ -101,7 +101,7 @@ if (isset($_SESSION['sauvegarde'])) {
             ${'statutdate' . $f} = 0;
             ${'date' . $f} = '';
         }
-    } else if ($m == 2) { // modification
+    } elseif ($m == 2) { // modification
         $post_url = "index.php?a=31&m=2&idsession=" . $idsession;
         $label_bouton = "Modifier";
 
@@ -162,7 +162,7 @@ if ($sessionSujets === null) {
 
     <?php
 } else {
-    ?>
+        ?>
     <div class="row">
         <!-- Left col -->
         <section class="col-lg-12 connectedSortable">
@@ -183,8 +183,7 @@ if ($sessionSujets === null) {
                                         } else {
                                             echo "<option value=\"" . $i . "\">" . $i . "</option>";
                                         }
-                                    }
-                                    ?>
+                                    } ?>
                                 </select>
                                 <button  class="btn btn-default"><i class="fa fa-repeat"></i></button>
                             </div>
@@ -207,14 +206,13 @@ if ($sessionSujets === null) {
                             <label>Titre *</label>
                             <select name="idTitre" class="form-control" >
                                 <?php
-                                foreach ($sessionSujets AS $sessionSujet) {
+                                foreach ($sessionSujets as $sessionSujet) {
                                     if ($idTitre == $sessionSujet->getId()) {
                                         echo "<option value=\"" . $sessionSujet->getId() . "\" selected>" . $sessionSujet->getTitre() . "</option>";
                                     } else {
                                         echo "<option value=\"" . $sessionSujet->getId() . "\">" . $sessionSujet->getTitre() . "</option>";
                                     }
-                                }
-                                ?>
+                                } ?>
                             </select>
                         </div>
 
@@ -227,14 +225,13 @@ if ($sessionSujets === null) {
                             <label>Salle</label>
                             <select name="idSalle" class="form-control">
                                 <?php
-                                foreach ($salles AS $salle) {
+                                foreach ($salles as $salle) {
                                     if ($idSalle == $salle->getId()) {
                                         echo "<option value=\"" . $salle->getId() . "\" selected>" . htmlentities($salle->getNom()) . " (" . htmlentities($salle->getEspace()->getNom()) . ")</option>";
                                     } else {
                                         echo "<option value=\"" . $salle->getId() . "\">" . htmlentities($salle->getNom()) . " (" . htmlentities($salle->getEspace()->getNom()) . ")</option>";
                                     }
-                                }
-                                ?>
+                                } ?>
                             </select>
                         </div>
 
@@ -242,14 +239,13 @@ if ($sessionSujets === null) {
                             <label>Anim&eacute; par </label>
                             <select name="idAnim" class="form-control">
                                 <?php
-                                foreach ($animateurs AS $animateur) {
+                                foreach ($animateurs as $animateur) {
                                     if ($idAnim == $animateur->getId()) {
                                         echo "<option value=\"" . $animateur->getId() . "\" selected>" . htmlentities($animateur->getPrenom() . ' ' . $animateur->getNom()) . "</option>";
                                     } else {
                                         echo "<option value=\"" . $animateur->getId() . "\">" . htmlentities($animateur->getPrenom() . ' ' . $animateur->getNom()) . "</option>";
                                     }
-                                }
-                                ?>
+                                } ?>
                             </select>
                         </div>
 
@@ -262,14 +258,13 @@ if ($sessionSujets === null) {
 
                             <select name="idTarif" class="form-control" >
                                 <?php
-                                foreach ($tarifs AS $tarif) {
+                                foreach ($tarifs as $tarif) {
                                     if ($idTarif == $tarif->getId()) {
                                         echo "<option value=\"" . $tarif->getId() . "\" selected>" . htmlentities($tarif->getNom() . " (" . $tarif->getDonnee() . "€)") . "</option>";
                                     } else {
                                         echo "<option value=\"" . $tarif->getId() . "\">" . htmlentities($tarif->getNom() . " (" . $tarif->getDonnee() . "€)") . "</option>";
                                     }
-                                }
-                                ?>
+                                } ?>
                             </select>
                         </div> 
                     </div><!-- .box-body -->
@@ -296,42 +291,39 @@ if ($sessionSujets === null) {
                                 <label><?php echo $i ?>.</label>
                                 <?php
                                 $nomVariable1 = "statutdate" . $i;
-                                $nomVariable2 = "date" . $i;
-                                if ($$nomVariable1 == 1) {
-                                    echo ' <span class="text-muted">' . $$nomVariable2 . '  &nbsp;&nbsp;&nbsp;Atelier clotur&eacute; </span><input name="' . $nomVariable2 . '" id="dt' . $i . '" class="hidden" value="' . $$nomVariable2 . '"><input name="' . $nomVariable1 . '" class="hidden" value="' . $$nomVariable1 . '">';
-                                } else if ($$nomVariable1 == 2) {
-                                    echo ' <span class="text-muted">' . $$nomVariable2 . '  &nbsp;&nbsp;&nbsp;Atelier annul&eacute; </span><input name="' . $nomVariable2 . '"  id="dt' . $i . '" class="hidden" value="' . $$nomVariable2 . '"><input name="' . $nomVariable1 . '" class="hidden" value="' . $$nomVariable1 . '">';
-                                } else {
-                                    ?>                        
+                            $nomVariable2 = "date" . $i;
+                            if ($$nomVariable1 == 1) {
+                                echo ' <span class="text-muted">' . $$nomVariable2 . '  &nbsp;&nbsp;&nbsp;Atelier clotur&eacute; </span><input name="' . $nomVariable2 . '" id="dt' . $i . '" class="hidden" value="' . $$nomVariable2 . '"><input name="' . $nomVariable1 . '" class="hidden" value="' . $$nomVariable1 . '">';
+                            } elseif ($$nomVariable1 == 2) {
+                                echo ' <span class="text-muted">' . $$nomVariable2 . '  &nbsp;&nbsp;&nbsp;Atelier annul&eacute; </span><input name="' . $nomVariable2 . '"  id="dt' . $i . '" class="hidden" value="' . $$nomVariable2 . '"><input name="' . $nomVariable1 . '" class="hidden" value="' . $$nomVariable1 . '">';
+                            } else {
+                                ?>                        
                                     <input name="date<?php echo $i ?>" class='input'  id="dt<?php echo $i ?>" placeholder="Cliquez pour prendre une date" style="width: 230px;" value="<?php echo $$nomVariable2; ?>" >
                                     <select name="statutdate<?php echo $i ?>" >
                                         <?php
-                                        foreach ($statusarray AS $key => $value) {
+                                        foreach ($statusarray as $key => $value) {
                                             if ($$nomVariable1 == $key) {
                                                 echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                             } else {
                                                 echo "<option value=\"" . $key . "\">" . $value . "</option>";
                                             }
-                                        }
-                                        ?>
+                                        } ?>
                                     </select>                        
                                     <?php
-                                }
-                                ?>
+                            } ?>
                             </div>                        
                             <?php
                         }
 
-                        //envoyer aussi son id
-                        if ($idsession != "") {
-                            $datesarray2 = getDatesSession($idsession);
-                            for ($y = 1; $y <= $nbr_date; $y++) {
-                                $row2 = mysqli_fetch_array($datesarray2);
-                                echo "<input type=\"hidden\" name=\"iddate" . $y . "\" value=\"" . $row2['id_datesession'] . "\">\r\n";
-                            }
-                        }
-                        //<input type=\"hidden\" name=\"statutdate".$y."\" value=".$row2['statut_datesession']." >
-                        ?>
+        //envoyer aussi son id
+        if ($idsession != "") {
+            $datesarray2 = getDatesSession($idsession);
+            for ($y = 1; $y <= $nbr_date; $y++) {
+                $row2 = mysqli_fetch_array($datesarray2);
+                echo "<input type=\"hidden\" name=\"iddate" . $y . "\" value=\"" . $row2['id_datesession'] . "\">\r\n";
+            }
+        }
+        //<input type=\"hidden\" name=\"statutdate".$y."\" value=".$row2['statut_datesession']." > ?>
                     </div><!-- .box-body -->
                 </div><!-- .box -->
 
@@ -346,8 +338,7 @@ if ($sessionSujets === null) {
     <?php
     for ($i = 1; $i <= $nbr_date; $i++) {
         echo "rome(dt" . $i . ", { weekStart: 1 });";
-    }
-    ?>
+    } ?>
         var picker = rome(ind, options = {"weekStart": moment().weekday(1).day()});
 
         if (toggle.addEventListener) {
@@ -368,4 +359,5 @@ if ($sessionSujets === null) {
         }
     </script>
 
-<?php } ?>
+<?php
+    } ?>

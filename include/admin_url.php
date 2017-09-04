@@ -17,7 +17,7 @@ if ($_GET["action"] == "mod") {
     $formSubmit = "Ajouter";
 }
 // formulaire de creation / modification d'un lien
-//affichage du message d'erreur 
+//affichage du message d'erreur
 if ($mess != "") {
     echo $mess;
 }
@@ -59,7 +59,7 @@ if ($mess != "") {
                 <thead><tr><th>Theme</th><th>Titre du lien</th><th>&nbsp;</th></tr></thead><tbody>
                     <?php
                     $result = getBookmark(0); // 0 = valeur pour les liens du cyber
-                    if ($result != FALSE) {
+                    if ($result != false) {
                         $nb = mysqli_num_rows($result);
                         for ($i = 1; $i <= $nb; $i++) {
                             $row = mysqli_fetch_array($result);

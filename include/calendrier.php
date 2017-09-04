@@ -24,7 +24,7 @@
  */
 
 // on verifie si le mois et l'annee existe et sont de type numerique
-if (isset($_GET["jour"]) AND isset($_GET["mois"]) AND isset($_GET["annee"]) AND is_numeric($_GET["jour"]) AND is_numeric($_GET["mois"]) AND is_numeric($_GET["annee"])) {
+if (isset($_GET["jour"]) and isset($_GET["mois"]) and isset($_GET["annee"]) and is_numeric($_GET["jour"]) and is_numeric($_GET["mois"]) and is_numeric($_GET["annee"])) {
     $day = $_GET["jour"];
     $month = $_GET["mois"];
     $year = $_GET["annee"];

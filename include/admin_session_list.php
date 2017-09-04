@@ -36,9 +36,8 @@ if ($_SESSION["status"] == 4) {
     $sessions = Session::getSessionsNonCloturees();
 }
 if ($_SESSION["status"] == 3) {
-
     switch ($c) {
-        default :
+        default:
         case 1:
             $sessions = Session::getSessionsFuturesParAnimateur($_SESSION["iduser"]);
             break;
@@ -78,7 +77,8 @@ if ($nbsessionsprog > 0) {
 
                         </ul>
                     </div>
-                <?php } ?>
+                <?php
+                } ?>
 
 
             </div>
@@ -98,7 +98,7 @@ if ($nbsessionsprog > 0) {
                 <?php
                 foreach ($sessions as $session) {
 
-                    //elements                  
+                    //elements
                     $salle = $session->getSalle();
                     $espace = $salle->getEspace();
                     $animateur = $session->getAnimateur();
@@ -127,8 +127,7 @@ if ($nbsessionsprog > 0) {
                     //nombre de places pour la session
                     $placesOccupees = $session->getNbUtilisateursInscritsOuPresents();
                     $nbPlaces = $session->getNbPlaces();
-                    $enAttente = $session->getNbUtilisateursEnAttente();
-                    ?>        
+                    $enAttente = $session->getNbUtilisateursEnAttente(); ?>        
                     <tr class="<?php echo $class ?>"> 
                         <td><small><?php echo $listedatess ?></small></td>
                         <td>
@@ -136,8 +135,7 @@ if ($nbsessionsprog > 0) {
                             <?php
                             if ($nbPlaces == $placesOccupees) {
                                 echo "&nbsp;&nbsp;<b>COMPLET</b>";
-                            }
-                            ?>
+                            } ?>
                         </td>
                         <td><?php echo htmlentities($salle->getNom()) . " <br>(" . htmlentities($espace->getNom()) . ")" ?></td>
                         <td><?php echo $placesOccupees . " / " . $nbPlaces ?></td>
@@ -153,20 +151,18 @@ if ($nbsessionsprog > 0) {
                                 ?>
                                 &nbsp;<a href="index.php?a=37&m=4&idsession=<?php echo $session->getId() ?>"><button type="button" class="btn bg-red btn-sm" data-toggle="tooltip" title="supprimer" value=<?php echo $session->getId() ?> OnClick="return confirm(' Des adh&eacute;rents sont inscrits à cette session, voulez-vous vraiment la supprimer ?');"><i class="fa fa-trash-o"></i></button></a>
                                 <?php
-                            }
-                            ?>        
+                            } ?>        
                         </td>
                     </tr>
                     <?php
-                }
-                ?>
+                } ?>
 
             </table>
         </div><!-- .box-body -->
     </div><!-- .box -->
     <?php
 } else {
-    ?>
+                    ?>
     <div class="alert alert-info alert-dismissable">
         <i class="fa fa-info"></i><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Aucune session programm&eacute;e
     </div>
@@ -198,5 +194,5 @@ if ($nbsessionsprog > 0) {
         </div><!-- /col -->
     </div><!-- /row -->
     <?php
-}
+                }
 ?>

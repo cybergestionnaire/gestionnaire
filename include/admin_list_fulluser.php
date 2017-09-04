@@ -57,7 +57,6 @@ $statutarray = array(
 
 //** adherents mis en archive ***///
 if (isset($_POST["archivage"])) {
-
     $arrayusers = isset($_POST["archiv_"]) ? $_POST["archiv_"] : '';
     $nbusersarchiv = count($arrayusers);
 
@@ -89,7 +88,7 @@ $classadh = '';
             // Recherche d'un adherent
             $utilisateursRecherche = Utilisateur::searchUtilisateurs($term);
             $nbUtilisateursRecherche = count($utilisateursRecherche);
-            if ($utilisateursRecherche == null OR $nbUtilisateursRecherche == 0) {
+            if ($utilisateursRecherche == null or $nbUtilisateursRecherche == 0) {
                 ?>
                 <div class="col-xs-6">
                     <?php echo getError(6); ?>
@@ -98,8 +97,8 @@ $classadh = '';
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>&nbsp;&nbsp;&nbsp;<a  href="index.php?a=1&b=1" >Cr&eacute;er un nouvel utilisateur ?</a>
                     </div>
                     <?php
-                } else {
-                    // affichage des résultats de recherche
+            } else {
+                // affichage des résultats de recherche
                     ?>
                     <!-- Resultats de la recherche -->
                     <div class="box box-info">
@@ -126,58 +125,57 @@ $classadh = '';
                                     <?php
                                     //error_log(print_r($utilisateursRecherche));
                                     $i = 0;
-                                    foreach ($utilisateursRecherche as $utilisateurRecherche) {
-                                        $i++;
-                                        //print_r($utilisateurRecherche);
+                foreach ($utilisateursRecherche as $utilisateurRecherche) {
+                    $i++;
+                    //print_r($utilisateurRecherche);
 //            for ($i = 1; $i <= $nb; $i++) {
 //                 $row = mysqli_fetch_array($result) ;
 
-                                        $age = $utilisateurRecherche->getAge();
-                                        $tarifAdhesion = Tarif::getTarifById($utilisateurRecherche->getIdTarifAdhesion());
-                                        if ($tarifAdhesion != null) {
-                                            $adhesion = $tarifAdhesion->getNom();
-                                        } else {
-                                            $adhesion = '';
-                                        }
-                                        $aujourdhui = date_create(date('Y-m-d'));
-                                        $daterenouvellement = date_create($utilisateurRecherche->getDateRenouvellement());
+                    $age = $utilisateurRecherche->getAge();
+                    $tarifAdhesion = Tarif::getTarifById($utilisateurRecherche->getIdTarifAdhesion());
+                    if ($tarifAdhesion != null) {
+                        $adhesion = $tarifAdhesion->getNom();
+                    } else {
+                        $adhesion = '';
+                    }
+                    $aujourdhui = date_create(date('Y-m-d'));
+                    $daterenouvellement = date_create($utilisateurRecherche->getDateRenouvellement());
 
-                                        $interval = date_diff($aujourdhui, $daterenouvellement);
-                                        //debug($interval->format('%R%a'));
-                                        if ($utilisateurRecherche->getStatut() == 1) {
-                                            if ($daterenouvellement <= $aujourdhui) {
-                                                $classadh = 'label label-warning';
-                                            } elseif ($daterenouvellement > $aujourdhui) {
-                                                $classadh = 'label label-success';
-                                            }
-                                        } elseif ($utilisateurRecherche->getStatut() == 2) {
-                                            $classadh = 'label label-danger';
-                                        }
+                    $interval = date_diff($aujourdhui, $daterenouvellement);
+                    //debug($interval->format('%R%a'));
+                    if ($utilisateurRecherche->getStatut() == 1) {
+                        if ($daterenouvellement <= $aujourdhui) {
+                            $classadh = 'label label-warning';
+                        } elseif ($daterenouvellement > $aujourdhui) {
+                            $classadh = 'label label-success';
+                        }
+                    } elseif ($utilisateurRecherche->getStatut() == 2) {
+                        $classadh = 'label label-danger';
+                    }
 
-                                        //TARIF CONSULTATION
-                                        $forfaitConsultation = $utilisateurRecherche->getForfaitConsultation();
+                    //TARIF CONSULTATION
+                    $forfaitConsultation = $utilisateurRecherche->getForfaitConsultation();
 
-                                        if ($forfaitConsultation != null) {
-                                            $min = $tab_unite_temps_affectation[$forfaitConsultation->getUniteConsultation()];
-                                            $tarifreferencetemps = $forfaitConsultation->getDureeConsultation() * $min;
+                    if ($forfaitConsultation != null) {
+                        $min = $tab_unite_temps_affectation[$forfaitConsultation->getUniteConsultation()];
+                        $tarifreferencetemps = $forfaitConsultation->getDureeConsultation() * $min;
 
-                                            $restant = $utilisateurRecherche->getTempsRestant();
-                                            $rapport = round(($restant / $tarifreferencetemps) * 100);
-                                        }
+                        $restant = $utilisateurRecherche->getTempsRestant();
+                        $rapport = round(($restant / $tarifreferencetemps) * 100);
+                    }
 
-                                        if ($utilisateurRecherche->getStatut() == 2 or $utilisateurRecherche->getStatut() == 6) {
-                                            $class = "text-muted";
-                                        } else {
-                                            $class = "";
-                                        }
+                    if ($utilisateurRecherche->getStatut() == 2 or $utilisateurRecherche->getStatut() == 6) {
+                        $class = "text-muted";
+                    } else {
+                        $class = "";
+                    }
 
-                                        //dernière reservation
-                                        // $lasteresa = getLastResaUser($utilisateurRecherche->getId());
-                                        $lasteresa = $utilisateurRecherche->getLastResa();
-                                        if ($lasteresa == null) {
-                                            $lasteresa = "NC";
-                                        }
-                                        ?>
+                    //dernière reservation
+                    // $lasteresa = getLastResaUser($utilisateurRecherche->getId());
+                    $lasteresa = $utilisateurRecherche->getLastResa();
+                    if ($lasteresa == null) {
+                        $lasteresa = "NC";
+                    } ?>
                                         <tr class="<?php echo $class ?>">
                                             <td><?php echo $i ?></td>
                                             <td><?php echo htmlentities($utilisateurRecherche->getNom()) ?></td>
@@ -190,7 +188,7 @@ $classadh = '';
                                             <td><span class="<?php echo $classadh ?>"><?php echo $adhesion ?></span></td>
                                             <td>
                                                 <?php
-                                                //statut actif          
+                                                //statut actif
                                                 if ($utilisateurRecherche->getStatut() == 1) {
                                                     if ($forfaitConsultation != null) {
                                                         ?>
@@ -204,8 +202,7 @@ $classadh = '';
                                                     }
                                                 } else {
                                                     echo '<span class="badge bg-red">NC</span> 0h';
-                                                }
-                                                ?>
+                                                } ?>
                                             </td>
                                             <td>
                                                 <a href="index.php?a=1&b=2&iduser=<?php echo $utilisateurRecherche->getId() ?>"><button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="fiche adh&eacute;rent"><i class="fa fa-edit"></i></button></a>
@@ -215,21 +212,19 @@ $classadh = '';
                                                     ?>
                                                     &nbsp;<a href="index.php?a=5&b=6&iduser=<?php echo $utilisateurRecherche->getId() ?>"><button type="button" class="btn bg-primary btn-sm" data-toggle="tooltip" title="Autres inscriptions"><i class="fa fa-keyboard-o"></i></button></a>
                                                     <?php
-                                                }
-                                                ?>
+                                                } ?>
                                             </td>
                                         </tr>
                                         <?php
-                                    }
-                                    ?>
+                } ?>
                                 </tbody>
                             </table>
                         </div><!-- .box-body -->
                     </div><!-- .box -->
                     <?php
-                }
-            } else {
-                // si pas de recherche alors affichage classique
+            }
+        } else {
+            // si pas de recherche alors affichage classique
                 switch ($adh) {// on recupere le type de membre a afficher
                     default:
                     case 1:
@@ -265,12 +260,12 @@ $classadh = '';
                         break;
                 }
 
-                //utilisation des utilisateurs par type actifs/inactifs
-                $utilisateurs = Utilisateur::getUtilisateursByStatut($typeAdh);
-                $nbUtilisateurs = count($utilisateurs);
+            //utilisation des utilisateurs par type actifs/inactifs
+            $utilisateurs = Utilisateur::getUtilisateursByStatut($typeAdh);
+            $nbUtilisateurs = count($utilisateurs);
 
-                if ($utilisateurs == null OR $nbUtilisateurs == 0) {
-                    ?>
+            if ($utilisateurs == null or $nbUtilisateurs == 0) {
+                ?>
                     <br>
                     <div class="row">
                         <div class="col-xs-6">";
@@ -286,30 +281,30 @@ $classadh = '';
                         </div>
                     </div>
                     <?php
-                } else { // affichage du resultat
-                    //$nb  = mysqli_num_rows($result);
-                    // count total number of appropriate listings:
-                    // $tcount = mysqli_num_rows($result);
-                    $tcount = $nbUtilisateurs;
+            } else { // affichage du resultat
+                //$nb  = mysqli_num_rows($result);
+                // count total number of appropriate listings:
+                // $tcount = mysqli_num_rows($result);
+                $tcount = $nbUtilisateurs;
 
-                    $rpp = 25; // results per page
-                    // count number of pages:
-                    $tpages = ($tcount) ? ceil($tcount / $rpp) : 20;
-                    //debug($tpages);
-                    /// AJOUT PAGINATION
-                    $page = isset($_GET['page']) ? intval($_GET['page']) : 0;
-                    $adjacents = isset($_GET['adjacents']) ? intval($_GET['adjacents']) : 0;
-                    if ($page <= 0) {
-                        $page = 1;
-                    }
-                    if ($adjacents <= 0) {
-                        $adjacents = 4;
-                    }
-                    $reload = $_SERVER['PHP_SELF'] . "?a=1&adh=" . $typeAdh . "&tpages=" . $tpages . "&amp;adjacents=" . $adjacents;
-                    /// Fin pagination
+                $rpp = 25; // results per page
+                // count number of pages:
+                $tpages = ($tcount) ? ceil($tcount / $rpp) : 20;
+                //debug($tpages);
+                /// AJOUT PAGINATION
+                $page = isset($_GET['page']) ? intval($_GET['page']) : 0;
+                $adjacents = isset($_GET['adjacents']) ? intval($_GET['adjacents']) : 0;
+                if ($page <= 0) {
+                    $page = 1;
+                }
+                if ($adjacents <= 0) {
+                    $adjacents = 4;
+                }
+                $reload = $_SERVER['PHP_SELF'] . "?a=1&adh=" . $typeAdh . "&tpages=" . $tpages . "&amp;adjacents=" . $adjacents;
+                /// Fin pagination
 
-                    if ($tcount > 0) {
-                        ?>
+                if ($tcount > 0) {
+                    ?>
                         <div class="box box-info">
                             <div class="box-header">
                                 <h3 class="box-title"><?php echo $titleAdh ?> : <?php echo countUser($num) ?>/<?php echo countUser(1) ?>
@@ -319,13 +314,12 @@ $classadh = '';
                                     } else {
                                         echo "";
                                     }
-                                    //ajout des archivés
-                                    if (countUser(4) > 0) {
-                                        echo "&nbsp;(<a href=\"index.php?a=1&adh=" . $numOthera . "\">afficher les " . $othera . " </a>)";
-                                    } else {
-                                        echo "";
-                                    }
-                                    ?>
+                    //ajout des archivés
+                    if (countUser(4) > 0) {
+                        echo "&nbsp;(<a href=\"index.php?a=1&adh=" . $numOthera . "\">afficher les " . $othera . " </a>)";
+                    } else {
+                        echo "";
+                    } ?>
                                 </h3>
 
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a  href="index.php?a=1&b=1"  class="btn btn-default"  data-toggle="tooltip" title="Ajouter un adh&eacute;rent"><i class="fa fa-plus"></i></a>
@@ -351,8 +345,7 @@ $classadh = '';
                                 <?php
                                 if ($adh == 2) {
                                     echo "<form role=\"form\" method=\"POST\">";
-                                }
-                                ?>
+                                } ?>
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
@@ -365,7 +358,7 @@ $classadh = '';
                                             <th>Adh&eacute;sion  <span class="badge bg-primary"  data-toggle="tooltip" title="Vert = en cours, Jaune = adh&eacute;sion &agrave; renouveller dans la semaine"><i class="fa fa-info"></i></th>
                                             <th>
                                                 <?php
-                                                if ($adh == 1 OR $adh == '') {
+                                                if ($adh == 1 or $adh == '') {
                                                     echo 'Forfait temps';
                                                 } elseif ($adh == 2) {
                                                     ?>
@@ -373,54 +366,51 @@ $classadh = '';
                                                     <?php
                                                 } else {
                                                     echo '';   // ????
-                                                }
-                                                ?>
+                                                } ?>
                                             </th>
                                         </tr>
                                     </thead>
                                     <?php
                                     $count = 0;
-                                    $i = ($page - 1) * $rpp;
-                                    while (($count < $rpp) && ($i < $tcount)) {
+                    $i = ($page - 1) * $rpp;
+                    while (($count < $rpp) && ($i < $tcount)) {
+                        $utilisateur = $utilisateurs[$i];
+                        $age = $utilisateur->getAge();
+                        //ADHESION
+                        $tarif = Tarif::getTarifById($utilisateur->getIdTarifAdhesion());
+                        $adhesion = $tarif != null ? $tarif->getNom() : '';
+                        $aujourdhui = date_create(date('Y-m-d'));
+                        $daterenouvellement = date_create($utilisateur->getDateRenouvellement());
+                        //$interval = date_diff($aujourdhui,$daterenouvellement);
+                        //debug($interval->format('%R%a'));
+                        if ($utilisateur->getStatut() == 1) {
+                            if ($daterenouvellement <= $aujourdhui) {
+                                $classadh = 'label label-warning';
+                            } elseif ($daterenouvellement > $aujourdhui) {
+                                $classadh = 'label label-success';
+                            }
+                        } elseif ($utilisateur->getStatut() == 2) {
+                            $classadh = 'label label-danger';
+                        }
 
-                                        $utilisateur = $utilisateurs[$i];
-                                        $age = $utilisateur->getAge();
-                                        //ADHESION
-                                        $tarif = Tarif::getTarifById($utilisateur->getIdTarifAdhesion());
-                                        $adhesion = $tarif != null ? $tarif->getNom() : '';
-                                        $aujourdhui = date_create(date('Y-m-d'));
-                                        $daterenouvellement = date_create($utilisateur->getDateRenouvellement());
-                                        //$interval = date_diff($aujourdhui,$daterenouvellement);
-                                        //debug($interval->format('%R%a'));
-                                        if ($utilisateur->getStatut() == 1) {
-                                            if ($daterenouvellement <= $aujourdhui) {
-                                                $classadh = 'label label-warning';
-                                            } elseif ($daterenouvellement > $aujourdhui) {
-                                                $classadh = 'label label-success';
-                                            }
-                                        } elseif ($utilisateur->getStatut() == 2) {
-                                            $classadh = 'label label-danger';
-                                        }
+                        //TARIF CONSULTATION
+                        $forfaitConsultation = $utilisateur->getForfaitConsultation();
 
-                                        //TARIF CONSULTATION
-                                        $forfaitConsultation = $utilisateur->getForfaitConsultation();
+                        if ($forfaitConsultation != null) {
+                            $min = $tab_unite_temps_affectation[$forfaitConsultation->getUniteConsultation()];
+                            $tarifreferencetemps = $forfaitConsultation->getDureeConsultation() * $min;
 
-                                        if ($forfaitConsultation != null) {
-                                            $min = $tab_unite_temps_affectation[$forfaitConsultation->getUniteConsultation()];
-                                            $tarifreferencetemps = $forfaitConsultation->getDureeConsultation() * $min;
+                            $restant = $utilisateur->getTempsRestant();
+                            $rapport = round(($restant / $tarifreferencetemps) * 100);
+                        }
+                        //dernière reservation
+                        // $lasteresa = getLastResaUser($utilisateur->getId());
+                        $lasteresa = $utilisateur->getLastResa();
 
-                                            $restant = $utilisateur->getTempsRestant();
-                                            $rapport = round(($restant / $tarifreferencetemps) * 100);
-                                        }
-                                        //dernière reservation
-                                        // $lasteresa = getLastResaUser($utilisateur->getId());
-                                        $lasteresa = $utilisateur->getLastResa();
-
-                                        if ($lasteresa == null) {
-                                            $lasteresa = "NC";
-                                        }
-                                        //debug($lasteresa);
-                                        ?>
+                        if ($lasteresa == null) {
+                            $lasteresa = "NC";
+                        }
+                        //debug($lasteresa); ?>
                                         <tr>
                                             <td>
                                                 <a href="index.php?a=1&b=2&iduser=<?php echo $utilisateur->getId() ?>" class="btn bg-purple btn-sm" data-toggle="tooltip" title="Fiche adh&eacute;rent"><i class="fa fa-edit"></i></a>
@@ -432,8 +422,7 @@ $classadh = '';
                                                     ?>
                                                     <a href="index.php?a=5&b=6&iduser=<?php echo $utilisateur->getId() ?>" class="btn bg-primary btn-sm" data-toggle="tooltip" title="Inscriptions Ateliers"><i class="fa fa-keyboard-o"></i></a>
                                                     <?php
-                                                }
-                                                ?>
+                                                } ?>
 
                                             </td>
                                             <td><?php echo htmlentities($utilisateur->getNom()) ?></td>
@@ -444,7 +433,7 @@ $classadh = '';
                                             <td><span class="<?php echo $classadh ?>"><?php echo $adhesion ?></span></td>
                                             <td>
                                                 <?php
-                                                //statut actif          
+                                                //statut actif
                                                 if ($utilisateur->getStatut() == 1) {
                                                     if ($forfaitConsultation != null) {
                                                         ?>
@@ -460,31 +449,28 @@ $classadh = '';
                                                     }
                                                 } elseif ($utilisateur->getStatut() == 2) { //passer du statut inactif au statut archivé
                                                     echo '<input type="checkbox" name="archiv_[]" class="minimal" value=' . $utilisateur->getId() . '>';
-                                                }
-                                                ?>
+                                                } ?>
                                             </td>
                                         </tr>
                                         <?php
                                         $i++;
-                                        $count++;
-                                    }
-                                    ?>
+                        $count++;
+                    } ?>
                                 </table>
                                 <?php
                                 if ($adh == 2) {
                                     echo "</form>";
-                                }
-                                ?> 
+                                } ?> 
                                 <br>
                                 <?php
                                 //if ($_SESSION['nbpager']!=0)
 
                                 echo '<div class="box-footer clearfix">';
-                                echo paginate_two($reload, $page, $tpages, $adjacents);
-                                echo '</div>';
-                            }
-                        }
-                    }
+                    echo paginate_two($reload, $page, $tpages, $adjacents);
+                    echo '</div>';
+                }
+            }
+        }
                     ?>
                 </div><!-- .box-body -->
             </div><!-- .box -->

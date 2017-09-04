@@ -53,8 +53,7 @@ include("include/boites/menu-parametres.php");
                     echo getError(1);
                 } else {
                     //seuls les admins ont le droit de modifier un profil admin
-                    //echo "<div class=soustitre>Administrateurs: ".$nb."</div>";
-                    ?>
+                    //echo "<div class=soustitre>Administrateurs: ".$nb."</div>"; ?>
                     <table class="table">
                         <thead>
                             <tr>
@@ -64,8 +63,7 @@ include("include/boites/menu-parametres.php");
                         <tbody>
                             <?php
                             foreach ($administrateurs as $administrateur) {
-                                $statut = $state[$administrateur->getStatut()];
-                                ?>                    
+                                $statut = $state[$administrateur->getStatut()]; ?>                    
                                 <tr>
                                 <tr class="<?php echo $class ?>">
                                     <td><?php echo htmlentities($administrateur->getNom()) ?></td>
@@ -77,8 +75,7 @@ include("include/boites/menu-parametres.php");
                                             ?>
                                             <a href="index.php?a=51&b=2&type=admin&iduser=<?php echo $administrateur->getId() ?>"><button type="button" class="btn btn-primary sm" data-toggle="tooltip" title="Fiche inscription"><i class="fa fa-user"></i></button></a>
                                             <?php
-                                        }
-                                        ?>
+                                        } ?>
                                     </td>
 
                                     <td>
@@ -87,13 +84,11 @@ include("include/boites/menu-parametres.php");
                                             ?>
                                             <a href="index.php?a=50&idanim=<?php echo $administrateur->getId(); ?>"><button type="button" class="btn btn-primary sm" data-toggle="tooltip" title="Param&egrave;tres"><i class="fa fa-gear"></i></button></a>
                                             <?php
-                                        }
-                                        ?>
+                                        } ?>
                                     </td>
                                 </tr>
                                 <?php
-                            }
-                            ?>
+                            } ?>
                         </tbody>
                     </table>
                     <?php
@@ -110,8 +105,7 @@ include("include/boites/menu-parametres.php");
                     echo getError(1);
                 } else {
                     $nb = count($animateurs);
-                    //echo "<div class=soustitre>Animateurs: ".$nb."</div>";
-                    ?>
+                    //echo "<div class=soustitre>Animateurs: ".$nb."</div>"; ?>
                     <table class="table">
                         <thead>
                             <tr><th>Nom</th><th>Pr&eacute;nom</th><th>Statut</th><!--<th>salles attribu&eacute;es</th>--><th>Fiche</th><th>Param&egrave;tres</th></tr>
@@ -119,15 +113,13 @@ include("include/boites/menu-parametres.php");
                         <tbody>
                             <?php
                             foreach ($animateurs as $animateur) {
-
                                 $statut = $state[$animateur->getStatut()];
 
                                 if ($animateur->getStatut() == 5) {
                                     $class = "text-muted";
                                 } else {
                                     $class = "";
-                                }
-                                ?>
+                                } ?>
                                 <tr class="<?php echo $class ?>">
                                     <td><?php echo htmlentities($animateur->getNom()) ?></td>
                                     <td><?php echo htmlentities($animateur->getPrenom()) ?></td>
@@ -141,8 +133,7 @@ include("include/boites/menu-parametres.php");
                                     <td><a href="index.php?a=50&idanim=<?php echo $animateur->getId(); ?>"><button type="button" class="btn btn-primary sm" data-toggle="tooltip" title="Param&egrave;tres"><i class="fa fa-gear"></i></button></a></td>
                                 </tr>
                                 <?php
-                            }
-                            ?>
+                            } ?>
                         </tbody>
                     </table>
                     <?php

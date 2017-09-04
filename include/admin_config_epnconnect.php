@@ -27,7 +27,7 @@ require_once("include/class/ConfigLogiciel.class.php");
 $mess = isset($_GET["mess"]) ? $_GET["mess"] : '';
 if ($mess == "ok") {
     echo getError(14);
-} else if ($mess != "") {
+} elseif ($mess != "") {
     echo getError($_GET["mess"]);
 }
 
@@ -84,7 +84,7 @@ include("include/boites/menu-parametres.php");
                     <div class="form-group">
                         <select name="epn_r" class="form-control" >
                             <?php
-                            foreach ($espaces AS $espaceAffichage) {
+                            foreach ($espaces as $espaceAffichage) {
                                 if ($espaceAffichage->getId() == $espace->getId()) {
                                     echo "<option value=\"" . $espaceAffichage->getId() . "\" selected>" . htmlentities($espaceAffichage->getNom()) . "</option>";
                                 } else {

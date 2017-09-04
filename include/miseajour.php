@@ -41,7 +41,7 @@ $versionew = "1.9";
 //  debug($testbdd);
     if ($testmaj == '') {
         $testbdd = getLastBackup();
-        if ($testbdd == FALSE) {
+        if ($testbdd == false) {
             ?>
             <div class="col-md-6">
                 <div class="box box-danger">
@@ -76,7 +76,7 @@ $versionew = "1.9";
                             <p class="text-blue"><b>Modifications de la base de données</b></p>
                             <?php
                             $error = "";
-//1. ajout des tables
+                            //1. ajout des tables
                             if ($versionActuelle == "1.0") {
                                 $row1 = AddTab_courrier();
                                 if ($row1 != "OK") {
@@ -184,8 +184,7 @@ $versionew = "1.9";
                             <p>Erreur : la mise &agrave; jour n'est possible que depuis la version 1.0 de Cybergestionnaire ou sup&eacute;rieure.
                                 Vous devez faire d'abord la mise à jour vers la version 1.0 avant de tenter la mise à jour vers cette version.</p>
                             <?php
-                        }
-                        ?>
+                        } ?>
 
 
                     </div>
@@ -198,7 +197,7 @@ $versionew = "1.9";
 
     if ($testmaj == 'ok') {
 
-        //deuxieme etape attribution des forfaits pour les utilisateurs, optionnel ou pas....   
+        //deuxieme etape attribution des forfaits pour les utilisateurs, optionnel ou pas....
         ?>
         <div class="col-md-6">
             <div class="box box-danger">
@@ -237,18 +236,17 @@ $versionew = "1.9";
 
                     <?php
                     //****ecriture du fichier de log
-                    if ($finale == FALSE) {
+                    if ($finale == false) {
                         $error .= "Echec impossible d'ecrire dans la table des logs" . " \r\n";
                     } else {
-                        //inscrire l'ensemble des erreurs dans le fichier log de la version                 
+                        //inscrire l'ensemble des erreurs dans le fichier log de la version
                         if ($error != "") {
                             gFilelog(addslashes($error), "log_majv1.9.txt");
                         }
 
 
                         //vider les variables
-                        $error = '';
-                        ?>
+                        $error = ''; ?>
                     </div>
                     <div class="box-footer">
                         <a href="index.php"><button class="btn btn-default"> <i class="fa fa-arrow-circle-left"></i> Retour à l'accueil</button></a>
@@ -256,7 +254,7 @@ $versionew = "1.9";
                 </div><!-- .box -->
             </div><!-- .col-md-6 -->
             <?php
-        } //fin finale
+                    } //fin finale
     } //fin second div
     ?>
 

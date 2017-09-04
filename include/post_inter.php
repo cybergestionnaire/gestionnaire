@@ -32,10 +32,10 @@ $dispo = $_POST["dispo"];
 
 
 // verification de l'envoi du formulaire
-if (FALSE != isset($_POST["submit"])) {
+if (false != isset($_POST["submit"])) {
     // recuperation des postes concern�s
     $result = getComputerId();
-    if (FALSE != $result) {
+    if (false != $result) {
         $nb = mysqli_num_rows($result);
         if ($nb > 0) {
             $comp = array();
@@ -53,12 +53,12 @@ if (FALSE != isset($_POST["submit"])) {
         header("Location:index.php?a=3&b=1&error=1");
     } else {
         $result = addInter($titr, $date, $comment, $dispo);
-        if (FALSE == $result) {
+        if (false == $result) {
             header("Location:index.php?a=3&b=1&error=2");
         } else {
             $idinter = $result;
-            foreach ($comp AS $key => $value) {
-                if (FALSE == addInterComputer($idinter, $value)) {
+            foreach ($comp as $key => $value) {
+                if (false == addInterComputer($idinter, $value)) {
                     header("Location:index.php?a=3&b=1&error=1");
                 }
             }
@@ -66,4 +66,3 @@ if (FALSE != isset($_POST["submit"])) {
         }
     }
 }
-?>

@@ -77,7 +77,7 @@ if ($equip == $equipement[0]) {
     // pas d'équippement !
     $equipements = 'Equipements non renseign&eacute;s';
 } else {
-    foreach ($equipement AS $key => $value) {
+    foreach ($equipement as $key => $value) {
         $equipements = $equipements . $equipementarray[$value] . " / ";
     }
 }
@@ -242,8 +242,7 @@ if (!is_dir($dossierimg)) {
                                     <td><a href="index.php?a=5&b=6&act=1&iduser=<?php echo $id_user ?>&idatelier=<?php echo $atelier->getId() ?>" class="btn bg-red sm"  data-toggle="tooltip" title=" D&eacute;sinscrire"><i class="fa fa-trash-o"></i></a></td>
                                 </tr>
                                 <?php
-                            }
-                            ?>
+                            } ?>
                         </tbody>
                     </table>
 
@@ -272,8 +271,7 @@ if (!is_dir($dossierimg)) {
                                         <td><a href="index.php?a=5&b=6&act=1&iduser=<?php echo $id_user ?>&idatelier=<?php echo $atelier->getId() ?>" class="btn bg-red sm"><i class="fa fa-trash-o" data-toggle="tooltip" title=" D&eacute;sinscrire"></i></a></td>
                                     </tr>
                                     <?php
-                                }
-                                ?>
+                                } ?>
                             </tbody>
                         </table>
                     </div>
@@ -302,9 +300,7 @@ if (!is_dir($dossierimg)) {
                         <tbody>
                             <?php
                             foreach ($ListeSessionInscrit as $session) {
-
                                 foreach ($session->getSessionDates() as $sessionDate) {
-
                                     if ($sessionDate->getStatut() == 1) {
                                         $class = "text-muted";
                                         if ($sessionDate->isUtilisateurPresent($utilisateur->getid())) {
@@ -315,8 +311,7 @@ if (!is_dir($dossierimg)) {
                                     } else {
                                         $class = "";
                                         $presence = "";
-                                    }
-                                    ?>
+                                    } ?>
                                     <tr class="<?php echo $class; ?>">
                                         <td><?php echo getDateFR($sessionDate->getDate()) ?></td>
                                         <td><?php echo $sessionDate->getSession()->getSessionSujet()->getTitre() ?> </td>
@@ -324,8 +319,7 @@ if (!is_dir($dossierimg)) {
                                     </tr>
                                     <?php
                                 }
-                            }
-                            ?>
+                            } ?>
                         </tbody>
                     </table>
                     <?php
@@ -356,8 +350,7 @@ if (!is_dir($dossierimg)) {
                                         </tr>
                                         <?php
                                     }
-                                }
-                                ?>
+                                } ?>
                             </tbody>
                         </table>
                     </div>
@@ -391,7 +384,7 @@ if (!is_dir($dossierimg)) {
                         <tbody>
                             <?php
                             // for ($i = 1 ; $i <= $nbabsentatelier ; $i++) {
-                            // //atelier   
+                            // //atelier
                             // $rowatelier   = mysqli_fetch_array($ListeAtelierAbsent);
                             // $arrayatelier = getAtelier($rowatelier["id_atelier"]);
                             // $rowsujetA    = mysqli_fetch_array($titrearray);
@@ -405,10 +398,10 @@ if (!is_dir($dossierimg)) {
                                 </tr>
                                 <?php
                             }
-                            //session
+                    //session
 
-                            foreach ($ListeSessionAbsent as $sessionDate) {
-                                ?>
+                    foreach ($ListeSessionAbsent as $sessionDate) {
+                        ?>
                                 <tr>
                                     <td>Session</td>
                                     <td><?php echo getDateFR($sessionDate->getDate()) ?></td>
@@ -416,8 +409,7 @@ if (!is_dir($dossierimg)) {
                                     <td></td>
                                 </tr>
                                 <?php
-                            }
-                            ?>
+                    } ?>
                         </tbody>
                     </table>
                     <?php
@@ -444,10 +436,10 @@ if (!is_dir($dossierimg)) {
                                 </tr>
                                 <?php
                             }
-                            //session
+                    //session
 
-                            foreach ($ListeSessionPresent as $sessionDate) {
-                                ?>
+                    foreach ($ListeSessionPresent as $sessionDate) {
+                        ?>
                                 <tr>
                                     <td>Session</td>
                                     <td><?php echo getDateFR($sessionDate->getDate()) ?></td>
@@ -455,8 +447,7 @@ if (!is_dir($dossierimg)) {
                                     <td></td>
                                 </tr>
                                 <?php
-                            }
-                            ?>
+                    } ?>
                         </tbody>
                     </table>
 

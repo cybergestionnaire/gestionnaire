@@ -34,7 +34,7 @@ if ($mesno != "") {
 <?php
 //chargement des breves
 $result = getAllBreve(0);
-if ($result == FALSE) {
+if ($result == false) {
     echo getError(0);
 } else {
     $nb = mysqli_num_rows($result);
@@ -70,14 +70,13 @@ if ($result == FALSE) {
                     <td><a href=\"index.php?a=4&b=2&idbreve=" . $row["id_news"] . "\"><button type=\"button\" class=\"btn bg-green sm\"><i class=\"fa fa-edit\"></i></button></a>
                     <a href=\"index.php?a=4&b=3&act=3&idbreve=" . $row["id_news"] . "\"><button type=\"button\" class=\"btn bg-red sm\"><i class=\"fa fa-trash-o\"></i></button></a></td></tr>";
                                 }
-                                echo "</tbody></table></div>";
-                                ?>
+        echo "</tbody></table></div>"; ?>
                             <div class="box-footer clearfix"><a href="index.php?a=4&b=1">
                                     <button class="pull-right btn btn-default" name="create_breve">Cr&eacute;er une br&egrave;ve &nbsp;&nbsp;<i class="fa fa-arrow-circle-right"></i></button></a></div>
                     </div></div>
 
             </div>
             <?php
-        }
     }
+}
     ?>

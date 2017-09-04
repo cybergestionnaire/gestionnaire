@@ -8,7 +8,6 @@ $csv_output .= "\n";
 
 //Boucle sur les resultats
 foreach ($inscriptions as $key => $inscription) {
-
     $inscription["montant_transport"] = $inscription["montant_transport_arrivee"] + $inscription["montant_transport_depart"];
     //$inscription["montant_transport"] = 120;
 
@@ -29,4 +28,3 @@ header("Content-type: application/vnd.ms-excel");
 header("Content-disposition: attachment; filename=" . date("Y-m-d") . "-inscriptions-" . rewrite_value($inscription["event_nom"]) . ".xls");
 print utf8_decode($csv_output);
 exit();
-?>

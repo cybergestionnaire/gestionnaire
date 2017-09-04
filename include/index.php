@@ -20,4 +20,3 @@
   2006 Namont Nicolas
  */
 header("Location:../index.php?logout=yes");
-?>

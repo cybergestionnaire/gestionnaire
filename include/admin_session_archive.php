@@ -56,7 +56,7 @@ $nb = count($sessionsArchivees);
                 }
 
                 // while ($ans = mysqli_fetch_array($rowanneesstat)) {
-                // echo '<a href="index.php?a=36&year=' . $ans['Y'] . '" > <button class="btn bg-yellow btn-sm">' . $ans['Y'] . ' </button></a>'; 
+                // echo '<a href="index.php?a=36&year=' . $ans['Y'] . '" > <button class="btn bg-yellow btn-sm">' . $ans['Y'] . ' </button></a>';
                 // }
                 //annee en cours
                 echo '<a href="index.php?a=36&year=' . date('Y') . '"> <button class="btn bg-yellow btn-sm"> Ann&eacute;e en cours</button></a>';
@@ -82,15 +82,13 @@ $nb = count($sessionsArchivees);
                 <tbody>
                     <?php
                     foreach ($sessionsArchivees as $session) {
-
                         $salle = $session->getSalle();
                         $espace = $salle->getEspace();
                         $animateur = $session->getAnimateur();
                         $sujet = $session->getSessionSujet();
                         $tarif = $session->getTarif();
                         $datesSession = $session->getSessionDates();
-                        $nbrdates = $session->getNbDates();
-                        ?>
+                        $nbrdates = $session->getNbDates(); ?>
 
                         <tr>
                             <td><?php echo htmlentities($sujet->getTitre()) ?></td>
@@ -101,19 +99,16 @@ $nb = count($sessionsArchivees);
                             <td>
                                 <?php
                                 foreach ($datesSession as $dateSession) {
-
                                     if ($dateSession->getStatut() == 2) {
                                         echo getDatefr($dateSession->getDate()) . "&nbsp;&nbsp;" . $statusarray[$dateSession->getStatut()] . " </br>";
                                     } else {
                                         echo "<a href=\"index.php?a=32&act=1&idsession=" . $session->getId() . "&dateid=" . $dateSession->getId() . "\">" . getDatefr($dateSession->getDate()) . "</a>&nbsp;&nbsp;" . $statusarray[$dateSession->getStatut()] . " </br> ";
                                     }
-                                }
-                                ?>    
+                                } ?>    
                             </td>
                         </tr>
                         <?php
-                    }
-                    ?>
+                    } ?>
                 </tbody>
             </table>
         </div><!-- .box-body -->
@@ -123,13 +118,13 @@ $nb = count($sessionsArchivees);
     </div><!-- .box -->
 
     <?php
-} else {
-    ?>
+        } else {
+            ?>
     <div class="alert alert-info alert-dismissable">
         <i class="fa fa-info"></i>
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Aucune session archiv&eacute;e pour l'ann&eacute;e en cours
     </div>
     <?php
-}
+        }
 ?>
           

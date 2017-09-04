@@ -31,8 +31,7 @@ if ($utilisateur->hasPrint()) {
     $statutPrint = array(
         0 => "pas pay&eacute;",
         1 => "pay&eacute;",
-    );
-    ?>
+    ); ?>
     <div class="row">
 
         <section class="col-lg-4 connectedSortable">        
@@ -46,12 +45,11 @@ if ($utilisateur->hasPrint()) {
                     <?php
                     if (($restant) > 0) {
                         echo '<h4><span class="text-green">cr&eacute;dit restant sur le compte : ' . number_format($restant, 2, ',', ' ') . ' &euro; </span></h4>';
-                    } else if (($restant) < 0) {
+                    } elseif (($restant) < 0) {
                         echo '<h4><span class="text-red">Le compte est d&eacute;biteur de ' . number_format($restant, 2, ',', ' ') . ' &euro; </span></h4>';
-                    } else if (($restant) == 0) {
+                    } elseif (($restant) == 0) {
                         echo '<h4>Aucun cr&eacute;dit restant sur le compte</h4>';
-                    }
-                    ?>
+                    } ?>
                 </div>
             </div>
         </section>
@@ -61,8 +59,8 @@ if ($utilisateur->hasPrint()) {
             // ARCHIVES DES IMPRESSIONS
 
             $impressions = $utilisateur->getImpressions();
-            if ($impressions !== null && count($impressions) > 0) {
-                ?>
+    if ($impressions !== null && count($impressions) > 0) {
+        ?>
                 <div class="box box-primary">
                     <div class="box-header"><h3 class="box-title">Historique de vos impressions</h3></div>
                     <div class="box-body">
@@ -72,8 +70,7 @@ if ($utilisateur->hasPrint()) {
                                 <?php
                                 foreach ($impressions as $impression) {
                                     if ($impression->getStatut() != 2) {
-                                        $tarif = $impression->getTarif();
-                                        ?>
+                                        $tarif = $impression->getTarif(); ?>
                                         <tr>
                                             <td><?php echo $impression->getDate() ?></td>
                                             <td><?php echo $impression->getNombreImpression() ?></td>
@@ -90,13 +87,11 @@ if ($utilisateur->hasPrint()) {
                                             } else {
                                                 // transaction enregistrée
                                                 echo "<td><p class=\"text-light-blue\">" . $statutPrint[$impression->getStatut()] . "</p></td> <td>&nbsp;</td>";
-                                            }
-                                            ?>
+                                            } ?>
                                         </tr>
                                         <?php
                                     }
-                                }
-                                ?>
+                                } ?>
                             </tbody>
                         </table>
                     </div>

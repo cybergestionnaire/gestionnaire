@@ -75,7 +75,6 @@ if ($act == 2) { //suppression
     delUserInsc($id);
     header("Location:index.php?a=24&mesno=27");
 } else {
-
     if (isset($_POST["submit"])) {
 
         //1 ajout de la ville en plus si besoin
@@ -102,7 +101,30 @@ if ($act == 2) { //suppression
                 $dateNaissance = $annee . "-" . $mois . "-" . $jour;
 
                 $utilisateur = Utilisateur::creerUtilisateur(
-                                $date, $nom, $prenom, $sexe, $dateNaissance, $adresse, intval($idVille), $tel, $mail, $temps, $login, $pass, intval($status), $lastvisit, $csp, $equipement, $utilisation, $connaissance, $info, $tarif, $daterenouv, intval($epn), $newsletter);
+                                $date,
+                    $nom,
+                    $prenom,
+                    $sexe,
+                    $dateNaissance,
+                    $adresse,
+                    intval($idVille),
+                    $tel,
+                    $mail,
+                    $temps,
+                    $login,
+                    $pass,
+                    intval($status),
+                    $lastvisit,
+                    $csp,
+                    $equipement,
+                    $utilisation,
+                    $connaissance,
+                    $info,
+                    $tarif,
+                    $daterenouv,
+                    intval($epn),
+                    $newsletter
+                );
                 //enlever la preinscription
                 if ($utilisateur == null) {
                     $mess = getError(0);
@@ -114,4 +136,3 @@ if ($act == 2) { //suppression
         }
     }
 }
-?>

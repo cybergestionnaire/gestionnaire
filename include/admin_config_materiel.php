@@ -76,8 +76,7 @@ include("include/boites/menu-parametres.php");
                                             <td><a href="index.php?a=2&b=3&act=3&idmat=<?php echo $materiel->getId(); ?>"><button type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></a></td></tr>
                                         <?php
                                     }
-                                }
-                                ?>
+                                } ?>
 
                             </tbody>
                         </table>
@@ -99,7 +98,7 @@ include("include/boites/menu-parametres.php");
                     <div class="input-group">
                         <select name="epn_r"  class="form-control input-sm" >
                             <?php
-                            foreach ($espaces AS $espace) {
+                            foreach ($espaces as $espace) {
                                 if ($idEspace == $espace->getId()) {
                                     echo "<option value=\"" . $espace->getId() . "\" selected>" . $espace->getNom() . "</option>";
                                 } else {

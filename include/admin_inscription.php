@@ -42,8 +42,7 @@ if ($nb > 0) {
                 <?php
                 for ($i = 1; $i <= $nb; $i++) {
                     $row = mysqli_fetch_array($result);
-                    $espace = Espace::getEspaceByID($row["id_inscription_computer"]);
-                    ?>
+                    $espace = Espace::getEspaceByID($row["id_inscription_computer"]); ?>
                     <tr>
                         <td><?php echo htmlentities($row["nom_inscription_user"]) ?></td>
                         <td><?php echo htmlentities($row["prenom_inscription_user"]) ?></td>
@@ -55,15 +54,14 @@ if ($nb > 0) {
                         </td>
                     </tr>
                     <?php
-                }
-                ?>
+                } ?>
             </table>
         </div>
     </div>
 
     <?php
 } else {
-    echo getError(41);
-}
+                    echo getError(41);
+                }
 ?>
 

@@ -18,10 +18,13 @@ define('MYSQL_PASSWORD', $passdb);
 
 //Instantiate the PDO object and connect to MySQL.
 $pdo = new PDO(
-        'mysql:host=' . MYSQL_SERVER . ';dbname=' . MYSQL_DATABASE_NAME, MYSQL_USERNAME, MYSQL_PASSWORD
+        'mysql:host=' . MYSQL_SERVER . ';dbname=' . MYSQL_DATABASE_NAME,
+    MYSQL_USERNAME,
+    MYSQL_PASSWORD
 );
 
-function check_table($pdo, $table, $sql_create) {
+function check_table($pdo, $table, $sql_create)
+{
     $statement = $pdo->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" . MYSQL_DATABASE_NAME . "' AND TABLE_NAME = '" . $table . "'");
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
@@ -45,7 +48,8 @@ function check_table($pdo, $table, $sql_create) {
     return ($resultApres == $resultAvant);
 }
 
-function update_table_collation_engine($pdo, $table) {
+function update_table_collation_engine($pdo, $table)
+{
 
     // vérification de l'inter classement
 
@@ -75,11 +79,11 @@ function update_table_collation_engine($pdo, $table) {
     return ($resultApres == $resultAvant);
 }
 
-function update_champs($pdo, $champs, $table) {
-    $toconvert = FALSE;
+function update_champs($pdo, $champs, $table)
+{
+    $toconvert = false;
 
     foreach ($champs[$table] as $champ) {
-
         $statement = $pdo->query("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . MYSQL_DATABASE_NAME . "' AND TABLE_NAME = '" . $table . "' AND COLUMN_NAME= '" . $champ["name"] . "'");
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         if (count($result) > 0) { //est ce que le champ existe ?
@@ -87,7 +91,7 @@ function update_champs($pdo, $champs, $table) {
                 $resultAvant[] = $column['COLUMN_NAME'] . ' - ' . $column['COLUMN_TYPE'] . ' - ' . $column['COLLATION_NAME'];
                 if (($column['COLLATION_NAME'] != "") && ($column['COLLATION_NAME'] != "utf8_general_ci")) {
                     echo "<p> -- probleme de codage, a reconvertir !</p>";
-                    $toconvert = TRUE;
+                    $toconvert = true;
                 }
                 if ($column['COLUMN_TYPE'] != $champ["type"]) {
                     // pas le bon type...
@@ -116,7 +120,7 @@ function update_champs($pdo, $champs, $table) {
         }
     }
     if ($resultAvant == $resultApres) {
-        return TRUE;
+        return true;
     } else {
         echo "<table border='1'><tr><td>avant traitement</td><td>Apres traitement</td></tr>\n";
         echo "<tr><td>\n";
@@ -129,11 +133,12 @@ function update_champs($pdo, $champs, $table) {
         }
         echo "</td></tr></table>\n";
 
-        return FALSE;
+        return false;
     }
 }
 
-function get_champs($sql_create) {
+function get_champs($sql_create)
+{
     // premiere decoupe de la requete : ce qu'il y a avant la premiere parenthese, entre la premiere et la derniere, et après la derniere
     $partie1 = substr($sql_create, 0, strpos($sql_create, '('));
     $partie2 = substr($sql_create, strpos($sql_create, '(') + 1);
@@ -737,7 +742,7 @@ foreach ($sql_create as $table => $sql) {
     }
 }
 
-// TODO : gestion des valeurs pas defaut 
+// TODO : gestion des valeurs pas defaut
 
 $query[] = "INSERT INTO `tab_atelier_categorie` (`id_atelier_categorie`, `label_categorie`) 
 VALUES 
@@ -827,4 +832,3 @@ $query[] = "INSERT INTO `tab_utilisation` (`id_utilisation`, `nom_utilisation`, 
 (14, 'Services numeriques scolaires', 'Sous Menu', 'oui'),
 (15, 'Autres', 'Menu Principal', 'oui');";
 $query[] = "INSERT INTO `tab_reseau`(`id_reseau`, `res_nom`, `res_adresse`, `res_ville`, `res_tel`, `res_mail`, `res_logo`, `res_courrier`, `res_activation`) VALUES (1,'nom de votre reseau','1, rue du libre',1,'00 00 00 00 00','mail@mail.com','','1','1')";
-?>

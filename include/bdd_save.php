@@ -47,7 +47,7 @@ if ($maj == 0) {
                 //$bdd=TRUE;
 
 
-                if ($bdd == TRUE) {
+                if ($bdd == true) {
                     echo '<p>* La base de donn&eacute;es a &eacute;t&eacute; sauvegard&eacute;e sur votre serveur. </p><br>
 				<p>Pour r&eacute;cup&eacute;rer le fichier g&eacute;n&eacute;r&eacute;, ouvrez le dossier /sql de l\'application</p>
 				';

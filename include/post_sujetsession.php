@@ -39,7 +39,6 @@ if ($s == "del") {//suppression du sujet de la session
 }
 
 if (isset($_POST["submit_session"])) {
-
     $idNiveau = isset($_POST["niveau"]) ? $_POST["niveau"] : '';
     $idCategorie = isset($_POST["categorie"]) ? $_POST["categorie"] : '';
     $sujet = isset($_POST["label_session"]) ? $_POST["label_session"] : '';
@@ -78,4 +77,3 @@ if (isset($_POST["submit_session"])) {
         }
     }
 }
-?>

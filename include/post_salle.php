@@ -32,7 +32,7 @@ $nom = isset($_POST["nom"]) ? $_POST["nom"] : '';
 $espace = isset($_POST["espace"]) ? $_POST["espace"] : '';
 $comment = isset($_POST["comment"]) ? $_POST["comment"] : '';
 
-if ($act != "" AND $act != 3) { // verife si non vide
+if ($act != "" and $act != 3) { // verife si non vide
     // Traitement des champs a insérer
     if ($nom == '' || $espace == '') {
         $mess = getError(4);
@@ -74,4 +74,3 @@ if ($act == 3) { // supprime une salle
             break;
     }
 }
-?>

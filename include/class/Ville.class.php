@@ -24,11 +24,11 @@ require_once("Mysql.class.php");
 /**
  * La classe Ville permer "d'abstraire" les données venant de la table tab_city.
  *
- * Toutes les manipulations sur la table tab_city devrait passer par une fonction 
+ * Toutes les manipulations sur la table tab_city devrait passer par une fonction
  * de cette classe.
  */
-class Ville {
-
+class Ville
+{
     private $_id;
     private $_nom;
     private $_codePostal;
@@ -43,7 +43,8 @@ class Ville {
      * @param ArrayObject $array Tableau associatif contenant les données d'initialisation de l'objet
      *                           les clés utilisées dépendent du nommage des champs dans la table "tab_city"
      */
-    private function __construct($array) {
+    private function __construct($array)
+    {
         $this->_id = $array["id_city"];
         $this->_nom = $array["nom_city"];
         $this->_codePostal = $array["code_postale_city"];
@@ -54,19 +55,23 @@ class Ville {
      * Accesseurs basiques
      */
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getNom() {
+    public function getNom()
+    {
         return $this->_nom;
     }
 
-    public function getCodePostal() {
+    public function getCodePostal()
+    {
         return $this->_codePostal;
     }
 
-    public function getPays() {
+    public function getPays()
+    {
         return $this->_pays;
     }
 
@@ -74,8 +79,9 @@ class Ville {
      * Fonctions de l'objet
      */
 
-    public function modifier($nom, $codePostal, $pays) {
-        $success = FALSE;
+    public function modifier($nom, $codePostal, $pays)
+    {
+        $success = false;
         $db = Mysql::opendb();
 
         $nom = mysqli_real_escape_string($db, $nom);
@@ -93,13 +99,14 @@ class Ville {
             $this->_codePostal = $codePostal;
             $this->_pays = $pays;
 
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
 
         // Verification avant suppression si il n'y a plus d'adherents
         $db = Mysql::opendb();
@@ -107,7 +114,7 @@ class Ville {
         $result = mysqli_query($db, $sql);
 
 
-        if ($result == FALSE) {
+        if ($result == false) {
             return 0; // echec de la requete
         } else {
             ;
@@ -117,7 +124,7 @@ class Ville {
                 // Suppression de la ville
                 $sql2 = "DELETE FROM `tab_city` WHERE `id_city`=" . $this->_id;
                 $result = mysqli_query($db, $sql2);
-                if ($result == FALSE) {
+                if ($result == false) {
                     return 0;
                 } else {
                     return 2;
@@ -127,8 +134,8 @@ class Ville {
         Mysql::closedb($db);
     }
 
-    public function nbAdherents() {
-
+    public function nbAdherents()
+    {
         $db = Mysql::opendb();
 
         $sql = "SELECT count(`id_user`) AS nb FROM `tab_user` "
@@ -148,8 +155,8 @@ class Ville {
      * Fonctions statiques
      */
 
-    public static function getVilleById($id) {
-
+    public static function getVilleById($id)
+    {
         $ville = null;
 
         if ($id != 0) {
@@ -169,7 +176,8 @@ class Ville {
         return $ville;
     }
 
-    public static function creerVille($nom, $codePostal, $pays) {
+    public static function creerVille($nom, $codePostal, $pays)
+    {
         $ville = null;
 
         $db = Mysql::opendb();
@@ -200,8 +208,8 @@ class Ville {
         return $ville;
     }
 
-    public static function getVilles() {
-
+    public static function getVilles()
+    {
         $villes = null;
 
         $db = Mysql::opendb();
@@ -218,5 +226,4 @@ class Ville {
 
         return $villes;
     }
-
 }

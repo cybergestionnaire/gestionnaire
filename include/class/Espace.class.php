@@ -27,11 +27,11 @@ require_once("Horaire.class.php");
 /**
  * La classe Espace permer "d'abstraire" les données venant de la table tab_espace.
  *
- * Toutes les manipulations sur la table tab_espace devrait passer par une fonction 
+ * Toutes les manipulations sur la table tab_espace devrait passer par une fonction
  * de cette classe.
  */
-class Espace {
-
+class Espace
+{
     private $_id;
     private $_nom;
     private $_idVille;
@@ -54,7 +54,8 @@ class Espace {
         9 => "black"
     );
 
-    public function __construct($array) {
+    public function __construct($array)
+    {
         $this->_id = $array["id_espace"];
         $this->_nom = $array["nom_espace"];
         $this->_idVille = $array["id_city"];
@@ -66,64 +67,79 @@ class Espace {
         $this->_mail = $array["mail_espace"];
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getNom() {
+    public function getNom()
+    {
         return $this->_nom;
     }
 
-    public function getIdVille() {
+    public function getIdVille()
+    {
         return $this->_idVille;
     }
 
-    public function getVille() {
+    public function getVille()
+    {
         return Ville::getVilleById($this->_idVille);
     }
 
-    public function getAdresse() {
+    public function getAdresse()
+    {
         return $this->_adresse;
     }
 
-    public function getTelephone() {
+    public function getTelephone()
+    {
         return $this->_telephone;
     }
 
-    public function getFax() {
+    public function getFax()
+    {
         return $this->_fax;
     }
 
-    public function getLogo() {
+    public function getLogo()
+    {
         return $this->_logo;
     }
 
-    public function getCouleur() {
+    public function getCouleur()
+    {
         return $this->_couleurArray[$this->_couleur];
     }
 
-    public function getCodeCouleur() {
+    public function getCodeCouleur()
+    {
         return $this->_couleur;
     }
 
-    public function getMail() {
+    public function getMail()
+    {
         return $this->_mail;
     }
 
-    public function getHoraires() {
+    public function getHoraires()
+    {
         return Horaire::getHorairesByIdEspace(intval($this->_id));
     }
 
-    public function getConfig() {
+    public function getConfig()
+    {
         return Config::getConfig($this->_id);
     }
 
-    public function getConfigLogiciel() {
+    public function getConfigLogiciel()
+    {
         return ConfigLogiciel::getConfigLogiciel($this->_id);
     }
 
-    public function hasConfigLogiciel() {
-        $success = FALSE;
+    public function hasConfigLogiciel()
+    {
+        $success = false;
 
         $db = Mysql::opendb();
         $sql = "SELECT  `id_config_logiciel` FROM  `tab_config_logiciel` WHERE  `id_espace` ='" . $this->_id . "' ";
@@ -131,13 +147,14 @@ class Espace {
         Mysql::closedb($db);
 
         if (mysqli_num_rows($result) == 1) {
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public static function creerEspace($nom, $adresse, $idVille, $telephone, $fax, $logo, $couleur, $mail) {
+    public static function creerEspace($nom, $adresse, $idVille, $telephone, $fax, $logo, $couleur, $mail)
+    {
         $espace = null;
 
         if ($nom != "" && (is_int($idVille) && $idVille != 0) && filter_var($mail, FILTER_VALIDATE_EMAIL)
@@ -167,8 +184,9 @@ class Espace {
         return $espace;
     }
 
-    public function modifier($nom, $adresse, $idVille, $telephone, $fax, $logo, $couleur, $mail) {
-        $success = FALSE;
+    public function modifier($nom, $adresse, $idVille, $telephone, $fax, $logo, $couleur, $mail)
+    {
+        $success = false;
         $db = Mysql::opendb();
 
         $nom = mysqli_real_escape_string($db, $nom);
@@ -196,13 +214,14 @@ class Espace {
             $this->_couleur = $couleur;
             $this->_mail = $mail;
 
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
 
         // Verification avant suppression si il n'y a plus de salle
         $db = Mysql::opendb();
@@ -210,7 +229,7 @@ class Espace {
         $result = mysqli_query($db, $sql);
 
 
-        if ($result == FALSE) {
+        if ($result == false) {
             return 0; // echec de la requete
         } else {
             if (mysqli_num_rows($result) > 0) {
@@ -238,7 +257,8 @@ class Espace {
     }
 
     //insertion des horaires du nouvel epn en copy de celui par défaut
-    public function copyHoraires() {
+    public function copyHoraires()
+    {
         $db = Mysql::opendb();
         $sql = " INSERT INTO `tab_horaire`(`id_horaire`, `jour_horaire`, `hor1_begin_horaire`, `hor1_end_horaire`, `hor2_begin_horaire`, `hor2_end_horaire`, `unit_horaire`, `id_epn`) 
                 SELECT '', `jour_horaire`, `hor1_begin_horaire`, `hor1_end_horaire`, `hor2_begin_horaire`, `hor2_end_horaire`, `unit_horaire`, '" . $this->_id . "' FROM `tab_horaire` WHERE `id_epn`=1
@@ -249,7 +269,8 @@ class Espace {
         return $result;
     }
 
-    public function copyConfig($forfait) {
+    public function copyConfig($forfait)
+    {
         $db = Mysql::opendb();
         $sql = "INSERT INTO `tab_config`(`id_config`, `activer_console`, `name_config`, `unit_default_config`, `unit_config`, `maxtime_config`, `maxtime_default_config`, `id_espace`, `inscription_usagers_auto`, `message_inscription`, `activation_forfait`, `nom_espace`,`resarapide`, `duree_resarapide`)
                 SELECT '',`activer_console`, `name_config`, `unit_default_config`, `unit_config`, `maxtime_config`, `maxtime_default_config`,'" . $this->_id . "', `inscription_usagers_auto`, `message_inscription`,'" . $forfait . "',`nom_espace`,`resarapide`, `duree_resarapide` FROM `tab_config` WHERE `id_espace`=1
@@ -261,7 +282,8 @@ class Espace {
         return $result;
     }
 
-    public function copyConfigLogiciel() {
+    public function copyConfigLogiciel()
+    {
         $db = Mysql::opendb();
         $sql = "INSERT INTO `tab_config_logiciel`(`id_config_logiciel`, `id_espace`, `config_menu_logiciel`, `page_inscription_logiciel`, `page_renseignement_logiciel`, `connexion_anim_logiciel`, `bloquage_touche_logiciel`, `affichage_temps_logiciel`, `deconnexion_auto_logiciel`, `fermeture_session_auto`) VALUES ('','" . $this->_id . "','1','0','1','1','1','1','1','0')";
         $result = mysqli_query($db, $sql);
@@ -270,7 +292,8 @@ class Espace {
         return $result;
     }
 
-    public static function getEspaceById($id) {
+    public static function getEspaceById($id)
+    {
         $espace = null;
 
         if ($id != 0) {
@@ -291,8 +314,8 @@ class Espace {
         return $espace;
     }
 
-    public static function getEspaces() {
-
+    public static function getEspaces()
+    {
         $espaces = null;
 
         $db = Mysql::opendb();
@@ -310,5 +333,4 @@ class Espace {
 
         return $espaces;
     }
-
 }

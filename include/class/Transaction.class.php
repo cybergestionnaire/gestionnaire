@@ -21,8 +21,8 @@
 require_once("Mysql.class.php");
 require_once("Tarif.class.php");
 
-class Transaction {
-
+class Transaction
+{
     private $_id;
     private $_type;
     private $_idUtilisateur;
@@ -30,7 +30,8 @@ class Transaction {
     private $_date;
     private $_statut;
 
-    public function __construct($array) {
+    public function __construct($array)
+    {
         $this->_id = $array["id_transac"];
         $this->_type = $array["type_transac"];
         $this->_idUtilisateur = $array["id_user"];
@@ -40,40 +41,49 @@ class Transaction {
         $this->_statut = $array["status_transac"];
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getType() {
+    public function getType()
+    {
         return $this->_type;
     }
 
-    public function getIdUtilisateur() {
+    public function getIdUtilisateur()
+    {
         return $this->_idUtilisateur;
     }
 
-    public function getIdTarif() {
+    public function getIdTarif()
+    {
         return $this->_idTarif;
     }
 
-    public function getTarif() {
+    public function getTarif()
+    {
         return Tarif::getTarifById($this->_idTarif);
     }
 
-    public function getNombreForfait() {
+    public function getNombreForfait()
+    {
         return $this->_nombreForfait;
     }
 
-    public function getDate() {
+    public function getDate()
+    {
         return $this->_date;
     }
 
-    public function getStatut() {
+    public function getStatut()
+    {
         return $this->_statut;
     }
 
-    public function modifier($type, $idUtilisateur, $idTarif, $nombreForfait, $date, $statut) {
-        $success = FALSE;
+    public function modifier($type, $idUtilisateur, $idTarif, $nombreForfait, $date, $statut)
+    {
+        $success = false;
         $db = Mysql::opendb();
 
         $type = mysqli_real_escape_string($db, $type);
@@ -97,13 +107,14 @@ class Transaction {
             $this->_date = $date;
             $this->_statut = $statut;
 
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
         $success = false;
         $db = Mysql::opendb();
 
@@ -121,7 +132,8 @@ class Transaction {
         return $success;
     }
 
-    public static function creerTransaction($type, $idUtilisateur, $idTarif, $nombreForfait, $date, $statut) {
+    public static function creerTransaction($type, $idUtilisateur, $idTarif, $nombreForfait, $date, $statut)
+    {
         $transaction = null;
         if ($type != "" && $idUtilisateur != 0
         ) {
@@ -149,7 +161,8 @@ class Transaction {
         return $transaction;
     }
 
-    public static function getTransactionById($id) {
+    public static function getTransactionById($id)
+    {
         $transaction = null;
 
         if ($id != 0) {
@@ -170,8 +183,8 @@ class Transaction {
         return $transaction;
     }
 
-    public static function getTransactions() {
-
+    public static function getTransactions()
+    {
         $transactions = null;
 
         $db = Mysql::opendb();
@@ -190,8 +203,8 @@ class Transaction {
         return $transactions;
     }
 
-    public static function getTransactionsByUtilisateurAndType($idUtilisateur, $type) {
-
+    public static function getTransactionsByUtilisateurAndType($idUtilisateur, $type)
+    {
         $transactions = null;
 
         $db = Mysql::opendb();
@@ -216,7 +229,8 @@ class Transaction {
         return $transactions;
     }
 
-    public static function getTransactionsEnAttenteByIdutilisateur($idUtilisateur) {
+    public static function getTransactionsEnAttenteByIdutilisateur($idUtilisateur)
+    {
         $transactions = null;
 
         $db = Mysql::opendb();
@@ -238,5 +252,4 @@ class Transaction {
 
         return $transactions;
     }
-
 }

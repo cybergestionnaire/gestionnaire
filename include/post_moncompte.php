@@ -27,13 +27,13 @@ if (isset($_POST["submit"])) {
     $pass1 = $_POST["pass1"];
     $pass2 = $_POST["pass2"];
 
-    if ($pass1 != "" AND $pass2 != "") {
+    if ($pass1 != "" and $pass2 != "") {
         if ($pass1 != $pass2) {
             $mess = getError(7);
         } else {
             $utilisateur = Utilisateur::getUtilisateurById($_SESSION["iduser"]);
             $result = $utilisateur->updatePassword($pass1);
-            if ($result == FALSE) {
+            if ($result == false) {
                 $mess = getError(0);
             } else {
                 $mess = getError(8);
@@ -41,13 +41,12 @@ if (isset($_POST["submit"])) {
         }
     }
 
-///inscription a la newsletter
+    ///inscription a la newsletter
 
 
-    if (FALSE == updateNewsletter($_SESSION["iduser"], $_POST["newsletter"])) {
+    if (false == updateNewsletter($_SESSION["iduser"], $_POST["newsletter"])) {
         $mess = getError(0);
     } else {
         $mess = getError(8);
     }
 }
-?>

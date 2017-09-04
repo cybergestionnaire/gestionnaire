@@ -113,8 +113,7 @@ $epn = $_SESSION["idepn"];
                                         $nbHorsForfait = "0";
                                     } else {
                                         $nbHorsForfait = "<span class=\"text-red\">" . abs($nbrestant) . "&nbsp;&nbsp;</span><span class=\"btn bg-red btn-xs\" data-toggle=\"tooltip\" title=\"Ces ateliers n'ont pas &eacute;t&eacute; pay&eacute;s !\"><i class=\"fa fa-warning\"></i></span>";
-                                    }
-                                    ?>
+                                    } ?>
                                     <tr class="<?php echo $class ?>">
                                         <td><?php echo htmlentities($utilisateur->getNom()) ?></td>
                                         <td><?php echo htmlentities($utilisateur->getPrenom()) ?></td>
@@ -132,8 +131,7 @@ $epn = $_SESSION["idepn"];
                                         </td>
                                     </tr>
                                     <?php
-                                }
-                                ?>
+                                } ?>
                             </tbody> 
                         </table>
                     </div>
@@ -170,15 +168,14 @@ $epn = $_SESSION["idepn"];
                                 <?php
                                 for ($i = 1; $i <= $nbadh; $i++) {
                                     $rowadh = mysqli_fetch_array($result);
-                                    //$titreatelier=get
-                                    ?>
+                                    //$titreatelier=get ?>
                                     <tr><td><?php echo $rowadh["nom_user"] ?></td>
                                         <td><?php echo $rowadh["prenom_user"] ?></td>
 
                 <!--<td><input type="checkbox" name="export_[]" value="<?php echo $rowadh["id_user"]; ?>"></td>--></tr>
 
-                                <?php }
-                                ?>
+                                <?php
+                                } ?>
                             </tbody>
                         </table>
                     </form>

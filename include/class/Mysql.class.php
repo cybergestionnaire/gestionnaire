@@ -1,11 +1,12 @@
 <?php
 
-class Mysql {
+class Mysql
+{
+    public static function opendb()
+    {
+        include("./connect_db.php");
 
-    public static function opendb() {
-        include ("./connect_db.php");
-
-        if ($port == "" OR FALSE == is_numeric($port)) {
+        if ($port == "" or false == is_numeric($port)) {
             $port = "3306";
         }
 
@@ -20,8 +21,8 @@ class Mysql {
         }
     }
 
-    public static function closedb($mydb) {
+    public static function closedb($mydb)
+    {
         mysqli_close($mydb);
     }
-
 }

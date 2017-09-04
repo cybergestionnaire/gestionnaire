@@ -21,8 +21,8 @@
 
 require_once("Mysql.class.php");
 
-class Captcha {
-
+class Captcha
+{
     private $_id;
     private $_activation;
     private $_code;
@@ -36,7 +36,8 @@ class Captcha {
      * @param ArrayObject $array Tableau associatif contenant les données d'initialisation de l'objet
      *                           les clés utilisées dépendent du nommage des champs dans la table "tab_city"
      */
-    private function __construct($array) {
+    private function __construct($array)
+    {
         $this->_id = $array["id_captcha"];
         $this->_activation = $array["capt_activation"];
         $this->_code = $array["capt_code"];
@@ -46,19 +47,23 @@ class Captcha {
      * Accesseurs basiques
      */
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getActivation() {
+    public function getActivation()
+    {
         return $this->_activation;
     }
 
-    public function getCode() {
+    public function getCode()
+    {
         return $this->_code;
     }
 
-    public function isActive() {
+    public function isActive()
+    {
         return $this->_activation == "Y" ? true : false;
     }
 
@@ -66,8 +71,9 @@ class Captcha {
      * Fonctions de l'objet
      */
 
-    public function modifier($activation, $code) {
-        $success = FALSE;
+    public function modifier($activation, $code)
+    {
+        $success = false;
         $db = Mysql::opendb();
 
         $activation = mysqli_real_escape_string($db, $activation);
@@ -84,7 +90,7 @@ class Captcha {
             $this->_activation = $activation;
             $this->_code = $code;
 
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
@@ -93,7 +99,8 @@ class Captcha {
     /**
      * la fonction "supprimer" ne devrait jamais être appelée !
      */
-    public function supprimer() {
+    public function supprimer()
+    {
         $db = Mysql::opendb();
         $sql = "DELETE FROM `tab_captcha` WHERE `id_captcha`=" . $this->_id;
         $result = mysqli_query($db, $sql);
@@ -107,8 +114,8 @@ class Captcha {
      * Fonctions statiques
      */
 
-    public static function getCaptchaById($id) {
-
+    public static function getCaptchaById($id)
+    {
         $captcha = null;
 
         if ($id != 0) {
@@ -128,7 +135,8 @@ class Captcha {
         return $captcha;
     }
 
-    public static function creerCaptcha($activation, $code) {
+    public static function creerCaptcha($activation, $code)
+    {
         $captcha = null;
 
         $db = Mysql::opendb();
@@ -156,8 +164,8 @@ class Captcha {
         return $captcha;
     }
 
-    public static function getCaptcha() {
+    public static function getCaptcha()
+    {
         return self::getCaptchaById(1);
     }
-
 }

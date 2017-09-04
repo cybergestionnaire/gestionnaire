@@ -21,12 +21,13 @@
 
 require_once("Mysql.class.php");
 
-class AtelierCategorie {
-
+class AtelierCategorie
+{
     private $_id;
     private $_label;
 
-    private function __construct($array) {
+    private function __construct($array)
+    {
         $this->_id = $array["id_atelier_categorie"];
         $this->_label = $array["label_categorie"];
     }
@@ -35,11 +36,13 @@ class AtelierCategorie {
      * Accesseurs basiques
      */
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getLabel() {
+    public function getLabel()
+    {
         return $this->_label;
     }
 
@@ -47,8 +50,9 @@ class AtelierCategorie {
      * Fonctions de l'objet
      */
 
-    public function modifier($label) {
-        $success = FALSE;
+    public function modifier($label)
+    {
+        $success = false;
         $db = Mysql::opendb();
 
         $label = mysqli_real_escape_string($db, $label);
@@ -62,13 +66,14 @@ class AtelierCategorie {
         if ($result) {
             $this->_label = $label;
 
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
         $db = Mysql::opendb();
         $sql = "DELETE FROM `tab_atelier_categorie` WHERE `id_atelier_categorie`=" . $this->_id;
         $result = mysqli_query($db, $sql);
@@ -82,8 +87,8 @@ class AtelierCategorie {
      * Fonctions statiques
      */
 
-    public static function getAtelierCategorieById($id) {
-
+    public static function getAtelierCategorieById($id)
+    {
         $atelierCategorie = null;
 
         if ($id != 0) {
@@ -103,7 +108,8 @@ class AtelierCategorie {
         return $atelierCategorie;
     }
 
-    public static function creerAtelierCategorie($label) {
+    public static function creerAtelierCategorie($label)
+    {
         $atelierCategorie = null;
 
         $db = Mysql::opendb();
@@ -123,7 +129,8 @@ class AtelierCategorie {
         return $atelierCategorie;
     }
 
-    public static function getAtelierCategories() {
+    public static function getAtelierCategories()
+    {
         $atelierCategories = null;
 
         $db = Mysql::opendb();
@@ -141,5 +148,4 @@ class AtelierCategorie {
 
         return $atelierCategories;
     }
-
 }

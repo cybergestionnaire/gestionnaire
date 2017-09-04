@@ -45,7 +45,7 @@ $arraytype = array(
 
 //chargement des courriers
 $result = getAllCourrier();
-if ($result == FALSE) {
+if ($result == false) {
     echo getError(0);
 } else {
     $nb = mysqli_num_rows($result);
@@ -75,8 +75,7 @@ if ($result == FALSE) {
 										<td>" . $arraytype[$row["courrier_type"]] . "</td>
                     <td><a href=\"index.php?a=52&b=2&idcourrier=" . $row["id_courrier"] . "\"><button type=\"button\" class=\"btn bg-green sm\"><i class=\"fa fa-edit\"></i></button></a>
                     <a href=\"index.php?a=52&act=3&idcourrier=" . $row["id_courrier"] . "\"><button type=\"button\" class=\"btn bg-red sm\"><i class=\"fa fa-trash-o\"></i></button></a></td></tr>";
-                                }
-                                ?>
+                                } ?>
                             </tbody></table></div>
                     <div class="box-footer clearfix"><a href="index.php?a=52&b=1">
                             <button class="pull-right btn btn-default" name="create_courrier">Cr&eacute;er un courrier &nbsp;&nbsp;<i class="fa fa-arrow-circle-right"></i></button></a></div>
@@ -86,8 +85,7 @@ if ($result == FALSE) {
                     <div class="box-body">	
                         <?php
                         $rownewsletter = getNewsletterUsers();
-                        $nbnews = mysqli_num_rows($rownewsletter);
-                        ?>
+        $nbnews = mysqli_num_rows($rownewsletter); ?>
                         <p>Nombre d'adh&eacute;rents abonn&eacute;s &agrave; la newsletter : <?php echo $nbnews; ?> </p>
                     </div>
                     <div class="box-footer clearfix">

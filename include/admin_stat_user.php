@@ -30,7 +30,7 @@ if ($mess != "") {
 // chargement des valeurs pour l'epn par défaut
 $epn = $_SESSION['idepn'];
 //si changment d'epn
-if (TRUE == isset($_POST['modifepn'])) {
+if (true == isset($_POST['modifepn'])) {
     $epn = $_POST['Pepn'];
 }
 
@@ -78,7 +78,7 @@ if (!is_dir($dossierimg)) {
 
                             <select name="Pepn"  class="form-control pull-right" style="width: 200px;">
                                 <?php
-                                foreach ($espaces AS $key => $value) {
+                                foreach ($espaces as $key => $value) {
                                     if ($epn == $key) {
                                         echo "<option  value=\"" . $key . "\" selected>" . $value . "</option>";
                                     } else {
@@ -102,8 +102,7 @@ if (!is_dir($dossierimg)) {
         </div><!-- /.box -->   
 
         <?php
-        if (getadherenttotal($epn)) { // condition pour affichage si pas d'adherents, message !
-            ?>
+        if (getadherenttotal($epn)) { // condition pour affichage si pas d'adherents, message ! ?>
 
             <div class="box box-primary">
                 <div class="box-header"><i class="fa fa-bar-chart-o"></i><h3 class="box-title">R&eacute;partition Homme / Femme (<?php echo getCyberName($epn); ?>)</h3></div>
@@ -183,18 +182,18 @@ if (!is_dir($dossierimg)) {
                     <div class="tab-pane active" id="tab_1-1">
                         <?php
                         $villes = Ville::getVilles();
-                        $nbactifs = countUser(2);
-                        $nbinactifs = countUser(3);
-                        $nbtotalai = countUser(1);
-//debug($nbtotalai);
-                        foreach ($villes AS $ville) {
-                            $nbAdhCityactifs = statCity($ville->getId(), 1); // actifs
+            $nbactifs = countUser(2);
+            $nbinactifs = countUser(3);
+            $nbtotalai = countUser(1);
+            //debug($nbtotalai);
+            foreach ($villes as $ville) {
+                $nbAdhCityactifs = statCity($ville->getId(), 1); // actifs
                             $nbAdhCityinactifs = statCity($ville->getId(), 2); //inactifs
                             $nbAdhCity = $nbAdhCityactifs + $nbAdhCityinactifs;
 
-                            //debug($nbAdhCity);
-                            if ($nbAdhCity > 0) {
-                                ?>
+                //debug($nbAdhCity);
+                if ($nbAdhCity > 0) {
+                    ?>
 
                                 <div class="statBar">
                                     <div class="statTextVille"><?php echo htmlentities($ville->getNom()) . "  <small>(" . $nbAdhCityactifs . " adh)</small>"; ?> </div>
@@ -204,26 +203,25 @@ if (!is_dir($dossierimg)) {
                                     </div>
                                 </div><div class="clear"></div>
                                 <?php
-                            }
-                        }
-                        ?>
+                }
+            } ?>
 
                     </div>
                     <div class="tab-pane active" id="tab_2-2">
                         <?php
                         $villes = Ville::getVilles();
-                        $nbactifs = countUser(2);
-                        $nbinactifs = countUser(3);
-                        $nbtotalai = countUser(1);
-//debug($nbtotalai);
-                        foreach ($villes AS $ville) {
-                            $nbAdhCityactifs = statCity($ville->getId(), 1); // actifs
+            $nbactifs = countUser(2);
+            $nbinactifs = countUser(3);
+            $nbtotalai = countUser(1);
+            //debug($nbtotalai);
+            foreach ($villes as $ville) {
+                $nbAdhCityactifs = statCity($ville->getId(), 1); // actifs
                             $nbAdhCityinactifs = statCity($ville->getId(), 2); //inactifs
                             $nbAdhCity = $nbAdhCityactifs + $nbAdhCityinactifs;
 
-                            //debug($nbAdhCity);
-                            if ($nbAdhCity > 0) {
-                                ?>
+                //debug($nbAdhCity);
+                if ($nbAdhCity > 0) {
+                    ?>
 
                                 <div class="statBar">
                                     <div class="statTextVille"><?php echo htmlentities($ville->getNom()) . "  <small>(" . $nbAdhCity . " adh)</small>"; ?> </div>
@@ -233,9 +231,8 @@ if (!is_dir($dossierimg)) {
                                     </div>
                                 </div><div class="clear"></div>
                                 <?php
-                            }
-                        }
-                        ?>
+                }
+            } ?>
 
                     </div>
 
@@ -258,10 +255,10 @@ if (!is_dir($dossierimg)) {
                 <div class="box-body">
                     <?php
                     $csps = CSP::getCSPs();
-                    foreach ($csps AS $csp) {
-                        $nbAdhCsp = statCsp($csp->getId(), $epn);
-                        if ($nbAdhCsp > 0) {
-                            ?>
+            foreach ($csps as $csp) {
+                $nbAdhCsp = statCsp($csp->getId(), $epn);
+                if ($nbAdhCsp > 0) {
+                    ?>
 
                             <div class="statBar">
                                 <div class="statTextVille"><?php echo htmlentities($csp->getCSP()); ?></div>
@@ -270,9 +267,8 @@ if (!is_dir($dossierimg)) {
                             </div><div class="clear"></div>
 
                             <?php
-                        }
-                    }
-                    ?>
+                }
+            } ?>
                 </div></div>
 
 
@@ -294,8 +290,7 @@ if (!is_dir($dossierimg)) {
                             echo '<tr><td >' . getMonth($i) . '</td>
               <td >' . $totalNewadh . '</td>
               <td >' . $nbNewAdhActifs . ' (' . getPourcent($nbNewAdhActifs, $nbTotal) . ')</td></tr>';
-                        }
-                        ?>
+                        } ?>
                         </TBODY></table>
                 </div></div>
 

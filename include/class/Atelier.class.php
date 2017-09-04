@@ -24,8 +24,8 @@ require_once("Utilisateur.class.php");
 require_once("Salle.class.php");
 require_once("Tarif.class.php");
 
-class Atelier {
-
+class Atelier
+{
     private $_id;
     private $_date;
     private $_heure;
@@ -40,7 +40,8 @@ class Atelier {
     private $_status; // ??????
     private $_cloturer;
 
-    public function __construct($array) {
+    public function __construct($array)
+    {
         $this->_id = $array["id_atelier"];
         $this->_date = $array["date_atelier"];
         $this->_heure = $array["heure_atelier"];
@@ -56,60 +57,74 @@ class Atelier {
         $this->_cloturer = $array["cloturer_atelier"];
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getJour() {
+    public function getJour()
+    {
         return $this->_date;
     }
 
-    public function getDate() {
+    public function getDate()
+    {
         return $this->_date . " " . $this->_heure;
     }
 
-    public function getHeure() {
+    public function getHeure()
+    {
         return $this->_heure;
     }
 
-    public function getDuree() {
+    public function getDuree()
+    {
         return $this->_duree;
     }
 
-    public function getIdAnimateur() {
+    public function getIdAnimateur()
+    {
         return $this->_idAnimateur;
     }
 
-    public function getAnimateur() {
+    public function getAnimateur()
+    {
         return Utilisateur::getUtilisateurById($this->_idAnimateur);
     }
 
-    public function getIdSujet() {
+    public function getIdSujet()
+    {
         return $this->_idSujet;
     }
 
-    public function getSujet() {
+    public function getSujet()
+    {
         return AtelierSujet::getAtelierSujetById($this->_idSujet);
     }
 
-    public function getNbPlaces() {
+    public function getNbPlaces()
+    {
         return $this->_nbPlaces;
     }
 
-    public function getPublic() {
+    public function getPublic()
+    {
         return $this->_public;
     }
 
-    public function getStatut() {
+    public function getStatut()
+    {
         return $this->_statut;
     }
 
-    public function archiver() {
+    public function archiver()
+    {
         self::setStatut(2);
     }
 
-    public function setStatut($statut) {
-        $success = FALSE;
+    public function setStatut($statut)
+    {
+        $success = false;
 
         $db = Mysql::opendb();
 
@@ -119,34 +134,40 @@ class Atelier {
         $result = mysqli_query($db, $sql);
         if ($result) {
             $this->_statut = $statut;
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function getIdSalle() {
+    public function getIdSalle()
+    {
         return $this->_idSalle;
     }
 
-    public function getSalle() {
+    public function getSalle()
+    {
         return Salle::getSalleById($this->_idSalle);
     }
 
-    public function getIdTarif() {
+    public function getIdTarif()
+    {
         return $this->_idTarif;
     }
 
-    public function getTarif() {
+    public function getTarif()
+    {
         return Tarif::getTarifById($this->_idTarif);
     }
 
-    public function getStatus() {
+    public function getStatus()
+    {
         return $this->_status;
     }
 
-    public function setStatus($status) {
-        $success = FALSE;
+    public function setStatus($status)
+    {
+        $success = false;
 
         $db = Mysql::opendb();
 
@@ -156,18 +177,20 @@ class Atelier {
         $result = mysqli_query($db, $sql);
         if ($result) {
             $this->_status = $status;
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function getCloturer() {
+    public function getCloturer()
+    {
         return $this->_cloturer;
     }
 
-    public function setCloturer($cloturer) {
-        $success = FALSE;
+    public function setCloturer($cloturer)
+    {
+        $success = false;
 
         $db = Mysql::opendb();
 
@@ -177,17 +200,19 @@ class Atelier {
         $result = mysqli_query($db, $sql);
         if ($result) {
             $this->_cloturer = $cloturer;
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function isCloturer() {
+    public function isCloturer()
+    {
         return $this->_cloturer != "0";
     }
 
-    public function getNbPlacesPrises() {
+    public function getNbPlacesPrises()
+    {
         $nbPlaces = 0;
 
         $db = Mysql::opendb();
@@ -205,52 +230,61 @@ class Atelier {
         return $nbPlaces;
     }
 
-    public function getNbPlacesRestantes() {
+    public function getNbPlacesRestantes()
+    {
         return $this->_nbPlaces - self::getNbPlacesPrises();
     }
 
-    function getUtilisateursInscrits() {
+    public function getUtilisateursInscrits()
+    {
         return Utilisateur::getUtilisateursInscritsAtelier($this->_id);
     }
 
-    function getNbUtilisateursInscrits() {
+    public function getNbUtilisateursInscrits()
+    {
         return count(self::getUtilisateursInscrits());
     }
 
-    function getUtilisateursPresents() {
+    public function getUtilisateursPresents()
+    {
         return Utilisateur::getUtilisateursPresentsAtelier($this->_id);
     }
 
-    function getNbUtilisateursPresents() {
+    public function getNbUtilisateursPresents()
+    {
         return count(self::getUtilisateursPresents());
     }
 
-    function getUtilisateursInscritsOuPresents() {
+    public function getUtilisateursInscritsOuPresents()
+    {
         return array_merge(Utilisateur::getUtilisateursInscritsAtelier($this->_id), Utilisateur::getUtilisateursPresentsAtelier($this->_id));
     }
 
-    function getNbUtilisateursInscritsOuPresents() {
+    public function getNbUtilisateursInscritsOuPresents()
+    {
         return count(self::getUtilisateursInscritsOuPresents());
     }
 
-    function getUtilisateursEnAttente() {
+    public function getUtilisateursEnAttente()
+    {
         return Utilisateur::getUtilisateursEnAttenteAtelier($this->_id);
     }
 
-    function getNbUtilisateursEnAttente() {
+    public function getNbUtilisateursEnAttente()
+    {
         return count(self::getUtilisateursEnAttente());
     }
 
-    function inscrireUtilisateurAvecTarif($idUtilisateur, $idTarif) {
-        $success = FALSE;
-        if (!self::isUtilisateurInscrit($idUtilisateur) AND self::getNbPlacesRestantes() > 0) {
-
+    public function inscrireUtilisateurAvecTarif($idUtilisateur, $idTarif)
+    {
+        $success = false;
+        if (!self::isUtilisateurInscrit($idUtilisateur) and self::getNbPlacesRestantes() > 0) {
             $db = Mysql::opendb();
             $sql = "INSERT INTO `rel_atelier_user` ( `id_atelier` , `id_user` , `status_rel_atelier_user` )
              VALUES ('" . $this->_id . "', '" . $idUtilisateur . "', '0');";
 
             // probleme !!!! Les requetes récupérées dans la version 1.2 sont foireuses, les champs ne correpondent pas à la table !
-            // $sql2 = "INSERT INTO `rel_user_forfait`(`id_forfait`, `id_user`, `id_tarif`, `id_atelier`,`id_session`, `statut_forfait`) 
+            // $sql2 = "INSERT INTO `rel_user_forfait`(`id_forfait`, `id_user`, `id_tarif`, `id_atelier`,`id_session`, `statut_forfait`)
             // VALUES('','" . $idUtilisateur . "','" . $idTarif . "','" . $this->_id . "', '0', '0')";
 
             $db = opendb();
@@ -259,27 +293,31 @@ class Atelier {
             Mysql::closedb($db);
 
             if ($result) { // TODO : vérifier que les 2 requetes ont réussies ! Nécéssite sans doute une transaction.
-                $success = TRUE;
+                $success = true;
             }
         }
 
         return $success;
     }
 
-    function inscrireUtilisateurInscrit($idUtilisateur) {
+    public function inscrireUtilisateurInscrit($idUtilisateur)
+    {
         return $this->inscrireUtilisateur($idUtilisateur, '0');
     }
 
-    function inscrireUtilisateurPresent($idUtilisateur) {
+    public function inscrireUtilisateurPresent($idUtilisateur)
+    {
         return $this->inscrireUtilisateur($idUtilisateur, '1');
     }
 
-    function inscrireUtilisateurEnAttente($idUtilisateur) {
+    public function inscrireUtilisateurEnAttente($idUtilisateur)
+    {
         return $this->inscrireUtilisateur($idUtilisateur, '2');
     }
 
-    function inscrireUtilisateur($idUtilisateur, $statut) {
-        $success = FALSE;
+    public function inscrireUtilisateur($idUtilisateur, $statut)
+    {
+        $success = false;
 
         $db = Mysql::opendb();
 
@@ -297,14 +335,15 @@ class Atelier {
         Mysql::closedb($db);
 
         if ($result) {
-            $success = TRUE;
+            $success = true;
         }
         return $success;
     }
 
-    function isUtilisateurInscrit($idUtilisateur) {
+    public function isUtilisateurInscrit($idUtilisateur)
+    {
         // verifie si le user n'est pas deja inscrit
-        $success = FALSE;
+        $success = false;
 
         $db = Mysql::opendb();
         $sql = "SELECT * FROM `rel_atelier_user` WHERE `id_atelier` =" . $this->_id . " AND `id_user` =" . $idUtilisateur;
@@ -312,14 +351,15 @@ class Atelier {
         Mysql::closedb($db);
 
         if (mysqli_num_rows($result) == 1) {
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    function desinscrireUtilisateur($idUtilisateur) {
-        $success = FALSE;
+    public function desinscrireUtilisateur($idUtilisateur)
+    {
+        $success = false;
 
         $db = Mysql::opendb();
         $sql = "DELETE FROM `rel_atelier_user` WHERE `id_user`=" . $idUtilisateur . " AND `id_atelier`=" . $this->_id;
@@ -330,14 +370,15 @@ class Atelier {
         Mysql::closedb($db);
 
         if ($result) { // TODO : vérifier que les 2 requetes ont réussies ! Nécéssite sans doute une transaction.
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    function MAJStatutUtilisateur($idUtilisateur, $statut) {
-        $success = FALSE;
+    public function MAJStatutUtilisateur($idUtilisateur, $statut)
+    {
+        $success = false;
 
         $db = Mysql::opendb();
         $sql = "UPDATE `rel_atelier_user` 
@@ -347,13 +388,14 @@ class Atelier {
         $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
         if ($result) {
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function getStatutUtilisateur($idUtilisateur) {
+    public function getStatutUtilisateur($idUtilisateur)
+    {
         $statut = null;
 
         $db = Mysql::opendb();
@@ -368,8 +410,9 @@ class Atelier {
         return $statut;
     }
 
-    public function modifier($date, $heure, $duree, $idAnimateur, $idSujet, $nbPlaces, $public, $statut, $idSalle, $idTarif, $status, $cloturer) {
-        $success = FALSE;
+    public function modifier($date, $heure, $duree, $idAnimateur, $idSujet, $nbPlaces, $public, $statut, $idSalle, $idTarif, $status, $cloturer)
+    {
+        $success = false;
         $db = Mysql::opendb();
 
         $date = mysqli_real_escape_string($db, $date);
@@ -406,14 +449,14 @@ class Atelier {
             $this->_status = $status;
             $this->_cloturer = $cloturer;
 
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function supprimer() {
-
+    public function supprimer()
+    {
         $success = false;
 
         $db = Mysql::opendb();
@@ -424,17 +467,14 @@ class Atelier {
         $result = mysqli_query($db, $sql);
 
         if ($result) {
-
             $sql = "DELETE FROM rel_atelier_user WHERE id_atelier='" . $this->_id . "'";
             $result = mysqli_query($db, $sql);
 
             if ($result) {
-
                 $sql = "DELETE FROM `rel_user_forfait` WHERE id_atelier`='" . $this->_id . "'";
                 $result = mysqli_query($db, $sql);
 
                 if ($result) {
-
                     $sql = "DELETE FROM `tab_atelier` WHERE `id_atelier`='" . $this->_id . "' ";
                     $result = mysqli_query($db, $sql);
 
@@ -451,7 +491,8 @@ class Atelier {
         return $success;
     }
 
-    public static function creerAtelier($date, $heure, $duree, $idAnimateur, $idSujet, $nbPlaces, $public, $statut, $idSalle, $idTarif, $status, $cloturer) {
+    public static function creerAtelier($date, $heure, $duree, $idAnimateur, $idSujet, $nbPlaces, $public, $statut, $idSalle, $idTarif, $status, $cloturer)
+    {
         $atelier = null;
 
         if ($date != "" && $heure != "" && (is_int($idSujet) && $idSujet != 0) && (is_int($idAnimateur) && $idAnimateur != 0) && (is_int($idSalle) && $idSalle != 0)
@@ -486,7 +527,8 @@ class Atelier {
         return $atelier;
     }
 
-    public static function getAtelierById($id) {
+    public static function getAtelierById($id)
+    {
         $atelier = null;
 
         if ($id != 0) {
@@ -507,8 +549,8 @@ class Atelier {
         return $atelier;
     }
 
-    public static function getAteliers() {
-
+    public static function getAteliers()
+    {
         $ateliers = null;
 
         $db = Mysql::opendb();
@@ -527,8 +569,8 @@ class Atelier {
         return $ateliers;
     }
 
-    public static function getAteliersNonClotures() {
-
+    public static function getAteliersNonClotures()
+    {
         $ateliers = null;
 
         $db = Mysql::opendb();
@@ -552,8 +594,8 @@ class Atelier {
         return $ateliers;
     }
 
-    public static function getAteliersParAnnee($annee) {
-
+    public static function getAteliersParAnnee($annee)
+    {
         $ateliers = null;
 
         $db = Mysql::opendb();
@@ -576,8 +618,8 @@ class Atelier {
         return $ateliers;
     }
 
-    public static function getAteliersParAnneeEtParAnimateur($annee, $idAnimateur) {
-
+    public static function getAteliersParAnneeEtParAnimateur($annee, $idAnimateur)
+    {
         $ateliers = null;
 
         $db = Mysql::opendb();
@@ -585,14 +627,12 @@ class Atelier {
         $cetteAnnee = date('Y');
 
         if ($annee > $cetteAnnee) {
-
             $sql = "SELECT * "
                     . "FROM `tab_atelier` "
                     . "WHERE YEAR(`date_atelier`)=" . $annee . " "
                     . "  AND anim_atelier=" . $idAnimateur . " "
                     . "ORDER BY `date_atelier` ASC";
-        } else if ($annee == $cetteAnnee) {
-
+        } elseif ($annee == $cetteAnnee) {
             $sql = "SELECT * "
                     . "FROM `tab_atelier` "
                     . "WHERE YEAR(`date_atelier`)=" . $annee . " "
@@ -615,8 +655,8 @@ class Atelier {
         return $ateliers;
     }
 
-    public static function getAteliersParAnneeEtParEspace($annee, $idEspace) {
-
+    public static function getAteliersParAnneeEtParEspace($annee, $idEspace)
+    {
         $ateliers = null;
 
         $db = Mysql::opendb();
@@ -643,7 +683,8 @@ class Atelier {
         return $ateliers;
     }
 
-    public static function getAteliersFutursByAnnee($annee) {
+    public static function getAteliersFutursByAnnee($annee)
+    {
         $ateliers = null;
 
         $db = Mysql::opendb();
@@ -653,13 +694,11 @@ class Atelier {
         $cetteAnnee = date('Y');
 
         if ($annee > $cetteAnnee) {
-
             $sql = "SELECT * "
                     . "FROM `tab_atelier` "
                     . "WHERE YEAR(`date_atelier`)=" . $annee . " "
                     . "ORDER BY `date_atelier` ASC";
-        } else if ($annee == $cetteAnnee) {
-
+        } elseif ($annee == $cetteAnnee) {
             $sql = "SELECT * "
                     . "FROM `tab_atelier` "
                     . "WHERE YEAR(`date_atelier`)=" . $annee . " "
@@ -680,8 +719,8 @@ class Atelier {
         return $ateliers;
     }
 
-    public static function getAteliersArchivesParAnnee($annee) {
-
+    public static function getAteliersArchivesParAnnee($annee)
+    {
         $ateliers = null;
 
         $db = Mysql::opendb();
@@ -705,8 +744,8 @@ class Atelier {
         return $ateliers;
     }
 
-    public static function getAteliersArchivesParAnneeEtParAnimateur($annee, $idAnimateur) {
-
+    public static function getAteliersArchivesParAnneeEtParAnimateur($annee, $idAnimateur)
+    {
         $ateliers = null;
 
         $db = Mysql::opendb();
@@ -731,8 +770,8 @@ class Atelier {
         return $ateliers;
     }
 
-    public static function getAteliersParSemaine($jour, $idEspace) {
-
+    public static function getAteliersParSemaine($jour, $idEspace)
+    {
         $ateliers = null;
 
         $db = Mysql::opendb();
@@ -768,7 +807,8 @@ class Atelier {
         return $ateliers;
     }
 
-    public static function getAteliersOuvertsParUtilisateurEtParStatut($idUtilisateur, $statut) {
+    public static function getAteliersOuvertsParUtilisateurEtParStatut($idUtilisateur, $statut)
+    {
         $ateliers = null;
 
         $db = Mysql::opendb();
@@ -793,7 +833,8 @@ class Atelier {
         return $ateliers;
     }
 
-    public static function getAteliersFermesParUtilisateurEtParStatut($idUtilisateur, $statut) {
+    public static function getAteliersFermesParUtilisateurEtParStatut($idUtilisateur, $statut)
+    {
         $ateliers = null;
 
         $db = Mysql::opendb();
@@ -817,5 +858,4 @@ class Atelier {
         }
         return $ateliers;
     }
-
 }

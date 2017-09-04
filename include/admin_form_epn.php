@@ -86,7 +86,7 @@ echo isset($mess) ? $mess : '';
                         <label >Ville *:</label>
                         <select name="ville" class="form-control" >
                             <?php
-                            foreach ($villes AS $ville) {
+                            foreach ($villes as $ville) {
                                 if (isset($espaceAModifier) && $ville->getId() == $espaceAModifier->getIdVille()) {
                                     echo "<option value=\"" . $ville->getId() . "\" selected>" . $ville->getNom() . "</option>";
                                 } else {
@@ -125,7 +125,7 @@ echo isset($mess) ? $mess : '';
                         <label >Une couleur:</label>
                         <select name="ecouleur" class="form-control">
                             <?php
-                            foreach ($couleurArray AS $key => $value) {
+                            foreach ($couleurArray as $key => $value) {
                                 if (isset($espaceAModifier) && $espaceAModifier->getCodeCouleur() == $key) {
                                     echo "<option value=\"" . $key . "\" selected class=\"text-" . $value . "\">" . $value . "</option>";
                                 } else {

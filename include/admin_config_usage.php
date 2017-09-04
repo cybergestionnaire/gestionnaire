@@ -68,7 +68,7 @@ include("include/boites/menu-parametres.php");
                     </thead>
                     <tbody>
                         <?php
-                        foreach ($usages AS $usage) {
+                        foreach ($usages as $usage) {
                             ?>
                         <form action="index.php?a=46&act=2&idusage=<?php echo $usage->getId(); ?>" method="post">
                             <tr>
@@ -80,7 +80,7 @@ include("include/boites/menu-parametres.php");
                             </tr>
                         </form>
                         <?php
-                    }
+                        }
                     ?>
                     </tbody>
                 </table>

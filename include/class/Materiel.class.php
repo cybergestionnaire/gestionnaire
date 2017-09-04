@@ -21,8 +21,8 @@
 require_once("Mysql.class.php");
 require_once("Salle.class.php");
 
-class Materiel {
-
+class Materiel
+{
     private $_id;
     private $_nom;
     private $_commentaire;
@@ -37,7 +37,8 @@ class Materiel {
     private $_dernierEtat;
     private $_configurationEPNConnect;
 
-    public function __construct($array) {
+    public function __construct($array)
+    {
         $this->_id = $array["id_computer"];
         $this->_nom = $array["nom_computer"];
         $this->_commentaire = $array["comment_computer"];
@@ -53,63 +54,78 @@ class Materiel {
         $this->_configurationEPNConnect = $array["configurer_epnconnect_computer"];
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getNom() {
+    public function getNom()
+    {
         return $this->_nom;
     }
 
-    public function getCommentaire() {
+    public function getCommentaire()
+    {
         return $this->_commentaire;
     }
 
-    public function getOs() {
+    public function getOs()
+    {
         return $this->_os;
     }
 
-    public function getUsage() {
+    public function getUsage()
+    {
         return $this->_usage;
     }
 
-    public function getFonction() {
+    public function getFonction()
+    {
         return $this->_fonction;
     }
 
-    public function getIdSalle() {
+    public function getIdSalle()
+    {
         return $this->_idSalle;
     }
 
-    public function getSalle() {
+    public function getSalle()
+    {
         return Salle::getSalleByID($this->_idSalle);
     }
 
-    public function getAdresseMAC() {
+    public function getAdresseMAC()
+    {
         return $this->_adresseMAC;
     }
 
-    public function getAdresseIP() {
+    public function getAdresseIP()
+    {
         return $this->_adresseIP;
     }
 
-    public function getNomHote() {
+    public function getNomHote()
+    {
         return $this->_nomHote;
     }
 
-    public function getDateDernierEtat() {
+    public function getDateDernierEtat()
+    {
         return $this->_dateDernierEtat;
     }
 
-    public function getDernierEtat() {
+    public function getDernierEtat()
+    {
         return $this->_dernierEtat;
     }
 
-    public function getConfigurationEPNConnect() {
+    public function getConfigurationEPNConnect()
+    {
         return $this->_configurationEPNConnect;
     }
 
-    public function addUsageById($idUsage) {
+    public function addUsageById($idUsage)
+    {
         $success = false;
 
         $db = Mysql::opendb();
@@ -127,8 +143,9 @@ class Materiel {
         return $success;
     }
 
-    public function modifier($nom, $os, $commentaire, $usage, $fonction, $idSalle, $adresseIP, $adresseMAC, $nomHote) {
-        $success = FALSE;
+    public function modifier($nom, $os, $commentaire, $usage, $fonction, $idSalle, $adresseIP, $adresseMAC, $nomHote)
+    {
+        $success = false;
         if ($nom != "" && (is_int($idSalle) && $idSalle != 0)
         ) {
             $db = Mysql::opendb();
@@ -168,14 +185,15 @@ class Materiel {
                 $this->_adresseIP = $adresseIP;
                 $this->_nomHote = $nomHote;
 
-                $success = TRUE;
+                $success = true;
             }
         }
         return $success;
     }
 
-    public function supprimer() {
-        $success = FALSE;
+    public function supprimer()
+    {
+        $success = false;
 
         $db = Mysql::opendb();
 
@@ -187,7 +205,7 @@ class Materiel {
             $sql2 = "DELETE FROM `tab_computer` WHERE `id_computer` = " . $this->_id . "";
             $result2 = mysqli_query($db, $sql2);
             if ($result2) {
-                $success = TRUE;
+                $success = true;
             }
         }
 
@@ -196,7 +214,8 @@ class Materiel {
         return $success;
     }
 
-    public static function creerMateriel($nom, $os, $commentaire, $usage, $fonction, $idSalle, $adresseIP, $adresseMAC, $nomhote) {
+    public static function creerMateriel($nom, $os, $commentaire, $usage, $fonction, $idSalle, $adresseIP, $adresseMAC, $nomhote)
+    {
         $materiel = null;
 
         if ($nom != "" && (is_int($idSalle) && $idSalle != 0)
@@ -240,7 +259,8 @@ class Materiel {
         return $materiel;
     }
 
-    public static function getMaterielById($id) {
+    public static function getMaterielById($id)
+    {
         $materiel = null;
 
         if ($id != 0) {
@@ -261,8 +281,8 @@ class Materiel {
         return $materiel;
     }
 
-    public static function getMateriels() {
-
+    public static function getMateriels()
+    {
         $materiels = null;
 
         $db = Mysql::opendb();
@@ -281,7 +301,8 @@ class Materiel {
         return $materiels;
     }
 
-    public static function getMaterielFromEspaceById($idEspace) {
+    public static function getMaterielFromEspaceById($idEspace)
+    {
         $materiels = null;
 
         $db = Mysql::opendb();
@@ -305,7 +326,8 @@ class Materiel {
         return $materiels;
     }
 
-    public static function getMaterielFromSalleById($idSalle) {
+    public static function getMaterielFromSalleById($idSalle)
+    {
         $materiels = null;
 
         $db = Mysql::opendb();
@@ -328,7 +350,8 @@ class Materiel {
         return $materiels;
     }
 
-    public static function getMaterielLibreFromSalleById($idSalle) {
+    public static function getMaterielLibreFromSalleById($idSalle)
+    {
         $materiels = null;
 
         $db = Mysql::opendb();
@@ -360,5 +383,4 @@ class Materiel {
 
         return $materiels;
     }
-
 }

@@ -16,7 +16,7 @@ $tarifs = getTarifs(1); //1= impressions
 // chargement des valeurs pour l'epn par d&eacute;faut
 $epn = $_SESSION['idepn'];
 //si changment d'epn
-if (TRUE == isset($_POST['modifepn'])) {
+if (true == isset($_POST['modifepn'])) {
     $epn = $_POST['Pepn'];
 }
 
@@ -44,7 +44,7 @@ if (!is_dir($dossierimg)) {
                 <form method="post" role="form">
                     <div class="input-group"><label>Changer d'espace</label><select name="Pepn"  class="form-control pull-right" style="width: 210px;">
                             <?php
-                            foreach ($espaces AS $key => $value) {
+                            foreach ($espaces as $key => $value) {
                                 if ($epn == $key) {
                                     echo "<option  value=\"" . $key . "\" selected>" . $value . "</option>";
                                 } else {
@@ -234,19 +234,19 @@ if (!is_dir($dossierimg)) {
                         $pagesimprime = $row["pages"];
                         $credit = $row["montant"];
 
-//boucler sur les tarifs	
+                        //boucler sur les tarifs
                         $rowtarifsNB = selectPrintTarif(0);
-                        While ($tarifn = mysqli_fetch_array($rowtarifsNB)) {
+                        while ($tarifn = mysqli_fetch_array($rowtarifsNB)) {
                             $mNoir = $mNoir + getStatNCbyM($i, $year, $tarifn['id_tarif'], $epn);
                         }
 
-//retrouver l'ensemble des tarifs pour la couleur
+                        //retrouver l'ensemble des tarifs pour la couleur
                         $rowtarifscoul = selectPrintTarif(1);
-                        While ($tarifc = mysqli_fetch_array($rowtarifscoul)) {
+                        while ($tarifc = mysqli_fetch_array($rowtarifscoul)) {
                             $mcouleur = $mcouleur + getStatNCbyM($i, $year, $tarifc['id_tarif'], $epn);
                         }
 
-//calcul des totaux
+                        //calcul des totaux
                         $totalNoirBlanc = $totalNoirBlanc + $mNoir;
                         $totalcouleur = $totalcouleur + $mcouleur;
                         $totalpages = $totalpages + $pagesimprime;
@@ -257,7 +257,7 @@ if (!is_dir($dossierimg)) {
 			  <td>' . $credit . ' &euro;</td>
 			<td>' . $mNoir . '</td>
 			  <td>' . $mcouleur . '</td></tr>';
-//vider pour la suite
+                        //vider pour la suite
                         $pagesimprime = '';
                         $credit = '';
                         $mNoir = '';

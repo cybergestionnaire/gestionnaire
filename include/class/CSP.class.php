@@ -21,8 +21,8 @@
 
 require_once("Mysql.class.php");
 
-class CSP {
-
+class CSP
+{
     private $_id;
     private $_CSP;
 
@@ -35,7 +35,8 @@ class CSP {
      * @param ArrayObject $array Tableau associatif contenant les données d'initialisation de l'objet
      *                           les clés utilisées dépendent du nommage des champs dans la table "tab_city"
      */
-    private function __construct($array) {
+    private function __construct($array)
+    {
         $this->_id = $array["id_csp"];
         $this->_CSP = $array["csp"];
     }
@@ -44,11 +45,13 @@ class CSP {
      * Accesseurs basiques
      */
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getCSP() {
+    public function getCSP()
+    {
         return $this->_CSP;
     }
 
@@ -56,8 +59,9 @@ class CSP {
      * Fonctions de l'objet
      */
 
-    public function modifier($csp) {
-        $success = FALSE;
+    public function modifier($csp)
+    {
+        $success = false;
         $db = Mysql::opendb();
 
         $csp = mysqli_real_escape_string($db, $csp);
@@ -71,13 +75,14 @@ class CSP {
         if ($result) {
             $this->_CSP = $csp;
 
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
         $db = Mysql::opendb();
         $sql = "DELETE FROM `tab_csp` WHERE `id_csp`=" . $this->_id;
         $result = mysqli_query($db, $sql);
@@ -91,8 +96,8 @@ class CSP {
      * Fonctions statiques
      */
 
-    public static function getCSPById($id) {
-
+    public static function getCSPById($id)
+    {
         $csp = null;
 
         if ($id != 0) {
@@ -112,7 +117,8 @@ class CSP {
         return $csp;
     }
 
-    public static function creerCSP($nom) {
+    public static function creerCSP($nom)
+    {
         $csp = null;
 
         $db = Mysql::opendb();
@@ -139,8 +145,8 @@ class CSP {
         return $csp;
     }
 
-    public static function getCSPs() {
-
+    public static function getCSPs()
+    {
         $csps = null;
 
         $db = Mysql::opendb();
@@ -157,5 +163,4 @@ class CSP {
 
         return $csps;
     }
-
 }

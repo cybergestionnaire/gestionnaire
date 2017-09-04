@@ -91,8 +91,6 @@ $annees = array(
                 $resasPassees = Resa::getResasParIdUtilisateurEtParMois($id_user, date("m"), date('Y'));
 
                 if ($resasFutures !== null || $resasPassees !== null) {
-
-
                     if ($resasFutures !== null) {
                         ?>
                         <p>R&eacute;servations à venir</p>
@@ -112,8 +110,7 @@ $annees = array(
                                         <td><?php echo htmlentities($resa->getMateriel()->getNom()) ?></td>
                                     </tr>
                                     <?php
-                                }
-                                ?>
+                                } ?>
                             </tbody>
                         </table>
                         <?php
@@ -142,8 +139,7 @@ $annees = array(
                                         <td><?php echo htmlentities($resa->getMateriel()->getNom()) ?></td>
                                     </tr>
                                     <?php
-                                }
-                                ?>
+                                } ?>
                             </tbody>
                         </table>
                         <?php
@@ -180,14 +176,11 @@ $annees = array(
                 <?php
 // debug($_POST["submit"]);
                 if (isset($_POST["submit"])) {
-
-
-                    if ($datedebut != "" AND $datefin != "") {
+                    if ($datedebut != "" and $datefin != "") {
                         $resasPeriode = Resa::getResasParIdUtilisateurEtParPeriode($id_user, $datedebut, $datefin);
 
                         if ($resasPeriode !== null) {
-                            echo " <p>R&eacute;servations entre " . getDateFr($datedebut) . " et " . getDateFr($datefin) . "</p>";
-                            ?>
+                            echo " <p>R&eacute;servations entre " . getDateFr($datedebut) . " et " . getDateFr($datefin) . "</p>"; ?>
                             <table class="table">
                                 <thead>
                                     <tr> 
@@ -210,8 +203,7 @@ $annees = array(
                                             <td><?php echo htmlentities($resa->getMateriel()->getNom()) ?></td>
                                         </tr>
                                         <?php
-                                    }
-                                    ?>
+                                    } ?>
                                 </tbody>
                             </table>
                             <?php
@@ -255,20 +247,19 @@ $annees = array(
                         </thead>
                         <tbody>
                             <?php
-                            // 
+                            //
                             $month = date('n');
-                            for ($i = 1; $i <= $month; ++$i) {
-                                $resasPassees = Resa::getResasParIdUtilisateurEtParMois($id_user, $i, date('Y'));
-                                //        $result = getUserResabyMonth($id_user,$i,date('Y'));
-                                $dureeTotale = 0;
-                                if ($resasPassees !== null) {
-                                    foreach ($resasPassees as $resa) {
-                                        $dureeTotale += $resa->getDuree();
-                                    }
-                                }
-                                echo "<tr><td>" . getMonth($i) . "</td><td>" . getTime($dureeTotale) . "</td></tr>";
-                            }
-                            ?>
+            for ($i = 1; $i <= $month; ++$i) {
+                $resasPassees = Resa::getResasParIdUtilisateurEtParMois($id_user, $i, date('Y'));
+                //        $result = getUserResabyMonth($id_user,$i,date('Y'));
+                $dureeTotale = 0;
+                if ($resasPassees !== null) {
+                    foreach ($resasPassees as $resa) {
+                        $dureeTotale += $resa->getDuree();
+                    }
+                }
+                echo "<tr><td>" . getMonth($i) . "</td><td>" . getTime($dureeTotale) . "</td></tr>";
+            } ?>
                         </tbody>
                     </table>
                 </div>

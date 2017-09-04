@@ -9,7 +9,7 @@ include("libchart/classes/libchart.php");
  */
 
 // repartition des inscrits par mois et par annee ---
-if (TRUE == isset($_GET['month']) AND TRUE == is_numeric($_GET['month']) AND $_GET['month'] > 0 AND $_GET['month'] < 13) {
+if (true == isset($_GET['month']) and true == is_numeric($_GET['month']) and $_GET['month'] > 0 and $_GET['month'] < 13) {
     $month = $_GET['month'];
     $year = $_GET['year'];
 } else {
@@ -20,7 +20,7 @@ if (TRUE == isset($_GET['month']) AND TRUE == is_numeric($_GET['month']) AND $_G
 // chargement des valeurs pour l'epn par d&eacute;faut
 $epn = $_SESSION['idepn'];
 //si changment d'epn
-if (TRUE == isset($_POST['modifepn'])) {
+if (true == isset($_POST['modifepn'])) {
     $epn = $_POST['pepn'];
 }
 
@@ -45,7 +45,7 @@ if (!is_dir($dossierimg)) {
                 <form method="post" role="form">
                     <div class="input-group"><label>Changer d'espace</label><select name="Pepn"  class="form-control pull-right" style="width: 210px;">
                             <?php
-                            foreach ($espaces AS $key => $value) {
+                            foreach ($espaces as $key => $value) {
                                 if ($epn == $key) {
                                     echo "<option  value=\"" . $key . "\" selected>" . $value . "</option>";
                                 } else {
@@ -100,8 +100,7 @@ if (!is_dir($dossierimg)) {
                                             <?php
                                             $toutsession = mysqli_fetch_array($rowstatsession);
 
-                                            //debug($toutatelier);
-                                            ?>
+                            //debug($toutatelier); ?>
                                             Nombre de sessions programm&eacute;es : <b><?php echo $toutsession["nbsession"]; ?></b></br>
                                             Nombre des pr&eacute;sents : <b><?php echo $toutsession["presents"]; ?></b></br>
                                             Nombre des inscrits : <b><?php echo $toutsession["inscrits"]; ?></b></br>
@@ -128,23 +127,21 @@ if (!is_dir($dossierimg)) {
                                                         <th>%</th></tr></thead><tbody>
                                                     <?php
                                                     $nbS = countSession($year, $epn);
-                                                    $listeSessions = listSession($year, $epn);
+                            $listeSessions = listSession($year, $epn);
 
-                                                    for ($x = 0; $x < $nbS; ++$x) {
+                            for ($x = 0; $x < $nbS; ++$x) {
+                                $frequentation = mysqli_fetch_array(statSessionParticip($listeSessions[$x]));
+                                //debug($listeSessions[$x]);
+                                if ($x == 0) {
+                                    $session1 = $listeSessions[$x];
+                                } //pour la selection
+                                $pourcentF = ($frequentation['presents'] / $frequentation['inscrits']) * 100;
 
-                                                        $frequentation = mysqli_fetch_array(statSessionParticip($listeSessions[$x]));
-                                                        //debug($listeSessions[$x]);
-                                                        if ($x == 0) {
-                                                            $session1 = $listeSessions[$x];
-                                                        } //pour la selection
-                                                        $pourcentF = ($frequentation['presents'] / $frequentation['inscrits']) * 100;
-
-                                                        echo '<tr><td><a href="index.php?a=5&b=5&year=' . $year . '&sessionselec=' . $listeSessions[$x] . ' ">' . $frequentation['session_titre'] . '</a></td>
+                                echo '<tr><td><a href="index.php?a=5&b=5&year=' . $year . '&sessionselec=' . $listeSessions[$x] . ' ">' . $frequentation['session_titre'] . '</a></td>
 				<td>' . $frequentation['inscrits'] . '</td>
 				<td>' . $frequentation['presents'] . '</td>
 				<td>' . number_format($pourcentF, 2) . ' %</td></tr>';
-                                                    }
-                                                    ?>
+                            } ?>
                                                 </tbody></table>
                                         </div><!-- /.box-body-->
                                     </div><!-- /.box -->
@@ -159,26 +156,25 @@ if (!is_dir($dossierimg)) {
 //liste des cat&eacute;gories croiser avec l'ann&eacute;e $categorie, $year frequentation depuis ann&eacute;e 0
 //Categories
                                 $nbcategories = CountCategories();
-//donnes du graphique
-                                $chartCat = new VerticalBarChart(425, 300);
-                                $dataSetCat = new XYDataSet();
-                                $y = $year;
-                                if ($nbcategories > 0) {
-                                    for ($n = 1; $n <= $nbcategories; $n++) {
-                                        $categories = mysqli_fetch_array(statSessionCategory($n, $y, $epn));
-                                        //debug($categories);
-                                        $particip = round((($categories['presents'] / $categories['inscrits']) * 100), 2) . " %";
-                                        $dataSetCat->addPoint(new Point($categories['label_categorie'], $particip));
-                                    }
-
-                                    //creation du graphique
-
-                                    $chartCat->setDataSet($dataSetCat);
-                                    $chartCat->setTitle("Participation par categories en %");
-                                    $chartCat->getPlot()->getPalette()->setBarColor(array(new Color(1, 105, 201)));
-                                    $chartCat->render("img/chart/" . $year . "/epn" . $epn . "_categorieSession.png");
+                            //donnes du graphique
+                            $chartCat = new VerticalBarChart(425, 300);
+                            $dataSetCat = new XYDataSet();
+                            $y = $year;
+                            if ($nbcategories > 0) {
+                                for ($n = 1; $n <= $nbcategories; $n++) {
+                                    $categories = mysqli_fetch_array(statSessionCategory($n, $y, $epn));
+                                    //debug($categories);
+                                    $particip = round((($categories['presents'] / $categories['inscrits']) * 100), 2) . " %";
+                                    $dataSetCat->addPoint(new Point($categories['label_categorie'], $particip));
                                 }
-                                ?>
+
+                                //creation du graphique
+
+                                $chartCat->setDataSet($dataSetCat);
+                                $chartCat->setTitle("Participation par categories en %");
+                                $chartCat->getPlot()->getPalette()->setBarColor(array(new Color(1, 105, 201)));
+                                $chartCat->render("img/chart/" . $year . "/epn" . $epn . "_categorieSession.png");
+                            } ?>
 
                                 <div class="col-md-6"><!-- col 2 -->
                                     <!-- nombre de sessions programm&eacute;es par cat&eacute;gorie, fr&eacute;quentation -->
@@ -197,8 +193,7 @@ if (!is_dir($dossierimg)) {
                                     } else {
                                         $sessionselec = $session1;
                                     }
-                                    $titresession = getsessionamebyid($sessionselec);
-                                    ?>
+                            $titresession = getsessionamebyid($sessionselec); ?>
                                     <div class="box box-primary">
                                         <div class="box-header"><i class="fa fa-bar-chart-o"></i><h3 class="box-title">D&eacute;tail d'une session <?php echo $titresession; ?></h3></div>
                                         <div class="box-body">
@@ -216,13 +211,13 @@ if (!is_dir($dossierimg)) {
                                                         2 => "Annul&eacute;"
                                                     );
 
-                                                    $rowsessionselec = getSessionDetailStat($sessionselec, $epn);
-                                                    $nbdates = mysqli_num_rows($rowsessionselec);
+                            $rowsessionselec = getSessionDetailStat($sessionselec, $epn);
+                            $nbdates = mysqli_num_rows($rowsessionselec);
 
-                                                    for ($y = 0; $y < $nbdates; $y++) {
-                                                        $detailsession = mysqli_fetch_array($rowsessionselec);
-                                                        $pourcentS = ($detailsession['presents'] / $detailsession['inscrits']) * 100;
-                                                        echo '<tr>
+                            for ($y = 0; $y < $nbdates; $y++) {
+                                $detailsession = mysqli_fetch_array($rowsessionselec);
+                                $pourcentS = ($detailsession['presents'] / $detailsession['inscrits']) * 100;
+                                echo '<tr>
 					<td>' . $detailsession["date_AS"] . '</td>
 					<td>' . $detailsession["inscrits"] . '</td>
 					<td>' . $detailsession["presents"] . '</td>
@@ -232,8 +227,7 @@ if (!is_dir($dossierimg)) {
 					<td>' . number_format($pourcentS, 2) . ' %</td>
 					</tr>	
 	';
-                                                    }
-                                                    ?>
+                            } ?>
                                                 </tbody></table>
                                         </div></div>
 

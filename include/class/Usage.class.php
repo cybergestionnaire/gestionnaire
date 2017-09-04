@@ -20,32 +20,37 @@
 
 require_once("Mysql.class.php");
 
-class Usage {
-
+class Usage
+{
     private $_id;
     private $_nom;
     private $_type;
 
-    public function __construct($array) {
+    public function __construct($array)
+    {
         $this->_id = $array["id_usage"];
         $this->_nom = $array["nom_usage"];
         $this->_type = $array["type_usage"];
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getNom() {
+    public function getNom()
+    {
         return $this->_nom;
     }
 
-    public function getType() {
+    public function getType()
+    {
         return $this->_type;
     }
 
-    public function modifier($nom, $type = "public") {
-        $success = FALSE;
+    public function modifier($nom, $type = "public")
+    {
+        $success = false;
         $db = Mysql::opendb();
 
 
@@ -60,14 +65,14 @@ class Usage {
             $this->_nom = $nom;
             $this->_type = $type;
 
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function supprimer() {
-
+    public function supprimer()
+    {
         $db = Mysql::opendb();
 
         $sql = "DELETE FROM `tab_usage` WHERE `id_usage`=" . $this->_id;
@@ -77,7 +82,8 @@ class Usage {
         return $result;
     }
 
-    public static function creerUsage($nom, $type = "public") {
+    public static function creerUsage($nom, $type = "public")
+    {
         $usage = null;
 
         if ($nom != "" && $type != ""
@@ -101,7 +107,8 @@ class Usage {
         return $usage;
     }
 
-    public static function getUsageById($id) {
+    public static function getUsageById($id)
+    {
         $usage = null;
 
         if ($id != 0) {
@@ -122,8 +129,8 @@ class Usage {
         return $usage;
     }
 
-    public static function getUsages() {
-
+    public static function getUsages()
+    {
         $usages = null;
 
         $db = Mysql::opendb();
@@ -141,5 +148,4 @@ class Usage {
 
         return $usages;
     }
-
 }

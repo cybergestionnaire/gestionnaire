@@ -79,7 +79,7 @@ $tarif = $atelier->getTarif();
 
             $action = "index.php?a=16&b=5&idatelier=" . $idAtelier . " ";
             $bouton = "Valider les pr&eacute;sences";
-        } else if ($act == 1) { //venue depuis les archives pour modification
+        } elseif ($act == 1) { //venue depuis les archives pour modification
             $action = "index.php?a=16&b=4&act=1&idatelier=" . $idAtelier . " ";
             $bouton = "Modifier les pr&eacute;sences";
         }
@@ -113,8 +113,7 @@ $tarif = $atelier->getTarif();
                                     </tr>
 
                                     <?php
-                                }
-                                ?><?php
+                                } ?><?php
                                 foreach ($utilisateursPresents as $utilisateur) {
                                     ?>
                                     <tr>
@@ -127,8 +126,7 @@ $tarif = $atelier->getTarif();
                                     </tr>
 
                                     <?php
-                                }
-                                ?>
+                                } ?>
                             </tbody>
                         </table>
                     </div><!-- .box-body -->

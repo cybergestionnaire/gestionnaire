@@ -60,7 +60,7 @@ switch ($actarif) {
             case 2: //ateliers
                 $nomtarif = isset($_POST["newnomtarifa"]) ? $_POST["newnomtarifa"] : '';
                 $prixtarif = (isset($_POST["newprixtarifa"]) && is_numeric($_POST["newprixtarifa"])) ? $_POST["newprixtarifa"] : "";
-                //$prixtarif=preg_replace("/[^0-9]/","",$prixtarif0); 
+                //$prixtarif=preg_replace("/[^0-9]/","",$prixtarif0);
                 $comment = isset($_POST["newdescriptiontarifa"]) ? $_POST["newdescriptiontarifa"] : '';
                 $categoryTarif = 5;
                 $typeduree = isset($_POST["typedureetarifa"]) ? $_POST["typedureetarifa"] : ''; //0=illimite
@@ -74,7 +74,6 @@ switch ($actarif) {
                 if ($nomtarif == '' || $prixtarif == '' || $typeduree == '' || $nbatelier == '') {
                     $mess = getError(4); //autres champs manquants
                 } else {
-
                     if (Tarif::creerTarif($nomtarif, $prixtarif, $comment, $nbatelier, $categoryTarif, $duree, $espaces) == null) {
                         echo getError(0);
                     } else {
@@ -141,7 +140,22 @@ switch ($actarif) {
                     $mess = getError(4); //autres champs manquants
                 } else {
                     $forfait = Forfait::creerForfait(
-                                    $date_creat_forfait, $type_forfait, $nom_forfait, $prix_forfait, $critere_forfait, $comment_forfait, $nombre_duree_forfait, $unite_duree_forfait, $temps_forfait_illimite, $date_debut_forfait, $status_forfait, $nombre_temps_affectation, $unite_temps_affectation, $frequence_temps_affectation, $temps_affectation_occasionnel, $nombre_atelier_forfait
+                                    $date_creat_forfait,
+                        $type_forfait,
+                        $nom_forfait,
+                        $prix_forfait,
+                        $critere_forfait,
+                        $comment_forfait,
+                        $nombre_duree_forfait,
+                        $unite_duree_forfait,
+                        $temps_forfait_illimite,
+                        $date_debut_forfait,
+                        $status_forfait,
+                        $nombre_temps_affectation,
+                        $unite_temps_affectation,
+                        $frequence_temps_affectation,
+                        $temps_affectation_occasionnel,
+                        $nombre_atelier_forfait
                     );
 
                     if ($forfait == null) {
@@ -230,7 +244,6 @@ switch ($actarif) {
             //validité et duree des tarifs
             //  $unite_duree_forfait0= $_POST["unite_duree_forfait"];
             if (isset($_POST["unite_duree_forfait"]) && $_POST["unite_duree_forfait"] == 4) {
-
                 $temps_forfait_illimite = 1;
                 $nombre_duree_forfait = 0;
                 $unite_duree_forfait = 0;

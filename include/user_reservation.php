@@ -37,31 +37,36 @@ $config = Config::getConfig($idEspace);
 // renvoi la largeur en % par unité de temps
 // $nbtot = int en mn
 // $unit  = int en mn
-function getWidthPerUnit($nbTotM, $unit) {
+function getWidthPerUnit($nbTotM, $unit)
+{
     return (10 * $unit) / (6 * $nbTotM);
 }
 
 //
-function getWidth($duree, $nbtot, $unit) {
+function getWidth($duree, $nbtot, $unit)
+{
     return $duree * (getWidthPerUnit($nbtot, $unit));
 }
 
 // renvoi le decalage en % par rapport a la position en min
-function getPosition($debutresa, $h1begin, $wu) {
+function getPosition($debutresa, $h1begin, $wu)
+{
     return (($debutresa - $h1begin) * $wu);
 }
 
 // renvoi un graf de temps en fonction des horaires matin(h1) et apm(h2)
-function getPlanning($dotd, $h1begin, $h1end, $h2begin, $h2end, $epn, $salle) {
-
-    if ($h1begin == 0 AND $h2begin > 0) //si fermé le matin
+function getPlanning($dotd, $h1begin, $h1end, $h2begin, $h2end, $epn, $salle)
+{
+    if ($h1begin == 0 and $h2begin > 0) { //si fermé le matin
         $h1begin = $h2begin;
+    }
 
-    if ($h2end == 0 AND $h1begin > 0)   //si ferm&eacute; l'apres midi
+    if ($h2end == 0 and $h1begin > 0) {   //si ferm&eacute; l'apres midi
         $h2end = $h1end;
+    }
 
-    if ($h1begin == 0 AND $h2end == 0) {
-        return FALSE;
+    if ($h1begin == 0 and $h2end == 0) {
+        return false;
         exit;
     }
 
@@ -74,8 +79,9 @@ function getPlanning($dotd, $h1begin, $h1end, $h2begin, $h2end, $epn, $salle) {
     $unitLabel = 30;                  // echelle de division du temps pour les labels des heures
 
     $h1begin = (floor($h1begin / 60) * 60); // on recupere l"heure de debut ex : 9h15 =>9h => 540mn
-    if ($h2end != (floor($h2end / 60) * 60))
-        $h2end = ((floor($h2end / 60) * 60) + 60); // on recupere l"heure de fin ex : 19h15 =>20h
+    if ($h2end != (floor($h2end / 60) * 60)) {
+        $h2end = ((floor($h2end / 60) * 60) + 60);
+    } // on recupere l"heure de fin ex : 19h15 =>20h
 
     $nbTotM = $h2end - $h1begin; // nombre total de minute d'ouverture
     $widthPause = getWidth(($h2begin - $h1end), $nbTotM, $unit) * (60 / $unit);
@@ -95,18 +101,20 @@ function getPlanning($dotd, $h1begin, $h1end, $h2begin, $h2end, $epn, $salle) {
         // ligne des horaires - echelle au dessus des reservations
         $graf .= "<tr><td></td><td >";
         for ($i = 0; $i < ($nbTotM / $unitLabel); $i++) {
-            if ($i == ( ($nbTotM / $unitLabel) - 1)) {// correction bug I.E ...
+            if ($i == (($nbTotM / $unitLabel) - 1)) {// correction bug I.E ...
                 $largeur = getWidth(60, $nbTotM, $unitLabel) - 2;
-                if (strlen(getTime($h1begin + ($i * $unitLabel))) <= 3)
+                if (strlen(getTime($h1begin + ($i * $unitLabel))) <= 3) {
                     $graf .= "<div class=\"labelHor\" style=\"width:" . $largeur . "%;\">|" . getTime($h1begin + ($i * $unitLabel)) . "</div>";
-                else
+                } else {
                     $graf .= "<div class=\"labelHor1\" style=\"width:" . $largeur . "%;\">|30</div>";
+                }
             } else { // sinon normal
                 $time = getTime($h1begin + ($i * $unitLabel));
-                if (strlen(getTime($h1begin + ($i * $unitLabel))) <= 3)
+                if (strlen(getTime($h1begin + ($i * $unitLabel))) <= 3) {
                     $graf .= "<div class=\"labelHor\" style=\"width:" . getWidth(60, $nbTotM, $unitLabel) . "%;\">|" . $time . "</div>";
-                else
+                } else {
                     $graf .= "<div class=\"labelHor1\" style=\"width:" . getWidth(60, $nbTotM, $unitLabel) . "%;\">|30</div>";
+                }
             }
         }
         $graf .= "</td></tr>";
@@ -163,7 +171,7 @@ function getPlanning($dotd, $h1begin, $h1end, $h2begin, $h2end, $epn, $salle) {
                 $utilisateur = $resa->getUtilisateur();
                 // Affichage de la ligne d'une machine;
                 $urlGraf = "#p" . $resa->getIdUtilisateur(); //Ajout lien vers ancre dans la liste//$_SERVER['REQUEST_URI'] ; // . "&idResa=" . $row2['id_resa'];
-                if ($_SESSION['status'] == 3 OR $_SESSION['status'] == 4) { // comment d'admin et d'anim
+                if ($_SESSION['status'] == 3 or $_SESSION['status'] == 4) { // comment d'admin et d'anim
                     $altGraf = "(" . htmlentities($utilisateur->getNom() . " " . $utilisateur->getPrenom()) . " - " . getTime($resa->getDebut()) . " &agrave; " . getTime($resa->getDebut() + $resa->getDuree()) . ")";
                 } else { // comment d'utilisateur
                     $altGraf = "(" . getTime($resa->getDebut()) . " &agrave; " . getTime($resa->getDebut() + $resa->getDuree()) . ")";
@@ -184,15 +192,17 @@ function getPlanning($dotd, $h1begin, $h1end, $h2begin, $h2end, $epn, $salle) {
         $graf .= "<tr><td></td><td >";
         for ($i = 0; $i < ($nbTotM / $unitLabel); $i++) {
             if ($i == (($nbTotM / $unitLabel) - 1)) { // correction bug I.E ...
-                if (strlen(getTime($h1begin + ($i * $unitLabel))) <= 3)
+                if (strlen(getTime($h1begin + ($i * $unitLabel))) <= 3) {
                     $graf .= "<div class=\"labelHor\" style=\"width:" . (getWidth(60, $nbTotM, $unitLabel) - 2) . "%;\">|" . getTime($h1begin + ($i * $unitLabel)) . "</div>";
-                else
+                } else {
                     $graf .= "<div class=\"labelHor1\" style=\"width:" . (getWidth(60, $nbTotM, $unitLabel) - 2) . "%;\">|30</div>";
+                }
             } else {// sinon normal
-                if (strlen(getTime($h1begin + ($i * $unitLabel))) <= 3)
+                if (strlen(getTime($h1begin + ($i * $unitLabel))) <= 3) {
                     $graf .= "<div class=\"labelHor\" style=\"width:" . getWidth(60, $nbTotM, $unitLabel) . "%;\">|" . getTime($h1begin + ($i * $unitLabel)) . "</div>";
-                else
+                } else {
                     $graf .= "<div class=\"labelHor1\" style=\"width:" . getWidth(60, $nbTotM, $unitLabel) . "%;\">|30</div>";
+                }
             }
         }
 
@@ -204,26 +214,30 @@ function getPlanning($dotd, $h1begin, $h1end, $h2begin, $h2end, $epn, $salle) {
 }
 
 // renvoi les horaires d'ouverture sous forme d'une phrase.
-function getHoraireTexte($horaire) {
-
-    if ($horaire->getHoraire1Debut() != 0 AND $horaire->getHoraire1Fin() != 0)
+function getHoraireTexte($horaire)
+{
+    if ($horaire->getHoraire1Debut() != 0 and $horaire->getHoraire1Fin() != 0) {
         $retour = "matin : " . getTime($horaire->getHoraire1Debut()) . " &agrave; " . getTime($horaire->getHoraire1Fin());
-    else
+    } else {
         $retour = "Ferm&eacute; le matin ";
+    }
 
-    if ($horaire->getHoraire2Debut() != 0 AND $horaire->getHoraire2Fin() != 0)
+    if ($horaire->getHoraire2Debut() != 0 and $horaire->getHoraire2Fin() != 0) {
         $retour .= ", apr&egrave;s midi " . getTime($horaire->getHoraire2Debut()) . " &agrave; " . getTime($horaire->getHoraire2Fin());
-    else
+    } else {
         $retour .= ", Ferm&eacute; l'apr&egrave;s midi";
+    }
 
-    if ($horaire->getHoraire1Debut() != "" AND $horaire->getHoraire1Fin() == 0 AND $horaire->getHoraire2Debut() == 0 AND $horaire->getHoraire2Fin() != "")
+    if ($horaire->getHoraire1Debut() != "" and $horaire->getHoraire1Fin() == 0 and $horaire->getHoraire2Debut() == 0 and $horaire->getHoraire2Fin() != "") {
         $retour = getTime($horaire->getHoraire1Debut()) . " &agrave; " . getTime($horaire->getHoraire2Fin());
+    }
 
     return $retour;
 }
 
 ///pour modifier la duree d'une résa en cours
-function getHorDureeSelect2($duree, $hbegin, $dateResa, $idMateriel, $epn) {
+function getHorDureeSelect2($duree, $hbegin, $dateResa, $idMateriel, $epn)
+{
 
     // duree maximum d'une reservation dans le fichier config
     $config = Config::getConfig($epn);
@@ -257,7 +271,7 @@ function getHorDureeSelect2($duree, $hbegin, $dateResa, $idMateriel, $epn) {
 }
 
 // On met a jour la duree de la resa
-include ("post_reservation-rapide.php");
+include("post_reservation-rapide.php");
 $term = isset($_POST["term"]) ? $_POST["term"] : '';
 
 if (isset($_POST['modify_duration'])) {
@@ -270,7 +284,7 @@ if (isset($_POST['modify_duration'])) {
 }
 
 // Affichage des reservations par utilisateur
-if ($_SESSION['status'] == 3 OR $_SESSION['status'] == 4) {
+if ($_SESSION['status'] == 3 or $_SESSION['status'] == 4) {
     if (isset($_GET['del']) && is_numeric($_GET['del'])) {
         $resa = Resa::getResaById($_GET['del']);
         if ($resa !== null) {
@@ -311,7 +325,7 @@ if (!checkDate($mois, $jour, $annee)) {
 }
 
 //Affichage de la salle
-// on recupere le num du jour de la semaine ˆ, 1, 2, ...7 
+// on recupere le num du jour de la semaine ˆ, 1, 2, ...7
 $dayNum = date("N", mktime(0, 0, 0, $mois, $jour, $annee));
 $dayArr = array("", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche");
 
@@ -331,8 +345,7 @@ if ($_SESSION["status"] == 3) {
     }
 }
 
-if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 1) {
-
+if ($_SESSION["status"] == 4 or $_SESSION["status"] == 1) {
     $salles = Salle::getSalles();
     // $idEspace  = $_SESSION["idepn"];
     if ($idSalle == '' and ! is_null($salles)) {
@@ -352,7 +365,7 @@ if ($mesno != '') {
 
     <div class="col-md-3">
         <div class="box">
-            <?php include ("include/calendrier.php"); ?>
+            <?php include("include/calendrier.php"); ?>
         </div>
     </div>
     <?php
@@ -391,7 +404,7 @@ if ($mesno != '') {
     if ($dateget == date('Y-n-d')) {
         ///Affichage ou non de la resa rapide selon la configuration
         // $resamode = getConfigConsole($idEspace, "resarapide");
-        if ($config->hasResaRapide() AND ( $_SESSION["status"] == 3 OR $_SESSION["status"] == 4)) {
+        if ($config->hasResaRapide() and ($_SESSION["status"] == 3 or $_SESSION["status"] == 4)) {
             ?>
 
 
@@ -437,20 +450,20 @@ if ($mesno != '') {
                                             $duree = 0; //duree de la resa determinée par config_horaire
 
 
-                                            foreach ($utilisateursRecherche as $utilisateur) {
-                                                if ($utilisateur->getStatut() == 1) {
-                                                    $class = "";
-                                                } else {
-                                                    $class = "inactif";
-                                                }
-                                                $restant = $utilisateur->getTempsRestant();
+                    foreach ($utilisateursRecherche as $utilisateur) {
+                        if ($utilisateur->getStatut() == 1) {
+                            $class = "";
+                        } else {
+                            $class = "inactif";
+                        }
+                        $restant = $utilisateur->getTempsRestant();
 
-                                                if ($restant <= $config->getDureeResaRapide() AND $restant > $duree) { // FONCTIONNEMENT A REVOIR !!
-                                                    $duree = $restant;
-                                                }
+                        if ($restant <= $config->getDureeResaRapide() and $restant > $duree) { // FONCTIONNEMENT A REVOIR !!
+                            $duree = $restant;
+                        }
 
-                                                $disabled = $restant <= 0 ? "disabled" : "";
-                                                echo "<tr class=\"" . $class . "\">
+                        $disabled = $restant <= 0 ? "disabled" : "";
+                        echo "<tr class=\"" . $class . "\">
                             <td>" . htmlentities($utilisateur->getNom()) . "</td>
                             <td>" . htmlentities($utilisateur->getPrenom()) . "</td>
                             <td>" . $utilisateur->getAge() . " ans</td>
@@ -459,27 +472,25 @@ if ($mesno != '') {
                             </td>
                              
                              </tr>";
-                                            }
-                                            ?>
+                    } ?>
                                         </tbody>
                                     </table>
                                     <?php
                                     $minute = str_split(date('i'));
-                                    $min = 0;
-                                    if ($minute[1] >= 0 and $minute[1] < 4) {
-                                        $min = substr_replace(date('i'), "0", 1, 1);
-                                    } else if ($minute[1] > 3 and $minute[1] < 8) {
-                                        $min = substr_replace(date('i'), "5", 1, 1);
-                                    } else if ($minute[1] > 7) {
-                                        $minu = ($minute[0] + 1) . "0";
-                                        $min = substr_replace(date('i'), $minu, 0, 2);
-                                    }
+                    $min = 0;
+                    if ($minute[1] >= 0 and $minute[1] < 4) {
+                        $min = substr_replace(date('i'), "0", 1, 1);
+                    } elseif ($minute[1] > 3 and $minute[1] < 8) {
+                        $min = substr_replace(date('i'), "5", 1, 1);
+                    } elseif ($minute[1] > 7) {
+                        $minu = ($minute[0] + 1) . "0";
+                        $min = substr_replace(date('i'), $minu, 0, 2);
+                    }
 
-                                    $heure = date('G') * 60 + $min;
+                    $heure = date('G') * 60 + $min;
 
 
-                                    $postesLibres = Materiel::getMaterielLibreFromSalleById($idSalle);
-                                    ?>
+                    $postesLibres = Materiel::getMaterielLibreFromSalleById($idSalle); ?>
 
 
                                     <div class="input-group">
@@ -488,8 +499,7 @@ if ($mesno != '') {
                                             <?php
                                             foreach ($postesLibres as $poste) {
                                                 echo "<option value=\"" . $poste->getId() . "\">" . htmlentities($poste->getNom()) . "</option>";
-                                            }
-                                            ?>
+                                            } ?>
                                         </select>
                                     </div>
 
@@ -502,7 +512,7 @@ if ($mesno != '') {
                                         <input value="<?php echo $duree; ?>" type="hidden" name="duree">
                                         <input value="<?php echo $restant; ?>" type="hidden" name="restant">
                                         <input value="0" type="hidden" name="pastresa">
-                                        <input value="<?php echo (date('Y') . "-" . date('m') . "-" . date('d')); ?>" type="hidden" name="date">
+                                        <input value="<?php echo(date('Y') . "-" . date('m') . "-" . date('d')); ?>" type="hidden" name="date">
                                     </div>
                                 </div>
                                 <div class="box-footer">
@@ -572,19 +582,17 @@ if ($mesno != '') {
                 // $table = getPlanning($_SESSION['resa']['date'], $row["hor1_begin_horaire"], $row["hor1_end_horaire"], $row["hor2_begin_horaire"], $row["hor2_end_horaire"], $idEspace, $idSalle) ;
                 $table = getPlanning($_SESSION['resa']['date'], $horaires[$dayNum - 1]->getHoraire1Debut(), $horaires[$dayNum - 1]->getHoraire1Fin(), $horaires[$dayNum - 1]->getHoraire2Debut(), $horaires[$dayNum - 1]->getHoraire2Fin(), $idEspace, $idSalle);
 
-                if ($table != FALSE) {
+                if ($table != false) {
                     // affichage du planning
-                    echo $table;
-                    ?>
+                    echo $table; ?>
                 </div>
             </div><!-- .box -->
             <?php
             // Affichage des reservations par utilisateur pour les admins
-            if ($_SESSION['status'] == 3 OR $_SESSION['status'] == 4) {
+            if ($_SESSION['status'] == 3 or $_SESSION['status'] == 4) {
                 // $resultresa = getResa('All', $_SESSION['resa']['date'], $idSalle) ;
 
-                $resas = Resa::getResasParJourEtParSalle($_SESSION['resa']['date'], $idSalle);
-                ?>
+                $resas = Resa::getResasParJourEtParSalle($_SESSION['resa']['date'], $idSalle); ?>
                 <div class="box box-info">
                     <div class="box-header"><h3 class="box-title">R&eacute;servation par utilisateur</h3></div>
                     <div class="box-body no-padding">
@@ -603,7 +611,6 @@ if ($mesno != '') {
                             <tbody>
                                 <?php
                                 foreach ($resas as $resa) {
-
                                     $utilisateur = $resa->getUtilisateur();
 
                                     $tarifAdhesion = $utilisateur->getTarifAdhesion();
@@ -618,8 +625,7 @@ if ($mesno != '') {
                                     } else {
                                         $class = "";
                                         $info = "";
-                                    }
-                                    ?>
+                                    } ?>
                                     <tr>
                                 <form method="post" role="form">
                                     <td>
@@ -651,17 +657,16 @@ if ($mesno != '') {
                                 </form>
                                 </tr>
                                 <?php
-                            }
-                            ?>
+                                } ?>
                             </tbody>
                         </table>
                     </div><!-- .box-body -->
                 </div><!-- .box -->
                 <?php
             }
-        } else {// si le jour n'est pas ouvr&eacute;
-            echo geterror(19);
-        }
+                } else {// si le jour n'est pas ouvr&eacute;
+                    echo geterror(19);
+                }
         ?>
     </div><!-- .col-md-12 -->
 </div><!-- .row -->

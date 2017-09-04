@@ -22,8 +22,8 @@ require_once("Mysql.class.php");
 require_once("Utilisateur.class.php");
 require_once("Materiel.class.php");
 
-class Resa {
-
+class Resa
+{
     private $_id;
     private $_idMateriel;
     private $_idUtilisateur;
@@ -33,7 +33,8 @@ class Resa {
     private $_date;
     private $_statut;
 
-    public function __construct($array) {
+    public function __construct($array)
+    {
         $this->_id = $array["id_resa"];
         $this->_idMateriel = $array["id_computer_resa"];
         $this->_idUtilisateur = $array["id_user_resa"];
@@ -44,39 +45,48 @@ class Resa {
         $this->_statut = $array["status_resa"];
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getIdMateriel() {
+    public function getIdMateriel()
+    {
         return $this->_idMateriel;
     }
 
-    public function getMateriel() {
+    public function getMateriel()
+    {
         return Materiel::getMaterielById($this->_idMateriel);
     }
 
-    public function getIdUtilisateur() {
+    public function getIdUtilisateur()
+    {
         return $this->_idUtilisateur;
     }
 
-    public function getUtilisateur() {
+    public function getUtilisateur()
+    {
         return Utilisateur::getUtilisateurById($this->_idUtilisateur);
     }
 
-    public function getDateResa() {
+    public function getDateResa()
+    {
         return $this->_dateResa;
     }
 
-    public function getDebut() {
+    public function getDebut()
+    {
         return $this->_debut;
     }
 
-    public function getDuree() {
+    public function getDuree()
+    {
         return $this->_duree;
     }
 
-    public function setDuree($duree) {
+    public function setDuree($duree)
+    {
         $success = false;
 
         $db = Mysql::opendb();
@@ -90,22 +100,25 @@ class Resa {
 
         if ($result) {
             $this->_duree = $duree;
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function getDate() {
+    public function getDate()
+    {
         return $this->_date;
     }
 
-    public function getStatut() {
+    public function getStatut()
+    {
         return $this->_statut;
     }
 
-    public function modifier($idMateriel, $idUtilisateur, $dateResa, $debut, $duree, $date, $statut) {
-        $success = FALSE;
+    public function modifier($idMateriel, $idUtilisateur, $dateResa, $debut, $duree, $date, $statut)
+    {
+        $success = false;
 
         $db = Mysql::opendb();
 
@@ -145,14 +158,15 @@ class Resa {
                 $this->_date = $date;
                 $this->_statut = $statut;
 
-                $success = TRUE;
+                $success = true;
             }
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
         $success = false;
 
         $db = Mysql::opendb();
@@ -166,7 +180,8 @@ class Resa {
         return $success;
     }
 
-    public static function creerResa($idMateriel, $idUtilisateur, $dateResa, $debut, $duree, $date, $statut) {
+    public static function creerResa($idMateriel, $idUtilisateur, $dateResa, $debut, $duree, $date, $statut)
+    {
         $resa = null;
 
         // TODO : controles à affiner
@@ -206,7 +221,8 @@ class Resa {
         return $resa;
     }
 
-    public static function getResaById($id) {
+    public static function getResaById($id)
+    {
         $resa = null;
 
         if ($id != 0) {
@@ -227,8 +243,8 @@ class Resa {
         return $resa;
     }
 
-    public static function getResas() {
-
+    public static function getResas()
+    {
         $resas = null;
 
         $db = Mysql::opendb();
@@ -247,7 +263,8 @@ class Resa {
         return $resas;
     }
 
-    public function getResasParIdUtilisateur($idUtilisateur) {
+    public function getResasParIdUtilisateur($idUtilisateur)
+    {
         $resas = null;
 
         $db = Mysql::opendb();
@@ -266,7 +283,8 @@ class Resa {
         return $resas;
     }
 
-    public static function getResasFuturesParIdUtilisateur($idUtilisateur) {
+    public static function getResasFuturesParIdUtilisateur($idUtilisateur)
+    {
         $resas = null;
 
         $db = Mysql::opendb();
@@ -286,7 +304,8 @@ class Resa {
         return $resas;
     }
 
-    public static function getResasPasseesParIdUtilisateur($idUtilisateur) {
+    public static function getResasPasseesParIdUtilisateur($idUtilisateur)
+    {
         $resas = null;
 
         $db = Mysql::opendb();
@@ -306,7 +325,8 @@ class Resa {
         return $resas;
     }
 
-    public static function getResasParIdUtilisateurEtParMois($idUtilisateur, $mois, $annee) {
+    public static function getResasParIdUtilisateurEtParMois($idUtilisateur, $mois, $annee)
+    {
         $resas = null;
 
         $db = Mysql::opendb();
@@ -330,7 +350,8 @@ class Resa {
         return $resas;
     }
 
-    public static function getResasParIdUtilisateurEtParPeriode($idUtilisateur, $dateDebut, $dateFin) {
+    public static function getResasParIdUtilisateurEtParPeriode($idUtilisateur, $dateDebut, $dateFin)
+    {
         $resas = null;
 
         $db = Mysql::opendb();
@@ -353,8 +374,8 @@ class Resa {
         return $resas;
     }
 
-    public static function getResasActives() {
-
+    public static function getResasActives()
+    {
         $resas = null;
 
         $db = Mysql::opendb();
@@ -373,8 +394,8 @@ class Resa {
         return $resas;
     }
 
-    public static function getResasDuJour() {
-
+    public static function getResasDuJour()
+    {
         $resas = null;
 
         $db = Mysql::opendb();
@@ -393,8 +414,8 @@ class Resa {
         return $resas;
     }
 
-    public static function getResasParJourEtParSalle($date, $idSalle) {
-
+    public static function getResasParJourEtParSalle($date, $idSalle)
+    {
         $resas = null;
 
         $db = Mysql::opendb();
@@ -421,8 +442,8 @@ class Resa {
         return $resas;
     }
 
-    public static function getResasParJourEtParMateriel($date, $idMateriel) {
-
+    public static function getResasParJourEtParMateriel($date, $idMateriel)
+    {
         $resas = null;
 
         $db = Mysql::opendb();
@@ -447,8 +468,8 @@ class Resa {
         return $resas;
     }
 
-    public static function getProchaineResasParJourEtParMateriel($date, $idMateriel, $heureDebut) {
-
+    public static function getProchaineResasParJourEtParMateriel($date, $idMateriel, $heureDebut)
+    {
         $resa = null;
 
         $db = Mysql::opendb();
@@ -473,8 +494,8 @@ class Resa {
         return $resa;
     }
 
-    public static function getStatResaParMois($mois, $annee, $idEspace) {
-
+    public static function getStatResaParMois($mois, $annee, $idEspace)
+    {
         $stats = array("nombre" => 0, "duree" => 0);
 
         $db = Mysql::opendb();
@@ -490,7 +511,7 @@ class Resa {
 
         Mysql::closedb($db);
 
-        if ($result != FALSE) {
+        if ($result != false) {
             $row = mysqli_fetch_array($result);
             $stats["nombre"] = $row["nombre"];
             $stats["duree"] = $row["duree"];
@@ -499,8 +520,8 @@ class Resa {
         return $stats;
     }
 
-    public static function getStatResaParJour($date, $idEspace) {
-
+    public static function getStatResaParJour($date, $idEspace)
+    {
         $stats = array("nombre" => 0, "duree" => 0);
 
         $db = Mysql::opendb();
@@ -517,7 +538,7 @@ class Resa {
 
         Mysql::closedb($db);
 
-        if ($result != FALSE) {
+        if ($result != false) {
             $row = mysqli_fetch_array($result);
             $stats['duree'] = $row['duree'];
             $stats['nombre'] = $row['nombre'];
@@ -527,7 +548,8 @@ class Resa {
     }
 
     //renvoi un tableau des heures de debut de resa pour un jour et une machine
-    public static function getResaArray($idcomp, $dateResa, $unit) {
+    public static function getResaArray($idcomp, $dateResa, $unit)
+    {
         $array = array();
 
         $db = Mysql::opendb();
@@ -559,7 +581,8 @@ class Resa {
         return $array;
     }
 
-    public static function getLastResaFromUtilisateur($idUtilisateur) {
+    public static function getLastResaFromUtilisateur($idUtilisateur)
+    {
         $resa = null;
 
         $db = Mysql::opendb();
@@ -578,5 +601,4 @@ class Resa {
 
         return $resa;
     }
-
 }

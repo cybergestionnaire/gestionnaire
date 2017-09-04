@@ -35,7 +35,6 @@ $act = isset($_GET["act"]) ? $_GET["act"] : '';
 $idEspace = isset($_GET["idepn"]) ? $_GET["idepn"] : '';
 
 if (isset($_POST['submit'])) {
-
     switch ($_POST["form"]) {
         case 1:
             $epnr = $_POST["epn_r"];
@@ -64,7 +63,19 @@ if (isset($_POST['submit'])) {
             $config = $espace->getConfig();
 
             if ($configLogiciel->setConfigLogiciel($shiftlog, $insclog, $renslog, $conexlog, $bloclog, $tempslog, $decouselog, $fermersessionlog) && $config->modifier(
-                            $config->getActiverConsole(), $config->getName(), $config->getDefaultTimeUnit(), $config->getUnit(), $config->getMaxTime(), $config->getDefaultMaxTime(), $config->getIdEspace(), $inscription_auto, $message_inscrip, $config->getNomEspace(), $activerforfait, $config->getResaRapide(), $config->getDureeResaRapide()
+                            $config->getActiverConsole(),
+                $config->getName(),
+                $config->getDefaultTimeUnit(),
+                $config->getUnit(),
+                $config->getMaxTime(),
+                $config->getDefaultMaxTime(),
+                $config->getIdEspace(),
+                $inscription_auto,
+                $message_inscrip,
+                $config->getNomEspace(),
+                $activerforfait,
+                $config->getResaRapide(),
+                $config->getDureeResaRapide()
                     )) {
                 header("Location:index.php?a=25&mess=ok&epnr=" . $idEspace);
             } else {
@@ -81,7 +92,19 @@ if (isset($_POST['submit'])) {
             $config = $espace->getConfig();
 
             if ($config->modifier(
-                            $console, $config->getName(), $config->getDefaultTimeUnit(), $config->getUnit(), $config->getMaxTime(), $config->getDefaultMaxTime(), $config->getIdEspace(), $config->getInscriptionUsagersAuto(), $config->getMessageInscription(), $config->getNomEspace(), $config->getActivationForfait(), $config->getResaRapide(), $config->getDureeResaRapide()
+                            $console,
+                $config->getName(),
+                $config->getDefaultTimeUnit(),
+                $config->getUnit(),
+                $config->getMaxTime(),
+                $config->getDefaultMaxTime(),
+                $config->getIdEspace(),
+                $config->getInscriptionUsagersAuto(),
+                $config->getMessageInscription(),
+                $config->getNomEspace(),
+                $config->getActivationForfait(),
+                $config->getResaRapide(),
+                $config->getDureeResaRapide()
                     )) {
                 header("Location:index.php?a=25&mess=ok&epnr=" . $idEspace);
             } else {
@@ -91,4 +114,3 @@ if (isset($_POST['submit'])) {
             break;
     }
 }
-?>

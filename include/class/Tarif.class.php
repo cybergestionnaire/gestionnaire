@@ -20,8 +20,8 @@
 
 require_once("Mysql.class.php");
 
-class Tarif {
-
+class Tarif
+{
     private $_id;
     private $_nom;
     private $_donnee;
@@ -31,7 +31,8 @@ class Tarif {
     private $_duree;
     private $_idsEspaces;
 
-    public function __construct($array) {
+    public function __construct($array)
+    {
         $this->_id = $array["id_tarif"];
         $this->_nom = $array["nom_tarif"];
         $this->_donnee = $array["donnee_tarif"];
@@ -42,44 +43,54 @@ class Tarif {
         $this->_idsEspaces = $array["epn_tarif"];
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getNom() {
+    public function getNom()
+    {
         return $this->_nom;
     }
 
-    public function getDonnee() {
+    public function getDonnee()
+    {
         return $this->_donnee;
     }
 
-    public function getCommentaire() {
+    public function getCommentaire()
+    {
         return $this->_commentaire;
     }
 
-    public function getNbAtelierForfait() {
+    public function getNbAtelierForfait()
+    {
         return $this->_nbAtelierForfait;
     }
 
-    public function getCategorie() {
+    public function getCategorie()
+    {
         return $this->_categorie;
     }
 
-    public function getDuree() {
+    public function getDuree()
+    {
         return $this->_duree;
     }
 
-    public function getIdsEspaces() {
+    public function getIdsEspaces()
+    {
         return $this->_idsEspaces;
     }
 
-    public function getIdsEspacesAsArray() {
+    public function getIdsEspacesAsArray()
+    {
         return explode('-', $this->_idsEspaces);
     }
 
-    public function modifier($nom, $prix, $commentaire, $nbAteliers, $categorie, $duree, $idsEspaces) {
-        $success = FALSE;
+    public function modifier($nom, $prix, $commentaire, $nbAteliers, $categorie, $duree, $idsEspaces)
+    {
+        $success = false;
 
         $db = Mysql::opendb();
 
@@ -118,14 +129,15 @@ class Tarif {
                 $this->_duree = $duree;
                 $this->_idsEspaces = $idsEspaces;
 
-                $success = TRUE;
+                $success = true;
             }
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
         $success = false;
 
         $db = Mysql::opendb();
@@ -139,7 +151,8 @@ class Tarif {
         return $success;
     }
 
-    public static function creerTarif($nom, $prix, $commentaire, $nbAteliers, $categorie, $duree, $idsEspaces) {
+    public static function creerTarif($nom, $prix, $commentaire, $nbAteliers, $categorie, $duree, $idsEspaces)
+    {
         $tarif = null;
 
         if ($nom != "" && $prix != "" && $categorie != ""
@@ -179,7 +192,8 @@ class Tarif {
         return $tarif;
     }
 
-    public static function getTarifById($id) {
+    public static function getTarifById($id)
+    {
         $tarif = null;
 
         if ($id != 0) {
@@ -200,8 +214,8 @@ class Tarif {
         return $tarif;
     }
 
-    public static function getTarifs() {
-
+    public static function getTarifs()
+    {
         $tarifs = null;
 
         $db = Mysql::opendb();
@@ -220,8 +234,8 @@ class Tarif {
         return $tarifs;
     }
 
-    public static function getTarifsByCategorie($categorie) {
-
+    public static function getTarifsByCategorie($categorie)
+    {
         $tarifs = null;
 
         $db = Mysql::opendb();
@@ -242,5 +256,4 @@ class Tarif {
 
         return $tarifs;
     }
-
 }

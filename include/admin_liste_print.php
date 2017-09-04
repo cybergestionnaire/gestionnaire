@@ -53,7 +53,7 @@ $statutPrint = array(
                 <p>Etat de caisse hebdomadaire&nbsp;&nbsp;<a href="courriers/csv_caisse-hebdo.php?epn=<?php echo $_SESSION['idepn']; ?>&date=<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm"><i class="fa fa-download"></i>&nbsp;CSV</i></a></p>
                 <p>Etat de caisse mensuel<br>
                     <a href="courriers/csv_caisse-mensuel.php?epn=<?php echo $_SESSION['idepn']; ?>&date=<?php echo date('n') ?>" class="btn btn-primary btn-sm"><i class="fa fa-download"></i>&nbsp;CSV</i></a>&nbsp;&nbsp;&nbsp;&nbsp;mois en cours</p>
-                <p><a href="courriers/csv_caisse-mensuel.php?epn=<?php echo $_SESSION['idepn']; ?>&date=<?php echo (date('n') - 1) ?>" class="btn btn-primary btn-sm"><i class="fa fa-download"></i>&nbsp;CSV</i></a>&nbsp;&nbsp;&nbsp;&nbsp;mois pr&eacute;c&eacute;dent</p>
+                <p><a href="courriers/csv_caisse-mensuel.php?epn=<?php echo $_SESSION['idepn']; ?>&date=<?php echo(date('n') - 1) ?>" class="btn btn-primary btn-sm"><i class="fa fa-download"></i>&nbsp;CSV</i></a>&nbsp;&nbsp;&nbsp;&nbsp;mois pr&eacute;c&eacute;dent</p>
             </div>
         </div>
 
@@ -80,8 +80,7 @@ $statutPrint = array(
                                     <td><?php echo number_format($utilisateurAvecCredit["credit"] - $utilisateurAvecCredit["debit"], 2, ',', ' ') ?> &euro;</td>
                                 </tr>
                                 <?php
-                            }
-                            ?>
+                            } ?>
 
                         </tbody>
                     </table>
@@ -121,8 +120,7 @@ $statutPrint = array(
                                     <td class="text-red"><?php echo number_format($utilisateurAvecDebit["credit"] - $utilisateurAvecDebit["debit"], 2, ',', ' ') ?> &euro;</td>
                                 </tr>
                                 <?php
-                            }
-                            ?>
+                            } ?>
                         </tbody>
                     </table>
                 </div>
@@ -142,7 +140,7 @@ $statutPrint = array(
 
             $utilisateursRecherche = Utilisateur::searchUtilisateurs($term);
             $nbUtilisateursRecherche = count($utilisateursRecherche);
-            if ($utilisateursRecherche == null OR $nbUtilisateursRecherche == 0) {
+            if ($utilisateursRecherche == null or $nbUtilisateursRecherche == 0) {
                 ?>
                 <div class="box box-success">
                     <div class="box-header"><h3 class="box-title">R&eacute;sultats de la recherche: 0</h3>
@@ -161,8 +159,7 @@ $statutPrint = array(
                     </div><!-- .box-header -->
                     <div class="box-body">
                         <?php
-                        echo geterror(6);
-                        ?>
+                        echo geterror(6); ?>
                     </div>
                 </div>
                 <?php
@@ -193,8 +190,7 @@ $statutPrint = array(
                                     <td><?php echo htmlentities($utilisateurRecherche->getPrenom()) . '&nbsp;' . htmlentities($utilisateurRecherche->getNom()) ?></td>
                                 </tr>
                                 <?php
-                            }
-                            ?>
+                            } ?>
                         </table>
                     </div>
                 </div>
@@ -224,8 +220,8 @@ $statutPrint = array(
 
                     $impressions = Impression::getImpressionsDuJour();
 
-                    if ($impressions === null) {
-                        ?>
+            if ($impressions === null) {
+                ?>
                         <br>
                         <div class="col-xs-6">
                             <div class="alert alert-warning alert-dismissable">
@@ -235,9 +231,9 @@ $statutPrint = array(
                         </div>
 
                         <?php
-                    } else { // affichage du resultat
-                        if (count($impressions) > 0) {
-                            ?>
+            } else { // affichage du resultat
+                if (count($impressions) > 0) {
+                    ?>
 
 
                             <table class="table"> 
@@ -254,15 +250,12 @@ $statutPrint = array(
 
                                 <?php
                                 $totalprintday = 0;
-                                foreach ($impressions as $impression) {
-
-
-                                    $utilisateur = $impression->getUtilisateur();
-                                    $tarif = $impression->getTarif();
-                                    $prix = $impression->getNombreImpression() * $tarif->getDonnee();
-                                    $statut = $statutPrint[$impression->getStatut()];
-                                    $totalprintday = $totalprintday + $prix;
-                                    ?>                    
+                    foreach ($impressions as $impression) {
+                        $utilisateur = $impression->getUtilisateur();
+                        $tarif = $impression->getTarif();
+                        $prix = $impression->getNombreImpression() * $tarif->getDonnee();
+                        $statut = $statutPrint[$impression->getStatut()];
+                        $totalprintday = $totalprintday + $prix; ?>                    
                                     <tr>
                                         <td><a href="index.php?a=21&b=1&iduser=<?php echo $utilisateur->getId() ?>" class="btn bg-navy sm" title="compte d'impression"><i class="fa fa-print"></i></a></td>
                                         <td><?php echo htmlentities($utilisateur->getNom()) ?></td>
@@ -274,18 +267,15 @@ $statutPrint = array(
                                             echo "<td><p class=\"text-red\">" . $statut . "</p></td> ";
                                         } else {
                                             echo "<td><p class=\"text-light-blue\">" . $statut . "</p></td> ";
-                                        }
-                                        ?>
+                                        } ?>
                                     </tr>
                                     <?php
-                                }
-                                ?>
+                    } ?>
                                 <tr><td></td><td></td><td></td><td></td><td><?php echo number_format($totalprintday, 2, ',', ' '); ?> &euro; (total jour)</td><td></td></tr>
                             </table>
                             <?php
-                        }
-                    }
-                    ?>
+                }
+            } ?>
                 </div><!-- .box-body -->
             </div><!-- .box -->
 

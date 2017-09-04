@@ -28,7 +28,7 @@ include("include/boites/menu-parametres.php");
 <div class="row">
 <!--    <section class="col-lg-3 connectedSortable"> 
     <?php
-    if (getReseau() == FALSE) {
+    if (getReseau() == false) {
         ?>
                 <div class="box box-default">
                     <div class="box-header with-border">
@@ -43,8 +43,7 @@ include("include/boites/menu-parametres.php");
                 </div>
         <?php
     } else {
-        $rowreseau = getReseau();
-        ?>
+        $rowreseau = getReseau(); ?>
                 <div class="box box-solid box-primary">
                     <div class="box-header"><h3 class="box-title">Votre r&eacute;seau</h3></div>
                     <div class="box-body">
@@ -57,7 +56,8 @@ include("include/boites/menu-parametres.php");
                     </div><!-- /.box-body 
                 </div><!-- /.box 
 
-    <?php } ?>
+    <?php
+    } ?>
 
     </section>-->
 
@@ -93,10 +93,10 @@ include("include/boites/menu-parametres.php");
                                     <td><?php echo htmlentities($espace->getMail()); ?></td>
                                     <td ><a href="index.php?a=43&b=2&idespace=<?php echo htmlentities($espace->getId()); ?>"><button class="btn btn-success btn-sm"  type="submit" value="modifier"><i class="fa fa-pencil-square-o"></i></button></a>
                                         <?php
-                                        if ($espace->getId() > 1) {  //suppression de l\'epn de reference impossible 
-                                            ?>
+                                        if ($espace->getId() > 1) {  //suppression de l\'epn de reference impossible ?>
                                             <a href="index.php?a=43&b=3&act=3&idespace=<?php echo htmlentities($espace->getId()); ?>"><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button></a>
-                                                <?php } ?>
+                                                <?php
+                                        } ?>
                                     </td>
                                 </tr>
                                 <?php

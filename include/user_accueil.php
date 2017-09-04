@@ -31,7 +31,8 @@ require_once("include/class/SessionDate.class.php");
 include("post_reservation-rapide.php");
 include("fonction_stat.php");
 
-function cmp($a, $b) {
+function cmp($a, $b)
+{
     return strtotime($a->getDate()) - strtotime($b->getDate());
 }
 
@@ -45,13 +46,11 @@ $navig = $ua['name'] . " " . $ua['version'];
 $macadress = "inconnue pour l\'instant";
 $cx = enterConnexionstatus($_SESSION['iduser'], date('Y-m-d H:i:s'), 1, $macadress, $navig, $exploitation);
 
-//***** -------------fonctions pour administrateur & animateurs   
-if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
-
+//***** -------------fonctions pour administrateur & animateurs
+if ($_SESSION["status"] == "3" or $_SESSION["status"] == "4") {
     if ($mesno != "") {
         echo getError($mesno);
-    }
-    ?>
+    } ?>
 
     <div class="row">
 
@@ -59,14 +58,13 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
         //*****   Mises &agrave; jour des adh&eacute;rents dont le forfait arrive a expiration ///
         include("boites/MAJ_adherents.php");
 
-        //***** Fonctions administrateur ONLY MAJ + Backup *****///
-        if ($_SESSION["status"] == "4") {
-            include("boites/MAJ_version.php");
-            include("boites/verifBackup.php");
-        }
-        //***** FIN Fonctions administrateur MAJ + Backup *****///
-        //debug($_session["idepn"]);
-        ?>
+    //***** Fonctions administrateur ONLY MAJ + Backup *****///
+    if ($_SESSION["status"] == "4") {
+        include("boites/MAJ_version.php");
+        include("boites/verifBackup.php");
+    }
+    //***** FIN Fonctions administrateur MAJ + Backup *****///
+    //debug($_session["idepn"]); ?>
     </div>
 
     <!-- Info boxes Statistiques-->
@@ -77,12 +75,11 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                 <div class="info-box-content">
                     <?php
                     $rowresastatmois = Resa::getStatResaParMois(date('m'), date('Y'), $_SESSION["idepn"]);
-                    $resamois = $rowresastatmois["nombre"];
+    $resamois = $rowresastatmois["nombre"];
 
-                    $datehier = date('Y-m') . "-" . (date('d') - 1);
-                    $rowresahier = Resa::getStatResaParJour($datehier, $_SESSION["idepn"]);
-                    $resahier = $rowresahier["nombre"] . " (" . getTime($rowresahier["duree"]) . ")";
-                    ?>
+    $datehier = date('Y-m') . "-" . (date('d') - 1);
+    $rowresahier = Resa::getStatResaParJour($datehier, $_SESSION["idepn"]);
+    $resahier = $rowresahier["nombre"] . " (" . getTime($rowresahier["duree"]) . ")"; ?>
                     <span class="info-box-text">R&eacute;servations</span>
                     <span class="info-box-number"><?php echo $resahier; ?><small> hier</small><br><?php echo $resamois; ?><small> ce mois</small></span>
                 </div><!-- /.info-box-content -->
@@ -94,9 +91,8 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                 <div class="info-box-content">
                     <?php
                     $rownbateliersstat = getStatAtelierByMonth(date('Y'), date('m'), 1, 1);
-                    $nbateliersstat = $rownbateliersstat["atelier"];
-                    $nbsessionstat = getSessionbyMonth(date('Y'), date('m'));
-                    ?>
+    $nbateliersstat = $rownbateliersstat["atelier"];
+    $nbsessionstat = getSessionbyMonth(date('Y'), date('m')); ?>
                     <span class="info-box-text">Ateliers programm&eacute;s<br>(ce mois)</span>
                     <span class="info-box-number"><?php echo $nbateliersstat; ?> <small>Ateliers</small>  /<?php echo $nbsessionstat; ?> <small>Sessions</small></span>
                 </div><!-- /.info-box-content -->
@@ -112,9 +108,8 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                 <div class="info-box-content">
                     <?php
                     $rowstatimpression = getStatPages(date('m'), date('Y'), $_SESSION["idepn"]);
-                    $pages = $rowstatimpression["pages"];
-                    $montant = $rowstatimpression["montant"];
-                    ?>
+    $pages = $rowstatimpression["pages"];
+    $montant = $rowstatimpression["montant"]; ?>
                     <span class="info-box-text">Impressions</span>
                     <span class="info-box-number"><?php echo $pages; ?> pages (<?php echo $montant; ?> &euro;)</span>
                 </div><!-- /.info-box-content -->
@@ -140,14 +135,14 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                 <div class="box-body">
                     <?php
                     $listeAteliers = Atelier::getAteliersParSemaine(date('Y-m-d'), $_SESSION["idepn"]);
-                    $listeSessionDates = SessionDate::getSessionDatesParSemaine(date('Y-m-d'), $_SESSION["idepn"]);
-                    $listeGlobale = array_merge($listeAteliers, $listeSessionDates);
+    $listeSessionDates = SessionDate::getSessionDatesParSemaine(date('Y-m-d'), $_SESSION["idepn"]);
+    $listeGlobale = array_merge($listeAteliers, $listeSessionDates);
 
 
 
 
-                    if (count($listeGlobale) > 0) {
-                        ?>
+    if (count($listeGlobale) > 0) {
+        ?>
                         <!-- The time line --> 
                         <ul class="timeline">
 
@@ -157,31 +152,30 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
 
 
                             usort($listeGlobale, 'cmp');
-                            // error_log(print_r($listeGlobale, true));
-                            foreach ($listeGlobale as $AS) {
-                                if ($AS instanceof Atelier) {
-                                    // error_log("Atelier à la date : " . $AS->getDate());
-                                    $titre = $AS->getSujet()->getLabel();
-                                    $inscrits = $AS->getNbUtilisateursInscrits();
-                                    $salle = $AS->getSalle();
-                                    $duree = $AS->getDuree();
-                                    $anim = $AS->getAnimateur();
-                                    $urlAS = "index.php?a=13&b=1&idatelier=" . $AS->getId();
-                                    $type = "Atelier";
-                                    $class = "bg-green";
-                                } else {
-                                    // error_log("Session à la date : " . $AS->getDate());
-                                    $session = $AS->getSession();
-                                    $titre = $session->getSessionSujet()->getTitre();
-                                    $inscrits = $session->getNbUtilisateursInscrits();
-                                    $salle = $session->getSalle();
-                                    $duree = '60';    //TODO : rendre la duree des sessions configurables
-                                    $anim = $session->getAnimateur();
-                                    $urlAS = "index.php?a=30&b=1&idsession=" . $session->getId();
-                                    $type = "Session";
-                                    $class = "bg-blue";
-                                }
-                                ?>
+        // error_log(print_r($listeGlobale, true));
+        foreach ($listeGlobale as $AS) {
+            if ($AS instanceof Atelier) {
+                // error_log("Atelier à la date : " . $AS->getDate());
+                $titre = $AS->getSujet()->getLabel();
+                $inscrits = $AS->getNbUtilisateursInscrits();
+                $salle = $AS->getSalle();
+                $duree = $AS->getDuree();
+                $anim = $AS->getAnimateur();
+                $urlAS = "index.php?a=13&b=1&idatelier=" . $AS->getId();
+                $type = "Atelier";
+                $class = "bg-green";
+            } else {
+                // error_log("Session à la date : " . $AS->getDate());
+                $session = $AS->getSession();
+                $titre = $session->getSessionSujet()->getTitre();
+                $inscrits = $session->getNbUtilisateursInscrits();
+                $salle = $session->getSalle();
+                $duree = '60';    //TODO : rendre la duree des sessions configurables
+                $anim = $session->getAnimateur();
+                $urlAS = "index.php?a=30&b=1&idsession=" . $session->getId();
+                $type = "Session";
+                $class = "bg-blue";
+            } ?>
                                 <li class="time-label">
                                     <span class="bg-red">&nbsp;<?php echo getDateFr($AS->getDate()); ?>&nbsp;&nbsp;<i class="fa fa-clock-o"></i></span>
                                 </li><!-- /.timeline-label -->
@@ -201,8 +195,7 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                                     </div>
                                 </li> 
                                 <?php
-                            }
-                            ?>
+        } ?>
 
 
 
@@ -210,10 +203,9 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                         </ul>
 
                         <?php
-                    } else {
-                        echo "<p>aucun &eacute;v&eacute;nement enregistr&eacute; pour cette semaine !</p>";
-                    }
-                    ?>
+    } else {
+        echo "<p>aucun &eacute;v&eacute;nement enregistr&eacute; pour cette semaine !</p>";
+    } ?>
                 </div><!-- .box-body -->
             </div><!-- .box -->
             <div class="box">
@@ -221,9 +213,9 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                 <div class="box-body">
                     <?php
                     $temps = 0;
-                    $resasActives = Resa::getResasActives();
-                    if ($resasActives !== null) {
-                        ?>
+    $resasActives = Resa::getResasActives();
+    if ($resasActives !== null) {
+        ?>
                         <h4>Connexions en cours</h4>
                         <ul>
 
@@ -248,20 +240,17 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                                 $time = $interval->format("%d j %hh%im");
                                 if ($diff < 60) {
                                     $time = "<1mm";
-                                }
-                                ?>              
+                                } ?>              
                                 <li><a href="index.php?a=1&b=2&iduser=<?php echo $utilisateur->getId() ?>"><?php echo htmlentities($utilisateur->getPrenom() . " " . $utilisateur->getNom()) ?></a> depuis <?php echo $time ?><br /> sur <?php echo htmlentities($espace->getNom() . " / " . $salle->getNom() . " / " . $materiel->getNom()); ?></li>
                                 <?php
-                            }
-                            ?>
+                            } ?>
                         </ul>
                         <?php
-                    }
-                    ?>
+    } ?>
                     <?php
                     $resasTerminees = Resa::getResasDuJour();
-                    if ($resasTerminees !== null) {
-                        ?>
+    if ($resasTerminees !== null) {
+        ?>
                         <h4>Connexions terminées aujourd'hui</h4>
                         <ul>
 
@@ -278,16 +267,13 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                                     $temp = $heure . ":0" . $minute;
                                 } else {
                                     $temp = $heure . ":" . $minute;
-                                }
-                                ?>              
+                                } ?>              
                                 <li><a href="index.php?a=1&b=2&iduser=<?php echo $utilisateur->getId() ?>"><?php echo htmlentities($utilisateur->getPrenom() . " " . $utilisateur->getNom()) ?></a> commenc&eacute;e &agrave; <?php echo $temp ?>, dur&eacute;e <?php echo $resa->getDuree() ?>mn<br /> sur <?php echo htmlentities($espace->getNom() . " / " . $salle->getNom() . " / " . $materiel->getNom()); ?></li>
                                 <?php
-                            }
-                            ?>
+                            } ?>
                         </ul>
                         <?php
-                    }
-                    ?>          </div>
+    } ?>          </div>
             </div>
         </div><!-- /colonne 1 -->
 
@@ -309,44 +295,43 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                         <?php
                         if ($_SESSION["status"] == 4) {
                             $listeMessage = readMessage(); //tous les messages pour l'admin
-                        } else if ($_SESSION["status"] == 3) {
+                        } elseif ($_SESSION["status"] == 3) {
                             $listeMessage = readMyMessage($_SESSION["iduser"]); //messages pour les anims
                         }
-                        $nb = mysqli_num_rows($listeMessage);
-                        $urlRedirect = "index.php";
+    $nb = mysqli_num_rows($listeMessage);
+    $urlRedirect = "index.php";
 
-                        for ($i = 1; $i <= $nb; $i++) {
-                            $rowmessage = mysqli_fetch_array($listeMessage);
-                            $auteur = $rowmessage["mes_auteur"];
-                            $rowdest = getUser($rowmessage["mes_destinataire"]);
-                            $rowauteur = getUser($rowmessage["mes_auteur"]);
-                            $nomessage = $rowauteur['prenom_user'] . " " . $rowauteur['nom_user'];
+    for ($i = 1; $i <= $nb; $i++) {
+        $rowmessage = mysqli_fetch_array($listeMessage);
+        $auteur = $rowmessage["mes_auteur"];
+        $rowdest = getUser($rowmessage["mes_destinataire"]);
+        $rowauteur = getUser($rowmessage["mes_auteur"]);
+        $nomessage = $rowauteur['prenom_user'] . " " . $rowauteur['nom_user'];
 
-                            if ($auteur == $_SESSION["iduser"]) {
-                                $classchat1 = "direct-chat-msg right";
-                                $classchat2 = 'direct-chat-name pull-right';
-                                $classchat3 = 'direct-chat-timestamp pull-left';
-                                $rowa = getAvatar($_SESSION["iduser"]);
-                                $photoavatar = "img/avatar/" . $rowa["anim_avatar"];
-                            } else {
-                                //reponse &agrave; droite
-                                $classchat1 = "direct-chat-msg";
-                                $classchat2 = 'direct-chat-name pull-left';
-                                $classchat3 = 'direct-chat-timestamp pull-right';
-                                $filenamephoto = "img/photos_profil/" . trim($rowauteur["nom_user"]) . "_" . trim($rowauteur["prenom_user"]) . ".jpg";
-                                if (file_exists($filenamephoto)) {
-                                    $photoavatar = $filenamephoto;
-                                } else {
-                                    if ($rowauteur["sexe_user"] == 'M') {
-                                        $photoavatar = "img/avatar/male.png";
-                                    } else {
-                                        $photoavatar = "img/avatar/female.png";
-                                    }
-                                }
-                            }
+        if ($auteur == $_SESSION["iduser"]) {
+            $classchat1 = "direct-chat-msg right";
+            $classchat2 = 'direct-chat-name pull-right';
+            $classchat3 = 'direct-chat-timestamp pull-left';
+            $rowa = getAvatar($_SESSION["iduser"]);
+            $photoavatar = "img/avatar/" . $rowa["anim_avatar"];
+        } else {
+            //reponse &agrave; droite
+            $classchat1 = "direct-chat-msg";
+            $classchat2 = 'direct-chat-name pull-left';
+            $classchat3 = 'direct-chat-timestamp pull-right';
+            $filenamephoto = "img/photos_profil/" . trim($rowauteur["nom_user"]) . "_" . trim($rowauteur["prenom_user"]) . ".jpg";
+            if (file_exists($filenamephoto)) {
+                $photoavatar = $filenamephoto;
+            } else {
+                if ($rowauteur["sexe_user"] == 'M') {
+                    $photoavatar = "img/avatar/male.png";
+                } else {
+                    $photoavatar = "img/avatar/female.png";
+                }
+            }
+        }
 
-                            $datemes = date_format(date_create($rowmessage['mes_date']), '\l\e d/m/y \&agrave; G:i ');
-                            ?>
+        $datemes = date_format(date_create($rowmessage['mes_date']), '\l\e d/m/y \&agrave; G:i '); ?>
 
                             <div class="<?php echo $classchat1; ?>">
                                 <div class='direct-chat-info clearfix'>
@@ -359,8 +344,7 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                             </div>
 
                             <?php
-                        }
-                        ?>      
+    } ?>      
 
                     </div><!-- /.chat -->
                 </div><!-- .box-body -->
@@ -376,15 +360,14 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                                     $listeAdhreponse = getListRepAdmin();
                                 }
 
-                                foreach ($listeAdhreponse AS $key => $value) {
-                                    // if ($adhreponse == $key) {
-                                    // echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
-                                    // }
-                                    // else {
-                                    echo "<option value=\"" . $key . "\">" . $value . "</option>";
-                                    // }
-                                }
-                                ?>
+    foreach ($listeAdhreponse as $key => $value) {
+        // if ($adhreponse == $key) {
+        // echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
+        // }
+        // else {
+        echo "<option value=\"" . $key . "\">" . $value . "</option>";
+        // }
+    } ?>
                             </select>
                         </div>
                         <div class="input-group">
@@ -416,8 +399,7 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                     <?php
                     if ($_SESSION["status"] == 4) {
                         echo '<a class="btn btn-app" href="index.php?a=41"><i class="fa fa-gear"></i>Configuration</a>';
-                    }
-                    ?>
+                    } ?>
                 </div>
             </div><!-- .box -->
         </div><!-- /colonne 2-->
@@ -436,16 +418,15 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
             <?php
             //affichage breve admin anim
             $result = getAllBreve(0);
-            if ($result == FALSE) {
-                echo getError(0);
-            } else {
-                $nb = mysqli_num_rows($result);
-                if ($nb == 0) {
-                    //echo getError(10);
-                } else {
-                    for ($i = 1; $i <= $nb; $i++) {
-                        $row = mysqli_fetch_array($result);
-                        ?>
+    if ($result == false) {
+        echo getError(0);
+    } else {
+        $nb = mysqli_num_rows($result);
+        if ($nb == 0) {
+            //echo getError(10);
+        } else {
+            for ($i = 1; $i <= $nb; $i++) {
+                $row = mysqli_fetch_array($result); ?>
                         <div class="box box-success">
                             <div class="box-header"><h3 class="box-title"><?php echo $row["titre_news"] ?></h3></div>
                             <div class="box-body">
@@ -453,10 +434,9 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                             </div>
                         </div>
                         <?php
-                    }
-                }
             }
-            ?>
+        }
+    } ?>
         </div>
     </div>
     <?php
@@ -549,8 +529,7 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                                         $boutoninscr = "s'inscrire";
                                         $couleurb = "btn btn-info btn-xs";
                                     }
-                                }
-                                ?>
+                                } ?>
                                 <!-- timeline time label -->
                                 <ul class="timeline">
                                     <li class="time-label"><span class="bg-red"> <?php echo getDateFr($AS->getDate()); ?></span></li><!-- /.timeline-label -->
@@ -570,16 +549,14 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                                     </li>
 
                                     <?php
-                                }
-                                ?>
+                            } ?>
 
                                 <li><i class="fa fa-clock-o"></i></li>
                             </ul>
                             <?php
                         } else {
                             echo "<p>aucun &eacute;v&eacute;nement enregistr&eacute; pour cette semaine !</p>";
-                        }
-                        ?>
+                        } ?>
                     </div><!-- .box-body -->
                 </div><!-- .box -->
             </div><!-- /colonne 1 -->
@@ -587,16 +564,15 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
             <div class="col-md-4"> <!-- colonne 2-->
                 <?php
                 $result = getAllBreve(1);
-                if ($result == FALSE) {
-                    echo getError(0);
-                } else {
-                    $nb = mysqli_num_rows($result);
-                    if ($nb == 0) {
-                        echo getError(10);
-                    } else {
-                        for ($i = 1; $i <= $nb; $i++) {
-                            $row = mysqli_fetch_array($result);
-                            ?>
+        if ($result == false) {
+            echo getError(0);
+        } else {
+            $nb = mysqli_num_rows($result);
+            if ($nb == 0) {
+                echo getError(10);
+            } else {
+                for ($i = 1; $i <= $nb; $i++) {
+                    $row = mysqli_fetch_array($result); ?>
                             <div class="box box-success">
                                 <div class="box-header"><h3 class="box-title"><?php echo $row["titre_news"] ?></h3></div>
                                 <div class="box-body">
@@ -604,10 +580,9 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                                 </div>
                             </div>
                             <?php
-                        }
-                    }
                 }
-                ?>
+            }
+        } ?>
 
                 <div class="box box-warning">
                     <div class="box-header"><h3 class="box-title">Acc&eacute;der &agrave; vos historiques</h3></div>
@@ -632,42 +607,41 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                             <!-- chat item -->
                             <?php
                             $animateurs = Utilisateur::getAnimateurs();
-                            $listeMessage = readMyMessage($_SESSION["iduser"]);
-                            $nb = mysqli_num_rows($listeMessage);
-                            $urlRedirect = "index.php";
+        $listeMessage = readMyMessage($_SESSION["iduser"]);
+        $nb = mysqli_num_rows($listeMessage);
+        $urlRedirect = "index.php";
 
-                            for ($i = 0; $i < $nb; $i++) {
-                                $rowmessage = mysqli_fetch_array($listeMessage);
-                                $auteur = $rowmessage["mes_auteur"];
-                                $rowdest = getUser($rowmessage["mes_destinataire"]);
-                                $rowauteur = getUser($rowmessage["mes_auteur"]);
-                                $nomessage = $rowauteur['prenom_user'] . " " . $rowauteur['nom_user'];
+        for ($i = 0; $i < $nb; $i++) {
+            $rowmessage = mysqli_fetch_array($listeMessage);
+            $auteur = $rowmessage["mes_auteur"];
+            $rowdest = getUser($rowmessage["mes_destinataire"]);
+            $rowauteur = getUser($rowmessage["mes_auteur"]);
+            $nomessage = $rowauteur['prenom_user'] . " " . $rowauteur['nom_user'];
 
-                                if ($auteur == $_SESSION["iduser"]) {
-                                    $classchat1 = "direct-chat-msg right";
-                                    $classchat2 = 'direct-chat-name pull-right';
-                                    $classchat3 = 'direct-chat-timestamp pull-left';
-                                    $filenamephoto = "img/photos_profil/" . trim($rowauteur["nom_user"]) . "_" . trim($rowauteur["prenom_user"]) . ".jpg";
-                                    if (file_exists($filenamephoto)) {
-                                        $photoavatar = $filenamephoto;
-                                    } else {
-                                        if ($rowauteur["sexe_user"] == 'M') {
-                                            $photoavatar = "img/avatar/male.png";
-                                        } else {
-                                            $photoavatar = "img/avatar/female.png";
-                                        }
-                                    }
-                                } else {
-                                    //reponse &agrave; droite
-                                    $classchat1 = "direct-chat-msg";
-                                    $classchat2 = 'direct-chat-name pull-left';
-                                    $classchat3 = 'direct-chat-timestamp pull-right';
-                                    $rowa = getAvatar($auteur);
-                                    $photoavatar = "img/avatar/" . $rowa["anim_avatar"];
-                                }
+            if ($auteur == $_SESSION["iduser"]) {
+                $classchat1 = "direct-chat-msg right";
+                $classchat2 = 'direct-chat-name pull-right';
+                $classchat3 = 'direct-chat-timestamp pull-left';
+                $filenamephoto = "img/photos_profil/" . trim($rowauteur["nom_user"]) . "_" . trim($rowauteur["prenom_user"]) . ".jpg";
+                if (file_exists($filenamephoto)) {
+                    $photoavatar = $filenamephoto;
+                } else {
+                    if ($rowauteur["sexe_user"] == 'M') {
+                        $photoavatar = "img/avatar/male.png";
+                    } else {
+                        $photoavatar = "img/avatar/female.png";
+                    }
+                }
+            } else {
+                //reponse &agrave; droite
+                $classchat1 = "direct-chat-msg";
+                $classchat2 = 'direct-chat-name pull-left';
+                $classchat3 = 'direct-chat-timestamp pull-right';
+                $rowa = getAvatar($auteur);
+                $photoavatar = "img/avatar/" . $rowa["anim_avatar"];
+            }
 
-                                $datemes = date_format(date_create($rowmessage['mes_date']), '\l\e d/m/y \&agrave; G:i ');
-                                ?>
+            $datemes = date_format(date_create($rowmessage['mes_date']), '\l\e d/m/y \&agrave; G:i '); ?>
 
                                 <div class="<?php echo $classchat1; ?>">
                                     <div class='direct-chat-info clearfix'>
@@ -679,8 +653,7 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                                     <div class="direct-chat-text"><?php echo stripslashes($rowmessage['mes_txt']); ?></div>
                                 </div>
                                 <?php
-                            }
-                            ?>      
+        } ?>      
 
                         </div><!-- /.chat -->
                     </div><!-- .box-body -->
@@ -690,10 +663,9 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
                                 <label>A :
                                     <select name="chatdestinataire" class="form-control">
                                         <?php
-                                        foreach ($animateurs AS $animateur) {
+                                        foreach ($animateurs as $animateur) {
                                             echo "<option value=\"" . $animateur->getId() . "\">" . htmlentities($animateur->getNom()) . " " . htmlentities($animateur->getPrenom()) . "</option>";
-                                        }
-                                        ?>
+                                        } ?>
                                     </select>
                                 </label>
                             </div>
@@ -715,7 +687,7 @@ if ($_SESSION["status"] == "3" OR $_SESSION["status"] == "4") {
             </div><!-- .col-md-4 -->
         </div> <!-- .row -->
         <?php
-    } else if ($_SESSION["status"] == "2") { //***UTILISATEUR INACTIF
+    } elseif ($_SESSION["status"] == "2") { //***UTILISATEUR INACTIF
         ?>
 
         <div class="row">

@@ -24,10 +24,11 @@
 //fonctions
 // opendb ()
 // connexion a la base de données
-function opendb() {
-    include ("./connect_db.php");
+function opendb()
+{
+    include("./connect_db.php");
 
-    if ($port == "" OR ! is_numeric($port)) {
+    if ($port == "" or ! is_numeric($port)) {
         $port = "3306";
     }
 
@@ -45,28 +46,31 @@ function opendb() {
 //
 // closedb()
 // fermeture de la connexion a la base de donnée
-function closedb($mydb) {
+function closedb($mydb)
+{
     mysqli_close($mydb);
 }
 
 // Fonction user --------------------------------------
 //
 // passwd()
-// crypt le mot de passe 
-function passwd($pass) {
+// crypt le mot de passe
+function passwd($pass)
+{
     return md5($pass);
 }
 
 //
 // getUser()
 // recupere un utilisateur
-function getUser($id) {
+function getUser($id)
+{
     $sql = "SELECT *  FROM tab_user WHERE id_user=" . $id;
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
         $row = mysqli_fetch_array($result);
         return $row;
@@ -76,7 +80,8 @@ function getUser($id) {
 //
 // countUser()
 // compte le nombre d'utilisateur actif ,inactifs , total
-function countUser($id) {
+function countUser($id)
+{
     switch ($id) {
         case 1: // TOTAL ACTIFS + INACTIFS
             $sql = "SELECT `id_user` FROM `tab_user` WHERE `status_user`!=3 AND `status_user`!=4  ";
@@ -94,8 +99,8 @@ function countUser($id) {
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
         $nb = mysqli_num_rows($result);
         return $nb;
@@ -108,25 +113,27 @@ function countUser($id) {
 //
 // checkBookmark()
 // renvoi TRUE si le user a au moins un lien
-function checkBookmark($id) {
+function checkBookmark($id)
+{
     $sql = "SELECT `id_url` FROM `tab_url` WHERE `iduser_url`=" . $id;
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
         if (mysqli_num_rows($result) <= 0) {
-            return FALSE;
+            return false;
         } else {
-            return TRUE;
+            return true;
         }
     }
 }
 
 // getBookmark()
 // renvoi TRUE si le user a au moins un lien
-function getBookmark($id) {
+function getBookmark($id)
+{
     if ($id != 0) {
         /* $sql = "SELECT `id_url`,`titre_url`,`url_url` ,
           (
@@ -164,8 +171,8 @@ function getBookmark($id) {
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
         return $result;
     }
@@ -173,7 +180,8 @@ function getBookmark($id) {
 
 //
 //
-function getOneUrl($id) {
+function getOneUrl($id)
+{
     $sql = "SELECT U.titre_url, U.url_url, R.label_url_rub 
             FROM tab_url AS U
             INNER JOIN rel_url_rub AS RU ON RU.id_url = U.id_url
@@ -188,13 +196,14 @@ function getOneUrl($id) {
 //
 // getUrlSelect
 // renvoi le select contenant les rubrique d'url
-function getUrlSelect() {
+function getUrlSelect()
+{
     $sql = "SELECT * FROM `tab_url_rub` ORDER BY label_url_rub";
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
         $var = '<select name="rubSel">';
         while ($row = mysqli_fetch_array($result)) {
@@ -209,7 +218,8 @@ function getUrlSelect() {
 //
 // addBokmark()
 // ajoute un favoris dans la liste d'un utilisateur
-function addBookmark($id, $titre, $url, $rubId = NULL, $rubName = FALSE) {
+function addBookmark($id, $titre, $url, $rubId = null, $rubName = false)
+{
     $db = opendb();
     // Requete d'insertion du lien
     $sql = "INSERT INTO `tab_url` ( `id_url` , `iduser_url` , `titre_url` , `url_url` )
@@ -221,7 +231,7 @@ function addBookmark($id, $titre, $url, $rubId = NULL, $rubName = FALSE) {
     $sql3 = "INSERT INTO `rel_url_rub` (`id_url_rub`,`id_url`,`id_rub`)";
 
     // Requete de creation de la rubrique et execution si elle existe pas
-    if (FALSE != isset($rubName) AND $rubName != "") {
+    if (false != isset($rubName) and $rubName != "") {
         $sql2 = "INSERT INTO `tab_url_rub` (`id_url_rub`,`iduser_url_rub`,`label_url_rub`)
                  VALUES('','0','" . $rubName . "')";
         $result2 = @mysqli_query($db, $sql2);
@@ -234,53 +244,56 @@ function addBookmark($id, $titre, $url, $rubId = NULL, $rubName = FALSE) {
 
     closedb($db);
 
-    if (FALSE == $result OR FALSE == $result2 OR FALSE == $result3) {
-        return FALSE;
+    if (false == $result or false == $result2 or false == $result3) {
+        return false;
     } else {
-        return TRUE;
+        return true;
     }
 }
 
 // updateBookmark
 // modifie certaines infos du bookmark
-function updateBookmark($id, $name, $url) {
+function updateBookmark($id, $name, $url)
+{
     $sql = "UPDATE `tab_url` SET titre_url='" . $name . "' , url_url='" . $url . "' WHERE id_url ='" . $id . "' LIMIT 1";
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
 
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
-        return TRUE;
+        return true;
     }
 }
 
 //
 // delBokmark()
 // supprime un favoris dans la liste d'un utilisateur
-function delBookmark($iduser, $idurl) {
+function delBookmark($iduser, $idurl)
+{
     $sql = "SELECT `id_url` FROM `tab_url` WHERE `iduser_url`=" . $iduser . " AND `id_url`=" . $idurl;
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
     if (mysqli_num_rows($result) != 1) {
-        return FALSE;
+        return false;
     } else {
         $sql = "DELETE FROM `tab_url` WHERE `id_url`=" . $idurl;
         $db = opendb();
         $result = mysqli_query($db, $sql);
         closedb($db);
-        if (FALSE == $result) {
-            return FALSE;
+        if (false == $result) {
+            return false;
         } else {
-            return TRUE;
+            return true;
         }
     }
 }
 
 //converti une date en jour de l'annee
-function convertDateJour($jour) {
+function convertDateJour($jour)
+{
     $jouran = strftime("%j", strtotime($jour));
     return ($jouran);
 }
@@ -291,21 +304,23 @@ function convertDateJour($jour) {
 //
 // getAllMateriel()
 // recupere la liste de tous les materiel présent dans la table
-function getAllMateriel() {
+function getAllMateriel()
+{
     $sql = "SELECT `id_computer`,`nom_computer`,`os_computer`,`comment_computer`,`usage_computer`, `id_salle`
          FROM `tab_computer` ORDER BY `usage_computer` , `nom_computer`";
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
         return $result;
     }
 }
 
 //materiel par epn
-function getMaterielFromEpn($id) {
+function getMaterielFromEpn($id)
+{
     $sql = "SELECT `id_computer`,`nom_computer`,`os_computer`,`comment_computer`,`usage_computer` , tab_computer.`id_salle` , id_espace
 FROM `tab_computer` , tab_salle
 WHERE tab_computer.id_salle = tab_salle.id_salle
@@ -314,22 +329,23 @@ ORDER BY `usage_computer` , `nom_computer`";
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
         return $result;
     }
 }
 
-function getComputerName($id) {
+function getComputerName($id)
+{
     $sql = "SELECT `nom_computer`
          FROM `tab_computer`
          WHERE `id_computer` =" . $id;
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
         $row = mysqli_fetch_array($result);
         return $row['nom_computer'];
@@ -337,7 +353,8 @@ function getComputerName($id) {
 }
 
 // recupere les machines en fonction e certains usages
-function getComputerByUsage($usage) {
+function getComputerByUsage($usage)
+{
     $nb = COUNT($usage);
     $i = 1;
 
@@ -356,23 +373,24 @@ function getComputerByUsage($usage) {
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
         return $result;
     }
 }
 
 // variante utilise dans les interventions
-function getComputerId() {
+function getComputerId()
+{
     $sql = "SELECT `id_computer`
          FROM `tab_computer`
          ORDER BY `usage_computer` , `nom_computer`";
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
         return $result;
     }
@@ -381,15 +399,16 @@ function getComputerId() {
 //
 // getMateriel($id)
 // renvoi les données sur un poste a partir de son id
-function getMateriel($id) {
+function getMateriel($id)
+{
     $sql = "SELECT *
          FROM `tab_computer` WHERE id_computer=" . $id . ";";
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
     $row = mysqli_fetch_array($result);
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
         return $row;
     }
@@ -400,8 +419,9 @@ function getMateriel($id) {
 //
 //
 //renvoi les resrvations par machines pour un jour
-function getResa($id_comp, $date_resa, $salle) {
-    if (TRUE == is_numeric($id_comp)) {
+function getResa($id_comp, $date_resa, $salle)
+{
+    if (true == is_numeric($id_comp)) {
         $sql = "SELECT * FROM `tab_resa`
             WHERE `id_computer_resa`='" . $id_comp . "'
             AND `dateresa_resa`='" . $date_resa . "'
@@ -417,37 +437,40 @@ function getResa($id_comp, $date_resa, $salle) {
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
         return $result;
     }
 }
 
 // renvoi les reservations d'un utilisateur
-function getResaById($id, $type) {
+function getResaById($id, $type)
+{
     $sql = "SELECT `id_resa`,`dateresa_resa`,`debut_resa`,`duree_resa`,nom_computer, id_computer FROM tab_resa 
           INNER JOIN tab_computer ON id_computer=id_computer_resa
           WHERE `id_user_resa`=" . $id . " ";
-    if ($type == 1)
+    if ($type == 1) {
         $sql .= "AND `dateresa_resa`>'" . date("Y-m-d") . "' ";
-    else
+    } else {
         $sql .= "AND `dateresa_resa`<='" . date("Y-m-d") . "' ";
+    }
 
     $sql .= "ORDER BY `dateresa_resa` DESC , `debut_resa` DESC";
 
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if (FALSE == mysqli_num_rows($result)) {
-        return FALSE;
+    if (false == mysqli_num_rows($result)) {
+        return false;
     } else {
         return $result;
     }
 }
 
 // delResa , supprime une reservation
-function delResa($id_resa, $id_user) {
+function delResa($id_resa, $id_user)
+{
     $sql = "DELETE FROM `tab_resa` 
           WHERE `id_resa`=" . $id_resa . " 
           AND `id_user_resa`=" . $id_user . "
@@ -459,7 +482,8 @@ function delResa($id_resa, $id_user) {
 
 // getCredit
 // renvoi le credit temps ( util, total dispo)
-function getCredit($iduser) {
+function getCredit($iduser)
+{
     $sql = "SELECT SUM(duree_resa) AS util,temps_user AS total
         FROM tab_resa
         INNER JOIN tab_user ON id_user=id_user_resa
@@ -470,8 +494,8 @@ function getCredit($iduser) {
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if ($result == FALSE) {
-        return FALSE;
+    if ($result == false) {
+        return false;
     } else {
         return mysqli_fetch_array($result);
     }
@@ -493,7 +517,8 @@ function getCredit($iduser) {
 // }
 // }
 // renvoi les horaires d'ouverture en min.
-function getHoraire($day, $epn) {
+function getHoraire($day, $epn)
+{
     $sql = "SELECT `hor1_begin_horaire`,`hor1_end_horaire`,`hor2_begin_horaire`,`hor2_end_horaire`
           FROM `tab_horaire`
           WHERE `jour_horaire`='" . $day . "'
@@ -502,8 +527,8 @@ function getHoraire($day, $epn) {
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if ($result == FALSE) {
-        return FALSE;
+    if ($result == false) {
+        return false;
     } else {
         $row = mysqli_fetch_array($result);
         return $row;
@@ -516,7 +541,8 @@ function getHoraire($day, $epn) {
 //
 // getAllbreve()
 // recupere toutes les breves
-function getAllBreve($nb) {
+function getAllBreve($nb)
+{
     switch ($nb) {
 
         case 0: // Toutes les breves , gestion dans l'admin
@@ -539,8 +565,8 @@ function getAllBreve($nb) {
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if ($result == FALSE) {
-        return FALSE;
+    if ($result == false) {
+        return false;
     } else {
         return $result;
     }
@@ -549,15 +575,16 @@ function getAllBreve($nb) {
 //
 // getBreve()
 // recupere une breve(news) a partir d'un id
-function getBreve($id) {
+function getBreve($id)
+{
     $sql = "SELECT *
              FROM `tab_news`
              WHERE `id_news`=" . $id;
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if ($result == FALSE) {
-        return FALSE;
+    if ($result == false) {
+        return false;
     } else {
         $row = mysqli_fetch_array($result);
         return $row;
@@ -567,25 +594,26 @@ function getBreve($id) {
 //
 // addBreve()
 // ajoute une breve
-function addBreve($titr, $comment, $visible, $type, $datepublish, $datenews, $epn) {
+function addBreve($titr, $comment, $visible, $type, $datepublish, $datenews, $epn)
+{
     $sql = "INSERT INTO `tab_news`
          (`id_news`,`titre_news`,`comment_news`,`visible_news`,`type_news`,`date_publish`, `date_news`, `id_epn`)
          VALUES ('','" . $titr . "','" . $comment . "','" . $visible . "','" . $type . "','" . $datepublish . "','" . $datenews . "','" . $epn . "')";
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if ($result == FALSE) {
-        return FALSE;
+    if ($result == false) {
+        return false;
     } else {
-        return TRUE;
+        return true;
     }
 }
 
 //
 // modBreve()
 // ajoute une breve
-function modBreve($id, $titr, $comment, $visible, $type, $datepublish, $datenews, $epn) {
-
+function modBreve($id, $titr, $comment, $visible, $type, $datepublish, $datenews, $epn)
+{
     $sql = "UPDATE `tab_news`
     SET `titre_news` ='" . $titr . "',
         `comment_news` ='" . $comment . "',
@@ -598,25 +626,26 @@ function modBreve($id, $titr, $comment, $visible, $type, $datepublish, $datenews
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if ($result == FALSE) {
-        return FALSE;
+    if ($result == false) {
+        return false;
     } else {
-        return TRUE;
+        return true;
     }
 }
 
 //
 // supBreve()
 // ajoute une breve
-function supBreve($id) {
+function supBreve($id)
+{
     $sql = "DELETE FROM `tab_news` WHERE `id_news`=" . $id;
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if ($result == FALSE) {
-        return FALSE;
+    if ($result == false) {
+        return false;
     } else {
-        return TRUE;
+        return true;
     }
 }
 
@@ -626,15 +655,16 @@ function supBreve($id) {
 //
 // getInter()
 // recupere la liste des interventions
-function getAllInter() {
+function getAllInter()
+{
     $sql = "SELECT `id_inter`,`titre_inter` , `comment_inter` , `statut_inter` , `date_inter`
             FROM `tab_inter` 
             ORDER BY `statut_inter` ASC ,`id_inter` DESC";
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if ($result == FALSE) {
-        return FALSE;
+    if ($result == false) {
+        return false;
     } else {
         return $result;
     }
@@ -642,9 +672,10 @@ function getAllInter() {
 
 // checkInter()
 // verifie si une intervention est en cours sur une machine
-// TRUE : une intervention est en cours sur la machine 
+// TRUE : une intervention est en cours sur la machine
 // FALSE : aucune intervention en cours sur la  machine
-function checkInter($id_comp) {
+function checkInter($id_comp)
+{
     $sql = "SELECT COUNT(TI.id_inter) AS nb
            FROM tab_inter AS TI
            INNER JOIN rel_inter_computer AS RIC ON RIC.id_inter = TI.id_inter
@@ -653,28 +684,30 @@ function checkInter($id_comp) {
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if ($result == TRUE) {
+    if ($result == true) {
         $row = mysqli_fetch_array($result);
-        if ($row['nb'] > 0)
-            return TRUE;
-        else
-            return FALSE;
+        if ($row['nb'] > 0) {
+            return true;
+        } else {
+            return false;
+        }
     } else {
-        return FALSE;
+        return false;
     }
 }
 
 //
 // addInter()
 // ajoute une intervention
-function addInter($titr, $date, $comment, $dispo) {
+function addInter($titr, $date, $comment, $dispo)
+{
     $sql = "INSERT INTO `tab_inter` (`id_inter`, `titre_inter`, `comment_inter`, `statut_inter`, `date_inter`)  VALUES ('','" . $titr . "', '" . $comment . "','" . $dispo . "','" . $date . "')";
     $db = opendb();
     $result = mysqli_query($db, $sql);
     $lastid = mysqli_insert_id($db);
     closedb($db);
-    if ($result == FALSE) {
-        return FALSE;
+    if ($result == false) {
+        return false;
     } else {
         return $lastid;
     }
@@ -682,23 +715,25 @@ function addInter($titr, $date, $comment, $dispo) {
 
 //
 // addInterComputer()
-// ajoute une relation dans la table rel_inter_computer 
-function addInterComputer($idinter, $idcomputer) {
+// ajoute une relation dans la table rel_inter_computer
+function addInterComputer($idinter, $idcomputer)
+{
     $sql = "INSERT INTO `rel_inter_computer` (`id_inter_computer`, `id_inter`, `id_computer`) VALUES ('','" . $idinter . "', '" . $idcomputer . "')";
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if ($result == FALSE) {
-        return FALSE;
+    if ($result == false) {
+        return false;
     } else {
-        return TRUE;
+        return true;
     }
 }
 
 //
 // getInterComputer($idinter)
 // recupere le nom des machine concernŽ par une intervention
-function getInterComputer($idinter) {
+function getInterComputer($idinter)
+{
     $sql = "SELECT `nom_computer` 
         FROM `rel_inter_computer` AS rel ,`tab_computer`AS comp
         WHERE rel.id_computer = comp.id_computer
@@ -706,8 +741,8 @@ function getInterComputer($idinter) {
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if ($result == FALSE) {
-        return FALSE;
+    if ($result == false) {
+        return false;
     } else {
         return $result;
     }
@@ -716,37 +751,39 @@ function getInterComputer($idinter) {
 //
 // modInter()
 // modifie le statut d'une intervention
-function modInter($id, $statut) {
+function modInter($id, $statut)
+{
     $sql = "UPDATE `tab_inter` SET `statut_inter`='" . $statut . "' WHERE `id_inter`=" . $id;
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if ($result == FALSE) {
-        return FALSE;
+    if ($result == false) {
+        return false;
     } else {
-        return TRUE;
+        return true;
     }
 }
 
 //
 // supInter()
 // supprime une intervention
-function supInter($id) {
+function supInter($id)
+{
     $sql = "DELETE FROM `tab_inter` WHERE `id_inter`=" . $id;
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if ($result == FALSE) {
-        return FALSE;
+    if ($result == false) {
+        return false;
     } else {
         $sql = "DELETE FROM `rel_inter_computer` WHERE `id_inter`=" . $id;
         $db = opendb();
         $result = mysqli_query($db, $sql);
         closedb($db);
-        if ($result == FALSE) {
-            return FALSE;
+        if ($result == false) {
+            return false;
         } else {
-            return TRUE;
+            return true;
         }
     }
 }
@@ -757,25 +794,29 @@ function supInter($id) {
 //
 //
 //renvoi le nom du mois a partir du numero de mois
-function getMonthName($monthNum) {
+function getMonthName($monthNum)
+{
     $monthList = array("", "Janvier", "F&eacute;vrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "D&eacute;cembre");
     return $monthList[$monthNum];
 }
 
 // renvoi le premier jour du mois en chiffre
-function getFirstDay($year, $month) {
+function getFirstDay($year, $month)
+{
     return date("N", mktime(0, 0, 0, $month, 1, $year));
 }
 
 // renvoi le dernier jour du mois - 7
-function getLastDay($year, $month) {
+function getLastDay($year, $month)
+{
     $nb_jour = date("t", mktime(0, 0, 0, $month, 1, $year));
     $tmp = date("N", mktime(0, 0, 0, $month, $nb_jour, $year));
     return 7 - $tmp;
 }
 
 // renvoi un calendrier du mois et de l'annee donnee
-function getCalendar($year, $month, $day, $epn) {
+function getCalendar($year, $month, $day, $epn)
+{
     $calendar = "";
     // tableau des index des jours
     $dayArray = array("L", "M", "M", "J", "V", "S", "D");
@@ -790,7 +831,7 @@ function getCalendar($year, $month, $day, $epn) {
     // $epn = $Pepn;
     // }
     //Bouton pour la resa a posteriori que animateurs ou admin
-    if ($_SESSION["status"] == 3 OR $_SESSION["status"] == 4) {
+    if ($_SESSION["status"] == 3 or $_SESSION["status"] == 4) {
         $boutonresa = "<a href=\"index.php?a=19\"><i class=\"ion ion-log-in\"></i></a>";
     } else {
         $boutonresa = "";
@@ -824,24 +865,27 @@ function getCalendar($year, $month, $day, $epn) {
     for ($j = 1; $j <= $nb_jour; $j++) {
         switch (checkDayOpen2($j, $month, $year, $epn)) {
             case "ouvert":
-                if ($j == $day)
+                if ($j == $day) {
                     $calendar .= "<div class=\"labelNumCurrent\"><a href=\"index.php?m=3&mois=" . $month . "&annee=" . $year . "&jour=" . $j . "\"><span class=\"cal\">" . $j . "</span></a></div>";
-                else if ($year == date('Y') AND $month == date("m") AND $j == date("d"))
+                } elseif ($year == date('Y') and $month == date("m") and $j == date("d")) {
                     $calendar .= "<div class=\"labelNumToday\"><a href=\"index.php?m=3&mois=" . $month . "&annee=" . $year . "&jour=" . $j . "\"><span class=\"cal\">" . $j . "</span></a></div>";
-                else
+                } else {
                     $calendar .= "<div class=\"labelNum\"><a href=\"index.php?m=3&mois=" . $month . "&annee=" . $year . "&jour=" . $j . "\"><span class=\"cal\">" . $j . "</span></a></div>";
+                }
                 break;
             case "ferme":
-                if ($month == date("m") AND $j == date("d"))
+                if ($month == date("m") and $j == date("d")) {
                     $calendar .= "<div class=\"labelNumCurrent\">" . $j . "</div>";
-                else
+                } else {
                     $calendar .= "<div class=\"labelNumClose\">" . $j . "</div>";
+                }
                 break;
             case "ferie":
-                if ($month == date("m") AND $j == date("d"))
+                if ($month == date("m") and $j == date("d")) {
                     $calendar .= "<div class=\"labelNumCurrent\">" . $j . "</div>";
-                else
+                } else {
                     $calendar .= "<div class=\"labelNumOff\">" . $j . "</div>";
+                }
                 break;
         }
     }
@@ -857,21 +901,25 @@ function getCalendar($year, $month, $day, $epn) {
 }
 
 //renvoi le numero du jour de la semaine de 0->lundi a 6->dimanche
-function getDayNum($j, $m, $a) {
+function getDayNum($j, $m, $a)
+{
     return date("z", mktime(0, 0, 0, $m, $j, $a));
 }
 
 // renvoi le statut ouvert ou ferme en fonction des horaire de la journé
-function checkHoraireDay($j, $m, $y, $epn) {
+function checkHoraireDay($j, $m, $y, $epn)
+{
     $row = getHoraire(date("w", mktime(0, 0, 0, $m, $j, $y)), $epn);
-    if ($row["hor1_begin_horaire"] == 0 AND $row["hor1_end_horaire"] == 0 AND $row["hor2_begin_horaire"] == 0 AND $row["hor2_end_horaire"] == 0)
-        return FALSE;
-    else
-        return TRUE;
+    if ($row["hor1_begin_horaire"] == 0 and $row["hor1_end_horaire"] == 0 and $row["hor2_begin_horaire"] == 0 and $row["hor2_end_horaire"] == 0) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 // renvoi si le jour est ouvert ou fermé
-function checkDayOpen($daynum, $year, $epn) {
+function checkDayOpen($daynum, $year, $epn)
+{
     $sql = "SELECT id_days_closed, state_days_closed FROM `tab_days_closed` WHERE `year_days_closed`='" . $year . "' AND `num_days_closed`='" . $daynum . "' AND `id_epn`='" . $epn . "'
           ";
 
@@ -889,7 +937,8 @@ function checkDayOpen($daynum, $year, $epn) {
 }
 
 // renvoi si le jour est ouvert ou fermé
-function checkDayOpen2($j, $m, $year, $epn) {
+function checkDayOpen2($j, $m, $year, $epn)
+{
     $daynum = getDayNum($j, $m, $year);
     $sql = "SELECT `state_days_closed`
           FROM `tab_days_closed`
@@ -902,12 +951,12 @@ function checkDayOpen2($j, $m, $year, $epn) {
     $row = mysqli_fetch_array($result);
     closedb($db);
     if (mysqli_num_rows($result) == 0) {
-        if (FALSE == checkHoraireDay($j, $m, $year, $epn))
+        if (false == checkHoraireDay($j, $m, $year, $epn)) {
             return "ferme";
-        else
+        } else {
             return "ouvert";
-    }
-    else if ($row["state_days_closed"] == "F") {
+        }
+    } elseif ($row["state_days_closed"] == "F") {
         return "ferie";
     }
 }
@@ -934,37 +983,40 @@ function checkDayOpen2($j, $m, $year, $epn) {
   return FALSE;
   }
  */
-function insertJourFerie($daynum, $year, $epn) {
+function insertJourFerie($daynum, $year, $epn)
+{
     $sql = "INSERT INTO `tab_days_closed` (`id_days_closed`, `year_days_closed`, `num_days_closed`, `state_days_closed`, `id_epn`) VALUES ('','" . $year . "','" . $daynum . "','F','" . $epn . "') ";
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if ($result == TRUE) {
-        return TRUE;
+    if ($result == true) {
+        return true;
     } else {
-        return FALSE;
+        return false;
     }
 }
 
-function deleteJourFerie($id) {
+function deleteJourFerie($id)
+{
     $sql = "DELETE FROM `tab_days_closed` WHERE `id_days_closed`='" . $id . "' ";
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if ($result == TRUE) {
-        return TRUE;
+    if ($result == true) {
+        return true;
     } else {
-        return FALSE;
+        return false;
     }
 }
 
-function getCyberName($epn) {
+function getCyberName($epn)
+{
     $sql = "SELECT `nom_espace` FROM `tab_espace` WHERE `id_espace`='" . $epn . "' ";
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
         $row = mysqli_fetch_array($result);
         return $row["nom_espace"];
@@ -973,7 +1025,8 @@ function getCyberName($epn) {
 
 // Fonction diverses -----------------------------------------------------------
 //getDayfr() retourne le jour de la semaine
-function getDayFR($date) {//,$format='D j F'
+function getDayFR($date)
+{//,$format='D j F'
     $date0 = date('Y-n-j-w', strtotime($date));
     $dateArr = explode("-", $date0);
     $jourfr = $dateArr[3];
@@ -985,7 +1038,8 @@ function getDayFR($date) {//,$format='D j F'
     return $dayArr[$jourfr] . " " . $jour . " " . getMonthName($mois) . " " . $annee;
 }
 
-function getDateFR($date) { //,$format='D j F à 10h'
+function getDateFR($date)
+{ //,$format='D j F à 10h'
     $date0 = date('Y-n-j-w', strtotime($date));
     $dateArr = explode("-", $date0);
     $jourfr = $dateArr[3];
@@ -1002,7 +1056,8 @@ function getDateFR($date) { //,$format='D j F à 10h'
 
 // getMonth()
 // donne le mois en fonction du numero du mois
-function getMonth($nb) {
+function getMonth($nb)
+{
     switch ($nb) {
         case "1":
             $mois = "Janvier";
@@ -1046,23 +1101,27 @@ function getMonth($nb) {
 
 //
 // renvoi une date au format FR
-function dateFr($date, $format = 'd/m/Y') {
+function dateFr($date, $format = 'd/m/Y')
+{
     return date($format, strtotime($date));
 }
 
 //
 // checkdateformat
-function checkDateFormat($datefr) {
+function checkDateFormat($datefr)
+{
     $exp = '^[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}^';
 
-    if (preg_match($exp, $datefr) == 1)
-        return TRUE;
-    else
-        return FALSE;
+    if (preg_match($exp, $datefr) == 1) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 // convertDate
-function convertDate($datefr) {
+function convertDate($datefr)
+{
     $tmp = explode("/", $datefr);
     return $tmp[2] . '-' . $tmp[1] . '-' . $tmp[0];
 }
@@ -1070,8 +1129,9 @@ function convertDate($datefr) {
 //
 // getPourcent($nb,$total)
 // retourne un pourcentage a partir d'un nombre et d'un total
-function getPourcent($nb, $total) {
-    if ($nb != "" AND $nb != 0 AND $total != "" AND $total != 0) {
+function getPourcent($nb, $total)
+{
+    if ($nb != "" and $nb != 0 and $total != "" and $total != 0) {
         $pourcent = round(($nb * 100) / $total);
         return $pourcent . "%";
     } else {
@@ -1081,7 +1141,8 @@ function getPourcent($nb, $total) {
 
 // getError()
 // Affiche un message d'erreur
-function getError($nb) {
+function getError($nb)
+{
     include("include/texte/error.php");
     $error = "mes_" . $nb;
     return "<div>" . $$error . "</div>";
@@ -1090,7 +1151,8 @@ function getError($nb) {
 //
 //getTime($temps)
 // retourne l'heure et les minutes a partir du temps en minutes
-function getTime($temps) {
+function getTime($temps)
+{
     if ($temps < 60) {
         $heures = 0;
         $minutes = $temps;
@@ -1113,12 +1175,11 @@ function getTime($temps) {
 
 //
 // function de debug
-function debug($var) {
+function debug($var)
+{
     echo '<pre>';
     echo '########## Debut du debug de $var=&nbsp;';
     echo var_export($var);
     echo '########## Fin du debug';
     echo '</pre>';
 }
-
-?>

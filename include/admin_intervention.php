@@ -7,12 +7,12 @@ $statut = $_POST["statut"];
 
 switch ($act) {
     case mod:
-        if (FALSE == modInter($idinter, $statut)) {
+        if (false == modInter($idinter, $statut)) {
             echo getError(0);
         }
         break;
     case del:
-        if (FALSE == supInter($idinter)) {
+        if (false == supInter($idinter)) {
             echo getError(0);
         }
         break;
@@ -51,8 +51,7 @@ $result = getAllInter();
                                         $sel1 = "";
                                         $sel2 = "selected";
                                         break;
-                                }
-                                ?>
+                                } ?>
 
 
                                 <tr>
@@ -61,19 +60,18 @@ $result = getAllInter();
                                     <td>
                                         <?php
                                         $result2 = getInterComputer($row["id_inter"]);
-                                        if ($result2 != FALSE) {
-                                            $nb2 = mysqli_num_rows($result2);
-                                            if ($nb2 > 0) {
-                                                for ($j = 1; $j <= $nb2; $j++) {
-                                                    $row2 = mysqli_fetch_array($result2);
-                                                    if ($j > 1) {
-                                                        echo ",&nbsp;";
-                                                    }
-                                                    echo $row2["nom_computer"];
-                                                }
+                                if ($result2 != false) {
+                                    $nb2 = mysqli_num_rows($result2);
+                                    if ($nb2 > 0) {
+                                        for ($j = 1; $j <= $nb2; $j++) {
+                                            $row2 = mysqli_fetch_array($result2);
+                                            if ($j > 1) {
+                                                echo ",&nbsp;";
                                             }
+                                            echo $row2["nom_computer"];
                                         }
-                                        ?>
+                                    }
+                                } ?>
                                     </td>
                                     <td><?php echo stripslashes($row["titre_inter"]); ?></td>
                                     <td><?php echo stripslashes($row["comment_inter"]); ?></td>
@@ -90,8 +88,7 @@ $result = getAllInter();
                                     <button type="button" class="btn bg-red sm"><i class="fa fa-trash-o"></i></button></a></td>
 
                             <?php
-                        }
-                        ?>
+                            } ?>
 
 
                         </tr></tbody></table></div></div>

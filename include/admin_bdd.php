@@ -20,7 +20,8 @@
 
  */
 
-function getAllCityname($ordreAlpha = false) {
+function getAllCityname($ordreAlpha = false)
+{
     if ($ordreAlpha) {
         $sql = "SELECT `id_city`,`nom_city` FROM `tab_city` ORDER BY `nom_city`";
     } else {
@@ -29,8 +30,8 @@ function getAllCityname($ordreAlpha = false) {
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
         $city = array();
         $nb = mysqli_num_rows($result);
@@ -156,10 +157,9 @@ include("include/boites/menu-parametres.php");
                             <select name="temps_user" class="form-control" >
                                 <?php
                                 $forfaits = Forfait::getForfaits();
-                                foreach ($forfaits AS $forfait) {
-                                    echo "<option value=\"" . $forfait->getId() . "\">" . htmlentities($forfait->getNom()) . "</option>";
-                                }
-                                ?>
+                        foreach ($forfaits as $forfait) {
+                            echo "<option value=\"" . $forfait->getId() . "\">" . htmlentities($forfait->getNom()) . "</option>";
+                        } ?>
                             </select>
                         </div>
 
@@ -171,10 +171,9 @@ include("include/boites/menu-parametres.php");
                                 // recupere les villes
                                 $villes = Ville::getVilles();
 
-                                foreach ($villes AS $ville) {
-                                    echo "<option value=\"" . $ville->getId() . "\">" . htmlentities($ville->getNom()) . "</option>";
-                                }
-                                ?>
+                        foreach ($villes as $ville) {
+                            echo "<option value=\"" . $ville->getId() . "\">" . htmlentities($ville->getNom()) . "</option>";
+                        } ?>
                             </select>
                         </div>
                         <div class="form-group">
@@ -183,10 +182,9 @@ include("include/boites/menu-parametres.php");
                                 <?php
                                 //recuperer les tarifs
                                 $tarifs = Tarif::getTarifsbyCategorie(2);
-                                foreach ($tarifs AS $tarif) {
-                                    echo "<option value=\"" . $tarif->getId() . "\">" . htmlentities($tarif->getNom()) . "</option>";
-                                }
-                                ?>
+                        foreach ($tarifs as $tarif) {
+                            echo "<option value=\"" . $tarif->getId() . "\">" . htmlentities($tarif->getNom()) . "</option>";
+                        } ?>
                             </select>
                         </div>
                         <div class="form-group">

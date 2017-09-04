@@ -50,4 +50,3 @@ if ($_POST["submit"] == "Modifier") {                       // si les champs son
     }
 }
 // FIN DU TRAITEMENT DU FORMULAIRE
-?>

@@ -22,14 +22,15 @@
 require_once("Mysql.class.php");
 require_once("include/class/Session.class.php");
 
-class SessionDate {
-
+class SessionDate
+{
     private $_id;
     private $_idSession;
     private $_date;
     private $_statut;
 
-    private function __construct($array) {
+    private function __construct($array)
+    {
         $this->_id = $array["id_datesession"];
         $this->_idSession = $array["id_session"];
         $this->_date = $array["date_session"];
@@ -40,72 +41,89 @@ class SessionDate {
      * Accesseurs basiques
      */
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getIdSession() {
+    public function getIdSession()
+    {
         return $this->_idSession;
     }
 
-    public function getSession() {
+    public function getSession()
+    {
         return Session::getSessionById($this->_idSession);
     }
 
-    public function getDate() {
+    public function getDate()
+    {
         return $this->_date;
     }
 
-    public function getStatut() {
+    public function getStatut()
+    {
         return $this->_statut;
     }
 
-    function getUtilisateursInscrits() {
+    public function getUtilisateursInscrits()
+    {
         return Utilisateur::getUtilisateursInscritsSessionDate($this->_id);
     }
 
-    function getNbUtilisateursInscrits() {
+    public function getNbUtilisateursInscrits()
+    {
         return count(self::getUtilisateursInscrits());
     }
 
-    function getUtilisateursPresents() {
+    public function getUtilisateursPresents()
+    {
         return Utilisateur::getUtilisateursPresentsSessionDate($this->_id);
     }
 
-    function getNbUtilisateursPresents() {
+    public function getNbUtilisateursPresents()
+    {
         return count(self::getUtilisateursPresents());
     }
 
-    function getUtilisateursInscritsOuPresents() {
+    public function getUtilisateursInscritsOuPresents()
+    {
         return array_merge(Utilisateur::getUtilisateursInscritsSessionDate($this->_id), Utilisateur::getUtilisateursPresentsSessionDate($this->_id));
     }
 
-    function getNbUtilisateursInscritsOuPresents() {
+    public function getNbUtilisateursInscritsOuPresents()
+    {
         return count(self::getUtilisateursInscritsOuPresents());
     }
 
-    function getUtilisateursEnAttente() {
+    public function getUtilisateursEnAttente()
+    {
         return Utilisateur::getUtilisateursEnAttenteSessionDate($this->_id);
     }
 
-    function getNbUtilisateursEnAttente() {
+    public function getNbUtilisateursEnAttente()
+    {
         return count(self::getUtilisateursEnAttente());
     }
 
-    function inscrireUtilisateurInscrit($idUtilisateur) {
+    public function inscrireUtilisateurInscrit($idUtilisateur)
+    {
         return $this->inscrireUtilisateur($idUtilisateur, '0');
     }
 
-    function inscrireUtilisateurPresent($idUtilisateur) {
+    public function inscrireUtilisateurPresent($idUtilisateur)
+    {
         return $this->inscrireUtilisateur($idUtilisateur, '1');
     }
 
-    function inscrireUtilisateurEnAttente($idUtilisateur) {
+    public function inscrireUtilisateurEnAttente($idUtilisateur)
+    {
         return $this->inscrireUtilisateur($idUtilisateur, '2');
     }
 
-    function inscrireUtilisateur($idUtilisateur, $statut) {
-        $success = FALSE;
+    public function inscrireUtilisateur($idUtilisateur, $statut)
+    {
+        $success = false;
 
         $db = Mysql::opendb();
 
@@ -123,14 +141,15 @@ class SessionDate {
         Mysql::closedb($db);
 
         if ($result) {
-            $success = TRUE;
+            $success = true;
         }
         return $success;
     }
 
-    function isUtilisateurInscrit($idUtilisateur) {
+    public function isUtilisateurInscrit($idUtilisateur)
+    {
         // verifie si le user n'est pas deja inscrit
-        $success = FALSE;
+        $success = false;
 
         $db = Mysql::opendb();
         $sql = "SELECT * FROM `rel_session_user` WHERE `id_datesession` =" . $this->_id . " AND `id_user` =" . $idUtilisateur;
@@ -138,15 +157,16 @@ class SessionDate {
         Mysql::closedb($db);
 
         if (mysqli_num_rows($result) == 1) {
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    function isUtilisateurPresent($idUtilisateur) {
+    public function isUtilisateurPresent($idUtilisateur)
+    {
         // verifie si le user n'est pas deja inscrit
-        $success = FALSE;
+        $success = false;
 
         $db = Mysql::opendb();
         $sql = "SELECT * FROM `rel_session_user` WHERE `id_datesession` =" . $this->_id . " AND `id_user` =" . $idUtilisateur . " AND status_rel_session = '1'";
@@ -154,14 +174,15 @@ class SessionDate {
         Mysql::closedb($db);
 
         if (mysqli_num_rows($result) == 1) {
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function cloturer() {
-        $success = FALSE;
+    public function cloturer()
+    {
+        $success = false;
 
         $db = Mysql::opendb();
         $sql = "UPDATE `tab_session_dates` SET `statut_datesession`=1 WHERE `id_datesession`=" . $this->_id;
@@ -169,7 +190,7 @@ class SessionDate {
         Mysql::closedb($db);
 
         if ($result) {
-            $success = TRUE;
+            $success = true;
         }
         return $success;
     }
@@ -178,9 +199,9 @@ class SessionDate {
      * Fonctions de l'objet
      */
 
-    public function modifier($idSession, $date, $statut) {
-
-        $success = FALSE;
+    public function modifier($idSession, $date, $statut)
+    {
+        $success = false;
         $db = Mysql::opendb();
 
         $idSession = mysqli_real_escape_string($db, $idSession);
@@ -199,13 +220,14 @@ class SessionDate {
             $this->_idSession = $idSession;
             $this->_date = $date;
             $this->_statut = $statut;
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
         $success = false;
         $db = Mysql::opendb();
 
@@ -230,8 +252,8 @@ class SessionDate {
      * Fonctions statiques
      */
 
-    public static function getSessionDateById($id) {
-
+    public static function getSessionDateById($id)
+    {
         $sessionDate = null;
 
         if ($id != 0) {
@@ -251,7 +273,8 @@ class SessionDate {
         return $sessionDate;
     }
 
-    public static function creerSessionDate($idSession, $date, $statut) {
+    public static function creerSessionDate($idSession, $date, $statut)
+    {
         $sessionDate = null;
 
         $db = Mysql::opendb();
@@ -273,7 +296,8 @@ class SessionDate {
         return $sessionDate;
     }
 
-    public static function getSessionDates() {
+    public static function getSessionDates()
+    {
         $sessionDates = null;
 
         $db = Mysql::opendb();
@@ -292,7 +316,8 @@ class SessionDate {
         return $sessionDates;
     }
 
-    public static function getSessionDatesByIdSession($idSession) {
+    public static function getSessionDatesByIdSession($idSession)
+    {
         $sessionDates = null;
 
         $db = Mysql::opendb();
@@ -311,8 +336,8 @@ class SessionDate {
         return $sessionDates;
     }
 
-    public static function getSessionDatesParSemaine($jour, $idEspace) {
-
+    public static function getSessionDatesParSemaine($jour, $idEspace)
+    {
         $sessionDates = null;
 
         $db = Mysql::opendb();
@@ -347,7 +372,8 @@ class SessionDate {
         return $sessionDates;
     }
 
-    public static function getSessionDatesEnCoursParUtilisateurEtParStatut($idUtilisateur, $statut) {
+    public static function getSessionDatesEnCoursParUtilisateurEtParStatut($idUtilisateur, $statut)
+    {
         $sessionDates = null;
 
         $db = Mysql::opendb();
@@ -360,7 +386,7 @@ class SessionDate {
                 . "  AND tab_session_dates.id_session = tab_session.id_session "
                 . "  AND `rel_session_user`.`id_user`=" . $idUtilisateur;
 
-//SELECT tab_session_dates.*, rel_session_user.* FROM tab_session_dates, tab_session, `rel_session_user` WHERE tab_session_dates.id_datesession = rel_session_user.id_datesession AND`rel_session_user`.`status_rel_session`=0   AND tab_session.status_session = 0   AND `rel_session_user`.`id_user`=9                    
+        //SELECT tab_session_dates.*, rel_session_user.* FROM tab_session_dates, tab_session, `rel_session_user` WHERE tab_session_dates.id_datesession = rel_session_user.id_datesession AND`rel_session_user`.`status_rel_session`=0   AND tab_session.status_session = 0   AND `rel_session_user`.`id_user`=9
 
         $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
@@ -376,7 +402,8 @@ class SessionDate {
         return $sessionDates;
     }
 
-    public static function getSessionDatesFermeesParUtilisateurEtParStatut($idUtilisateur, $statut) {
+    public static function getSessionDatesFermeesParUtilisateurEtParStatut($idUtilisateur, $statut)
+    {
         $sessionDates = null;
 
         $db = Mysql::opendb();
@@ -388,7 +415,7 @@ class SessionDate {
                 . "  AND tab_session.id_session = tab_session_dates.id_session "
                 . "  AND `rel_session_user`.`id_user`=" . $idUtilisateur;
 
-//SELECT tab_session_dates.*, rel_session_user.* FROM tab_session_dates, tab_session, `rel_session_user` WHERE tab_session_dates.id_datesession = rel_session_user.id_datesession AND`rel_session_user`.`status_rel_session`=0   AND tab_session.status_session = 0   AND `rel_session_user`.`id_user`=9                    
+        //SELECT tab_session_dates.*, rel_session_user.* FROM tab_session_dates, tab_session, `rel_session_user` WHERE tab_session_dates.id_datesession = rel_session_user.id_datesession AND`rel_session_user`.`status_rel_session`=0   AND tab_session.status_session = 0   AND `rel_session_user`.`id_user`=9
 
         $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
@@ -403,5 +430,4 @@ class SessionDate {
         // error_log("sql = " . $sql);
         return $sessionDates;
     }
-
 }

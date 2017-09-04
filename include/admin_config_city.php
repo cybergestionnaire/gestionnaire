@@ -33,7 +33,6 @@ $act = isset($_GET['act']) ? $_GET['act'] : '';
 $idcity = isset($_GET['idcity']) ? $_GET['idcity'] : '';
 
 if (isset($_GET["act"])) {
-
     switch ($act) {
         case 1: // creation
             $nom = $_POST["newcity"];
@@ -65,8 +64,7 @@ if (isset($_GET["act"])) {
                 $ville = Ville::getVilleById(intval($idcity));
 
                 if ($ville != null) {
-
-                    if (FALSE == $ville->modifier($nom, $codepost, $pays)) {
+                    if (false == $ville->modifier($nom, $codepost, $pays)) {
                         echo getError(0);
                     } else {
                         // header("Location:index.php?a=41&mesno=14") ;
@@ -137,30 +135,29 @@ include("include/boites/menu-parametres.php");
                         <span class="td"><a href="index.php?a=41&act=4&idcity=<?php echo htmlentities($ville->getId()); ?>#liste"><?php echo htmlentities($ville->nbAdherents()); ?> Adh.</a></span>
                     </form>
                     <?php
-                }
-                ?>    
+                } ?>    
             </div>
             <?php
-        } else {
-            ?>
+    } else {
+        ?>
             <div class="alert alert-info alert-dismissable">
                 <i class="fa fa-info"></i><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><b>Pas de villes encore !</b>
             </div>
-        <?php } ?>
+        <?php
+    } ?>
     </div>
 
 </div>
 
 <?php
 if ($act == 4) {
-    $utilisateurs = Utilisateur::getUtilisateursByVille($idcity);
+        $utilisateurs = Utilisateur::getUtilisateursByVille($idcity);
 
-    if (FALSE == $utilisateurs) {
-        echo getError(0);
-    } else {
-        $arraystatus = array(1 => "Actif", 2 => "Inactif");
-        $arraycolor = array(1 => "bg-light-blue", 2 => "bg-yellow");
-        ?>
+        if (false == $utilisateurs) {
+            echo getError(0);
+        } else {
+            $arraystatus = array(1 => "Actif", 2 => "Inactif");
+            $arraycolor = array(1 => "bg-light-blue", 2 => "bg-yellow"); ?>
         <div class="box box-primary">
             <div class="box-header">
                 <h3 class="box-title">Liste des adh&eacute;rents inscrits dans la commune</h3>
@@ -177,13 +174,14 @@ if ($act == 4) {
                             <td><span class="badge <?php echo htmlentities($arraycolor[$utilisateur->getStatut()]); ?>"><?php echo htmlentities($arraystatus[$utilisateur->getStatut()]); ?></span></td>
                             <td><a href="index.php?a=1&b=2&iduser=<?php echo htmlentities($utilisateur->getId()); ?>">Voir</a></td>
                         </tr>
-                    <?php } ?>
+                    <?php
+                    } ?>
                 </table>
             </div>
         </div>
         <?php
+        }
     }
-}
 ?>
 
 

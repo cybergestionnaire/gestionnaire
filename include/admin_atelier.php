@@ -58,7 +58,6 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
     if ($b == 4) {
         //test s'il reste une place ou non, si oui enlever de la liste d'attente
         if ($atelier->getNbPlacesRestantes() > 0) {
-
             if ($atelier->MAJStatutUtilisateur($idUser, 0)) {
                 echo geterror(26);
             }
@@ -74,7 +73,6 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
     }
     if ($b == 6) { // deplacer de l'inscription à la liste d'attente
         if ($atelier->MAJStatutUtilisateur($idUser, 2)) {
-
             echo "<div class=\"alert alert-success alert-dismissable\"><i class=\"fa fa-info\"></i>
                 <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Inscription en liste d'attente valid&eacute;e</div>";
         } else {
@@ -100,7 +98,7 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
 
     //Cloture de l'atelier pour epnconnect
     if ($b == 12) {
-        if ($atelier->setStatus(2) AND $atelier->setCloturer(1)) {
+        if ($atelier->setStatus(2) and $atelier->setCloturer(1)) {
             echo "<div class=\"alert alert-success alert-dismissable\"><i class=\"fa fa-info\"></i>
                 <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>&nbsp;Atelier cl&ocirc;tur&eacute;, EpnConnect reprends le contr&ocirc;le !</div>";
         }
@@ -114,11 +112,9 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
     //coordonnees de l'espace
     $arraymail = getMailRappel();
 
-    if (FALSE == $arraymail) {
-
+    if (false == $arraymail) {
         $mailok = 0;
     } else {
-
         $espace = $salle->getEspace();
 
 
@@ -141,8 +137,7 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
                 . $mail_signature . " \r\n\r\n" . htmlentities($espace->getNom()) . " \r\n" . htmlentities($espace->getAdresse()) . " \r\n" . htmlentities($espace->getTelephone()) . ".";
 
         $mailok = 1;
-    }
-    ?> 
+    } ?> 
 
     <!-- DETAIL DE L'ATELIER-->
     <div class="row">
@@ -163,7 +158,7 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
                     </dl>
                 </div>
                 <?php
-                //test activation epnconnect pour les ateliers + si date du jour OK 
+                //test activation epnconnect pour les ateliers + si date du jour OK
                 if (date('Y-m-d') >= $atelier->getDate()) {
                     if ($atelier->getStatus() > 0) {
                         $class = "disabled";
@@ -177,16 +172,14 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
                         $class2 = "disabled";
                     } else {
                         $class2 = "";
-                    }
-                    ?>
+                    } ?>
                     <div class="box-footer">
 
                         <a href="<?php echo $action; ?>"><button class="btn bg-red" type="submit"  <?php echo $class; ?>> <i class="fa fa-unlock"></i>&nbsp;&nbsp;D&eacute;sactiver EpnConnect</button></a>
                         &nbsp;<a href="index.php?a=13&b=12&idatelier=<?php echo $idAtelier; ?>"><button class="btn bg-green" type="submit" <?php echo $class2; ?>> <i class="fa fa-lock"></i>&nbsp;&nbsp;R&eacute;activer EpnConnect</button></a>
                     </div>
                     <?php
-                }
-                ?>
+                } ?>
                 <div class="box-footer">
                     <a href="index.php?a=11"><button class="btn btn-default" type="submit"> <i class="fa fa-arrow-circle-left"></i> Retour &agrave; la liste des ateliers</button></a>
                 </div>
@@ -198,15 +191,14 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
             <?php
             $utilisateursinscritsOuPresents = $atelier->getUtilisateursInscritsOuPresents();
 
-            if (count($utilisateursinscritsOuPresents) > 0) {
-                //tester la présence de tarifs ateliers
+    if (count($utilisateursinscritsOuPresents) > 0) {
+        //tester la présence de tarifs ateliers
 
-                if ($testTarifAtelier > 1) {
-                    $tooltipinfo = "Inscriptions en cours / total d&eacute;pens&eacute;  sur total achet&eacute;";
-                } else {
-                    $tooltipinfo = "Inscriptions en cours";
-                }
-                ?>
+        if ($testTarifAtelier > 1) {
+            $tooltipinfo = "Inscriptions en cours / total d&eacute;pens&eacute;  sur total achet&eacute;";
+        } else {
+            $tooltipinfo = "Inscriptions en cours";
+        } ?>
                 <div class="box box-success">
                     <div class="box-header">
                         <h3 class="box-title">Abonn&eacute;s inscrits</h3>
@@ -221,41 +213,38 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
                             <thead><th>Fiche</th><th>Nom, pr&eacute;nom</th><th><span data-toggle="tooltip" title="<?php echo $tooltipinfo; ?>">Inscriptions (Forfaits achet&eacute;s/d&eacute;j&agrave; utilis&eacute;s)</span></th><th></th></thead>
                             <?php
                             $bccusers = "";
-                            foreach ($utilisateursinscritsOuPresents as $utilisateur) {
+        foreach ($utilisateursinscritsOuPresents as $utilisateur) {
+            $nbASencours = $utilisateur->getNBAteliersEtSessionsInscrit();
 
-                                $nbASencours = $utilisateur->getNBAteliersEtSessionsInscrit();
-
-                                // construction des BCCmail
-                                if ($utilisateur->getMail() <> '') {
-                                    $bccusers = $bccusers . $utilisateur->getMail() . ";";
-                                }
+            // construction des BCCmail
+            if ($utilisateur->getMail() <> '') {
+                $bccusers = $bccusers . $utilisateur->getMail() . ";";
+            }
 
 
-                                $affichage = "";
-                                //mise en place tarification
-                                if ($testTarifAtelier > 1) {
+            $affichage = "";
+            //mise en place tarification
+            if ($testTarifAtelier > 1) {
+                $forfaitsAtelier = $utilisateur->getForfaitsAtelier();
+                $depenseactuel = 0;
+                $nbactuelsurforfait = 0;
 
-                                    $forfaitsAtelier = $utilisateur->getForfaitsAtelier();
-                                    $depenseactuel = 0;
-                                    $nbactuelsurforfait = 0;
+                if ($forfaitsAtelier !== null) {
+                    foreach ($forfaitsAtelier as $forfaitAtelier) {
+                        $depenseactuel = $depenseactuel + $forfaitAtelier->getDepense();
+                        $nbactuelsurforfait = $nbactuelsurforfait + $forfaitAtelier->getTotal();
+                    }
+                }
 
-                                    if ($forfaitsAtelier !== null) {
-                                        foreach ($forfaitsAtelier as $forfaitAtelier) {
-                                            $depenseactuel = $depenseactuel + $forfaitAtelier->getDepense();
-                                            $nbactuelsurforfait = $nbactuelsurforfait + $forfaitAtelier->getTotal();
-                                        }
-                                    }
-
-                                    if ($depenseactuel + $nbASencours > $nbactuelsurforfait) {
-                                        // on dépasse les forfaits achetés !
-                                        $affichage = $nbASencours . " (<span class=\"text-red\">" . $nbactuelsurforfait . " / " . $depenseactuel . ") Hors forfait</span>";
-                                    } else {
-                                        $affichage = $nbASencours . " (" . $nbactuelsurforfait . " / " . $depenseactuel . ")";
-                                    }
-                                } else { // sans le forfait, affichage des autres inscriptions
-                                    $affichage = $nbASencours;
-                                }
-                                ?>
+                if ($depenseactuel + $nbASencours > $nbactuelsurforfait) {
+                    // on dépasse les forfaits achetés !
+                    $affichage = $nbASencours . " (<span class=\"text-red\">" . $nbactuelsurforfait . " / " . $depenseactuel . ") Hors forfait</span>";
+                } else {
+                    $affichage = $nbASencours . " (" . $nbactuelsurforfait . " / " . $depenseactuel . ")";
+                }
+            } else { // sans le forfait, affichage des autres inscriptions
+                $affichage = $nbASencours;
+            } ?>
                                 <tr>
                                     <td><a href="index.php?a=1&b=2&iduser=<?php echo $utilisateur->getId(); ?>"  class="btn btn-default btn-sm" data-toggle="tooltip" title="Fiche adh&eacute;rent"><i class="fa fa-edit"></i></a></td>
                                     <td><span class="badge bg-yellow" data-toggle="tooltip" title="Date renouvellement adh&eacute;sion : <?php echo $utilisateur->getDateRenouvellement(); ?>">A</span>&nbsp;&nbsp;<?php echo htmlentities($utilisateur->getNom() . " " . $utilisateur->getPrenom()); ?> </td>
@@ -270,15 +259,13 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
                                             ?>
                                             <a href="index.php?a=13&b=3&iduser=<?php echo $utilisateur->getId(); ?>&idatelier=<?php echo $idAtelier; ?>"  class="btn bg-red btn-sm"  data-toggle="tooltip" title="D&eacute;sinscrire" ><i class="fa fa-trash-o"></i></a>
                                             <?php
-                                        }
-                                        ?>
+                                        } ?>
                                         <a href="index.php?a=13&b=6&idatelier=<?php echo $idAtelier; ?>&iduser=<?php echo $utilisateur->getId(); ?>"  class="btn bg-purple btn-sm"  data-toggle="tooltip" title="Mettre en liste d'attente"><i class="fa fa-repeat"></i></a>
 
                                     </td>
                                 </tr>
                                 <?php
-                            }
-                            ?>
+        } ?>
                         </table>
                     </div><!-- .box-body -->
 
@@ -288,24 +275,22 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
                         if ($atelier->getStatut() < 2) {
                             //validation interdite si déjà faite !
                             echo "<a href=\"index.php?a=16&b=4&act=0&idatelier=" . $idAtelier . "\"><input type=\"submit\" name=\"valider_presence\" value=\"Valider les Presences\" class=\"btn btn-success\"></a>";
-                        } else if ($atelier->getStatut() == 2) {
+                        } elseif ($atelier->getStatut() == 2) {
                             echo "<p class=\"text-red\">Cet atelier est pass&eacute; et clotur&eacute;, vous ne pouvez plus inscrire d'adh&eacute;rent</p>";
                         }
-                        //Bouton d'envoi de mail de rappel
-                        if ($mailok == 1) {
-                            ?>
+        //Bouton d'envoi de mail de rappel
+        if ($mailok == 1) {
+            ?>
                             <a href="mailto:<?php echo $espace->getMail(); ?>?BCC=<?php echo $bccusers; ?>&SUBJECT=<?php echo $mail_subject; ?>&BODY=<?php echo $mail_body; ?>">
                                 <button class="btn bg-navy  pull-right"> <i class="fa fa-paper-plane"></i> Envoyer un rappel </button></a>
                             <?php
-                        }
-                        ?>
+        } ?>
 
                     </div>      
                 </div><!-- .box -->
 
                 <?php
-            }
-            ?>
+    } ?>
         </section>
         <!--**********************inscrire un adherent à l'atelier-->
         <section class="col-lg-5 connectedSortable"> 
@@ -335,14 +320,12 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
                         if ($nb <= 0) {
                             echo getError(6);
                         } else {
-                            echo "<p>R&eacute;sultats de la recherche: " . $nb . "</p>";
-                            ?>
+                            echo "<p>R&eacute;sultats de la recherche: " . $nb . "</p>"; ?>
                             <table class="table table-hover">
                                 <thead><tr><th>Nom, Pr&eacute;nom</th><th>Inscriptions<br />(Forfaits achet&eacute;s/d&eacute;j&agrave; utilis&eacute;s)</th><th></th></tr></thead>
                                 <tbody>
                                     <?php
                                     foreach ($utilisateursRecherche as $utilisateur) {
-
                                         $statutuser = $utilisateur->getStatut();
                                         //mise en place tarification
                                         if ($testTarifAtelier > 1) {
@@ -388,24 +371,22 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
                             <td><a href=\"index.php?a=13&b=10&idstatut=2&idatelier=" . $idAtelier . "&iduser=" . $utilisateur->getId() . "\"><button type=\"button\" class=\"btn btn-success sm\"><i class=\"fa fa-pause\" title=\"Mettre en liste d'attente\"></i></button></a></td>
                             </tr>";
                                         }
-                                    }
-                                    ?>
+                                    } ?>
                                 </tbody>
                             </table>
                             <?php
                         }
-                    }
-                    ?>
+                    } ?>
                 </div><!-- .box-body -->
             </div><!-- .box -->
 
             <?php
             //******************* liste des user en liste d'attente
             $utilisateursEnAttente = $atelier->getUtilisateursEnAttente();
-            $nb = count($utilisateursEnAttente);
+    $nb = count($utilisateursEnAttente);
 
-            if ($nb > 0) {
-                ?> 
+    if ($nb > 0) {
+        ?> 
                 <div class="box box-warning">
                     <div class="box-header">
                         <h3 class="box-title">Abonn&eacute;s sur la liste d'attente   <small class="badge bg-blue" data-toggle="tooltip" title="Classement par ordre d'arriv&eacute;e, du plus ancien au plus r&eacute;cent"><i class="fa fa-info"></i></small></h3>
@@ -428,15 +409,13 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
                                         <td><a href="lettre_atelier.php?user=<?php echo $utilisateur->getId(); ?>&epn=<?php echo $salle->getIdEspace(); ?>" target="_blank"><button type="button" class="btn bg-navy btn-sm"  data-toggle="tooltip" title="Imprimer les inscriptions"><i class="fa fa-envelope"></i></button></a></td>
                                     </tr>
                                     <?php
-                                }
-                                ?>         
+                                } ?>         
                             </tbody>
                         </table>
                     </div>
                 </div><!-- .box -->
                 <?php
-            }//FIN en Attente
-            ?>
+    }//FIN en Attente ?>
         </section>
         <!-- retour de la validation-->
         <?php
@@ -454,8 +433,7 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
                 </div>
             </section>  
             <?php
-        }
-        ?>
+        } ?>
 
     </div><!-- /row -->
 

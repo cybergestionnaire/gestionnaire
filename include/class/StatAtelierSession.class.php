@@ -23,8 +23,8 @@ require_once("Atelier.class.php");
 require_once("Utilisateur.class.php");
 require_once("Espace.class.php");
 
-class StatAtelierSession {
-
+class StatAtelierSession
+{
     private $_id;
     private $_type;
     private $_idAtelierSession;
@@ -39,8 +39,8 @@ class StatAtelierSession {
     private $_idAnimateur;
     private $_idEspace;
 
-    public function __construct($array) {
-
+    public function __construct($array)
+    {
         $this->_id = $array["id_stat"];
         $this->_type = $array["type_AS"];
         $this->_idAtelierSession = $array["id_AS"];
@@ -56,23 +56,27 @@ class StatAtelierSession {
         $this->_idEspace = $array["id_epn"];
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getType() {
+    public function getType()
+    {
         return $this->_type;
     }
 
-    public function getidAtelierSession() {
+    public function getidAtelierSession()
+    {
         return $this->_idAtelierSession;
     }
 
-    public function getAtelierSession() {
+    public function getAtelierSession()
+    {
         $atelierSession = null;
         if ($this->_type = 'a') {
             $atelierSession = Atelier::getAtelierById($this->_idAtelierSession);
-        } else if ($this->_type = 's') {
+        } elseif ($this->_type = 's') {
             //TODO : créer l'objer session
             $atelierSession = Session::getSessionById($this->_idAtelierSession);
         }
@@ -80,56 +84,69 @@ class StatAtelierSession {
         return $atelierSession;
     }
 
-    public function getdateAtelierSession() {
+    public function getdateAtelierSession()
+    {
         return $this->_dateAtelierSession;
     }
 
-    public function getNbInscrits() {
+    public function getNbInscrits()
+    {
         return $this->_nbInscrits;
     }
 
-    public function getNbPresents() {
+    public function getNbPresents()
+    {
         return $this->_nbPresents;
     }
 
-    public function getNbAbsents() {
+    public function getNbAbsents()
+    {
         return $this->_nbAbsents;
     }
 
-    public function getNbEnAttente() {
+    public function getNbEnAttente()
+    {
         return $this->_nbEnAttente;
     }
 
-    public function getNbPlaces() {
+    public function getNbPlaces()
+    {
         return $this->_nbPlaces;
     }
 
-    public function getIdCategorie() {
+    public function getIdCategorie()
+    {
         return $this->_idCategorie;
     }
 
-    public function getStatut() {
+    public function getStatut()
+    {
         return $this->_statut;
     }
 
-    public function getIdAnimateur() {
+    public function getIdAnimateur()
+    {
         return $this->_idAnimateur;
     }
 
-    public function getAnimateur() {
+    public function getAnimateur()
+    {
         return Utilisateur::getUtilisateurById($this->_idAnimateur);
     }
 
-    public function getIdEspace() {
+    public function getIdEspace()
+    {
         return $this->_idEspace;
     }
 
-    public function getEspace() {
+    public function getEspace()
+    {
         return Espace::getEspaceById($this->_idEspace);
     }
 
-    public function modifier($type, $idAtelierSession, $dateAtelierSession, $nbInscrits, $nbPresents, $nbAbsents, $nbEnAttente, $nbPlaces, $idCategorie, $statut, $idAnimateur, $idEspace) {
-        $success = FALSE;
+    public function modifier($type, $idAtelierSession, $dateAtelierSession, $nbInscrits, $nbPresents, $nbAbsents, $nbEnAttente, $nbPlaces, $idCategorie, $statut, $idAnimateur, $idEspace)
+    {
+        $success = false;
 
         $db = Mysql::opendb();
 
@@ -183,14 +200,15 @@ class StatAtelierSession {
                 $this->_idAnimateur = $idAnimateur;
                 $this->_idEspace = $idEspace;
 
-                $success = TRUE;
+                $success = true;
             }
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
         $success = false;
 
         $db = Mysql::opendb();
@@ -204,7 +222,8 @@ class StatAtelierSession {
         return $success;
     }
 
-    public static function creerStatAtelierSession($type, $idAtelierSession, $dateAtelierSession, $nbInscrits, $nbPresents, $nbAbsents, $nbEnAttente, $nbPlaces, $idCategorie, $statut, $idAnimateur, $idEspace) {
+    public static function creerStatAtelierSession($type, $idAtelierSession, $dateAtelierSession, $nbInscrits, $nbPresents, $nbAbsents, $nbEnAttente, $nbPlaces, $idCategorie, $statut, $idAnimateur, $idEspace)
+    {
         $statAtelier = null;
 
         if ($idAtelierSession != "" && $dateAtelierSession != "" && $idAnimateur != "" && $idEspace != ""
@@ -253,7 +272,8 @@ class StatAtelierSession {
         return $statAtelier;
     }
 
-    public static function getStatAtelierById($id) {
+    public static function getStatAtelierById($id)
+    {
         $statAtelier = null;
 
         if ($id != 0) {
@@ -275,8 +295,8 @@ class StatAtelierSession {
         return $statAtelier;
     }
 
-    public static function getStatAteliers() {
-
+    public static function getStatAteliers()
+    {
         $statAteliers = null;
 
         $db = Mysql::opendb();
@@ -295,8 +315,8 @@ class StatAtelierSession {
         return $statAteliers;
     }
 
-    public static function getStatAteliersArchivesParAnnee($annee) {
-
+    public static function getStatAteliersArchivesParAnnee($annee)
+    {
         $statAteliers = null;
 
         $db = Mysql::opendb();
@@ -320,8 +340,8 @@ class StatAtelierSession {
         return $statAteliers;
     }
 
-    public static function getStatAteliersArchivesParAnneeEtParAnimateur($annee, $idAnimateur) {
-
+    public static function getStatAteliersArchivesParAnneeEtParAnimateur($annee, $idAnimateur)
+    {
         $statAteliers = null;
 
         $db = Mysql::opendb();
@@ -346,7 +366,8 @@ class StatAtelierSession {
         return $statAteliers;
     }
 
-    public static function getStatAtelierByIdAtelier($idAtelier) {
+    public static function getStatAtelierByIdAtelier($idAtelier)
+    {
         $statAtelier = null;
 
         if ($idAtelier != 0) {
@@ -369,7 +390,8 @@ class StatAtelierSession {
         return $statAtelier;
     }
 
-    public static function getStatSessionByIdSessionAndDate($idSession, $date) {
+    public static function getStatSessionByIdSessionAndDate($idSession, $date)
+    {
         $statSession = null;
 
         if ($idSession != 0) {
@@ -393,8 +415,8 @@ class StatAtelierSession {
         return $statSession;
     }
 
-    public static function getStatSessionsArchiveesParAnnee($annee) {
-
+    public static function getStatSessionsArchiveesParAnnee($annee)
+    {
         $statAteliers = null;
 
         $db = Mysql::opendb();
@@ -418,8 +440,9 @@ class StatAtelierSession {
         return $statAteliers;
     }
 
-//retourne les années contenues dans les ateliers et sessions
-    public static function getYearStatAtelierSessions() {
+    //retourne les années contenues dans les ateliers et sessions
+    public static function getYearStatAtelierSessions()
+    {
         $annees = null;
 
         $db = Mysql::opendb();
@@ -437,5 +460,4 @@ class StatAtelierSession {
 
         return $annees;
     }
-
 }

@@ -21,8 +21,8 @@
 
 require_once("Mysql.class.php");
 
-class Config {
-
+class Config
+{
     private $_id;
     private $_activerConsole;
     private $_name;
@@ -38,7 +38,8 @@ class Config {
     private $_resaRapide;
     private $_dureeResaRapide;
 
-    public function __construct($array) {
+    public function __construct($array)
+    {
         $this->_id = $array["id_config"];
         $this->_activerConsole = $array["activer_console"];
         $this->_name = $array["name_config"];
@@ -55,19 +56,23 @@ class Config {
         $this->_dureeResaRapide = $array["duree_resarapide"];
     }
 
-    public function getActiverConsole() {
+    public function getActiverConsole()
+    {
         return $this->_activerConsole;
     }
 
-    public function hasActiverConsole() {
+    public function hasActiverConsole()
+    {
         return $this->_activerConsole == "0" ? false : true;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->_name;
     }
 
-    public function setName($name) {
+    public function setName($name)
+    {
         $success = false;
 
         $db = Mysql::opendb();
@@ -89,39 +94,48 @@ class Config {
         return $success;
     }
 
-    public function getResaRapide() {
+    public function getResaRapide()
+    {
         return $this->_resaRapide;
     }
 
-    public function getIdEspace() {
+    public function getIdEspace()
+    {
         return $this->_idEspace;
     }
 
-    public function getNomEspace() {
+    public function getNomEspace()
+    {
         return $this->_nomEspace;
     }
 
-    public function hasResaRapide() {
+    public function hasResaRapide()
+    {
         return $this->_resaRapide == "0" ? false : true;
     }
 
-    public function getInscriptionUsagersAuto() {
+    public function getInscriptionUsagersAuto()
+    {
         return $this->_inscriptionUsagersAuto;
     }
 
-    public function hasInscriptionUsagersAuto() {
+    public function hasInscriptionUsagersAuto()
+    {
         return $this->_inscriptionUsagersAuto == "0" ? false : true;
     }
 
-    public function getMessageInscription() {
+    public function getMessageInscription()
+    {
         return $this->_messageInscription;
     }
 
-    public function getDureeResaRapide() {
+    public function getDureeResaRapide()
+    {
         return $this->_dureeResaRapide;
     }
 
-    public function getDureeResaRapideOrUnitDefault() {
+    public function getDureeResaRapideOrUnitDefault()
+    {
         if ($this->_dureeResaRapide > 0) {
             return $this->_dureeResaRapide;
         } else {
@@ -131,11 +145,13 @@ class Config {
         }
     }
 
-    public function getMaxTime() {
+    public function getMaxTime()
+    {
         return $this->_maxTime;
     }
 
-    public function getMaxTimeOrDefaultMaxTime() {
+    public function getMaxTimeOrDefaultMaxTime()
+    {
         if ($this->_maxTime > 0) {
             return $this->_maxTime;
         } else {
@@ -143,15 +159,18 @@ class Config {
         }
     }
 
-    public function getDefaultMaxTime() {
+    public function getDefaultMaxTime()
+    {
         return $this->_defaultMaxTime;
     }
 
-    public function getUnit() {
+    public function getUnit()
+    {
         return $this->_unit;
     }
 
-    public function getTimeUnit() {
+    public function getTimeUnit()
+    {
         if ($this->_unit > 0) {
             return $this->_unit;
         } else {
@@ -159,19 +178,23 @@ class Config {
         }
     }
 
-    public function getDefaultTimeUnit() {
+    public function getDefaultTimeUnit()
+    {
         return $this->_unitDefault;
     }
 
-    public function hasActivationForfait() {
+    public function hasActivationForfait()
+    {
         return $this->_activationForfait == "0" ? false : true;
     }
 
-    public function getActivationForfait() {
+    public function getActivationForfait()
+    {
         return $this->_activationForfait;
     }
 
-    public function activerForfait() {
+    public function activerForfait()
+    {
         $success = false;
 
         $db = Mysql::opendb();
@@ -191,7 +214,8 @@ class Config {
         return $success;
     }
 
-    public function desactiverForfait() {
+    public function desactiverForfait()
+    {
         $success = false;
 
         $db = Mysql::opendb();
@@ -211,7 +235,8 @@ class Config {
         return $success;
     }
 
-    public function updateActivationForfait() {
+    public function updateActivationForfait()
+    {
         $success = false;
 
         $db = Mysql::opendb();
@@ -223,18 +248,32 @@ class Config {
 
         if ($result) {
             $nbForfaitsAttaches = mysqli_num_rows($result);
-            if ($nbForfaitsAttaches > 0)
+            if ($nbForfaitsAttaches > 0) {
                 $success = $this->activerForfait();
-            else
+            } else {
                 $success = $this->desactiverForfait();
+            }
         }
 
         return $success;
     }
 
     public function modifier(
-    $activerConsole, $name, $unitDefault, $unit, $maxTime, $defaultMaxTime, $idEspace, $inscriptionUsagerAuto, $messageInscription, $nomEspace, $activationForfait, $resaRapide, $dureeResaRapide) {
-        $success = FALSE;
+    $activerConsole,
+        $name,
+        $unitDefault,
+        $unit,
+        $maxTime,
+        $defaultMaxTime,
+        $idEspace,
+        $inscriptionUsagerAuto,
+        $messageInscription,
+        $nomEspace,
+        $activationForfait,
+        $resaRapide,
+        $dureeResaRapide
+    ) {
+        $success = false;
         $db = Mysql::opendb();
 
         $activerConsole = mysqli_real_escape_string($db, $activerConsole);
@@ -284,13 +323,14 @@ class Config {
             $this->_resaRapide = $resaRapide;
             $this->_dureeResaRapide = $dureeResaRapide;
 
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public static function getConfig($idEspace) {
+    public static function getConfig($idEspace)
+    {
         $config = null;
 
         $db = Mysql::opendb();
@@ -308,5 +348,4 @@ class Config {
 
         return $config;
     }
-
 }

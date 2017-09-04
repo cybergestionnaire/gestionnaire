@@ -21,41 +21,48 @@
 require_once("Mysql.class.php");
 require_once("Espace.class.php");
 
-class Salle {
-
+class Salle
+{
     private $_id;
     private $_nom;
     private $_idEspace;
     private $_commentaire;
 
-    public function __construct($array) {
+    public function __construct($array)
+    {
         $this->_id = $array["id_salle"];
         $this->_nom = $array["nom_salle"];
         $this->_idEspace = $array["id_espace"];
         $this->_commentaire = $array["comment_salle"];
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getNom() {
+    public function getNom()
+    {
         return $this->_nom;
     }
 
-    public function getIdEspace() {
+    public function getIdEspace()
+    {
         return $this->_idEspace;
     }
 
-    public function getEspace() {
+    public function getEspace()
+    {
         return Espace::getEspaceById($this->_idEspace);
     }
 
-    public function getCommentaire() {
+    public function getCommentaire()
+    {
         return $this->_commentaire;
     }
 
-    public function getNbPostes() {
+    public function getNbPostes()
+    {
         $nbPostes = null;
 
         $db = Mysql::opendb();
@@ -72,8 +79,9 @@ class Salle {
         return $nbPostes;
     }
 
-    public function modifier($nom, $idEspace, $commentaire) {
-        $success = FALSE;
+    public function modifier($nom, $idEspace, $commentaire)
+    {
+        $success = false;
         $db = Mysql::opendb();
 
         $nom = mysqli_real_escape_string($db, $nom);
@@ -91,13 +99,14 @@ class Salle {
             $this->_idEspace = $idEspace;
             $this->_commentaire = $commentaire;
 
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
 
         // Verification avant suppression si il n'y a plus d'ordinateur attachés à la salle
         $db = Mysql::opendb();
@@ -105,7 +114,7 @@ class Salle {
         $result = mysqli_query($db, $sql);
 
 
-        if ($result == FALSE) {
+        if ($result == false) {
             return 0; // echec de la requete
         } else {
             if (mysqli_num_rows($result) > 0) {
@@ -114,7 +123,7 @@ class Salle {
                 // Suppression de la salle
                 $sql2 = "DELETE FROM `tab_salle` WHERE `id_salle`=" . $this->_id;
                 $result = mysqli_query($db, $sql2);
-                if ($result == FALSE) {
+                if ($result == false) {
                     return 0;
                 } else {
                     return 2;
@@ -124,7 +133,8 @@ class Salle {
         Mysql::closedb($db);
     }
 
-    public static function creerSalle($nom, $idEspace, $commentaire) {
+    public static function creerSalle($nom, $idEspace, $commentaire)
+    {
         $salle = null;
 
         if ($nom != "" && (is_int($idEspace) && $idEspace != 0)
@@ -149,7 +159,8 @@ class Salle {
         return $salle;
     }
 
-    public static function getSalleById($id) {
+    public static function getSalleById($id)
+    {
         $salle = null;
 
         if ($id != 0) {
@@ -170,8 +181,8 @@ class Salle {
         return $salle;
     }
 
-    public static function getSalles() {
-
+    public static function getSalles()
+    {
         $salles = null;
 
         $db = Mysql::opendb();
@@ -189,5 +200,4 @@ class Salle {
 
         return $salles;
     }
-
 }

@@ -88,7 +88,8 @@ $nbAteliers = count($ateliers);
                         <!--<li><a href="index.php?a=11&c=3">Ateliers du r&eacute;seau</a></li>-->
                     </ul>
                 </div>
-            <?php } ?>
+            <?php
+            } ?>
 
 
         </div><!-- .box-tools -->
@@ -133,7 +134,7 @@ $nbAteliers = count($ateliers);
                         //infos de l'atelier
                         if ($atelier->getStatut() == 2) {
                             $info = "<small class=\"badge bg-blue\" data-toggle=\"tooltip\" title=\"Cet atelier a &eacute;t&eacute; clotur&eacute;, rdv aux archives pour modifier les pr&eacute;sences\"><i class=\"fa fa-info\"></i></small>";
-                        } elseif (($atelier->getStatut() == 0) AND ( strtotime($atelier->getJour()) < strtotime(date('Y-m-d')))) {
+                        } elseif (($atelier->getStatut() == 0) and (strtotime($atelier->getJour()) < strtotime(date('Y-m-d')))) {
                             $info = "<small class=\"badge bg-blue\" data-toggle=\"tooltip\" title=\"Cet  atelier n'a pas encore &eacute;t&eacute; clotur&eacute;, veuillez valider les pr&eacute;sences rapidement\"><i class=\"fa fa-info\"></i></small>";
                         } else {
                             $info = "";
@@ -171,8 +172,7 @@ $nbAteliers = count($ateliers);
                     &nbsp;<a href=\"index.php?a=14&m=4&idatelier=" . $atelier->getId() . "\"><button type=\"button\" class=\"btn bg-red btn-sm\" data-toggle=\"tooltip\" title=\"D&eacute;programmer\"><i class=\"fa fa-trash-o\"></i></button></a>";
                         }
                         echo "</td></tr>";
-                    }
-                    ?>
+                    } ?>
                 </tbody>
             </table>
             <?php
@@ -190,7 +190,7 @@ $nbAteliers = count($ateliers);
     </div><!-- .box-body -->
 </div><!-- .box -->
 <?php
-// ANNEE SUIVANTE   
+// ANNEE SUIVANTE
 
 if ($_SESSION["status"] == 4) {
     $ateliers2 = Atelier::getAteliersParAnnee(date('Y') + 1);
@@ -231,8 +231,7 @@ if ($nbAteliers > 0) {
                         </ul>
                     </div>
                     <?php
-                }
-                ?>
+                } ?>
             </div><!-- .box-tools -->
         </div><!-- .box-header -->
         <div class="box-body">
@@ -288,17 +287,16 @@ if ($nbAteliers > 0) {
                 <td><a href=\"index.php?a=14&idatelier=" . $atelier->getId() . "\"><button type=\"button\" class=\"btn bg-green btn-sm\" data-toggle=\"tooltip\" title=\"Modifier la programmation\" ><i class=\"fa fa-edit\"></i></button></a>
                 <a href=\"index.php?a=14&m=4&idatelier=" . $atelier->getId() . "\"><button type=\"button\" class=\"btn bg-red btn-sm\" data-toggle=\"tooltip\" title=\"D&eacute;programmer\"><i class=\"fa fa-trash-o\"></i></button></a></td>                 
                 </tr>";
-                    }
-                    ?>
+                    } ?>
                 </tbody>
             </table>
         </div><!-- .box-body -->
     </div><!-- .box -->
     <?php
 } else {
-    if (date('m') >= 8) {
-        echo "<div class=\"alert alert-info alert-dismissable\" id=\"nextyear\" class=\"fade\"><i class=\"fa fa-warning\"></i>
+                        if (date('m') >= 8) {
+                            echo "<div class=\"alert alert-info alert-dismissable\" id=\"nextyear\" class=\"fade\"><i class=\"fa fa-warning\"></i>
                 <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>aucune formation programm&eacute;e pour l'ann&eacute;e prochaine</div>";
-    }
-}
+                        }
+                    }
 ?>

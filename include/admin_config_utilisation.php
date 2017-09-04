@@ -96,8 +96,7 @@ include("include/boites/menu-parametres.php");
                                     } else {
                                         echo "<option value=\"" . $menuarray[$b] . "\">" . $menuarray[$b] . "</option>";
                                     }
-                                }
-                                ?>
+                                } ?>
                             </select>
                         </td>
                         <td>
@@ -113,8 +112,7 @@ include("include/boites/menu-parametres.php");
                                     } else {
                                         echo "<option value=\"" . $visiblearray[$b] . "\">" . $visiblearray[$b] . "</option>";
                                     }
-                                }
-                                ?>
+                                } ?>
                             </select>
                         </td>
                         <td>
@@ -137,7 +135,7 @@ include("include/boites/menu-parametres.php");
                 <div class="col-xs-3">
                     <select name="typemenu" class="form-control" >
                         <?php
-                        foreach ($menuarray AS $key => $value) {
+                        foreach ($menuarray as $key => $value) {
                             echo "<option value=\"" . $value . "\">" . $value . "</option>";
                         }
                         ?>
@@ -147,7 +145,7 @@ include("include/boites/menu-parametres.php");
                 <div class="col-xs-2">
                     <select name="visiblemenu" class="form-control">
                         <?php
-                        foreach ($visiblearray AS $key6 => $value6) {
+                        foreach ($visiblearray as $key6 => $value6) {
                             echo "<option value=\"" . $value6 . "\">" . $value6 . "</option>";
                         }
                         ?>

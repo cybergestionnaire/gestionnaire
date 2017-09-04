@@ -24,41 +24,47 @@ require_once("Espace.class.php");
 /**
  * La classe Espace permer "d'abstraire" les données venant de la table tab_espace.
  *
- * Toutes les manipulations sur la table tab_espace devrait passer par une fonction 
+ * Toutes les manipulations sur la table tab_espace devrait passer par une fonction
  * de cette classe.
  */
-class Utilisation {
-
+class Utilisation
+{
     private $_id;
     private $_nom;
     private $_type;
     private $_visible;
 
-    public function __construct($array) {
+    public function __construct($array)
+    {
         $this->_id = $array["id_utilisation"];
         $this->_nom = $array["nom_utilisation"];
         $this->_type = $array["type_menu"];
         $this->_visible = $array["visible"];
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getNom() {
+    public function getNom()
+    {
         return $this->_nom;
     }
 
-    public function getType() {
+    public function getType()
+    {
         return $this->_type;
     }
 
-    public function getVisible() {
+    public function getVisible()
+    {
         return $this->_visible;
     }
 
-    public function modifier($nom, $type, $visible) {
-        $success = FALSE;
+    public function modifier($nom, $type, $visible)
+    {
+        $success = false;
         $db = Mysql::opendb();
 
         if ($nom != ""
@@ -80,13 +86,14 @@ class Utilisation {
                 $this->_type = $type;
                 $this->_visible = $visible;
 
-                $success = TRUE;
+                $success = true;
             }
         }
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
         $success = false;
 
         $db = Mysql::opendb();
@@ -109,7 +116,8 @@ class Utilisation {
         return $success;
     }
 
-    public static function creerUtilisation($nom, $type, $visible) {
+    public static function creerUtilisation($nom, $type, $visible)
+    {
         $utilisation = null;
 
         if ($nom != ""
@@ -134,7 +142,8 @@ class Utilisation {
         return $utilisation;
     }
 
-    public static function getUtilisationById($id) {
+    public static function getUtilisationById($id)
+    {
         $utilisation = null;
 
         if ($id != 0) {
@@ -155,8 +164,8 @@ class Utilisation {
         return $utilisation;
     }
 
-    public static function getUtilisations() {
-
+    public static function getUtilisations()
+    {
         $utilisations = null;
 
         $db = Mysql::opendb();
@@ -174,5 +183,4 @@ class Utilisation {
 
         return $utilisations;
     }
-
 }

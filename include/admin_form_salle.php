@@ -52,7 +52,7 @@ echo isset($mess) ? $mess : '';
                 <label >Espace *:</label>
                 <select name="espace"  class="form-control">
                     <?php
-                    foreach ($espaces AS $espace) {
+                    foreach ($espaces as $espace) {
                         if (isset($salle) && $salle->getIdEspace() == $espace->getId()) {
                             echo "<option value=\"" . htmlentities($espace->getId()) . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
                         } else {

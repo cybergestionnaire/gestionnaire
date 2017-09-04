@@ -23,15 +23,16 @@ require_once("Mysql.class.php");
 require_once("include/class/AtelierNiveau.class.php");
 require_once("include/class/AtelierCategorie.class.php");
 
-class SessionSujet {
-
+class SessionSujet
+{
     private $_id;
     private $_titre;
     private $_detail;
     private $_idNiveau;
     private $_idCategorie;
 
-    private function __construct($array) {
+    private function __construct($array)
+    {
         $this->_id = $array["id_session_sujet"];
         $this->_titre = $array["session_titre"];
         $this->_detail = $array["session_detail"];
@@ -43,31 +44,38 @@ class SessionSujet {
      * Accesseurs basiques
      */
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getTitre() {
+    public function getTitre()
+    {
         return $this->_titre;
     }
 
-    public function getDetail() {
+    public function getDetail()
+    {
         return $this->_detail;
     }
 
-    public function getIdNiveau() {
+    public function getIdNiveau()
+    {
         return $this->_idNiveau;
     }
 
-    public function getNiveau() {
+    public function getNiveau()
+    {
         return AtelierNiveau::getAtelierNiveauById($this->_idNiveau);
     }
 
-    public function getIdCategorie() {
+    public function getIdCategorie()
+    {
         return $this->_idCategorie;
     }
 
-    public function getCategorie() {
+    public function getCategorie()
+    {
         return AtelierCategorie::getAtelierCategorieById($this->_idCategorie);
     }
 
@@ -75,9 +83,9 @@ class SessionSujet {
      * Fonctions de l'objet
      */
 
-    public function modifier($titre, $detail, $idNiveau, $idCategorie) {
-
-        $success = FALSE;
+    public function modifier($titre, $detail, $idNiveau, $idCategorie)
+    {
+        $success = false;
         $db = Mysql::opendb();
 
         $titre = mysqli_real_escape_string($db, $titre);
@@ -99,13 +107,14 @@ class SessionSujet {
             $this->_detail = $detail;
             $this->_idNiveau = $idNiveau;
             $this->_idCategorie = $idCategorie;
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
         $db = Mysql::opendb();
         $sql = "DELETE FROM `tab_session_sujet` WHERE `id_session_sujet`=" . $this->_id;
         $result = mysqli_query($db, $sql);
@@ -119,8 +128,8 @@ class SessionSujet {
      * Fonctions statiques
      */
 
-    public static function getSessionSujetById($id) {
-
+    public static function getSessionSujetById($id)
+    {
         $sessionSujet = null;
 
         if ($id != 0) {
@@ -140,7 +149,8 @@ class SessionSujet {
         return $sessionSujet;
     }
 
-    public static function creerSessionSujet($titre, $detail, $idNiveau, $idCategorie) {
+    public static function creerSessionSujet($titre, $detail, $idNiveau, $idCategorie)
+    {
         $sessionSujet = null;
 
         $db = Mysql::opendb();
@@ -163,7 +173,8 @@ class SessionSujet {
         return $sessionSujet;
     }
 
-    public static function getSessionSujets() {
+    public static function getSessionSujets()
+    {
         $sessionSujets = null;
 
         $db = Mysql::opendb();
@@ -181,5 +192,4 @@ class SessionSujet {
 
         return $sessionSujets;
     }
-
 }

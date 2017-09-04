@@ -26,23 +26,24 @@
  *
  */
 
-class db {
-
-    var $host;        # hote 
-    var $port;     # port	
-    var $database;   # nom de la base de donn�es	
-    var $login;    # login
-    var $passwd;     # passwd	
-    var $table;    # liste des tables de la base	
-    var $column;    # liste des champs d'une table
-    var $nbcolumn;    # Nombre de champs dans une table
+class db
+{
+    public $host;        # hote
+    public $port;     # port
+    public $database;   # nom de la base de donn�es
+    public $login;    # login
+    public $passwd;     # passwd
+    public $table;    # liste des tables de la base
+    public $column;    # liste des champs d'une table
+    public $nbcolumn;    # Nombre de champs dans une table
 
     /*
      * Constructeur de classe
      * permet d'initialiser les variables de connexion
      */
 
-    function db() {
+    public function db()
+    {
         include('./connect_db.php');
         $this->host = $host;
         $this->port = $port;
@@ -55,11 +56,13 @@ class db {
      * rempli la var column en fonction de la table demand�e et la renvoi
      */
 
-    function setTable($table) {
+    public function setTable($table)
+    {
         $this->table = $table;
     }
 
-    function getTable() {
+    public function getTable()
+    {
         return $this->table;
     }
 
@@ -68,11 +71,13 @@ class db {
      * un tableau contenant les valeurs des entetes de la table
      */
 
-    function setColumn($list) {
+    public function setColumn($list)
+    {
         $this->column = $list;
     }
 
-    function getColumn() {
+    public function getColumn()
+    {
         return $this->column;
     }
 
@@ -80,11 +85,13 @@ class db {
      * dans une table
      */
 
-    function setNbColumn($number) {
+    public function setNbColumn($number)
+    {
         $this->nbcolumn = $number;
     }
 
-    function getNbColumn() {
+    public function getNbColumn()
+    {
         return $this->nbcolumn;
     }
 
@@ -92,16 +99,17 @@ class db {
      * Ouverture de la base de donn�es
      */
 
-    function opendb() {
+    public function opendb()
+    {
         /* creation de la liaison avec la base de donnees */
         $db = mysql_connect($this->host . ':' . $this->port, $this->login, $this->passwd);
         /* en cas d'echec */
-        if (FALSE === $db) {
-            return FALSE;
+        if (false === $db) {
+            return false;
         } else {
             /* selection de la base de donnees a utilise */
             mysql_select_db($this->database);
-            return TRUE;
+            return true;
         }
     }
 
@@ -110,24 +118,25 @@ class db {
      * @set table
      */
 
-    function getTableList() {
+    public function getTableList()
+    {
         $sql = 'SHOW TABLES FROM ' . $this->database;
-        if (FALSE == $this->opendb()) { //ouvre la base
-            return FALSE;
+        if (false == $this->opendb()) { //ouvre la base
+            return false;
         } else { // base ouverte
             $result = mysql_query($sql);
-            if (FALSE == $result) {
-                return FALSE;
+            if (false == $result) {
+                return false;
             } else { // traitemnet de la requete
                 $table = array();
                 $i = 0;
                 while ($row = mysql_fetch_assoc($result)) {
-                    foreach ($row AS $value) {
+                    foreach ($row as $value) {
                         $table[$i] = $value;
                     }
                     $i++;
                 }
-                // initialise la variable table 
+                // initialise la variable table
                 // contenant la liste des tables de la base
                 $this->setTable($table);
             }
@@ -139,19 +148,20 @@ class db {
      * @set column
      */
 
-    function getColumnList($table) {
+    public function getColumnList($table)
+    {
         $sql = 'SHOW COLUMNS FROM ' . $table . ' FROM ' . $this->database;
-        if (FALSE == $this->opendb()) {
-            return FALSE;
+        if (false == $this->opendb()) {
+            return false;
         } else {
             $result = mysql_query($sql);
-            if (FALSE == $result) {
-                return FALSE;
+            if (false == $result) {
+                return false;
             } else {
-                // initialise la variable column 
+                // initialise la variable column
                 // contenant la liste des colonnes d'une table
                 $this->setColumn($result);
-                // on initialise le nombre de colonnes 
+                // on initialise le nombre de colonnes
                 // dans une table
                 $this->setNbColumn(mysql_num_rows($result));
             }
@@ -163,14 +173,14 @@ class db {
      * @return string
      */
 
-    function dumpdb() {
+    public function dumpdb()
+    {
         $var = "-- SAUVEGARDE CYBERGESTIONNAIRE 0.8 \n";
         $var .= "-- le " . date('d-m-Y � h:i:s') . " \n\n";
         // on cr�e la liste des tables
         $this->getTableList();
-        // pour chaque table de la base on extrait les champs 
-        foreach ($this->getTable() AS $table) {
-
+        // pour chaque table de la base on extrait les champs
+        foreach ($this->getTable() as $table) {
             $var .= "\n--\n-- " . $table . "\n--\n";
 
             $var .= "TRUNCATE TABLE `" . $table . "` ;\n\n";
@@ -185,17 +195,18 @@ class db {
 
             $sql = "SELECT * FROM `" . $table . "` ";
             $result = mysql_query($sql);
-            if ($result != FALSE) {
+            if ($result != false) {
                 while ($row = mysql_fetch_array($result)) {
                     //echo count($row) ;
                     //print_r($row) ;
                     //remplissage de la table
                     $var .= "INSERT INTO `" . $table . "` VALUES (";
                     for ($i = 1; $i <= (count($row) / 2); $i++) {
-                        if ($i != (count($row) / 2))
+                        if ($i != (count($row) / 2)) {
                             $var .= "'" . addslashes($row[$i - 1]) . "',";
-                        else
+                        } else {
                             $var .= "'" . addslashes($row[$i - 1]) . "'";
+                        }
                     }
                     $var .= ");\n";
                 }
@@ -204,7 +215,4 @@ class db {
         // on renvoi le dump de la base
         return $var;
     }
-
 }
-
-?>

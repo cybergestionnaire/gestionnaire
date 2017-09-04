@@ -111,8 +111,7 @@ if ($act == 1) {
                                         <td></td>
                                     </tr>
                                     <?php
-                                }
-                                ?>
+                                } ?>
                                 <?php
                                 foreach ($utilisateursPresents as $utilisateur) {
                                     ?>
@@ -122,8 +121,7 @@ if ($act == 1) {
                                         <td></td>
                                     </tr>
                                     <?php
-                                }
-                                ?>
+                                } ?>
                             </tbody>
                         </table>
                     </div>

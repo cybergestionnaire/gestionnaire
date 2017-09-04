@@ -15,7 +15,8 @@
 /**
  * Sauvegarde MySQL
  */
-class BackupMySQL extends mysqli {
+class BackupMySQL extends mysqli
+{
 
     /**
      * Dossier des fichiers de sauvegardes
@@ -39,7 +40,8 @@ class BackupMySQL extends mysqli {
      * Constructeur
      * @param array $options
      */
-    public function __construct($options = array()) {
+    public function __construct($options = array())
+    {
         $default = array(
             'host' => ini_get('mysqli.default_host'),
             'username' => ini_get('mysqli.default_user'),
@@ -86,7 +88,8 @@ class BackupMySQL extends mysqli {
      * Message d'information ( commenter le "echo" pour rendre le script invisible )
      * @param string $message HTML
      */
-    protected function message($message = '&nbsp;') {
+    protected function message($message = '&nbsp;')
+    {
         echo '<p style="padding:0; margin:1px 10px; font-family:sans-serif;">' . $message . '</p>';
     }
 
@@ -95,7 +98,8 @@ class BackupMySQL extends mysqli {
      * @param string $string
      * @return string
      */
-    protected function insert_clean($string) {
+    protected function insert_clean($string)
+    {
         // Ne pas changer l'ordre du tableau !!!
         $s1 = array("\\", "'", "\r", "\n",);
         $s2 = array("\\\\", "''", '\r', '\n',);
@@ -105,7 +109,8 @@ class BackupMySQL extends mysqli {
     /**
      * Sauvegarder les tables
      */
-    protected function sauvegarder() {
+    protected function sauvegarder()
+    {
         $this->message('Sauvegarde...');
 
         $sql = '--' . "\n";
@@ -166,7 +171,8 @@ class BackupMySQL extends mysqli {
      * Purger les anciens fichiers
      * @param int $nbr_fichiers_max Nombre maximum de sauvegardes
      */
-    protected function purger_fichiers($nbr_fichiers_max) {
+    protected function purger_fichiers($nbr_fichiers_max)
+    {
         $this->message();
         $this->message('Purge des anciens fichiers...');
         $fichiers = array();
@@ -203,7 +209,6 @@ class BackupMySQL extends mysqli {
         }
         $this->message('Purge termin&eacute;e !');
     }
-
 }
 
 // Instance de la classe ( a copier autant que necessaire, mais attention au timeout )
@@ -214,4 +219,3 @@ class BackupMySQL extends mysqli {
 //	'dbname' => 'mabase',
 //	'dossier' => './dossier2/'
 //	));
-?>

@@ -22,8 +22,8 @@ require_once("Mysql.class.php");
 require_once("Espace.class.php");
 require_once("Config.class.php");
 
-class Forfait {
-
+class Forfait
+{
     private $_id;
     private $_dateCretation;
     private $_type;
@@ -42,7 +42,8 @@ class Forfait {
     private $_tempsAffectationOccasionnel;
     private $_nombreAtelier;
 
-    public function __construct($array) {
+    public function __construct($array)
+    {
         $this->_id = $array["id_forfait"];
         $this->_dateCretation = $array["date_creation_forfait"];
         $this->_type = $array["type_forfait"];
@@ -62,75 +63,93 @@ class Forfait {
         $this->_nombreAtelier = $array["nombre_atelier_forfait"];
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getDateCretation() {
+    public function getDateCretation()
+    {
         return $this->_dateCretation;
     }
 
-    public function getType() {
+    public function getType()
+    {
         return $this->_type;
     }
 
-    public function getNom() {
+    public function getNom()
+    {
         return $this->_nom;
     }
 
-    public function getPrix() {
+    public function getPrix()
+    {
         return $this->_prix;
     }
 
-    public function getCritere() {
+    public function getCritere()
+    {
         return $this->_critere;
     }
 
-    public function getCommentaire() {
+    public function getCommentaire()
+    {
         return $this->_commentaire;
     }
 
-    public function getDureeValidite() {
+    public function getDureeValidite()
+    {
         return $this->_dureeValidite;
     }
 
-    public function getUniteValidite() {
+    public function getUniteValidite()
+    {
         return $this->_uniteValidite;
     }
 
-    public function getTempsForfaitIllimite() {
+    public function getTempsForfaitIllimite()
+    {
         return $this->_tempsForfaitIllimite;
     }
 
-    public function getDateDebut() {
+    public function getDateDebut()
+    {
         return $this->_dateDebut;
     }
 
-    public function getStatut() {
+    public function getStatut()
+    {
         return $this->_statut;
     }
 
-    public function getDureeConsultation() {
+    public function getDureeConsultation()
+    {
         return $this->_dureeConsultation;
     }
 
-    public function getUniteConsultation() {
+    public function getUniteConsultation()
+    {
         return $this->_uniteConsultation;
     }
 
-    public function getFrequenceConsultation() {
+    public function getFrequenceConsultation()
+    {
         return $this->_frequenceConsultation;
     }
 
-    public function getTempsAffectationOccasionnel() {
+    public function getTempsAffectationOccasionnel()
+    {
         return $this->_tempsAffectationOccasionnel;
     }
 
-    public function getNombreAtelier() {
+    public function getNombreAtelier()
+    {
         return $this->_nombreAtelier;
     }
 
-    public function attachEspaceById($idEspace) {
+    public function attachEspaceById($idEspace)
+    {
         $success = false;
 
         $db = Mysql::opendb();
@@ -151,7 +170,8 @@ class Forfait {
         return $success;
     }
 
-    public function detachAllEspaces() {
+    public function detachAllEspaces()
+    {
         $success = false;
 
         $db = Mysql::opendb();
@@ -168,9 +188,19 @@ class Forfait {
     }
 
     public function modifier(
-    $type, $nom, $prix, $commentaire, $dureeValidite, $uniteValidite, $tempsForfaitIllimite, $dureeConsultation, $uniteConsultation, $frequenceConsultation, $tempsAffectationOccasionnel
+    $type,
+        $nom,
+        $prix,
+        $commentaire,
+        $dureeValidite,
+        $uniteValidite,
+        $tempsForfaitIllimite,
+        $dureeConsultation,
+        $uniteConsultation,
+        $frequenceConsultation,
+        $tempsAffectationOccasionnel
     ) {
-        $success = FALSE;
+        $success = false;
 
         $db = Mysql::opendb();
 
@@ -220,14 +250,15 @@ class Forfait {
                 $this->frequenceConsultation = $frequenceConsultation;
                 $this->tempsAffectationOccasionnel = $tempsAffectationOccasionnel;
 
-                $success = TRUE;
+                $success = true;
             }
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
         $success = false;
 
         $db = Mysql::opendb();
@@ -251,7 +282,22 @@ class Forfait {
     }
 
     public static function creerForfait(
-    $dateCreation, $type, $nom, $prix, $critere, $commentaire, $dureeValidite, $uniteValidite, $tempsForfaitIllimite, $dateDebut, $statut, $dureeConsultation, $uniteConsultation, $frequenceConsultation, $tempsAffectationOccasionnel, $nombreAtelier
+    $dateCreation,
+        $type,
+        $nom,
+        $prix,
+        $critere,
+        $commentaire,
+        $dureeValidite,
+        $uniteValidite,
+        $tempsForfaitIllimite,
+        $dateDebut,
+        $statut,
+        $dureeConsultation,
+        $uniteConsultation,
+        $frequenceConsultation,
+        $tempsAffectationOccasionnel,
+        $nombreAtelier
     ) {
         $forfait = null;
 
@@ -307,7 +353,8 @@ class Forfait {
         return $forfait;
     }
 
-    public static function getForfaitById($id) {
+    public static function getForfaitById($id)
+    {
         $forfait = null;
 
         if ($id != 0) {
@@ -328,8 +375,8 @@ class Forfait {
         return $forfait;
     }
 
-    public static function getForfaits() {
-
+    public static function getForfaits()
+    {
         $forfaits = null;
 
         $db = Mysql::opendb();
@@ -348,7 +395,8 @@ class Forfait {
         return $forfaits;
     }
 
-    public function getIdsEspacesAsArray() {
+    public function getIdsEspacesAsArray()
+    {
         $idsEspaces = null;
         $db = Mysql::opendb();
         $sql = "SELECT `id_espace` FROM `rel_forfait_espace` WHERE `id_forfait`='" . $this->_id . "' ";
@@ -365,5 +413,4 @@ class Forfait {
 
         return $idsEspaces;
     }
-
 }

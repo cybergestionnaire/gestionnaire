@@ -27,7 +27,8 @@ require_once("include/class/Espace.class.php");
 require_once("include/class/Config.class.php");
 
 // renvoi un calendrier du mois et de l'annee donnee pour determiner les jours feries
-function getCalendarClose($year, $month, $epn) {
+function getCalendarClose($year, $month, $epn)
+{
     $calendar = "";
     // tableau des index des jours
     $dayArray = array("L", "M", "M", "J", "V", "S", "D");
@@ -109,7 +110,7 @@ include("include/boites/menu-parametres.php");
                         <label>Choisissez l'espace :</label>
                         <select name="epn_r" class="form-control" >
                             <?php
-                            foreach ($espaces AS $espace) {
+                            foreach ($espaces as $espace) {
                                 if ($idEspace == $espace->getId()) {
                                     echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
                                 } else {
@@ -173,10 +174,11 @@ include("include/boites/menu-parametres.php");
                                 $heure = "0" . $heure;
                             }
                             for ($minutes = 0; $minutes <= 59; $minutes = $minutes + 15) {
-                                if ($horaire->getHoraire1Debut() == Horaire::convertHoraire($heure . "h" . $minutes))
+                                if ($horaire->getHoraire1Debut() == Horaire::convertHoraire($heure . "h" . $minutes)) {
                                     $select = "selected";
-                                else
+                                } else {
                                     $select = "";
+                                }
 
                                 if ($minutes == 0) {
                                     $minutes = "00";
@@ -241,7 +243,7 @@ include("include/boites/menu-parametres.php");
                         $table .= "            <select name=\"" . $horaire->getIdJour() . "-h2begin\">" . $H . "</select>\r\n";
                         $table .= "            <b> &agrave; </b>\r\n";
                         // H2 Matin end
-                        // H2 Apres-midi begin    
+                        // H2 Apres-midi begin
                         $H = "";
                         $H .= "<option value=\"\"></option>";
 //            $H .= "<option value=\"\">Ferm&eacute;</option>\r\n" ;

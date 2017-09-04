@@ -24,4 +24,3 @@
  */
 
 // Fichier de statistiques d'un utilisateur
-?>

@@ -134,9 +134,7 @@ if ($b == 7) {
 
 //*************** si b =1 affichage de l'atelier en detail
 
-if ($b == 1 OR $b == 5) {
-
-
+if ($b == 1 or $b == 5) {
     switch ($b) {
         case 1:
             $atelier = Atelier::getAtelierById($idAtelier);
@@ -202,8 +200,7 @@ if ($b == 1 OR $b == 5) {
             }
 
             break;
-    }
-    ?>
+    } ?>
 
     <div class="row">
         <section class="col-lg-7 connectedSortable">
@@ -214,8 +211,7 @@ if ($b == 1 OR $b == 5) {
                         <dt>Date<?php
                             if ($pluriel) {
                                 echo "s";
-                            }
-                            ?></dt><dd><?php echo $dateheure; ?></dd>
+                            } ?></dt><dd><?php echo $dateheure; ?></dd>
                         <dt>Anim&eacute; par </dt><dd><?php echo htmlentities($anim); ?></dd>
                         <dt>Dur&eacute;e </dt><dd><?php echo htmlentities($duree); ?> minutes</dd>
                         <dt>Lieu </dt><dd> <?php echo htmlentities($nomsalle); ?></dd>
@@ -265,13 +261,12 @@ else {
     //La liste des ateliers
     $listeAtelier = getMyFutAtelier(date('Y'), date('n'), date('d'));
     $nba = mysqli_num_rows($listeAtelier);
-    // la liste des sessions 
+    // la liste des sessions
 
     $ateliers = Atelier::getAteliersFutursByAnnee(date('Y'));
     $sessions = Session::getSessionsFuturesByAnnee(date('Y'));
     $nbAteliers = count($ateliers);
-    $nbSessions = count($sessions);
-    ?> 
+    $nbSessions = count($sessions); ?> 
     <div class="row">
         <!-- criteres de choix -->
         <div class="col-md-3">
@@ -309,21 +304,18 @@ else {
                             <li class="<?php
     if ($b == '' or $b == 2 or $b == 3) {
         echo "active";
-    }
-    ?>"><a href="#tab_3" data-toggle="tab">Les ateliers (<?php echo $nbAteliers; ?>)</a></li>
+    } ?>"><a href="#tab_3" data-toggle="tab">Les ateliers (<?php echo $nbAteliers; ?>)</a></li>
                             <li class="<?php
                             if ($b == 5 or $b == 6 or $b == 7) {
                                 echo "active";
-                            }
-    ?>"><a href="#tab_4" data-toggle="tab">Les sessions (<?php echo $nbSessions; ?>)</a></li>
+                            } ?>"><a href="#tab_4" data-toggle="tab">Les sessions (<?php echo $nbSessions; ?>)</a></li>
                         </ul>
                         <div class="tab-content">
 
                             <div class="tab-pane <?php
                              if ($b == '' or $b == 2 or $b == 3) {
                                  echo "active";
-                             }
-    ?>" id="tab_3">
+                             } ?>" id="tab_3">
                                     <?php
                                     //if ($nba > 0) {
                                     if ($nbAteliers > 0) {
@@ -352,17 +344,15 @@ else {
                                                         $boutoninscr = "<a href=\"index.php?m=6&b=1&idatelier=" . $atelier->getId() . "\"><small class=\"badge bg-default\">voir le d&eacute;tail et s'inscrire</small></a>";
                                                     }
                                                 } else {
-
                                                     if ($statutUtilisateur == 0) {
                                                         $boutoninscr = "<small class=\"badge bg-green\">d&eacute;j&agrave; inscrit</small>&nbsp; 
                                     <a href=\"index.php?m=6&b=3&idatelier=" . $atelier->getId() . "\"><button class=\"btn btn-xs btn-danger\" data-toggle=\"tooltip\" title=\"Se d&eacute;sinscrire\"><i class=\"fa fa-trash-o\"></i></button></a>";
-                                                    } else if ($statutUtilisateur == 2) {
+                                                    } elseif ($statutUtilisateur == 2) {
                                                         $boutoninscr = "<small class=\"badge bg-orange\">en liste d'attente</small>&nbsp; 
                                     <a href=\"index.php?m=6&b=3&idatelier=" . $atelier->getId() . "\"><button class=\"btn btn-xs btn-danger\" data-toggle=\"tooltip\" title=\"Se d&eacute;sinscrire\"><i class=\"fa fa-trash-o\"></i></button></a>";
                                                     }
                                                 }
-                                            }
-                                            ?>
+                                            } ?>
                                             <tr>
                                                 <td><?php echo datefr($atelier->getJour()) ?></td>
                                                 <td><?php echo htmlentities($atelier->getHeure()) ?></td>
@@ -374,26 +364,23 @@ else {
                                                 <td><?php echo $boutoninscr; ?></td>
                                             </tr>
             <?php
-        }
-        ?>
+                                        } ?>
                                     </table>
                                     <?php
-                                } else {
-                                    ?>
+                                    } else {
+                                        ?>
                                     <div class="alert alert-info alert-dismissable">
                                         <i class="fa fa-info"></i>
                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Aucun atelier programm&eacute; pour le moment
                                     </div>
                                      <?php
-                                 }
-                                 ?>
+                                    } ?>
                             </div><!-- .tab-pane -->
 
                             <div class="tab-pane <?php
                                     if ($b == 5 or $b == 6 or $b == 7) {
                                         echo "active";
-                                    }
-                                    ?>" id="tab_4">
+                                    } ?>" id="tab_4">
                                     <?php
                                     if ($nbSessions > 0) {
                                         ?>
@@ -425,17 +412,15 @@ else {
                                                         $boutoninscr = "<a href=\"index.php?m=6&b=5&idsession=" . $session->getId() . "\"><small class=\"badge bg-default\">voir le d&eacute;tail et s'inscrire</small></a>";
                                                     }
                                                 } else {
-
                                                     if ($statutUtilisateur == 0) {
                                                         $boutoninscr = "<small class=\"badge bg-green\">d&eacute;j&agrave; inscrit</small>&nbsp; 
                                     <a href=\"index.php?m=6&b=7&idsession=" . $session->getId() . "\"><button class=\"btn btn-xs btn-danger\" data-toggle=\"tooltip\" title=\"Se d&eacute;sinscrire\"><i class=\"fa fa-trash-o\"></i></button></a>";
-                                                    } else if ($statutUtilisateur == 2) {
+                                                    } elseif ($statutUtilisateur == 2) {
                                                         $boutoninscr = "<small class=\"badge bg-orange\">en liste d'attente</small>&nbsp; 
                                     <a href=\"index.php?m=6&b=7&idsession=" . $session->getId() . "\"><button class=\"btn btn-xs btn-danger\" data-toggle=\"tooltip\" title=\"Se d&eacute;sinscrire\"><i class=\"fa fa-trash-o\"></i></button></a>";
                                                     }
                                                 }
-                                            }
-                                            ?>
+                                            } ?>
                                             <tr> 
                                                 <td><small><?php echo $listeDates ?></small></td>
                                                 <td><span class="text-muted"><?php echo htmlentities($sujet->getTitre()) ?></span></td>
@@ -444,20 +429,18 @@ else {
                                                 <td><?php echo $boutoninscr ?></td>
                                             </tr>
             <?php
-        }
-        ?>
+                                        } ?>
 
                                     </table>
         <?php
-    } else {
-        ?>
+                                    } else {
+                                        ?>
                                     <div class="alert alert-info alert-dismissable">
                                         <i class="fa fa-info"></i>
                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Aucune session programm&eacute;e
                                     </div>
         <?php
-    }
-    ?>
+                                    } ?>
 
                             </div><!--/ tab_pane -->
                         </div><!--/ tab_content -->

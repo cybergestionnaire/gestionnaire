@@ -73,7 +73,7 @@ echo $mess;
                         <label >Ville *:</label>
                         <select name="villereseau" class="form-control" >
                             <?php
-                            foreach ($villes AS $ville) {
+                            foreach ($villes as $ville) {
                                 if ($idVille == $ville->getid()) {
                                     echo "<option value=\"" . $ville->getId() . "\" selected>" . $ville->getNom() . "</option>";
                                 } else {
@@ -128,7 +128,6 @@ echo $mess;
                     if ($logo == "") {
                         echo '<img src="./img/logo/logo.png" width="120px">';
                     } else {
-
                         echo '<img src="' . $filedir . $logo . '" width="120px" >';
                     }
                     ?>

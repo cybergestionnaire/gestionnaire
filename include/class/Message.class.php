@@ -21,8 +21,8 @@
 require_once("Mysql.class.php");
 require_once("Utilisateur.class.php");
 
-class Message {
-
+class Message
+{
     private $_id;
     private $_date;
     private $_idAuteur;
@@ -30,7 +30,8 @@ class Message {
     private $_tag;
     private $_idDestinataire;
 
-    public function __construct($array) {
+    public function __construct($array)
+    {
         $this->_id = $array["id_messages"];
         $this->_date = $array["mes_date"];
         $this->_idAuteur = $array["mes_auteur"];
@@ -39,40 +40,49 @@ class Message {
         $this->_idDestinataire = $array["mes_destinataire"];
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getDate() {
+    public function getDate()
+    {
         return $this->_date;
     }
 
-    public function getIdAuteur() {
+    public function getIdAuteur()
+    {
         return $this->_idAuteur;
     }
 
-    public function getAuteur() {
+    public function getAuteur()
+    {
         return utilisateur::getUtilisateurById($this->_idAuteur);
     }
 
-    public function getTexte() {
+    public function getTexte()
+    {
         return $this->_texte;
     }
 
-    public function getTag() {
+    public function getTag()
+    {
         return $this->_tag;
     }
 
-    public function getIdDestinataire() {
+    public function getIdDestinataire()
+    {
         return $this->_idDestinataire;
     }
 
-    public function getDestinataire() {
+    public function getDestinataire()
+    {
         return utilisateur::getUtilisateurById($this->_idDestinataire);
     }
 
-    public function modifier($date, $idAuteur, $texte, $tag, $idDestinataire) {
-        $success = FALSE;
+    public function modifier($date, $idAuteur, $texte, $tag, $idDestinataire)
+    {
+        $success = false;
         $db = Mysql::opendb();
 
         $date = mysqli_real_escape_string($db, $date);
@@ -94,13 +104,14 @@ class Message {
             $this->_tag = $tag;
             $this->_idDestinataire = $idDestinataire;
 
-            $success = TRUE;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
         $success = false;
 
         $sql = "DELETE FROM `tab_messages` WHERE `id_messages`=" . $this->_id;
@@ -113,7 +124,8 @@ class Message {
         return $success;
     }
 
-    public static function creerMessage($date, $idAuteur, $texte, $tag, $idDestinataire) {
+    public static function creerMessage($date, $idAuteur, $texte, $tag, $idDestinataire)
+    {
         $message = null;
 
         if ($date != "" && (is_int($idAuteur) && $idAuteur != 0)
@@ -140,7 +152,8 @@ class Message {
         return $message;
     }
 
-    public static function getMessageById($id) {
+    public static function getMessageById($id)
+    {
         $message = null;
 
         if ($id != 0) {
@@ -161,8 +174,8 @@ class Message {
         return $message;
     }
 
-    public static function getMessages() {
-
+    public static function getMessages()
+    {
         $messages = null;
 
         $db = Mysql::opendb();
@@ -180,5 +193,4 @@ class Message {
 
         return $messages;
     }
-
 }

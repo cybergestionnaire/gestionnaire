@@ -54,7 +54,7 @@ $heure = "12:00";
                         <label>Indiquez la salle :&nbsp;</label>
                         <select name="salle"  class="form-control pull-right">
                             <?php
-                            foreach ($salles AS $salle) {
+                            foreach ($salles as $salle) {
                                 if ($salle->getId() == $idSalle) {
                                     echo "<option  value=\"" . $salle->getId() . "\" selected>" . htmlentities($salle->getNom() . " (" . $salle->getEspace()->getNom() . ")") . "</option>";
                                 } else {
@@ -121,21 +121,18 @@ $heure = "12:00";
                         <td><input type=\"radio\" name=\"adh_submit\" value=" . $utilisateur->getId() . ">
                         </td>
                          </tr>";
-                                    }
-                                    ?>
+                                    } ?>
                                 </tbody>
                             </table>
                             <?php
-                            $materiels = Materiel::getMaterielLibreFromSalleById($idSalle);
-                            ?>
+                            $materiels = Materiel::getMaterielLibreFromSalleById($idSalle); ?>
                             <div class="input-group">
                                 <label>Poste : </label>
                                 <select name="idcomp">
                                     <?php
-                                    foreach ($materiels AS $materiel) {
+                                    foreach ($materiels as $materiel) {
                                         echo "<option value=\"" . $materiel->getId() . "\">" . htmlentities($materiel->getNom()) . "</option>";
-                                    }
-                                    ?>
+                                    } ?>
                                 </select>
                             </div>
 

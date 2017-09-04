@@ -46,7 +46,7 @@ if (isset($_POST["submit_atelier"]) && $_POST["submit_atelier"] != "") {  // si 
 
     //debug($m);
     //debug($sujet);
-    if ($m != "" AND $m != 3) {  // verife si non vide
+    if ($m != "" and $m != 3) {  // verife si non vide
         if ($date == '' || $heure == '' || $idSujet == '' || $nbplace == '') {
             $mess = getError(4);
         } else {
@@ -82,7 +82,7 @@ if (isset($_POST["submit_atelier"]) && $_POST["submit_atelier"] != "") {  // si 
                           ///
                          */
                         //rajouter la relation des computers à libérer pour epnconnect
-                        if (FALSE == connectAtelierComputer($idSalle, $idAtelier)) {
+                        if (false == connectAtelierComputer($idSalle, $idAtelier)) {
                             header("Location: ./index.php?a=11&mesno=0");
                         } else {
                             header("Location: ./index.php?a=11&mesno=14");
@@ -123,4 +123,3 @@ if ($m == 4) { // supprime un atelier
         header("Location: ./index.php?a=11&mesno=0");
     }
 }
-?>

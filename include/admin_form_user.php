@@ -71,7 +71,6 @@ if ($idUser == '') {   // Parametre du formulaire pour la CREATION
     $label_bouton = "Cr&eacute;er l'adh&eacute;rent";
     $testb = 1;
 } else {
-
     if ($sim != '') {
 
         //passer les infos pour le creer similaire
@@ -140,8 +139,7 @@ if ($idUser == '') {   // Parametre du formulaire pour la CREATION
         //coordonnees de l'espace
         $arraymail = getMailInscript();
 
-        if (FALSE == $arraymail) {
-
+        if (false == $arraymail) {
             $mailok = 0;
         } else {
             $espacearray = mysqli_fetch_array(getEspace($_SESSION["idepn"]));
@@ -277,10 +275,10 @@ if (isset($mess) && $mess != "") {
                                 ?>
                                 <a href="index.php?a=5&b=6&iduser=<?php echo $utilisateur->getId() ?>" class="btn bg-primary btn-sm" data-toggle="tooltip" title="Inscriptions Ateliers"><i class="fa fa-keyboard-o"></i></a>
                                 <?php
-                            }
-                            ?>
+                            } ?>
                         </div>
-                    <?php } ?>
+                    <?php
+                    } ?>
                 </div><!-- .box-header -->
                 <div class="box-body no-padding">
                     <table class="table table-condensed">
@@ -303,7 +301,7 @@ if (isset($mess) && $mess != "") {
                                                     if (file_exists($filename)) {
                                                         echo '<img src=' . $filename . ' width="115px" hspace="5" class="img-circle">';
                                                     } else {
-                                                        //avatar pour personnes sans image                  
+                                                        //avatar pour personnes sans image
                                                         if ($sexe == "F") {
                                                             echo '<img src="img/avatar/female.png" class="img-circle"  width="115px">';
                                                         } else {
@@ -358,7 +356,7 @@ if (isset($mess) && $mess != "") {
                                                         <td>
                                                             <select name="mois" tabindex="2" class="form-control">
                                                                 <?php
-                                                                foreach ($month AS $key => $value) {
+                                                                foreach ($month as $key => $value) {
                                                                     if ($mois == $key) {
                                                                         echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                                                     } else {
@@ -390,7 +388,7 @@ if (isset($mess) && $mess != "") {
                                     <label>Ville *:</label>
                                     <select name="ville" class="form-control" tabindex="5">
                                         <?php
-                                        foreach ($villes AS $ville) {
+                                        foreach ($villes as $ville) {
                                             if ($idVille == $ville->getId()) {
                                                 echo "<option value=\"" . $ville->getId() . "\" selected>" . htmlentities($ville->getNom()) . "</option>";
                                             } else {
@@ -456,11 +454,11 @@ if (isset($mess) && $mess != "") {
                                                 <input type="text" name="renouvellement" value="<?php echo htmlentities($dateRen); ?>" class="form-control" <?php
                                                    if ($b == 2) {
                                                        echo 'disabled';
-                                                   }
-                                        ?>>
+                                                   } ?>>
                                             </div>
                                         </div>
-<?php } ?>
+<?php
+                                    } ?>
                                 </div><!-- .row -->
 
                                 <div class="form-group">
@@ -475,7 +473,7 @@ if (isset($mess) && $mess != "") {
                                     ?>
                                     <select name="temps" class="form-control" <?php echo $disabled; ?> >
                                         <?php
-                                        foreach ($forfaits AS $forfait) {
+                                        foreach ($forfaits as $forfait) {
                                             if ($temps == $forfait->getId()) {
                                                 echo "<option value=\"" . $forfait->getId() . "\" selected>" . htmlentities($forfait->getNom()) . " (" . htmlentities($forfait->getPrix()) . " €)</option>";
                                             } else {
@@ -498,7 +496,7 @@ if (isset($mess) && $mess != "") {
                                         ?>
                                     <select name="tarif" class="form-control" <?php echo $disabled; ?> >
                                         <?php
-                                        foreach ($tarifs AS $tarif) {
+                                        foreach ($tarifs as $tarif) {
                                             if ($idTarif == $tarif->getId()) {
                                                 echo "<option value=\"" . $tarif->getId() . "\" selected>" . htmlentities($tarif->getNom()) . " (" . htmlentities($tarif->getDonnee()) . " €)</option>";
                                             } else {
@@ -517,7 +515,7 @@ if (isset($mess) && $mess != "") {
                                     <label>Epn d'inscription </label>
                                     <select name="epn" class="form-control" >
                                         <?php
-                                        foreach ($espaces AS $espace) {
+                                        foreach ($espaces as $espace) {
                                             if ($idEspace == $espace->getId()) {
                                                 echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
                                             } else {
@@ -532,7 +530,7 @@ if (isset($mess) && $mess != "") {
                                     <label>Statut </label>
                                     <select name="status"  class="form-control">
                                         <?php
-                                        foreach ($state AS $key => $value) {
+                                        foreach ($state as $key => $value) {
                                             if ($status == $key) {
                                                 echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                             } else {
@@ -547,7 +545,7 @@ if (isset($mess) && $mess != "") {
                                     <label>Cat&eacute;gorie Socio-professionnelle</label>
                                     <select name="csp" class="form-control">
                                         <?php
-                                        foreach ($professions AS $profession) {
+                                        foreach ($professions as $profession) {
                                             if ($csp == $profession->getId()) {
                                                 echo "<option value=\"" . $profession->getId() . "\" selected>" . htmlentities($profession->getCSP()) . "</option>";
                                             } else {
@@ -567,10 +565,10 @@ if (isset($mess) && $mess != "") {
                                     <label>
 <?php
 if ($newsletter == '') {
-    echo ' <input type="checkbox" name="newsletter" value="1" />';
-} else {
-    echo ' <input type="checkbox" name="newsletter" value="1" checked />';
-}
+                                            echo ' <input type="checkbox" name="newsletter" value="1" />';
+                                        } else {
+                                            echo ' <input type="checkbox" name="newsletter" value="1" checked />';
+                                        }
 ?>
                                         <b>Newsletter</b></label>
                                 </div>
@@ -611,7 +609,7 @@ if ($newsletter == '') {
                             echo "<a href=\"" . $_SERVER['REQUEST_URI'] . "&act=del\" class=\"btn btn-app bg-red\"><i class=\"fa fa-trash-o\"></i>Supprimer</a> ";
                         }
 
-                        if (isset($idUser) AND $sim == '') {
+                        if (isset($idUser) and $sim == '') {
                             ?>
                             <a href="courriers/fiche.php?user=<?php echo $idUser ?>&epn=<?php echo $_SESSION["idepn"] ?>" target="_blank" class="btn btn-app bg-blue" ><i class="fa fa-print"></i> Imprimer la fiche</a>
                             <?php
@@ -621,15 +619,14 @@ if ($newsletter == '') {
                                     ?>
                                     <a href="mailto:<?php echo $mail; ?>?SUBJECT=<?php echo $mail_subject; ?>&BODY=<?php echo $mail_body; ?>"><button class="btn btn-app bg-navy"><i class="fa fa-paper-plane"></i> Mail Id/Passw </button></a>
                             <?php
-                        }
-                    }
-                }
-                ?>
+                                }
+                            }
+                        } ?>
                     </div><!-- .box-body -->
                 </div><!-- .box -->
 
     <?php
-}
+                    }
 ?>
 
 
@@ -641,7 +638,6 @@ if ($newsletter == '') {
                         <label>&Eacute;quipement personnel&nbsp;</label>
                         <?php
                         for ($x = 0; $x < 5; $x++) {
-
                             if (in_array($x, $equipement)) {
                                 $check = "checked";
                             } else {
@@ -670,7 +666,7 @@ if ($newsletter == '') {
                     <div class="form-group">
                         <label>Lieu d'utilisation d'internet</label>
                         <?php
-                        foreach ($utilisationarray AS $keyutil => $valueutil) {
+                        foreach ($utilisationarray as $keyutil => $valueutil) {
                             if (strcmp($utilisation, $keyutil) == 0) {
                                 echo "<div class=\"radio\"><label><input type=\"radio\" name=\"utilisation\" value=" . $keyutil . "  class=\"minimal\" checked>&nbsp;" . $valueutil . "  </label></div>";
                             } else {
@@ -682,7 +678,7 @@ if ($newsletter == '') {
                     <div class="form-group">
                         <label>Le niveau en informatique</label>
                         <?php
-                        foreach ($connaissancearray AS $key => $valuecon) {
+                        foreach ($connaissancearray as $key => $valuecon) {
                             if (strcmp($connaissance, $key) == 0) {
                                 echo "<div class=\"radio\"><label><input type=\"radio\" name=\"connaissance\" value=" . $key . " checked>&nbsp;" . $valuecon . "</label></div>";
                             } else {

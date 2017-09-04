@@ -55,10 +55,9 @@ if (isset($_POST["valider_presence"])) {  // si le formulaire est posté
 
     switch ($act) {
         //1er validation
-        case 0 :
+        case 0:
 
             foreach ($utilisateursAtelier as $utilisateur) {
-
                 if (in_array($utilisateur->getId(), $_POST['present_'])) {
                     // error_log("inscription présent de " . $utilisateur->getNom());
                     $atelier->inscrireUtilisateurPresent($utilisateur->getId());
@@ -91,7 +90,6 @@ if (isset($_POST["valider_presence"])) {  // si le formulaire est posté
         case 1:
 
             foreach ($utilisateursAtelier as $utilisateur) {
-
                 if (in_array($utilisateur->getId(), $_POST['present_'])) {
                     $atelier->inscrireUtilisateurPresent($utilisateur->getId());
 
@@ -114,8 +112,7 @@ if (isset($_POST["valider_presence"])) {  // si le formulaire est posté
                 $statAtelier->modifier('a', $idAtelier, $atelier->getDate() . " " . $atelier->getHeure() . ":00", $inscritsAuDepart, $atelier->getNbUtilisateursPresents(), $absents, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 1, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
             }
 
-            header("Location:index.php?a=18&mesno=43"); //vers les archives 
+            header("Location:index.php?a=18&mesno=43"); //vers les archives
             break;
     }
 }
-?>

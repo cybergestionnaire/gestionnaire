@@ -71,7 +71,6 @@ if ($b == 3) {
 }
 
 if ($b == 4) {
-
     if ($session->inscrireUtilisateurInscrit($idUtilisateur)) {
         echo geterror(26);
     }
@@ -107,7 +106,7 @@ $placesrestantes = $session->getNbPlacesRestantes();
         <?php
         // if ($sessionstatut == 0) {
         if ($session->getStatus() == 0) {
-            ///si la session est encore valide, affichage des adhérents 
+            ///si la session est encore valide, affichage des adhérents
             // liste des user inscrit a une session
             $utilisateursInscrits = $session->getUtilisateursInscrits();
             $nb = count($utilisateursInscrits);
@@ -117,8 +116,7 @@ $placesrestantes = $session->getNbPlacesRestantes();
                     $tooltipinfo = "Inscriptions en cours / total d&eacute;pens&eacute;  sur total achet&eacute;";
                 } else {
                     $tooltipinfo = "Inscriptions en cours ";
-                }
-                ?>
+                } ?>
 
                 <div class="box box-success">
                     <div class="box-header"><h3 class="box-title">Liste des participants</h3></div>
@@ -158,8 +156,7 @@ $placesrestantes = $session->getNbPlacesRestantes();
                                         }
                                     } else { // sans le forfait, affichage des autres inscriptions
                                         $affichage = $nbASencours;
-                                    }
-                                    ?>
+                                    } ?>
                                     <tr>
                                         <td><a href="index.php?a=1&b=2&iduser=<?php echo $utilisateur->getId(); ?>"><button type="button" class="btn btn-default  btn-sm"  data-toggle="tooltip" title="Fiche adh&eacute;rent"><i class="fa fa-edit"></i></button></a></td>
                                         <td><?php echo htmlentities($utilisateur->getNom() . " " . $utilisateur->getPrenom()); ?></td>
@@ -171,8 +168,7 @@ $placesrestantes = $session->getNbPlacesRestantes();
                                         </td>
                                     </tr>
                                     <?php
-                                }
-                                ?>
+                                } ?>
 
                             </tbody>
                         </table>
@@ -190,13 +186,11 @@ $placesrestantes = $session->getNbPlacesRestantes();
                             if ($dateSession->getStatut() == 2) {
                                 echo '<p></p><input type="submit" value="Atelier du ' . getDayFr($dateSession->getDate()) . ' Annul&eacute;" class="btn btn-block bg-orange" disabled/>';
                             }
-                        }
-                        ?>
+                        } ?>
                     </div>
                 </div><!-- .box -->
                 <?php
-            }
-            ?>
+            } ?>
         </section>
         <!--AIDE COLONNE 2-->
 
@@ -248,8 +242,7 @@ $placesrestantes = $session->getNbPlacesRestantes();
                         if ($nb <= 0) {
                             echo getError(6);
                         } else {
-                            echo "<p>R&eacute;sultats de la recherche : " . $nb . "</p>";
-                            ?>
+                            echo "<p>R&eacute;sultats de la recherche : " . $nb . "</p>"; ?>
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -261,14 +254,12 @@ $placesrestantes = $session->getNbPlacesRestantes();
                                 <tbody>
                                     <?php
                                     foreach ($utilisateursRecherche as $utilisateur) {
-
                                         if ($placesrestantes > 0) {
 
                                             // 0= inscription en cours non validée
                                             $nbASencours = $utilisateur->getNBAteliersEtSessionsInscrit();
                                             //mise en place tarification
                                             if ($testTarifAtelier > 1) {
-
                                                 $forfaitsAtelier = $utilisateur->getForfaitsAtelier();
                                                 $depenseactuel = 0;
                                                 $nbactuelsurforfait = 0;
@@ -288,8 +279,7 @@ $placesrestantes = $session->getNbPlacesRestantes();
                                                 }
                                             } else { // sans le forfait, affichage des autres inscriptions
                                                 $affichage = $nbASencours;
-                                            }
-                                            ?>  
+                                            } ?>  
                                             <tr>
                                                 <td>
                                                     <a href="index.php?a=30&b=2&idstatut=0&idsession=<?php echo $idsession ?>&iduser=<?php echo $utilisateur->getId() ?>"><button type="button" class="btn btn-success sm" title="Inscrire"><i class="fa fa-check"></i></button></a>
@@ -310,14 +300,12 @@ $placesrestantes = $session->getNbPlacesRestantes();
                                             </tr>
                                             <?php
                                         }
-                                    }
-                                    ?>
+                                    } ?>
                                 </tbody>
                             </table>
                             <?php
                         }
-                    }
-                    ?>
+                    } ?>
                 </div><!-- .box-body -->
             </div><!-- .box -->
 
@@ -348,29 +336,26 @@ $placesrestantes = $session->getNbPlacesRestantes();
                                                 ?>
                                                 <a href="index.php?a=30&b=4&iduser=<?php echo $utilisateur->getId(); ?>&idsession=<?php echo $idsession; ?>"><button type="button" class="btn btn-success sm"><i class="fa fa-check"></i></button></a>
                                                 <?php
-                                            }
-                                            ?>
+                                            } ?>
                                             <a href="index.php?a=30&b=3&iduser=<?php echo $utilisateur->getId(); ?>&idsession=<?php echo $idsession; ?>"><button type="button" class="btn btn-warning sm"><i class="fa fa-trash-o"></i></button></a>
                                         </td>
                                         <td><?php echo htmlentities($utilisateur->getNom() . " " . $utilisateur->getPrenom()); ?></td>
                                         <!--<td><a href="pdf_atelier.php?user=<?php echo $utilisateur->getId(); ?>" target="_blank"><button type="button" class="btn btn-info sm"><i class="fa fa-envelope"></i></button></a></td>-->
                                     </tr>
                                     <?php
-                                }
-                                ?>
+                                } ?>
                             </tbody>
                         </table>
                     </div>
                 </div><!-- .box -->
                 <?php
-            }
-            ?>
+            } ?>
 
         </section>  
 
         <?php
-    } else {
-//la session a ete cloturée
+        } else {
+            //la session a ete cloturée
         ?>
         <div class="box box-success">
             <div class="box-header"><h3 class="box-title">Session clotur&eacute;e</h3></div>
@@ -382,7 +367,7 @@ $placesrestantes = $session->getNbPlacesRestantes();
         </div>
 
         <?php
-    }
+        }
     ?>
 
 </div><!-- /row -->

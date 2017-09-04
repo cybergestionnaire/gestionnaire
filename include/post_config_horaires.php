@@ -25,7 +25,8 @@
 
 require_once("include/class/Horaire.class.php");
 
-function updateresaconfig($epnr, $unitconfig, $maxtime_config, $resarapide, $duree_resarapide) {
+function updateresaconfig($epnr, $unitconfig, $maxtime_config, $resarapide, $duree_resarapide)
+{
     $sql = "UPDATE `tab_config` SET 
                 `unit_config`='" . $unitconfig . "',
                 `maxtime_config`='" . $maxtime_config . "',
@@ -34,10 +35,10 @@ function updateresaconfig($epnr, $unitconfig, $maxtime_config, $resarapide, $dur
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
-        return TRUE;
+        return true;
     }
 }
 
@@ -72,7 +73,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] != "") {
             $duree_resarapide = $_POST["duree_resarapide"];
 
 
-            if (TRUE == updateresaconfig($epnr, $unitconfig, $maxtime_config, $resarapide, $duree_resarapide)) {
+            if (true == updateresaconfig($epnr, $unitconfig, $maxtime_config, $resarapide, $duree_resarapide)) {
                 header("Location:index.php?a=42&mess=ok&epnr=" . $epnr);
             } else {
                 header("Location:index.php?a=42&mess=Hwrong&epnr=" . $epnr);
@@ -83,4 +84,3 @@ if (isset($_POST["submit"]) && $_POST["submit"] != "") {
 
     //header("Location:index.php?a=42&mess=ok") ;
 }
-?>

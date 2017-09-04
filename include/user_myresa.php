@@ -21,11 +21,11 @@
  */
 
 // fichier de gestion des reservations
-//declaration du temps semaine pour le credit de temps 
+//declaration du temps semaine pour le credit de temps
 require_once('include/class/Resa.class.php');
 
 
-if (isset($_GET['del']) AND is_numeric($_GET['del'])) {
+if (isset($_GET['del']) and is_numeric($_GET['del'])) {
     delResa($_GET['del'], $_SESSION['iduser']); //suppression de la resa
     echo getError("27");
 }
@@ -76,18 +76,16 @@ if (isset($_GET['del']) AND is_numeric($_GET['del'])) {
                                     <td><a href="index.php?m=8&del=<?php echo $resa->getId() ?>"><button type="button" class="btn bg-red sm"><i class="fa fa-trash-o"></i></button></a></td>
                                 </tr>
                                 <?php
-                            }
-                            ?>
+                            } ?>
                         </table>
                     </div>
                 </div>
                 <?php
             }
 
-// ARCHIVES DES RESERVATIONS
+            // ARCHIVES DES RESERVATIONS
             if ($resasPassees !== null) {
-                // affichage
-                ?>  
+                // affichage ?>  
 
                 <div class="box box-warning">
                     <div class="box-header"> <h3 class="box-title">R&eacute;servations archiv&eacute;es</h3></div>
@@ -116,7 +114,7 @@ if (isset($_GET['del']) AND is_numeric($_GET['del'])) {
 
 
 
-                            // while($row = mysqli_fetch_array($result))
+                // while($row = mysqli_fetch_array($result))
                             // {
                             // echo "<tr><td>".dateFr($row['dateresa_resa'])."</td>
                             // <td>".getTime($row['debut_resa'])."</td>

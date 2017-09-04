@@ -25,7 +25,7 @@ header("Content-Type: text/html; charset=UTF-8");
 //header("Content-Type: text/plain");
 
 date_default_timezone_set('Europe/Paris');
-include ("../connect_db.php");
+include("../connect_db.php");
 
 /* if ($port=="" OR FALSE==is_numeric($port))
   {
@@ -46,18 +46,18 @@ if (mysqli_connect_errno()) {
     $sql = "SELECT `nom_computer`, `id_computer`, `adresse_ip_computer`,`date_lastetat_computer`, `lastetat_computer`, `usage_computer` FROM tab_computer WHERE id_salle=" . $salle . " ORDER BY nom_computer;";
     $resultPostes = mysqli_query($db, $sql);
     //$resultPostes = $db->query($sql);
-    //récupération des informations d'occupation de poste dans la salle demandé         
+    //récupération des informations d'occupation de poste dans la salle demandé
     $sql = "SELECT `nom_computer`, `id_computer`, `nom_user`, `prenom_user`, `status_user`, `date_resa`, `debut_resa` FROM `tab_user`, `tab_computer`, `tab_resa` WHERE `tab_resa`.`id_user_resa`=`tab_user`.`id_user` AND `tab_resa`.`id_computer_resa`=`tab_computer`.`id_computer` AND `tab_computer`.`id_salle`='" . $salle . "' AND `tab_resa`.`status_resa`='0' ORDER BY `nom_computer`;";
     $resultInfos = mysqli_query($db, $sql);
-    //$resultInfos = $db->query($sql); 
-    //récupération des informations de la salle         
+    //$resultInfos = $db->query($sql);
+    //récupération des informations de la salle
     $sql = "SELECT `id_salle`, `nom_salle`, `id_espace`, `comment_salle` FROM tab_salle WHERE id_salle=" . $salle . ";";
     $resultSalles = mysqli_query($db, $sql);
     //$resultSalles = $db->query($sql);
 
     mysqli_close($db);
 
-    if (FALSE == $resultInfos || FALSE == $resultPostes || FALSE == $resultSalles) {
+    if (false == $resultInfos || false == $resultPostes || false == $resultSalles) {
         //echo getError(1);
         echo "<div class=\"error\">Impossible de r&eacute;cup&eacute;rer les informations sur l'occupation des postes</div>";
     } else {  // affichage du resultat
@@ -93,8 +93,7 @@ if (mysqli_connect_errno()) {
                                     $time = $interval->format("%d j %hh%im");
                                     if ($diff < 60) {
                                         $time = "<1mm";
-                                    }
-                                    ?>
+                                    } ?>
                                     <tr class="list_console_occup">
                                         <td><?php echo $rowInfos["nom_computer"] ?></td>
                                         <td>Occup&eacute;</td>
@@ -102,12 +101,11 @@ if (mysqli_connect_errno()) {
                                             <?php
                                             if ($rowInfos["status_user"] == 1) {
                                                 echo "(" . $time . ")";
-                                            } else if ($rowInfos["status_user"] == 3) {
+                                            } elseif ($rowInfos["status_user"] == 3) {
                                                 echo "(Animateur)";
-                                            } else if ($rowInfos["status_user"] == 4) {
+                                            } elseif ($rowInfos["status_user"] == 4) {
                                                 echo "(Administrateur)";
-                                            }
-                                            ?>
+                                            } ?>
                                         </td>
                                         <td>
                                             <?php
@@ -115,8 +113,7 @@ if (mysqli_connect_errno()) {
                                                 ?>
                                                 <a class="btn btn-danger" href="#" onClick="ActionConsole2(affichageAction, 'action=2&id_poste=<?php echo $rowPostes["id_computer"] ?>')">Lib&eacute;ration</a>
                                                 <?php
-                                            }
-                                            ?>
+                                            } ?>
                                         </td>
                                     </tr>
                                     <?php
@@ -133,16 +130,18 @@ if (mysqli_connect_errno()) {
                                     $diff = time() - date_timestamp_get($datelastetat); // difference en secondes
                                     $now = new DateTime();
                                     $interval = date_diff($datelastetat, $now);
-                                    $time = $interval->format("%d j %hh%Im");
-                                    ?>
+                                    $time = $interval->format("%d j %hh%Im"); ?>
                                     <tr class="list">
                                         <td><?php echo $rowPostes["nom_computer"] ?></td>
-                                        <td><?php if ($diff < 15) { ?>Libre<?php } else { ?>&Eacute;teint (depuis  <?php echo $time ?> ) <?php } ?></td>
+                                        <td><?php if ($diff < 15) {
+                                        ?>Libre<?php
+                                    } else {
+                                        ?>&Eacute;teint (depuis  <?php echo $time ?> ) <?php
+                                    } ?></td>
                                         <td>-</td>
                                         <td>
                                             <?php
                                             if (($rowPostes["usage_computer"] == 1) && ($diff < 15)) {
-
                                                 $id_poste = $rowPostes["id_computer"];
                                                 $db = mysqli_connect($host, $userdb, $passdb, $database);
                                                 $sql = "SELECT tab_computer.nom_computer, tab_salle.id_espace FROM tab_computer, tab_salle WHERE tab_salle.id_salle = tab_computer.id_salle and tab_computer.id_computer = $id_poste";
@@ -154,25 +153,24 @@ if (mysqli_connect_errno()) {
                                                 $nomcomp = $row["nom_computer"];
                                                 $dateresa = date("Y-m-d");
                                                 $debutresa = date("G") * 60 + intval(date("i"));
-                                                mysqli_close($db);
-                                                ?>
+                                                mysqli_close($db); ?>
                                                 <a class="btn btn-success" href="index.php?m=7&idepn=<?php echo $epn ?>&idcomp=<?php echo $id_poste ?>&nomcomp=<?php echo $nomcomp ?>&date=<?php echo $dateresa ?>&debut=<?php echo $debutresa ?>">R&eacute;servation</a>
-                                            <?php } ?>
+                                            <?php
+                                            } ?>
                                         </td>
                                     </tr>
                                     <?php
                                 }
-                            }
-                            ?>
+                            } ?>
                         </table>
                     </form>
                 </div>
                 <?php
-            } else {
-                ?>
+                        } else {
+                            ?>
                 <table width="100%"><tr class="list" align="center"><td>Aucun poste n'est pr&eacute;sent dans cette salle</td> </tr></table>
                 <?php
-            }
-        }
+                        }
     }
+}
     ?>

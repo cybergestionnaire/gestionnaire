@@ -149,7 +149,7 @@ if ($atelierSujets === null) {
 
     <?php
 } else {
-    ?>
+        ?>
 
     <form method="post" action="<?php echo $post_url; ?>" role="form">
         <div class="row">
@@ -164,14 +164,13 @@ if ($atelierSujets === null) {
                             <label><span class="text-red">Sujet*</span></label>
                             <select name="sujet" class="form-control">
                                 <?php
-                                foreach ($atelierSujets AS $atelierSujet) {
+                                foreach ($atelierSujets as $atelierSujet) {
                                     if ($idSujet == $atelierSujet->getId()) {
                                         echo "<option value=\"" . $atelierSujet->getId() . "\" selected>" . $atelierSujet->getLabel() . "</option>";
                                     } else {
                                         echo "<option value=\"" . $atelierSujet->getId() . "\">" . $atelierSujet->getLabel() . "</option>";
                                     }
-                                }
-                                ?>
+                                } ?>
                             </select>
                         </div>
 
@@ -188,14 +187,13 @@ if ($atelierSujets === null) {
                                 <div class="input-group">
                                     <select name="duree" class="form-control">
                                         <?php
-                                        foreach ($dureesa AS $key => $value) {
+                                        foreach ($dureesa as $key => $value) {
                                             if ($duree == $key) {
                                                 echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                             } else {
                                                 echo "<option value=\"" . $key . "\">" . $value . "</option>";
                                             }
-                                        }
-                                        ?>
+                                        } ?>
                                     </select>
                                 </div>
                             </div>
@@ -237,14 +235,13 @@ if ($atelierSujets === null) {
                             <label>Salle</label>
                             <select name="salle" class="form-control">
                                 <?php
-                                foreach ($salles AS $salle) {
+                                foreach ($salles as $salle) {
                                     if ($idSalle == $salle->getId()) {
                                         echo "<option value=\"" . $salle->getId() . "\" selected>" . htmlentities($salle->getNom()) . " (" . htmlentities($salle->getEspace()->getNom()) . ")</option>";
                                     } else {
                                         echo "<option value=\"" . $salle->getId() . "\">" . htmlentities($salle->getNom()) . " (" . htmlentities($salle->getEspace()->getNom()) . ")</option>";
                                     }
-                                }
-                                ?>
+                                } ?>
                             </select>
                         </div>
 
@@ -252,14 +249,13 @@ if ($atelierSujets === null) {
                             <label>Anim&eacute; par </label>
                             <select name="anim" class="form-control">
                                 <?php
-                                foreach ($animateurs AS $animateur) {
+                                foreach ($animateurs as $animateur) {
                                     if ($idAnim == $animateur->getId()) {
                                         echo "<option value=\"" . $animateur->getId() . "\" selected>" . htmlentities($animateur->getPrenom()) . " " . htmlentities($animateur->getNom()) . "</option>";
                                     } else {
                                         echo "<option value=\"" . $animateur->getId() . "\">" . htmlentities($animateur->getPrenom()) . " " . htmlentities($animateur->getNom()) . "</option>";
                                     }
-                                }
-                                ?>
+                                } ?>
                             </select>
                         </div>
 
@@ -272,14 +268,13 @@ if ($atelierSujets === null) {
 
                             <select name="tarif" class="form-control" >
                                 <?php
-                                foreach ($tarifs AS $tarif) {
+                                foreach ($tarifs as $tarif) {
                                     if ($idTarif == $tarif->getId()) {
                                         echo "<option value=\"" . $tarif->getId() . "\" selected>" . htmlentities($tarif->getNom()) . "</option>";
                                     } else {
                                         echo "<option value=\"" . $tarif->getId() . "\">" . htmlentities($tarif->getNom() . " (" . $tarif->getDonnee() . "€)") . "</option>";
                                     }
-                                }
-                                ?>
+                                } ?>
                             </select>
                         </div> 
 
@@ -288,14 +283,13 @@ if ($atelierSujets === null) {
                             <label>Statut </label>
                             <select name="statut" class="form-control">
                                 <?php
-                                foreach ($stateAtelier AS $key => $value) {
+                                foreach ($stateAtelier as $key => $value) {
                                     if ($statut == $key) {
                                         echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                     } else {
                                         echo "<option value=\"" . $key . "\">" . $value . "</option>";
                                     }
-                                }
-                                ?>
+                                } ?>
                             </select>
                         </div>
                     </div><!-- .box-body -->
@@ -337,4 +331,5 @@ if ($atelierSujets === null) {
     </script>
 
 
-<?php } ?>
+<?php
+    } ?>

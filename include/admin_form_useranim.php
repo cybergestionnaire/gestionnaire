@@ -102,7 +102,7 @@ if ($_SESSION['status'] == 4) { //animateur et admin
         4 => "Administrateur",
         5 => "Animateur Inactif"
     );
-} else if ($_SESSION['status'] == 3) {// autres, adherents actifs et inactifs
+} elseif ($_SESSION['status'] == 3) {// autres, adherents actifs et inactifs
     $state = array(
         3 => "Animateur",
     );
@@ -215,7 +215,7 @@ include("include/boites/menu-parametres.php");
                                             <td>
                                                 <select name="mois" tabindex="2" class="form-control">
                                                     <?php
-                                                    foreach ($month AS $key => $value) {
+                                                    foreach ($month as $key => $value) {
                                                         if ($mois == $key) {
                                                             echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                                         } else {
@@ -250,7 +250,7 @@ include("include/boites/menu-parametres.php");
                         <label>Ville *:</label>
                         <select name="ville" class="form-control" >
                             <?php
-                            foreach ($villes AS $ville) {
+                            foreach ($villes as $ville) {
                                 if ($idVille == $ville->getId()) {
                                     echo "<option value=\"" . $ville->getId() . "\" selected>" . htmlentities($ville->getNom()) . "</option>";
                                 } else {
@@ -305,7 +305,7 @@ include("include/boites/menu-parametres.php");
                         <select name="status" class="form-control">
                             <?php
                             if ($id_user != "") {
-                                foreach ($state AS $key => $value) {
+                                foreach ($state as $key => $value) {
                                     if ($statuss == $key) {
                                         echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                     } else {
@@ -315,7 +315,7 @@ include("include/boites/menu-parametres.php");
                             }
 // ajout
                             else {
-                                foreach ($state AS $key => $value) {
+                                foreach ($state as $key => $value) {
                                     if ($value == "Animateur") {
                                         echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                     } else {

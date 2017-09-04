@@ -200,7 +200,7 @@ if (isset($mess)) {
                         </select>
                         <select name="mois">
                             <?php
-                            foreach ($month AS $key => $value) {
+                            foreach ($month as $key => $value) {
                                 if ($mois == $key) {
                                     echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                 } else {
@@ -224,7 +224,7 @@ if (isset($mess)) {
                         <select name="ville" class="form-control">
                             <option value="0">Autre commune</option>
                             <?php
-                            foreach ($villes AS $ville) {
+                            foreach ($villes as $ville) {
                                 if ($idVille == $ville->getId()) {
                                     echo "<option value=\"" . $ville->getId() . "\" selected>" . $ville->getNom() . "</option>";
                                 } else {
@@ -275,7 +275,7 @@ if (isset($mess)) {
                         <label>Tarif de la consultation internet&nbsp;&nbsp;&nbsp;&nbsp;<small class="badge bg-blue" data-toggle="tooltip" title="Par defaut sans tarif, &agrave; changer selon vos propres tarifs"><i class="fa fa-info"></i></small></label>
                         <select name="temps" class="form-control" >
                             <?php
-                            foreach ($forfaits AS $forfait) {
+                            foreach ($forfaits as $forfait) {
                                 if ($temps == $forfait->getId()) {
                                     echo "<option value=\"" . $forfait->getId() . "\" selected>" . htmlentities($forfait->getNom()) . " (" . htmlentities($forfait->getPrix()) . " €)</option>";
                                 } else {
@@ -292,7 +292,7 @@ if (isset($mess)) {
                         <select name="status"  class="form-control">
                             <?php
                             if ($id_user != "") {
-                                foreach ($state AS $key => $value) {
+                                foreach ($state as $key => $value) {
                                     if ($status == $key) {
                                         echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                     } else {
@@ -302,7 +302,7 @@ if (isset($mess)) {
                             }
                             // ajout
                             else {
-                                foreach ($state AS $key => $value) {
+                                foreach ($state as $key => $value) {
                                     if ($value == "Actif") {
                                         echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                     } else {
@@ -318,7 +318,7 @@ if (isset($mess)) {
                         <label>Tarif de l'adh&eacute;sion</label>
                         <select name="tarif" class="form-control" >
                             <?php
-                            foreach ($tarifs AS $tarif) {
+                            foreach ($tarifs as $tarif) {
                                 // if ($idTarif == $tarif->getId()) {
                                 // echo "<option value=\"" . $tarif->getId() . "\" selected>" . htmlentities($tarif->getNom()) . " (" . htmlentities($tarif->getDonnee()) . " €)</option>";
                                 // }
@@ -345,19 +345,19 @@ if (isset($mess)) {
                                 $check = "checked";
                             } else {
                                 $check = '';
-                            }
-                            ?>  
+                            } ?>  
                             <div class="checkbox">
                                 <input type="checkbox" name="equipement[]" value="<?php echo $x; ?>"  <?php echo $check; ?> >&nbsp; <?php echo $equipementarray[$x]; ?>
                             </div>
-                        <?php }
+                        <?php
+                        }
                         ?>
                     </div>
 
                     <div class="form-group">
                         <label>Lieu d'utilisation d'internet</label>
                         <?php
-                        foreach ($utilisationarray AS $keyutil => $valueutil) {
+                        foreach ($utilisationarray as $keyutil => $valueutil) {
                             if (strcmp($utilisation, $keyutil) == 0) {
                                 echo "<div class=\"radio icheck\"><input type=\"radio\" name=\"utilisation\" value=" . $keyutil . " checked>&nbsp;" . $valueutil . "  </div>";
                             } else {
@@ -369,7 +369,7 @@ if (isset($mess)) {
                     <div class="form-group">
                         <label>Le niveau en informatique</label>
                         <?php
-                        foreach ($connaissancearray AS $key => $valuecon) {
+                        foreach ($connaissancearray as $key => $valuecon) {
                             if ($connaissance == $key) {
                                 echo "<div class=\"radio icheck\"><input type=\"radio\" name=\"connaissance\" value=" . $key . " checked >&nbsp;" . $valuecon . "</div>";
                             } else {
@@ -382,7 +382,7 @@ if (isset($mess)) {
                         <label>Cat&eacute;gorie Socio-professionnelle</label>
                         <select name="csp" class="form-control">
                             <?php
-                            foreach ($professions AS $profession) {
+                            foreach ($professions as $profession) {
                                 if ($csp == $profession->getId()) {
                                     echo "<option value=\"" . $profession->getId() . "\" selected>" . htmlentities($profession->getCSP()) . "</option>";
                                 } else {
@@ -410,7 +410,7 @@ if (isset($mess)) {
                         <label>L'epn d'inscription *:</label>
                         <select name="epn" class="form-control" >
                             <?php
-                            foreach ($espaces AS $espace) {
+                            foreach ($espaces as $espace) {
                                 if ($epn == $espace->getId()) {
                                     echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
                                 } else {

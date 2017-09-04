@@ -8,7 +8,7 @@
 
 include("libchart/classes/libchart.php");
 
-if (TRUE == isset($_GET['month']) AND TRUE == is_numeric($_GET['month']) AND $_GET['month'] > 0 AND $_GET['month'] < 13) {
+if (true == isset($_GET['month']) and true == is_numeric($_GET['month']) and $_GET['month'] > 0 and $_GET['month'] < 13) {
     $month = $_GET['month'];
     $year = $_GET['year'];
 } else {
@@ -19,7 +19,7 @@ if (TRUE == isset($_GET['month']) AND TRUE == is_numeric($_GET['month']) AND $_G
 // chargement des valeurs pour l'epn par d&eacute;faut
 $epn = $_SESSION['idepn'];
 //si changment d'epn
-if (TRUE == isset($_POST['modifepn'])) {
+if (true == isset($_POST['modifepn'])) {
     $epn = $_POST['pepn'];
 }
 
@@ -44,7 +44,7 @@ if (!is_dir($dossierimg)) {
                 <form method="post" role="form">
                     <div class="input-group"><label>Changer d'espace</label><select name="pepn"  class="form-control pull-right" style="width: 210px;">
                             <?php
-                            foreach ($espaces AS $key => $value) {
+                            foreach ($espaces as $key => $value) {
                                 if ($epn == $key) {
                                     echo "<option  value=\"" . $key . "\" selected>" . $value . "</option>";
                                 } else {
@@ -297,12 +297,11 @@ if (!is_dir($dossierimg)) {
             <div class="nav-tabs-custom">
 
                 <?php
-///comptabiliser les connexions pour la journ&eacute;e choisie	
+///comptabiliser les connexions pour la journ&eacute;e choisie
                 for ($d = 2; $d < 7; ++$d) {
-
                     $nomjour = getJourEng($d);
                     $nbPoste = getnbcomputperepn($epn);
-//initialisation graphiques
+                    //initialisation graphiques
                     $chartMardi = new HorizontalBarChart(440, 400);
                     $dataSetMardi = new XYSeriesDataSet();
                     for ($i = 0; $i < 2; ++$i) {

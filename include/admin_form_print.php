@@ -38,7 +38,7 @@ $caisse = isset($_GET["caisse"]) ? $_GET["caisse"] : '';
 
 if ($id_user == "ext") { //en cas d'utilisateur qui n'est pas dans la base, utilisation de l'utilisateur externe créé dans la MAJ
     $userext = Utilisateur::getIduserexterne();
-    if ($userext != FALSE) {
+    if ($userext != false) {
         $id_user = $userext;
         $userext = 1;
     } else {
@@ -135,7 +135,7 @@ $paiementmoyen = array(
                                 <input type="text"   name="debit[]" value="<?php echo $debit ?>" class="form-control">
                             </div>
                             <?php
-                            //debug($date_p);   
+                            //debug($date_p);
                         }
                     } else {
                         $tarifs = Tarif::getTarifsByCategorie(1);
@@ -173,22 +173,21 @@ $paiementmoyen = array(
                             <thead><th>Nom tarif</th><th>Nb de pages</th><th>Prix</th></thead>
                             <?php
                             $nbt = count($transactions);
-                            //$donnees = array_chunk( $transactions ,5);
-                            $total = 0;
-                            for ($i = 0; $i < $nbt; $i++) {
-                                $idTarif = $transactions[$i];
-                                $debit = $debits[$i];
-                                $tarif = Tarif::getTarifById($idTarif);
-                                // $tab_transac  = $donnees[$i];
-                                // $debit_p      = $tab_transac[0];
-                                // $tarif_p      = $tab_transac[1];
-                                // $nom_tarif    = $tab_transac[2];
-                                // $donnee_tarif = $tab_transac[3];
-                                // $statut_p     = $tab_transac[4];
+        //$donnees = array_chunk( $transactions ,5);
+        $total = 0;
+        for ($i = 0; $i < $nbt; $i++) {
+            $idTarif = $transactions[$i];
+            $debit = $debits[$i];
+            $tarif = Tarif::getTarifById($idTarif);
+            // $tab_transac  = $donnees[$i];
+            // $debit_p      = $tab_transac[0];
+            // $tarif_p      = $tab_transac[1];
+            // $nom_tarif    = $tab_transac[2];
+            // $donnee_tarif = $tab_transac[3];
+            // $statut_p     = $tab_transac[4];
 
-                                $prix = round(($debit * $tarif->getDonnee()), 2);
-                                $total = $total + $prix;
-                                ?>
+            $prix = round(($debit * $tarif->getDonnee()), 2);
+            $total = $total + $prix; ?>
 
 
                                 <tr>
@@ -201,8 +200,7 @@ $paiementmoyen = array(
                                     </td>
                                 </tr>
                                 <?php
-                            }
-                            ?>
+        } ?>
                             <tr>
                                 <td>total</td>
                                 <td></td>
@@ -224,8 +222,7 @@ $paiementmoyen = array(
                             } else {
                                 $du = $total - $totalrestant;
                                 $paiement = 1;
-                            }
-                            ?>
+                            } ?>
                             <tr>
                                 <td><b>Total d&ucirc; : </b></td>
                                 <td></td>
@@ -237,10 +234,9 @@ $paiementmoyen = array(
                                 <td colspan="2">
                                     <select name="moyen_paiement" class="form-control">
                                         <?php
-                                        foreach ($paiementmoyen AS $key => $value) {
+                                        foreach ($paiementmoyen as $key => $value) {
                                             echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
-                                        }
-                                        ?>
+                                        } ?>
                                     </select>
                                 </td>
                                 <td></td>
@@ -261,8 +257,7 @@ $paiementmoyen = array(
                                     <td colspan="2"><input type="text" name="nomuser"  placeholder="Veuillez entrer le nom et pr&eacute;nom" class="form-control"></td>
                                 </tr>
                                 <?php
-                            }
-                            ?>
+                            } ?>
 
                         </table>
                     </div><!-- .box-body -->
@@ -278,5 +273,5 @@ $paiementmoyen = array(
         </div><!-- .col-md-6 -->
     </div><!-- .row -->
     <?php
-}
+    }
 ?>

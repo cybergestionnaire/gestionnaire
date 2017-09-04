@@ -22,7 +22,7 @@ if (isset($_POST['export'])) {
         $ids_presents = $ids_presents . $_POST['present_'][$i] . ";";
     }
     echo "<h4 class=\"alert_info\"><a href=\"a_export.php?ids=$ids_presents\" target=\"_blank\">export de la liste</a></h4>";
-//	echo $ids_presents;
+    //	echo $ids_presents;
 }
 ?>
 
@@ -35,7 +35,7 @@ if ($m == 12) {
 }
 
 $result = getAllUserAtelierMois($y, $m);
-if (FALSE == $result) {
+if (false == $result) {
     echo getError(1);
 } else {  // affichage du resultat
     $nb = mysqli_num_rows($result);
@@ -47,13 +47,12 @@ if (FALSE == $result) {
             <footer><div class="submit_link">
                     <?php
                     $row = MakePDFUserAtelier($y, $m);
-                    if (mysqli_num_rows($row) > 0) {
-                        $resultpdf = mysql_fetch_array($row);
-                        //debug($resultpdf);
+        if (mysqli_num_rows($row) > 0) {
+            $resultpdf = mysql_fetch_array($row);
+            //debug($resultpdf);
                         //envoi de la liste � terminer
                         //echo '<a href="pdf_atelier.php?user="'.$ipdf["id_user"].'" target="_blank\">  ';
-                    }
-                    ?>
+        } ?>
                     <input type="submit" name="Creation PDF" value="export_pdf" class="alt_btn"></a></div></footer>
         </article>
         <article class="module width_full"><header><h3>Liste pour lettre de rappel</h3></header>
@@ -79,13 +78,12 @@ if (FALSE == $result) {
 							 <td><a href=\"pdf_atelier.php?user=" . $row["id_user"] . "\" target=\"_blank\"><img src=\"images/icn_pdf.png\"></a>
                              <td><input type=\"checkbox\" name=\"present_[]\" value=" . $row["id_user"] . "></td>
                              </tr>";
-                            }
-                            ?>
+                            } ?>
                         </tbody></table></div>
             <footer><div class="submit_link"><input type="submit" name="export" value="export" class="alt_btn"></div></footer></form></article>
                     <?php
-                }
-                //fin des tableaux
-            }
+    }
+    //fin des tableaux
+}
             ?>
 

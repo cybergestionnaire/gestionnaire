@@ -43,7 +43,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] != "") {
     header("Location:index.php?a=2&epnr=" . $epnr);
 }
 
-if ($act != "" AND $act != 3) { // verife si non vide
+if ($act != "" and $act != 3) { // verife si non vide
     // Traitement des champs a insérer
     if ($nom == '' || $salle == '') {
         $mess = getError(4);
@@ -57,10 +57,9 @@ if ($act != "" AND $act != 3) { // verife si non vide
                 } else {
                     $usages = Usage::getUsages();
                     if (isset($_POST["fonction"])) {
-
                         $fonctionsArray = $_POST["fonction"];
 
-                        foreach ($fonctionsArray AS $key => $value) {
+                        foreach ($fonctionsArray as $key => $value) {
                             $materiel->addUsageById($value);
                         }
                     }
@@ -88,4 +87,3 @@ if ($act == 3) { // supprime un poste
         header("Location: ./index.php?a=2&mesno=");
     }
 }
-?>

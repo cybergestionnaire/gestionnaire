@@ -20,8 +20,8 @@
 
 require_once("Mysql.class.php");
 
-class Horaire {
-
+class Horaire
+{
     private $_id;
     private $_idEspace;
     private $_idJour;
@@ -32,7 +32,8 @@ class Horaire {
     private $_typeUniteHoraire;
     private $_jours = array("", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche");
 
-    private function __construct($array) {
+    private function __construct($array)
+    {
         $this->_id = $array["id_horaire"];
         $this->_idEspace = $array["id_epn"];
         $this->_idJour = $array["jour_horaire"];
@@ -43,32 +44,39 @@ class Horaire {
         $this->_typeUniteHoraire = $array["unit_horaire"];
     }
 
-    public function getHoraire1Debut() {
+    public function getHoraire1Debut()
+    {
         return $this->_horaire1Debut;
     }
 
-    public function getHoraire1Fin() {
+    public function getHoraire1Fin()
+    {
         return $this->_horaire1Fin;
     }
 
-    public function getHoraire2Debut() {
+    public function getHoraire2Debut()
+    {
         return $this->_horaire2Debut;
     }
 
-    public function getHoraire2Fin() {
+    public function getHoraire2Fin()
+    {
         return $this->_horaire2Fin;
     }
 
-    public function getIdJour() {
+    public function getIdJour()
+    {
         return $this->_idJour;
     }
 
-    public function getJour() {
+    public function getJour()
+    {
         return $this->_jours[$this->_idJour];
     }
 
-    public function modifier($h1begin, $h1end, $h2begin, $h2end) {
-        $success = FALSE;
+    public function modifier($h1begin, $h1end, $h2begin, $h2end)
+    {
+        $success = false;
 
         if (Horaire::checkHoraire($h1begin, $h1end, $h2begin, $h2end)) {
             $db = Mysql::opendb();
@@ -90,14 +98,15 @@ class Horaire {
                 $this->_horaire2Debut = $h2begin;
                 $this->_horaire2Fin = $h2end;
 
-                $success = TRUE;
+                $success = true;
             }
         }
 
         return $success;
     }
 
-    public static function getHorairesById($id) {
+    public static function getHorairesById($id)
+    {
         $horaire = null;
 
         if ($id != 0) {
@@ -117,7 +126,8 @@ class Horaire {
         return $horaire;
     }
 
-    public static function getHorairesByIdEspace($idEspace) {
+    public static function getHorairesByIdEspace($idEspace)
+    {
         $horaires = null;
         if ($idEspace != 0) {
             $db = Mysql::opendb();
@@ -138,41 +148,47 @@ class Horaire {
         return $horaires;
     }
 
-    public static function convertHoraire($temps) {
+    public static function convertHoraire($temps)
+    {
         $h = substr($temps, 0, 2);
         $m = substr($temps, 3, 2);
         $conv = (60 * $h) + $m;
         return $conv;
     }
 
-    public static function checkHoraire($h1begin, $h1end, $h2begin, $h2end) {
-        $success = TRUE;
+    public static function checkHoraire($h1begin, $h1end, $h2begin, $h2end)
+    {
+        $success = true;
 
-        if (($h1begin == "" AND $h1end != "") OR ( $h1begin != "" AND $h1end == ""))     // Seulement un coté de rempli
-            $success = FALSE;
+        if (($h1begin == "" and $h1end != "") or ($h1begin != "" and $h1end == "")) {     // Seulement un coté de rempli
+            $success = false;
+        }
 
-        if (($h2begin == "" AND $h2end != "") OR ( $h2begin != "" AND $h2end == ""))     // Seulement un coté de rempli
-            $success = FALSE;
+        if (($h2begin == "" and $h2end != "") or ($h2begin != "" and $h2end == "")) {     // Seulement un coté de rempli
+            $success = false;
+        }
 
-        if ($h1begin != "" AND $h1end != "") {
+        if ($h1begin != "" and $h1end != "") {
             // les heures du matin sont remplies
-            if ($h1end < $h1begin)  //l'heure de fin inferieur a l'heure de debut
-                $success = FALSE;
+            if ($h1end < $h1begin) {  //l'heure de fin inferieur a l'heure de debut
+                $success = false;
+            }
         }
 
-        if ($h2begin != "" AND $h2end != "") {
+        if ($h2begin != "" and $h2end != "") {
             // les heures de l'après-midi sont remplies
-            if ($h2end < $h2begin)  // l'heure de fin inferieur a l'heure de debut
-                $success = FALSE;
+            if ($h2end < $h2begin) {  // l'heure de fin inferieur a l'heure de debut
+                $success = false;
+            }
         }
 
-        if ($h1begin != "" AND $h1end != "" AND $h2begin != "" AND $h2end != "") {
+        if ($h1begin != "" and $h1end != "" and $h2begin != "" and $h2end != "") {
             // tous les horaires sont remplis
-            if ($h1end > $h2begin OR $h1end > $h2end OR $h1begin > $h2begin OR $h1begin > $h2end)
-                $success = FALSE;
+            if ($h1end > $h2begin or $h1end > $h2end or $h1begin > $h2begin or $h1begin > $h2end) {
+                $success = false;
+            }
         }
 
         return $success;
     }
-
 }

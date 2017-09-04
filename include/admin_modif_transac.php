@@ -54,7 +54,7 @@ $temps = $utilisateur->getIdTarifConsultation();
 
 switch ($typeTransac) {
     //les impressions
-    case "p" :
+    case "p":
 
         $url_redirect = "index.php?a=21&b=3&idtransac=" . $transac . "&typetransac=" . $typeTransac . "&iduser=" . $id_user;
         $annuler = "index.php?a=21&b=1&caisse=&act=&iduser=" . $id_user;
@@ -132,7 +132,6 @@ switch ($typeTransac) {
                     $paiementmoyen = array(1 => "Esp&egrave;ces", 2 => "Ch&egrave;que", 3 => "Carte Bleue");
 // Modification d'une impression
                     if ($typeTransac == "p") {
-
                         $impression = Impression::getImpressionById($transac);
                         // $print = mysqli_fetch_array(getPrintFromID($transac));
                         // Si l'utilisateur est externe, affichage du champs avec le nom
@@ -157,7 +156,6 @@ switch ($typeTransac) {
                         //  debug($_POST);
                         //recalcul ?
                         if (isset($_POST["recalculer"])) {
-
                             $debit_p = $_POST["debitprint"];
                             $tarif_p = Tarif::getTarifById($_POST["tarifprint"]);
                             $credit_p = round(($_POST["debitprint"] * $tarif_p->getDonnee()), 2);
@@ -178,8 +176,7 @@ switch ($typeTransac) {
                             $disable = "disabled /";
                         } else {
                             $disable = "";
-                        }
-                        ?>
+                        } ?>
 
                         <div class="form-group">
                             <label>Date</label>
@@ -209,8 +206,7 @@ switch ($typeTransac) {
                                             } else {
                                                 echo "<option value=\"" . $tarif->getId() . "\">" . htmlentities($tarif->getNom() . ' (' . number_format($tarif->getDonnee(), 2, ',', ' ')) . " &euro;)</option>";
                                             }
-                                        }
-                                        ?>
+                                        } ?>
                                     </select>
                                 </div>
                             </div>
@@ -222,14 +218,13 @@ switch ($typeTransac) {
                                 <div class="col-xs-6">
                                     <select name="moyen_paiement" class="form-control">
                                         <?php
-                                        foreach ($paiementmoyen AS $key => $value) {
+                                        foreach ($paiementmoyen as $key => $value) {
                                             if ($paiement_p == $key) {
                                                 echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                             } else {
                                                 echo "<option value=\"" . $key . "\">" . $value . "</option>";
                                             }
-                                        }
-                                        ?>
+                                        } ?>
                                     </select>
                                 </div>
                             </div>
@@ -245,8 +240,7 @@ switch ($typeTransac) {
                                 <input type="text" name="nomuser"  placeholder="Veuillez entrer le nom et pr&eacute;nom" class="form-control" value="<?php echo $print["print_userexterne"]; ?>">
                             </div>
                             <?php
-                        }
-                        ?>
+                        } ?>
 
 
                         <div class="form-group">
@@ -273,8 +267,7 @@ switch ($typeTransac) {
                         $daterenouv2 = date_create($today);
                         date_add($daterenouv2, date_interval_create_from_date_string('365 days'));
                         $daterenouv2 = date_format($daterenouv2, 'Y-m-d');
-                        $tarifsAdhesion = Tarif::getTarifsByCategorie(2);
-                        ?>
+                        $tarifsAdhesion = Tarif::getTarifsByCategorie(2); ?>
                         <div class="form-group">
                             <label>Date de 1er inscription</label>
                             <div class="row">
@@ -308,21 +301,19 @@ switch ($typeTransac) {
                                 // echo "<option value=\"".$key."\">".$value."</option>";
                                 // }
                                 // }
-                                foreach ($tarifsAdhesion AS $tarif) {
+                                foreach ($tarifsAdhesion as $tarif) {
                                     if ($tarif->getId() == $idTarif) {
                                         echo "<option value=\"" . $tarif->getId() . "\" selected>" . htmlentities($tarif->getNom() . ' (' . number_format($tarif->getDonnee(), 2, ',', ' ')) . " &euro;)</option>";
                                     } else {
                                         echo "<option value=\"" . $tarif->getId() . "\">" . htmlentities($tarif->getNom() . ' (' . number_format($tarif->getDonnee(), 2, ',', ' ')) . " &euro;)</option>";
                                     }
-                                }
-                                ?>
+                                } ?>
                             </select>
                         </div>
                         <?php
                         if (isset($transac)) {
                             echo '<div><input name="idtransac" value="' . $transac . '" hidden></div>';
-                        }
-                        ?>
+                        } ?>
 
 
 
@@ -330,7 +321,7 @@ switch ($typeTransac) {
                     }
                     ///**Fin modification des adhesions
                     ///***Forfait atelier ou consultation
-                    if (($typeTransac == "forfait") OR ( $typeTransac == "temps" )) {
+                    if (($typeTransac == "forfait") or ($typeTransac == "temps")) {
                         ?>
 
                         <div class="form-group">
@@ -354,28 +345,25 @@ switch ($typeTransac) {
                                         }
                                     }
                                 }
-                                if ($typeTransac == "temps") {
-                                    foreach ($forfaits as $forfait) {
-                                        if ($forfait_user == $forfait->getId()) {
-                                            echo "<option value=\"" . $forfait->getId() . "\" selected>" . htmlentities($forfait->getNom()) . " (" . $forfait->getPrix() . "€) </option>";
-                                        } else {
-                                            echo "<option value=\"" . $forfait->getId() . "\">" . htmlentities($forfait->getNom()) . " (" . $forfait->getPrix() . "€) </option>";
-                                        }
-                                    }
+                        if ($typeTransac == "temps") {
+                            foreach ($forfaits as $forfait) {
+                                if ($forfait_user == $forfait->getId()) {
+                                    echo "<option value=\"" . $forfait->getId() . "\" selected>" . htmlentities($forfait->getNom()) . " (" . $forfait->getPrix() . "€) </option>";
+                                } else {
+                                    echo "<option value=\"" . $forfait->getId() . "\">" . htmlentities($forfait->getNom()) . " (" . $forfait->getPrix() . "€) </option>";
                                 }
-                                ?>
+                            }
+                        } ?>
                             </select>
                         </div>
                         <?php
-                        if ($typeTransac == "forfait") { // n'apparait pas pour les tarfis de la consultation 
-                            ?>  
+                        if ($typeTransac == "forfait") { // n'apparait pas pour les tarfis de la consultation ?>  
                             <div class="form-group">
                                 <label>Combien ? </label>       
                                 <input type="text" name="nbrf" value="<?php echo $nbrforfait; ?>" placeholder="3, 6...." class="form-control"> 
                             </div>
                             <?php
-                        }
-                        ?>
+                        } ?>
 
                         <div class="form-group">
                             <label>Quand ? </label> 

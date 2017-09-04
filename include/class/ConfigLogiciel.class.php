@@ -21,8 +21,8 @@
 
 require_once("Mysql.class.php");
 
-class ConfigLogiciel {
-
+class ConfigLogiciel
+{
     private $_id;
     private $_idEspace;
     private $_configMenu;
@@ -34,7 +34,8 @@ class ConfigLogiciel {
     private $_deconnexionAuto;
     private $_fermetureSession;
 
-    public function __construct($array) {
+    public function __construct($array)
+    {
         $this->_id = $array["id_config_logiciel"];
         $this->_idEspace = $array["id_espace"];
         $this->_configMenu = $array["config_menu_logiciel"];
@@ -47,47 +48,58 @@ class ConfigLogiciel {
         $this->_fermetureSession = $array["fermeture_session_auto"];
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getIdEspace() {
+    public function getIdEspace()
+    {
         return $this->_idEspace;
     }
 
-    public function hasConfigMenu() {
+    public function hasConfigMenu()
+    {
         return $this->_configMenu == "0" ? false : true;
     }
 
-    public function hasPageInscription() {
+    public function hasPageInscription()
+    {
         return $this->_pageInscription == "0" ? false : true;
     }
 
-    public function hasPageRenseignement() {
+    public function hasPageRenseignement()
+    {
         return $this->_pageRenseignement == "0" ? false : true;
     }
 
-    public function hasConnexionAnim() {
+    public function hasConnexionAnim()
+    {
         return $this->_connexionAnim == "0" ? false : true;
     }
 
-    public function hasBlocageTouche() {
+    public function hasBlocageTouche()
+    {
         return $this->_blocageTouche == "0" ? false : true;
     }
 
-    public function hasAffichageTemps() {
+    public function hasAffichageTemps()
+    {
         return $this->_affichageTemps == "0" ? false : true;
     }
 
-    public function hasDeconnexionAuto() {
+    public function hasDeconnexionAuto()
+    {
         return $this->_deconnexionAuto == "0" ? false : true;
     }
 
-    public function hasFermetureSession() {
+    public function hasFermetureSession()
+    {
         return $this->_fermetureSession == "0" ? false : true;
     }
 
-    function setConfigLogiciel($configMenu, $pageInscription, $pageRenseignement, $connexionAnim, $bloquageTouche, $affichageTemps, $deconnexionAuto, $fermetureSession) {
+    public function setConfigLogiciel($configMenu, $pageInscription, $pageRenseignement, $connexionAnim, $bloquageTouche, $affichageTemps, $deconnexionAuto, $fermetureSession)
+    {
         $success = false;
 
         $db = Mysql::opendb();
@@ -114,8 +126,8 @@ class ConfigLogiciel {
 
         $result = mysqli_query($db, $sql);
 
-        if ($result != FALSE) {
-            $success = TRUE;
+        if ($result != false) {
+            $success = true;
         }
 
         Mysql::closedb($db);
@@ -123,7 +135,8 @@ class ConfigLogiciel {
         return $success;
     }
 
-    public static function getConfigLogiciel($idEspace) {
+    public static function getConfigLogiciel($idEspace)
+    {
         $configLogiciel = null;
 
         $db = Mysql::opendb();
@@ -141,5 +154,4 @@ class ConfigLogiciel {
 
         return $configLogiciel;
     }
-
 }

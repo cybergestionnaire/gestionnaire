@@ -33,7 +33,7 @@ require_once "include/class/Impression.class.php";
 
 $act = isset($_GET["act"]) ? $_GET["act"] : "";
 
-if ($act != "" AND $act != 3) { // verife si non vide
+if ($act != "" and $act != 3) { // verife si non vide
     $id_user = isset($_GET["iduser"]) ? $_GET["iduser"] : "";
     // $id_transac = isset($_GET["idtransac"]) ? $_GET["idtransac"] : "";
     $idsTarif = isset($_POST["printUIdTarif"]) ? $_POST["printUIdTarif"] : "";
@@ -66,9 +66,8 @@ if ($act != "" AND $act != 3) { // verife si non vide
             $paiement = isset($_POST["paiement"]) ? $_POST["paiement"] : "";
 
             if ($credit > 0) {
-                //on boucle sur les tarifs 
+                //on boucle sur les tarifs
                 for ($i = 0; $i < $nbt; $i++) {
-
                     if ($_POST["submit"] == "Encaisser") {
                         $statut_p = "1";
                     } else {
@@ -79,7 +78,7 @@ if ($act != "" AND $act != 3) { // verife si non vide
                         $Gprint = Impression::creerImpression($date_p, $id_user, $debits[$i], $idsTarif[$i], $statut_p, $prixs[$i], $nomuser_p, $epn_p, $caissier, $moyen_p);
                     }
                 }
-                //rajouter le credit, regulariser le credit en cas de somme differente  
+                //rajouter le credit, regulariser le credit en cas de somme differente
                 $du = isset($_POST["du"]) ? $_POST["du"] : "";
                 ; //ce qui doit etre payé
                 $credit = $credit - $du; // ce qui reste en plus apres deduction de la somme due
@@ -135,4 +134,3 @@ if ($act != "" AND $act != 3) { // verife si non vide
             break;
     }
 }
-?>

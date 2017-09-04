@@ -41,9 +41,9 @@ if (isset($_POST["pastresa"]) && $_POST["pastresa"] == 1) {
 if (isset($_POST['resa_submit'])) {
 
     // choix de l'adherent et poste obligatoire
-    if (isset($_POST['adh_submit']) AND isset($_POST['idcomp'])) {
+    if (isset($_POST['adh_submit']) and isset($_POST['idcomp'])) {
         //reservation du jour
-        //chargement de la duree de la réservation en fonction de l'utilisateur et de son temps restant 
+        //chargement de la duree de la réservation en fonction de l'utilisateur et de son temps restant
         //if ($duree>$restant){$duree=$restant;} //si le temps restant de l'utilisateur est inférieur à la durée légale.
         //$idresarel = addResa($id_poste, $id_user, $date, $heure, $duree);
 
@@ -67,12 +67,10 @@ $date = isset($_POST["chatdate"]) ? $_POST["chatdate"] : '';
 $destinataire = isset($_POST["chatdestinataire"]) ? $_POST["chatdestinataire"] : '';
 //debug($message);
 if (isset($_POST['message_submit'])) {
-
-    if (isset($_POST['chatadh']) AND isset($_POST['chattxt_message'])) {
+    if (isset($_POST['chatadh']) and isset($_POST['chattxt_message'])) {
         addMessage($date, $id_user, $message, $tags, $destinataire);
         //echo 'message ajouté';
     } else {
         $messErr = '<h4 class="alert_info">Vous devez entrer un texte !</h4>';
     }
 }
-?>

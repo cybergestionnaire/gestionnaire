@@ -98,7 +98,7 @@ include("include/boites/menu-parametres.php");
                         <label >Syst&egrave;me :</label>
                         <select name="os" class="form-control">
                             <?php
-                            foreach ($osarray AS $key => $value) {
+                            foreach ($osarray as $key => $value) {
                                 if ($os == $value) {
                                     echo "<option value=\"" . $value . "\" selected>" . $value . "</option>";
                                 } else {
@@ -114,7 +114,7 @@ include("include/boites/menu-parametres.php");
 
                         <select name="salle" class="form-control">
                             <?php
-                            foreach ($allSalles AS $salle) {
+                            foreach ($allSalles as $salle) {
                                 if ($salle->getId() == $idSalle) {
                                     echo "<option value=\"" . $salle->getId() . "\" selected>" . htmlentities($salle->getNom()) . "</option>";
                                 } else {
@@ -164,7 +164,7 @@ include("include/boites/menu-parametres.php");
                         <label >Fonctions</label>
                         <?php
                         if ($idMateriel != "") {
-                            foreach ($usages AS $usage) {
+                            foreach ($usages as $usage) {
                                 if (in_array($usage->getId(), $fonctions)) {
                                     $check = "checked";
                                 } else {
@@ -173,7 +173,7 @@ include("include/boites/menu-parametres.php");
                                 echo "<div class=\"checkbox\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"fonction[]\" value=" . $usage->getId() . "  " . $check . ">&nbsp;&nbsp;" . htmlentities($usage->getNom()) . "</div>\r\n";
                             }
                         } else {   // creation d'un poste
-                            foreach ($usages AS $usage) {
+                            foreach ($usages as $usage) {
                                 echo "<div class=\"checkbox\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"checkbox\" name=\"fonction[]\" value=" . $usage->getId() . ">&nbsp;&nbsp;" . htmlentities($usage->getNom()) . "</div>\r\n";
                             }
                         }

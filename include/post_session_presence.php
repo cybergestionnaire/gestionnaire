@@ -100,4 +100,3 @@ if (isset($_POST['present_'])) {
         header("Location:index.php?a=36&mesno=14");
     }
 }
-?>

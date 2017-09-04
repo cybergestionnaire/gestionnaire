@@ -47,13 +47,15 @@ if (isset($_POST["submit_session"]) && $_POST["submit_session"] != "") {  // si 
     $idTarif = isset($_POST["idTarif"]) ? $_POST["idTarif"] : '';
 
     //////////////////classer par ordre num les dates
-    function my_sort($f, $g) {
-        if (strtotime($f) == strtotime($g))
+    function my_sort($f, $g)
+    {
+        if (strtotime($f) == strtotime($g)) {
             return 0;
+        }
         return (strtotime($f) < strtotime($g)) ? -1 : 1;
     }
 
-    if ($m != "" AND $m != 3) { // verifier si on envoie la creation ou la modification
+    if ($m != "" and $m != 3) { // verifier si on envoie la creation ou la modification
         ////Compulser les dates
         if ($m == 1) {
             //verification du nombre de dates....
@@ -87,15 +89,13 @@ if (isset($_POST["submit_session"]) && $_POST["submit_session"] != "") {  // si 
             $arraydate = [];
         }
 
-        ///entrer les données dans la base     
+        ///entrer les données dans la base
         //1 s'il manque des dates
         if ($resultat < $nbre_dates) {
-
             $_SESSION['sauvegarde'] = $_POST;
             header('Location: ./index.php?a=31&m=' . $m . '&idsession=' . $idsession . '&mesno=45');
             exit;
         } else {
-
             if ($idTitre == "" || $nbre_dates == "" || $nbplace == "") {
                 $_SESSION['sauvegarde'] = $_POST;
                 header('Location: ./index.php?a=31&m=' . $m . '&idsession=' . $idsession . '&mesno=4');
@@ -125,7 +125,6 @@ if (isset($_POST["submit_session"]) && $_POST["submit_session"] != "") {  // si 
                         $sessionDates = $session->getSessionDates();
 
                         for ($i = 1; $i <= $nbre_origin; $i++) {
-
                             if (isset($_POST["statutdate" . $i]) && $_POST["statutdate" . $i] == "0") {
                                 // modification des dates existantes
                                 $sessionDates[$i - 1]->modifier($session->getId(), $_POST["date" . $i], $_POST["statutdate" . $i]);
@@ -188,7 +187,7 @@ if (isset($_POST["submit_session"]) && $_POST["submit_session"] != "") {  // si 
                         }
 
                         break;
-                } // switch  
+                } // switch
             }
         }
     }
@@ -204,4 +203,3 @@ if ($m == 4) {
         header("Location: ./index.php?a=37&mesno=0");
     }
 }
-?>

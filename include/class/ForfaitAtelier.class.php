@@ -22,8 +22,8 @@ require_once("Mysql.class.php");
 require_once("Utilisateur.class.php");
 require_once("Transaction.class.php");
 
-class ForfaitAtelier {
-
+class ForfaitAtelier
+{
     private $_id;
     private $_idUtilisateur;
     private $_idTransaction;
@@ -31,7 +31,8 @@ class ForfaitAtelier {
     private $_depense;
     private $_statut;
 
-    public function __construct($array) {
+    public function __construct($array)
+    {
         $this->_id = $array["id_forfait"];
         $this->_idUtilisateur = $array["id_user"];
         $this->_idTransaction = $array["id_transac"];
@@ -40,40 +41,49 @@ class ForfaitAtelier {
         $this->_statut = $array["statut_forfait"];
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
-    public function getIdUtilisateur() {
+    public function getIdUtilisateur()
+    {
         return $this->_idUtilisateur;
     }
 
-    public function getUtilisateur() {
+    public function getUtilisateur()
+    {
         return Utilisateur::getUtilisateurById($this->_idUtilisateur);
     }
 
-    public function getIdTransaction() {
+    public function getIdTransaction()
+    {
         return $this->_idTransaction;
     }
 
-    public function getTransaction() {
+    public function getTransaction()
+    {
         return Transaction::getTransactionById($this->_idTransaction);
     }
 
-    public function getTotal() {
+    public function getTotal()
+    {
         return $this->_total;
     }
 
-    public function getDepense() {
+    public function getDepense()
+    {
         return $this->_depense;
     }
 
-    public function getStatut() {
+    public function getStatut()
+    {
         return $this->_statut;
     }
 
-    public function incremente() {
-        $success = FALSE;
+    public function incremente()
+    {
+        $success = false;
 
         $db = Mysql::opendb();
         $sql = "UPDATE `rel_user_forfait` SET `depense`=`depense`+1 WHERE `id_forfait`=" . $this->_id . " ";
@@ -82,13 +92,14 @@ class ForfaitAtelier {
         Mysql::closedb($db);
 
         if ($result) {
-            $success = TRUE;
+            $success = true;
         }
         return $success;
     }
 
-    public function decremente() {
-        $success = FALSE;
+    public function decremente()
+    {
+        $success = false;
 
         $db = Mysql::opendb();
         $sql = "UPDATE `rel_user_forfait` SET `depense`=`depense`-1 WHERE `id_forfait`=" . $this->_id . " ";
@@ -97,13 +108,14 @@ class ForfaitAtelier {
         Mysql::closedb($db);
 
         if ($result) {
-            $success = TRUE;
+            $success = true;
         }
         return $success;
     }
 
-    public function cloturer() {
-        $success = FALSE;
+    public function cloturer()
+    {
+        $success = false;
 
         $db = Mysql::opendb();
 
@@ -112,15 +124,19 @@ class ForfaitAtelier {
         Mysql::closedb($db);
 
         if ($result) {
-            $success = TRUE;
+            $success = true;
         }
         return $success;
     }
 
     public function modifier(
-    $idUtilisateur, $idTransaction, $total, $depense, $statut
+    $idUtilisateur,
+        $idTransaction,
+        $total,
+        $depense,
+        $statut
     ) {
-        $success = FALSE;
+        $success = false;
 
         $db = Mysql::opendb();
 
@@ -152,14 +168,15 @@ class ForfaitAtelier {
                 $this->_depense = $depense;
                 $this->_statut = $statut;
 
-                $success = TRUE;
+                $success = true;
             }
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
         $success = false;
 
         $db = Mysql::opendb();
@@ -177,7 +194,11 @@ class ForfaitAtelier {
     }
 
     public static function creerForfaitAtelier(
-    $idUtilisateur, $idTransaction, $total, $depense, $statut
+    $idUtilisateur,
+        $idTransaction,
+        $total,
+        $depense,
+        $statut
     ) {
         $forfaitAtelier = null;
 
@@ -210,7 +231,8 @@ class ForfaitAtelier {
         return $forfaitAtelier;
     }
 
-    public static function getForfaitAtelierById($id) {
+    public static function getForfaitAtelierById($id)
+    {
         $forfaitAtelier = null;
 
         if ($id != 0) {
@@ -231,8 +253,8 @@ class ForfaitAtelier {
         return $forfaitAtelier;
     }
 
-    public static function getForfaitsAteliers() {
-
+    public static function getForfaitsAteliers()
+    {
         $forfaitsAtelier = null;
 
         $db = Mysql::opendb();
@@ -251,7 +273,8 @@ class ForfaitAtelier {
         return $forfaitsAtelier;
     }
 
-    public static function getForfaitsAtelierByIdUtilisateur($idUtilisateur) {
+    public static function getForfaitsAtelierByIdUtilisateur($idUtilisateur)
+    {
         $forfaitsAtelier = null;
 
         if ($idUtilisateur != 0) {
@@ -274,5 +297,4 @@ class ForfaitAtelier {
 
         return $forfaitsAtelier;
     }
-
 }

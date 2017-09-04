@@ -26,16 +26,16 @@
 //
 // addUser()
 // ajoute un adherent
-function addUser($date, $nom, $prenom, $sexe, $jour, $mois, $annee, $adresse, $ville, $tel, $mail, $temps, $login, $pass, $status, $lastvisit, $csp, $equipement, $utilisation, $connaissance, $info, $tarif, $daterenouv, $epn, $newsletter) {
-
+function addUser($date, $nom, $prenom, $sexe, $jour, $mois, $annee, $adresse, $ville, $tel, $mail, $temps, $login, $pass, $status, $lastvisit, $csp, $equipement, $utilisation, $connaissance, $info, $tarif, $daterenouv, $epn, $newsletter)
+{
     $sql = "INSERT INTO `tab_user`(`id_user`, `date_insc_user`, `nom_user`, `prenom_user`, `sexe_user`, `jour_naissance_user`, `mois_naissance_user`, `annee_naissance_user`, `adresse_user`, `ville_user`, `tel_user`, `mail_user`, `temps_user`, `login_user`, `pass_user`, `status_user`, `lastvisit_user`, `csp_user`, `equipement_user`, `utilisation_user`, `connaissance_user`, `info_user`, `tarif_user`, `dateRen_user`, `epn_user`, `newsletter_user`) 
                 VALUES ('', '" . $date . "', '" . $nom . "', '" . $prenom . "', '" . $sexe . "', '" . $jour . "', '" . $mois . "', '" . $annee . "', '" . $adresse . "',  '" . $ville . "', '" . $tel . "', '" . $mail . "', '" . $temps . "', '" . $login . "', '" . passwd($pass) . "', '" . $status . "', '" . $lastvisit . "','" . $csp . "','" . $equipement . "','" . $utilisation . "','" . $connaissance . "','" . $info . "','" . $tarif . "','" . $daterenouv . "','" . $epn . "','" . $newsletter . "') ";
     $db = opendb();
     $result = mysqli_query($db, $sql);
     $iduser = mysqli_insert_id($db);
     closedb($db);
-    if (FALSE == $result) {
-        return FALSE;
+    if (false == $result) {
+        return false;
     } else {
         return $iduser;
     }
@@ -60,7 +60,7 @@ switch ($act) {
                 break;
 
             case 2:   // ecriture dans le fichier
-                if (FALSE != is_writable($chemin)) {
+                if (false != is_writable($chemin)) {
                     $save = $db->dumpDB();
                     $fp = fopen($chemin . $fichier, "w+");
                     fputs($fp, $save);
@@ -90,7 +90,7 @@ switch ($act) {
             $tarif = 1;
         }
 
-        if (isset($_POST["temps_user"]) AND $_POST["temps_user"] != "") {
+        if (isset($_POST["temps_user"]) and $_POST["temps_user"] != "") {
             $temps = $_POST["temps_user"];
         }
         //parametre des entrees de tables numeriques
@@ -137,7 +137,7 @@ switch ($act) {
 
             rename($_FILES['restore_file']['tmp_name'], $_FILES['restore_file']['name']);
             $filename = $_FILES['restore_file']['name'];
-            ini_set('auto_detect_line_endings', TRUE);
+            ini_set('auto_detect_line_endings', true);
             //debug($filename);
             $arrayimport = array();
             $delimiter = ';';
@@ -200,7 +200,7 @@ switch ($act) {
                 }
 
 
-                //date de naissance à splitter      
+                //date de naissance à splitter
                 $date_naissance = $ligne['Date de naissance*'];
                 $tmp = explode("/", $date_naissance);
                 $jour = $tmp[0];
@@ -209,15 +209,15 @@ switch ($act) {
 
                 //travail sur le mot de passe
                 switch ($type_mdp) {
-                    case 1 : //nom.prenom
+                    case 1: //nom.prenom
                         $passs = $ligne['Nom*'] . $ligne['prenom*'];
                         break;
 
-                    case 2 : //AAAAnom
+                    case 2: //AAAAnom
                         $passs = $annee . $ligne['Nom*'];
                         break;
 
-                    case 3 : //AAAAMMDD
+                    case 3: //AAAAMMDD
                         $passs = $annee . $mois . $jour;
                         break;
                 }
@@ -258,9 +258,9 @@ switch ($act) {
 
                 if ($ligne['Equipement'] == "Aucun équipement") {
                     $equipement = 0;
-                } else if ($ligne['Equipement'] == "Ordinateur et Internet") {
+                } elseif ($ligne['Equipement'] == "Ordinateur et Internet") {
                     $equipement = "1-5";
-                } else if ($ligne['Equipement'] == "Ordinateur seul") {
+                } elseif ($ligne['Equipement'] == "Ordinateur seul") {
                     $equipement = 1;
                 }
 
@@ -301,7 +301,7 @@ switch ($act) {
                 } else {
                     //var_dump($date,$nom,$prenom,$sexe,$jour,$mois,$annee,$adresse,$ville,$tel,$mail,$temps,$loginn,$passs,$status,$lastvisit,$csp,$equipement,$utilisation,$connaissance, $info,$tarif,$daterenouv,$epn,$newsletter);
 
-                    if (FALSE != addUser($date, $nom, $prenom, $sexe, $jour, $mois, $annee, $adresse, $ville, $tel, $mail, $temps, $loginn, $passs, $status, $lastvisit, $csp, $equipement, $utilisation, $connaissance, $info, $tarif, $daterenouv, $epn, $newsletter)) {
+                    if (false != addUser($date, $nom, $prenom, $sexe, $jour, $mois, $annee, $adresse, $ville, $tel, $mail, $temps, $loginn, $passs, $status, $lastvisit, $csp, $equipement, $utilisation, $connaissance, $info, $tarif, $daterenouv, $epn, $newsletter)) {
                         $rowresult = $rowresult + 1;
                         if ($status == 1) {
                             $rowactifresult = $rowactifresult + 1;

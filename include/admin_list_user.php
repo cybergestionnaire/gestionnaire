@@ -52,7 +52,7 @@ $tab_frequence_temps_affectation = array(
 // Les adhérents // MODIF 2012 : liste des 25 derniers inscrits......
         $utilisateurs = Utilisateur::getUtilisateursByDateInsc(25);
         $nbUtilisateurs = count($utilisateurs);
-        if ($utilisateurs == null OR $nbUtilisateurs == 0) {
+        if ($utilisateurs == null or $nbUtilisateurs == 0) {
             ?>
             <br>
             <div class="row">
@@ -69,8 +69,7 @@ $tab_frequence_temps_affectation = array(
                 </div>
             </div>
             <?php
-        } else { // affichage du resultat 
-            ?>
+        } else { // affichage du resultat ?>
 
             <div class="box box-info">
                 <div class="box-header">
@@ -141,8 +140,7 @@ $tab_frequence_temps_affectation = array(
 
                                 if ($lasteresa == null) {
                                     $lasteresa = "NC";
-                                }
-                                ?>
+                                } ?>
                                 <tr>
                                     <td>
                                         <a href="index.php?a=1&b=2&iduser=<?php echo $utilisateur->getId() ?>"><button type="button" class="btn bg-purple btn-sm" data-toggle="tooltip" title="Fiche adh&eacute;rent"><i class="fa fa-edit"></i></button></a>
@@ -152,8 +150,7 @@ $tab_frequence_temps_affectation = array(
                                             ?>
                                             &nbsp;<a href="index.php?a=5&b=6&iduser=<?php echo $utilisateur->getId() ?>"><button type="button" class="btn bg-primary btn-sm" data-toggle="tooltip" title="Inscriptions Ateliers"><i class="fa fa-keyboard-o"></i></button></a>
                                             <?php
-                                        }
-                                        ?>
+                                        } ?>
 
                                     </td>
                                     <td><?php echo htmlentities($utilisateur->getNom()) ?></td>
@@ -164,7 +161,7 @@ $tab_frequence_temps_affectation = array(
                                     <td><span class="<?php echo $classadh ?>"><?php echo $adhesion ?></span></td>
                                     <td>
                                         <?php
-                                        //statut actif          
+                                        //statut actif
                                         if ($utilisateur->getStatut() == 1) {
                                             if ($forfaitConsultation != null) {
                                                 ?>
@@ -180,13 +177,11 @@ $tab_frequence_temps_affectation = array(
                                             }
                                         } elseif ($utilisateur->getStatut() == 2) { //passer du statut inactif au statut archivé
                                             echo '<input type="checkbox" name="archiv_[]" class="minimal" value=' . $utilisateur->getId() . '>';
-                                        }
-                                        ?>
+                                        } ?>
                                     </td>
                                 </tr>
                                 <?php
-                            }
-                            ?>
+                            } ?>
                         </tbody> 
                     </table>
                 </div><!-- .box-body -->

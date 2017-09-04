@@ -79,7 +79,6 @@ switch ($m) {
 }
 
 if (isset($_SESSION["status"])) {
-
     switch ($_SESSION["status"]) {
         case 3:
             include('include/conf_admin.php');
@@ -89,4 +88,3 @@ if (isset($_SESSION["status"])) {
             break;
     }
 }
-?>

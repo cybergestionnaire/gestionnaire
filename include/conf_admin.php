@@ -25,19 +25,19 @@
 // #############################################################################
 // menu niveau 2 : ADMINISTRATEUR Ou Animateur !
 // #############################################################################
-if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
+if ($_SESSION["status"] == 4 or $_SESSION["status"] == 3) {
     switch ($a) {
         case 1:  // ADHERENT
             switch ($b) {
                 case 1:  // Creation d'un adh&eacute;rent
                     $titre = "Cr&eacute;ation d'un adh&eacute;rent";
                     $aide = "Cr&eacute;ation d'un adh&eacute;rent, n'oubliez pas de pr&eacute;cisez le statut afin de permettre &agrave; l'utilisateur de r&eacute;servez une machine";
-                    include ("include/post_user.php");
+                    include("include/post_user.php");
                     $inc = "admin_form_user.php";
                     break;
                 case 2:  // Modification d'un adh&eacute;rent
                     $titre = "Modifier un adh&eacute;rent";
-                    include ("include/post_user.php");
+                    include("include/post_user.php");
                     $inc = "admin_form_user.php";
                     break;
                 case 3:
@@ -61,18 +61,18 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
                 case 1:  // Creation d'un materiel
                     $titre = "Cr&eacute;ation d'un poste";
                     $aide = "Cr&eacute;er un poste permet a un adh&eacute;rent de r&eacute;server ce poste si vous cocher la case \"NON (usage interne)\" dans ce cas le poste existe mais uniquement pour les interventions de maintenance de mat&eacute;riel";
-                    include ("include/post_materiel.php");
+                    include("include/post_materiel.php");
                     $inc = "admin_form_materiel.php";
                     break;
                 case 2:  // Modification d'un materiel
                     $titre = "Modification d'un poste";
-                    include ("include/post_materiel.php");
+                    include("include/post_materiel.php");
                     $inc = "admin_form_materiel.php";
                     break;
                 default: // Liste du materiel
                     $titre = "Liste du mat&eacute;riel informatique";
                     $aide = "Affichage de tous les postes utilisables par les adh&eacute;rents ainsi que tous les postes internes";
-                    include ("include/post_materiel.php");
+                    include("include/post_materiel.php");
                     $inc = "admin_config_materiel.php";
                     break;
             }
@@ -82,13 +82,13 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
                 case 1: // cr&eacute;ation d'une intervention
                     $titre = "Cr&eacute;er une intervention";
                     $aide = "Cr&eacute;er une intervention permet de signaler un probleme ou une p&eacute;riode de maintenance dans l'espace et ainsi bloquer les reservations de materiel";
-                    include ("include/post_inter.php");
+                    include("include/post_inter.php");
                     $inc = "admin_form_inter.php";
                     break;
                 default: // liste des interventions
                     $titre = "Liste des interventions";
                     $aide = "Consulter la liste des interventions, en gris les interventions termin&eacute;s et en orange les interventions non trait&eacute;es";
-                    include ("include/post_inter.php");
+                    include("include/post_inter.php");
                     $inc = "admin_intervention.php";
                     break;
             }
@@ -98,18 +98,18 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
                 case 1:  // Creation d'une breve
                     $titre = "Cr&eacute;ation d'une br&egrave;ve";
                     $aide = "Communiquez avec vos adh&eacute;rents ou entre animateurs/administrateurs c'est possible il suffit bien cocher la case public ou interne";
-                    include ("include/post_breve.php");
+                    include("include/post_breve.php");
                     $inc = "admin_form_breve.php";
                     break;
                 case 2:  // Modification d'une breve
                     $titre = "Modification d'une br&egrave;ve";
-                    include ("include/post_breve.php");
+                    include("include/post_breve.php");
                     $inc = "admin_form_breve.php";
                     break;
                 default:
                     $titre = "Liste des br&egrave;ves";
                     $aide = "Les breves sur fond gris sont visibles par tout le monde, les autres seulement par les administrateurs et animateurs";
-                    include ("include/post_breve.php");
+                    include("include/post_breve.php");
                     $inc = "admin_breve.php";
                     break;
             }
@@ -120,39 +120,39 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
             switch ($b) {
                 case 1: // statistique utilisateurs
                     $titre = "Statistiques sur les Adh&eacute;rents";
-                    include ("fonction_stat.php");
+                    include("fonction_stat.php");
                     $inc = "admin_stat_user.php";
                     break;
                 case 2://statistique reservations
                     $titre = "Statistiques sur les R&eacute;servations";
-                    include ("fonction_stat.php");
+                    include("fonction_stat.php");
                     $inc = "admin_stat_resa.php";
                     break;
-                case 3 : //statistique impressions
+                case 3: //statistique impressions
                     $titre = "Statistiques d'Impressions";
-                    include ("fonction_stat.php");
+                    include("fonction_stat.php");
                     $inc = "admin_stat_print.php";
                     break;
-                case 4 : //statistique ateliers
+                case 4: //statistique ateliers
                     $titre = "Statistiques sur les Ateliers";
-                    include ("fonction_stat.php");
+                    include("fonction_stat.php");
                     $inc = "admin_stat_atelier.php";
                     break;
-                case 5 ://statistique Session
+                case 5://statistique Session
                     $titre = "Statistiques sur les Sessions";
-                    include ("fonction_stat.php");
+                    include("fonction_stat.php");
                     $inc = "admin_stat_session.php";
                     break;
                 case 6:
                     $titre = "Historique et statistique atelier d'un adh&eacute;rent";
-                    include ("fonction_stat.php");
+                    include("fonction_stat.php");
                     $inc = "admin_user_historique.php";
 
                     break;
 
                 default:
                     $titre = "Statistiques globales";
-                    include ("fonction_stat.php");
+                    include("fonction_stat.php");
                     $inc = "admin_statistic.php";
                     break;
             }
@@ -176,7 +176,7 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
         ///LES abonnements enregistr&eacute;s
         case 8:
             $titre = "Liste des adh&eacute;rents avec forfait atelier";
-            include ("fonction_stat.php");
+            include("fonction_stat.php");
             $inc = "admin_list_abonnements.php";
             break;
 
@@ -207,7 +207,7 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
         case 12:
             $titre = "Planification d'un atelier";
             $aide = "Creer, et administrer des ateliers de formations pour vos adh&eacute;rents";
-            include ("include/post_atelier.php");
+            include("include/post_atelier.php");
             $inc = "admin_form_atelier.php";
             break;
         case 13:
@@ -220,19 +220,19 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
         case 14:
             $titre = "Modification la planification d'un atelier";
             $aide = "Modifier des ateliers de formations pour vos adh&eacute;rents";
-            include ("include/post_atelier.php");
+            include("include/post_atelier.php");
             $inc = "admin_form_atelier.php";
             break;
         case 15:
             $titre = "Cr&eacute;ation d'un sujet d'atelier";
             $aide = "Cr&eacute des ateliers de formations pour vos adh&eacute;rents";
-            include ("include/post_sujetatelier.php");
+            include("include/post_sujetatelier.php");
             $inc = "admin_form_sujet_atelier.php";
             break;
         case 16:
             $titre = "Gestion des pr&eacute;sences &agrave; un atelier";
             $aide = "gestion des ateliers de formations";
-            include ("include/post_atelier_presence.php");
+            include("include/post_atelier_presence.php");
             $inc = "admin_atelier_presence.php";
 
             break;
@@ -241,7 +241,7 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
             $titre = "Gestion des sujets d'atelier ";
             $aide = "Modification des intitul&eacute;s";
             $inc = "admin_atelier_sujets.php";
-            include ("include/post_sujetatelier.php");
+            include("include/post_sujetatelier.php");
             break;
 
         // les archives
@@ -249,14 +249,14 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
             $titre = "Archives des Ateliers";
             $aide = "Archives des Ateliers";
             $inc = "admin_atelier_archive.php";
-            include ("include/fonction_stat.php");
+            include("include/fonction_stat.php");
             break;
 
         case 19:
             $titre = "Ajout de r&eacute;servation pass&eacute;es";
             $aide = "Ajoutez une r&eacute;servation pass&eacute;e rapidement dans la base";
             $inc = "admin_resa_ajout.php";
-            include ("include/post_reservation-rapide.php");
+            include("include/post_reservation-rapide.php");
             break;
 
 
@@ -272,19 +272,19 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
                 case 1: // D&eacute;tail Compte d'imression d'un adh&eacute;rent
                     $titre = "Historique d'impression de l'adh&eacute;rent";
                     $aide = "Historique des impressions d'un adh&eacute;rent, mettre de l'argent sur un compte adh&eacute;rent";
-                    // include ("include/post_print.php");  
+                    // include ("include/post_print.php");
                     $inc = "admin_print.php";
                     break;
                 case 2:  // cr&eacute;diter d'un compte d'impression
                     $titre = "Cr&eacute;diter ou d&eacute;biter d'un compte d'impression";
                     $aide = "Modifier les entr&eacute;es d'un cr&eacute;dit ou d&eacute;bit.";
-                    include ("include/post_print.php");
+                    include("include/post_print.php");
                     $inc = "admin_form_print.php";
                     break;
                 case 3:
                     $titre = "modifier une transaction";
                     $aide = "Transactions diverses";
-                    include ("include/post_transac.php");
+                    include("include/post_transac.php");
                     $inc = "admin_modif_transac.php";
                     break;
 
@@ -310,7 +310,7 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
                 case 1:  // Creation d'un adh&eacute;rent
                     $titre = "Validation d'une pr&eacute;-inscription";
                     $aide = "Cr&eacute;ation d'un adh&eacute;rent, n'oubliez pas de pr&eacute;cisez le statut afin de permettre a l'utilisateur de r&eacute;servez une machine";
-                    include ("include/post_inscription.php");
+                    include("include/post_inscription.php");
                     $inc = "admin_form_inscription.php";
                     break;
                 default: // Liste des pr&eacute;inscription
@@ -324,7 +324,7 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
         //**Parametrages EPNConnect **///
 
         case 25:
-            include ("include/post_config_epnconnect.php");
+            include("include/post_config_epnconnect.php");
             $titre = "Configuration d'EPN-Connect ";
             $aide = "Permet de modifier les param&egrave;tres de l'application EPN-Connect";
             $inc = "admin_config_epnconnect.php";
@@ -347,7 +347,7 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
             $titre = "Planifier une session";
             $aide = "Planifier une session";
             $inc = "admin_form_session.php";
-            include ("include/post_session.php");
+            include("include/post_session.php");
             break;
 
         case 32:
@@ -372,14 +372,14 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
             $titre = "cr&eacute;ation des sujets des sessions";
             $aide = "Les sujets des sessions";
             $inc = "admin_form_sujet_session.php";
-            include ("include/post_sujetsession.php");
+            include("include/post_sujetsession.php");
             break;
         // case 35:
         // $titre="Modification du sujet d'une session ";
         // $aide="Modification des intitul&eacute;s";
         // $inc="admin_session_modif.php";
         // include ("include/post_sujetsession.php");
-        // break;  
+        // break;
 
         case 36:
             $titre = "Archives des sessions";
@@ -405,7 +405,7 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
 
         // Horaire de l'epn principal //
         case 42:
-            include ("include/post_config_horaires.php");
+            include("include/post_config_horaires.php");
             $titre = "Configuration de CyberGestionnaire et de votre espace ";
             $aide = "Permet de modifier les param&egrave;tres de l'application CyberGestionnaire";
             $inc = "admin_config_horaires.php";
@@ -416,26 +416,26 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
                 case 1:  // Creation d'un EPN
                     $titre = "Cr&eacute;ation d'un EPN";
                     $aide = "";
-                    include ("include/post_epn.php");
+                    include("include/post_epn.php");
                     $inc = "admin_form_epn.php";
                     break;
                 case 2:  // Modification d'un EPN
                     $titre = "Modification d'un EPN";
-                    include ("include/post_epn.php");
+                    include("include/post_epn.php");
                     $inc = "admin_form_epn.php";
                     break;
 
                 case 4: //modification du reseau
                     $titre = "Modification du r&eacute;seau";
                     $aide = "";
-                    include ("include/post_epn.php");
+                    include("include/post_epn.php");
                     $inc = "admin_form_reseau.php";
                     break;
 
                 default: // Liste des EPN
                     $titre = "Liste des EPN";
                     $aide = "Affichage de tous les salles";
-                    include ("include/post_epn.php");
+                    include("include/post_epn.php");
                     $inc = "admin_config_epn.php";
                     break;
             };
@@ -446,18 +446,18 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
                 case 1:  // Creation d'une salle
                     $titre = "Cr&eacute;ation d'une salle";
                     $aide = "";
-                    include ("include/post_salle.php");
+                    include("include/post_salle.php");
                     $inc = "admin_form_salle.php";
                     break;
                 case 2:  // Modification d'une salle
                     $titre = "Modification d'une salle";
-                    include ("include/post_salle.php");
+                    include("include/post_salle.php");
                     $inc = "admin_form_salle.php";
                     break;
                 default: // Liste des salles
                     $titre = "Liste des salles";
                     $aide = "Affichage de tous les salles";
-                    include ("include/post_salle.php");
+                    include("include/post_salle.php");
                     $inc = "admin_config_salle.php";
                     break;
             }
@@ -475,11 +475,11 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
             $inc = "admin_config_usage.php";
             break;
 
-        case 47 :
+        case 47:
             $titre = "Gestion des tarifs";
             $aide = "Remplissez les tarifs proatiqu&eacute;s dans vos espaces";
             $inc = "admin_config_tarifs.php";
-            include ("include/post_tarifs.php");
+            include("include/post_tarifs.php");
             break;
 
         case 48:
@@ -492,8 +492,8 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
         case 49:
             $titre = "Gestion de la base de donn&eacute;es";
             $aide = "N'oubliez de sauvegarder r&eacute;gulieremnt vos donn&eacute;es car on n'est jamais a l'abris d'une mauvaise manip. ou d'un crash machine.<br>Pour restaurer merci de vous adresser a votre responsable technique";
-            include ("include/class/class_db.php");
-            include ("include/post_bdd.php");
+            include("include/class/class_db.php");
+            include("include/post_bdd.php");
             $inc = "admin_bdd.php";
             break;
 
@@ -502,7 +502,7 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
             $titre = "Gestion des profils animateurs";
             $aide = "indiquez l'epn de rattachement de l'animateur et ses salles";
             $inc = "admin_form_configanim.php";
-            include ("include/post_animateurs.php");
+            include("include/post_animateurs.php");
             break;
 
         case 51: //cr&eacute;ation d'un animateur form simplifi&eacute; // modification des profils anim
@@ -510,13 +510,13 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
                 case 1:
                     $titre = "Cr&eacute;ation d'un animateur";
                     $aide = "Cr&eacute;ation d'un animateur";
-                    include ("include/post_user.php");
+                    include("include/post_user.php");
                     $inc = "admin_form_useranim.php";
                     break;
                 case 2:
                     $titre = "Modification d'un animateur";
                     $aide = "Modification d'un animateur";
-                    include ("include/post_user.php");
+                    include("include/post_user.php");
                     $inc = "admin_form_useranim.php";
                     break;
             }
@@ -539,7 +539,7 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
                     $inc = "admin_form_courrier.php";
                     break;
 
-                default :
+                default:
                     $titre = "Gestion des courriers";
                     $aide = "G&eacute;rez les textes de vos envois de courriers";
                     include("include/post_courrier.php");
@@ -568,9 +568,9 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
 //mises &agrave; jour
         case 61:
             $titre = "Mise &agrave; jour de version";
-            include ("fonction_maj.php");
+            include("fonction_maj.php");
 
-            include ("include/class/backup.php");
+            include("include/class/backup.php");
             $inc = "miseajour.php";
             break;
 
@@ -578,10 +578,9 @@ if ($_SESSION["status"] == 4 OR $_SESSION["status"] == 3) {
 //Sauvegarde de la base
         case 62:
             $titre = "Sauvegarde de la base de donn&eacute;es CyberGestionnaire";
-            include ("fonction_maj.php");
-            include ("include/class/backup.php");
+            include("fonction_maj.php");
+            include("include/class/backup.php");
             $inc = "bdd_save.php";
             break;
     }
 }
-?>

@@ -111,7 +111,7 @@ include("include/boites/menu-parametres.php");
                                         <label >Cat&eacute;gorie *:</label>
                                         <select name="catTarif" class="form-control">
                                             <?php
-                                            foreach ($categorieTarif AS $key => $value) {
+                                            foreach ($categorieTarif as $key => $value) {
                                                 if ($tarif == $key) {
                                                     echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                                 } else {
@@ -168,7 +168,7 @@ include("include/boites/menu-parametres.php");
                                             <div class="col-xs-5">
                                                 <select type="text" class="form-control"  name="typedureetarifa">
                                                     <?php
-                                                    foreach ($dureetype AS $key => $value) {
+                                                    foreach ($dureetype as $key => $value) {
                                                         if (isset($duree) && ($duree == $key)) {
                                                             echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                                         } else {
@@ -223,7 +223,7 @@ include("include/boites/menu-parametres.php");
                                             <div class="col-xs-5">
                                                 <select  class="form-control"  name="unite_duree_forfait">
                                                     <?php
-                                                    foreach ($tab_unite_duree_forfait AS $key => $value) {
+                                                    foreach ($tab_unite_duree_forfait as $key => $value) {
 //        if ($unite == $key) {
 //            echo "<option value=\"".$key."\" selected>".$value."</option>";
 //        }
@@ -244,7 +244,7 @@ include("include/boites/menu-parametres.php");
                                             <div class="col-xs-4">
                                                 <select type="text" class="form-control"  name="unite_temps_affectation">
                                                     <?php
-                                                    foreach ($tab_unite_temps_affectation AS $key => $value) {
+                                                    foreach ($tab_unite_temps_affectation as $key => $value) {
 //        if ($unite == $key) {
 //            echo "<option value=\"".$key."\" selected>".$value."</option>";
 //        }
@@ -259,7 +259,7 @@ include("include/boites/menu-parametres.php");
                                             <div class="col-xs-5">
                                                 <select  class="form-control"  name="frequence_temps_affectation">
                                                     <?php
-                                                    foreach ($tab_frequence_temps_affectation AS $key => $value) {
+                                                    foreach ($tab_frequence_temps_affectation as $key => $value) {
 //        if ($freq == $key) {
 //            echo "<option value=\"".$key."\" selected>".$value."</option>";
 //        }
@@ -321,7 +321,7 @@ include("include/boites/menu-parametres.php");
                                         4 => "Divers"
                                     );
 
-                                    foreach ($categorieTarif AS $key => $value) {
+                                    foreach ($categorieTarif as $key => $value) {
                                         if ($tarif == $key) {
                                             echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                         } else {
@@ -347,7 +347,6 @@ include("include/boites/menu-parametres.php");
     <?php
 ///*** gestion des tarifs AJOUT 2014
     if ($tarif < 6) {
-
         $tarifsByCat = Tarif::getTarifsByCategorie($tarif);
 
         $nbt = count($tarifsByCat);
@@ -363,7 +362,6 @@ include("include/boites/menu-parametres.php");
             </div>
             <?php
         } else {
-
             $categorieTarif = array(
                 1 => "Impression",
                 2 => "Adhesion",
@@ -382,8 +380,7 @@ include("include/boites/menu-parametres.php");
             foreach ($tarifsByCat as $tarifByCat) {
                 $catTarif = $tarifByCat->getCategorie();
                 $id_tarif = $tarifByCat->getId();
-                $idEspaces = $tarifByCat->getIdsEspacesAsArray();
-                ?>
+                $idEspaces = $tarifByCat->getIdsEspacesAsArray(); ?>
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="box box-warning">
                         <form  method="post" class="form" action="index.php?a=47&actarif=2&idtarif=<?php echo $tarifByCat->getId(); ?>" >
@@ -393,14 +390,12 @@ include("include/boites/menu-parametres.php");
 
                                 <?php
                                 if ($catTarif == 5) {
-
                                     if ($tarifByCat->getDuree() == "0") {
                                         $dureenumarray = explode('-', "0-0");
                                     } else {
                                         $dureenumarray = explode('-', $tarifByCat->getDuree());
                                     }
-                                    $duree2 = $dureenumarray[1];
-                                    ?>
+                                    $duree2 = $dureenumarray[1]; ?>
 
                                     <div class="form-group" ><label>Libell&eacute;</label>
                                         <input type="hidden" name="catTarif" value="<?php echo $catTarif; ?>"><input type="hidden" name="ptarif" value="<?php echo $catTarif; ?> ">
@@ -422,14 +417,13 @@ include("include/boites/menu-parametres.php");
                                             <div class="col-xs-3">
                                                 <select type="text"   name="typedureetarif">
                                                     <?php
-                                                    foreach ($dureetype AS $key => $value) {
+                                                    foreach ($dureetype as $key => $value) {
                                                         if ($key == $duree2) {
                                                             echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                                         } else {
                                                             echo "<option value=\"" . $key . "\">" . $value . "</option>";
                                                         }
-                                                    }
-                                                    ?>
+                                                    } ?>
                                                 </select>
                                             </div>
                                         </div><!-- .row -->
@@ -444,8 +438,7 @@ include("include/boites/menu-parametres.php");
                                                 } else {
                                                     echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
                                                 }
-                                            }
-                                            ?>
+                                            } ?>
                                         </select>
                                     </div>
 
@@ -467,14 +460,12 @@ include("include/boites/menu-parametres.php");
                                                 } else {
                                                     echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
                                                 }
-                                            }
-                                            ?>
+                                            } ?>
                                         </select>
                                     </div>
 
                                     <?php
-                                }
-                                ?>
+                                } ?>
 
                             </div>  
 
@@ -534,8 +525,7 @@ include("include/boites/menu-parametres.php");
                 //    $unite_duree_forfait = $rowconsult["unite_duree_forfait"];
                 //}
                 //$epnC = getAllRelForfaitEspace($rowconsult['id_forfait']);
-                //debug($epnC);
-                ?>
+                //debug($epnC); ?>
                 <div class="col-md-4">
                     <form  method="post" class="form" action="index.php?a=47&actarif=2&idtarif=<?php echo $forfait->getId(); ?>" >
                         <div class="box box-warning">
@@ -561,14 +551,13 @@ include("include/boites/menu-parametres.php");
                                             <label>&nbsp;</label>
                                             <select  class="form-control"  name="unite_duree_forfait">
                                                 <?php
-                                                foreach ($tab_unite_duree_forfait AS $key => $value) {
+                                                foreach ($tab_unite_duree_forfait as $key => $value) {
                                                     if ($unite_duree_forfait == $key) {
                                                         echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                                     } else {
                                                         echo "<option value=\"" . $key . "\">" . $value . "</option>";
                                                     }
-                                                }
-                                                ?>  
+                                                } ?>  
                                             </select>
                                         </div>
                                         <!--<div class="col-xs-5"><label>Affect. occasionelle (en min)&nbsp;<small class="badge bg-blue" data-toggle="tooltip" title="Pour la consultation de type one shot ! La validit&eacute; est expir&eacute;e après d&eacute;pense."><i class="fa fa-info"></i></small></label>
@@ -583,28 +572,26 @@ include("include/boites/menu-parametres.php");
                                         <div class="col-xs-4">
                                             <select type="text" class="form-control"  name="unite_temps_affectation">
                                                 <?php
-                                                foreach ($tab_unite_temps_affectation AS $key => $value) {
+                                                foreach ($tab_unite_temps_affectation as $key => $value) {
                                                     if ($unite_temps_affectation == $key) {
                                                         echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                                     } else {
                                                         echo "<option value=\"" . $key . "\">" . $value . "</option>";
                                                     }
-                                                }
-                                                ?>  
+                                                } ?>  
                                             </select>
                                         </div>
 
                                         <div class="col-xs-4">
                                             <select  class="form-control"  name="frequence_temps_affectation">
                                                 <?php
-                                                foreach ($tab_frequence_temps_affectation AS $key => $value) {
+                                                foreach ($tab_frequence_temps_affectation as $key => $value) {
                                                     if ($frequence_temps_affectation == $key) {
                                                         echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
                                                     } else {
                                                         echo "<option value=\"" . $key . "\">" . $value . "</option>";
                                                     }
-                                                }
-                                                ?>  
+                                                } ?>  
                                             </select>
                                         </div>
                                     </div><!-- .row -->
@@ -621,8 +608,7 @@ include("include/boites/menu-parametres.php");
                                             } else {
                                                 echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
                                             }
-                                        }
-                                        ?>
+                                        } ?>
                                     </select>
                                 </div> 
                             </div><!-- .box-body -->

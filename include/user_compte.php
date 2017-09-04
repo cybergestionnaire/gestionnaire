@@ -41,7 +41,6 @@ if ($lasteresa == null) {
 //TARIF CONSULTATION
 $forfait = $utilisateur->getForfaitConsultation();
 if ($forfait != null) {
-
     $uniteForfait = $forfait->getUniteConsultation();
     $tarifreferencetemps = $forfait->getDureeConsultation() * $uniteForfait;
 
