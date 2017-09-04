@@ -212,16 +212,16 @@ $versionew = "1.9";
                         <li>Travail de ré-écriture en objet : sont faits
                             <ul>
                                 <li>toutes les pages "configuration"</li>
-                                <li>une grande partie de pages adhérents (manque la gestion des transactions/abonnements, les résas et les impressions)</li>
+                                <li>les pages adhérents</li>
+                                <li>les pages de réservation</li>
                                 <li>la gestion des ateliers et des sessions</li>
+                                <li>La gestion des transactions (à vérifier quand même...</li>)
                             </ul>
                         </li>
                         <li>reste donc à faire :
                             <ul>
-                                <li>Tous le système de réservations</li>
-                                <li>Toute la gestion des forfaits (Adhésion/impression/consultation etc ...)</li>
                                 <li>Les statistiques</li>
-                                <li>et les courriers</li>
+                                <li>les pages "gestion de l'espaces (courriers/breves/interventions/Liens)</li>
                             </ul>
                         </li>
                         <li>A été fait également sous le capot :

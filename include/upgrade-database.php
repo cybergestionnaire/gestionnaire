@@ -4,7 +4,7 @@
 // Structure de la table `rel_atelier_computer`
 //
 
-include("../connect_db.php");
+require_once("connect_db.php");
 
 // echo "host = $host<br />\n";
 // echo "userdb = $userdb<br />\n";
