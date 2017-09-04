@@ -1,29 +1,27 @@
 <?php
 
-class Mysql
-{
-    
-    public static function opendb()
-    {
+class Mysql {
+
+    public static function opendb() {
         include ("./connect_db.php");
-    
-        if ($port=="" OR FALSE==is_numeric($port)) {
-            $port="3306" ;
+
+        if ($port == "" OR FALSE == is_numeric($port)) {
+            $port = "3306";
         }
-    
-        /*creation de la liaison avec la base de donnees*/
-        $db = mysqli_connect($host,$userdb,$passdb,$database) ;
-        /*en cas d'echec*/
+
+        /* creation de la liaison avec la base de donnees */
+        $db = mysqli_connect($host, $userdb, $passdb, $database);
+        /* en cas d'echec */
         if (mysqli_connect_errno()) {
             return false;
         } else {
             $db->set_charset("utf8");
-            return $db ;
+            return $db;
         }
     }
-    
-    public static function closedb ($mydb)
-    {
-        mysqli_close ($mydb) ;
+
+    public static function closedb($mydb) {
+        mysqli_close($mydb);
     }
+
 }
