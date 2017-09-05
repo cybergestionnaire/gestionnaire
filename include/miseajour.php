@@ -167,7 +167,7 @@ $versionew = "1.9";
                                 }
                             }
 
-                            if ($versionActuelle == "1.2") {
+                            if ($versionActuelle == "1.2" or $versionActuelle == "1.3") {
                                 include("upgrade-database.php");
 
                                 if ($config->setName("1.9")) {
