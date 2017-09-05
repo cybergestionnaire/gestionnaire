@@ -38,9 +38,7 @@ class TimeLabelGenerator implements LabelGenerator {
 				{
 				  $heures = 0;
 				  $minutes= $value;
-				}
-				else
-				{
+				} else {
 				  $heures  = floor(($value)/60);
 				  $minutes = $value-($heures*60) ;
 				}
@@ -48,15 +46,11 @@ class TimeLabelGenerator implements LabelGenerator {
 				if ($minutes == 0)
 				{
 					$time = $heures."h" ;
-				}
-				else
-				{
+				} else {
 					if ($heures == 0)
 					{
 						$time = $minutes."mn" ;
-					}
-					else
-					{
+					} else {
 						$time = $heures."h".$minutes;
 					}
 				}

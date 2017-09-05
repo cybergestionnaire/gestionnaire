@@ -73,7 +73,7 @@ if($nbresa>0){
 	
 	
 	
-}else{
+} else {
 	
 	$csv_output="Pas de données pour la période demandée pour l'adhérent";
 }

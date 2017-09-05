@@ -1,116 +1,105 @@
 <?php
+
 //
 // renvoi si il y a atelier et le nom de l'atelier
 
-function checkDayAtelier($j,$m,$year)
+function checkDayAtelier($j, $m, $year)
 {
-   
-  $sql = "SELECT `date_atelier`,label_atelier, id_atelier
+    $sql = "SELECT `date_atelier`,label_atelier, id_atelier
           FROM `tab_atelier`,tab_atelier_sujet
           WHERE tab_atelier.id_sujet=tab_atelier_sujet.id_sujet
-		  AND date_atelier='".$year."-".$m."-".$j."' ";
-  
- $db=opendb();
-          $result = mysqli_query($db, $sql);
-          closedb($db);
-	  
-  if($result == FALSE)
-    {
-        return FALSE;
+		  AND date_atelier='" . $year . "-" . $m . "-" . $j . "' ";
+
+    $db = opendb();
+    $result = mysqli_query($db, $sql);
+    closedb($db);
+
+    if ($result == false) {
+        return false;
     } else {
         $row = mysqli_fetch_array($result);
-		return $row;
-	}
-}
-
-//fonction qui affiche les dates des sessions.  ---> a faire
-
-//renvoi la liste des mois où les ateliers sont programmés pour le calendrier
-
-function ListMoisAtelier()
-{
-$sql="SELECT `date_atelier`
-FROM `tab_atelier`
-ORDER BY `date_atelier` ASC
-";
- $db=opendb();
-          $result = mysqli_query($db, $sql);
-          closedb($db);
-  
-     if ($result == FALSE )
-    {
-        return FALSE ;
-    } else {
-        return $result ;
+        return $row;
     }
 }
 
-/// fonction pour vérifier si la validation des présences a déjà été faire ou pas
+//fonction qui affiche les dates des sessions.  ---> a faire
+//renvoi la liste des mois oï¿½ les ateliers sont programmï¿½s pour le calendrier
+
+function ListMoisAtelier()
+{
+    $sql = "SELECT `date_atelier`
+FROM `tab_atelier`
+ORDER BY `date_atelier` ASC
+";
+    $db = opendb();
+    $result = mysqli_query($db, $sql);
+    closedb($db);
+
+    if ($result == false) {
+        return false;
+    } else {
+        return $result;
+    }
+}
+
+/// fonction pour vï¿½rifier si la validation des prï¿½sences a dï¿½jï¿½ ï¿½tï¿½ faire ou pas
 function getAtelierValid($id)
 {
-$sql="SELECT `id_programmation` FROM `tab_atelier_stat` WHERE `id_atelier`='".$id."' ";
-	
- $db=opendb();
-          $result = mysqli_query($db, $sql);
-          closedb($db);
-  
-    if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-      $nb = mysqli_fetch_array($result) ;
-      return $nb ;
-  }
+    $sql = "SELECT `id_programmation` FROM `tab_atelier_stat` WHERE `id_atelier`='" . $id . "' ";
 
+    $db = opendb();
+    $result = mysqli_query($db, $sql);
+    closedb($db);
+
+    if (false == $result) {
+        return false;
+    } else {
+        $nb = mysqli_fetch_array($result);
+        return $nb;
+    }
 }
-//Pour les stat, validation des présents
-function ValidPresenceAtelier($idatelier,$nombre_present,$nombre_inscrit,$ids_presents,$date_atelier,$id_categorie,$nom_atelier)
+
+//Pour les stat, validation des prï¿½sents
+function ValidPresenceAtelier($idatelier, $nombre_present, $nombre_inscrit, $ids_presents, $date_atelier, $id_categorie, $nom_atelier)
 {
-$sql = "INSERT INTO `tab_atelier_stat`
-		VALUES ('','".$idatelier."','".$nombre_present."','".$nombre_inscrit."','".$ids_presents."','".$date_atelier."','".$id_categorie."','".$nom_atelier."')" ;
+    $sql = "INSERT INTO `tab_atelier_stat`
+		VALUES ('','" . $idatelier . "','" . $nombre_present . "','" . $nombre_inscrit . "','" . $ids_presents . "','" . $date_atelier . "','" . $id_categorie . "','" . $nom_atelier . "')";
 
- $db=opendb();
-          $result = mysqli_query($db, $sql);
-          closedb($db);
-  if (FALSE == $result)
-  {
-      return FALSE ;
-  } else {
-      return True;
-  }
+    $db = opendb();
+    $result = mysqli_query($db, $sql);
+    closedb($db);
+    if (false == $result) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
-// verification de la validation presence à un atelier
+// verification de la validation presence ï¿½ un atelier
 function CheckEntreeAtelier($idatelier)
 {
-$sql=" SELECT id_atelier FROM tab_atelier_stat
-		WHERE id_atelier='".$idatelier."'";
- $db=opendb();
-          $result = mysqli_query($db, $sql);
-          closedb($db);
-  if (FALSE != $result)
-  {
-      $row=mysqli_fetch_array($result);
-	  return $row;
-  }
+    $sql = " SELECT id_atelier FROM tab_atelier_stat
+		WHERE id_atelier='" . $idatelier . "'";
+    $db = opendb();
+    $result = mysqli_query($db, $sql);
+    closedb($db);
+    if (false != $result) {
+        $row = mysqli_fetch_array($result);
+        return $row;
+    }
 }
 
 // supression d'un sujet d'atelier de la base
 function delSujetAtelier($id)
 {
-
-$sql = "DELETE FROM `tab_atelier_sujet` WHERE `id_sujet`='".$id."'
-	" ;
- $db=opendb();
-          $result = mysqli_query($db, $sql);
-          closedb($db);
-    if (FALSE == $result)
-    {
-        return FALSE ;
+    $sql = "DELETE FROM `tab_atelier_sujet` WHERE `id_sujet`='" . $id . "'
+	";
+    $db = opendb();
+    $result = mysqli_query($db, $sql);
+    closedb($db);
+    if (false == $result) {
+        return false;
     } else {
-        return TRUE;
+        return true;
     }
 }
-
-
-?>

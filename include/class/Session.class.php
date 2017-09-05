@@ -1,21 +1,22 @@
 <?php
+
 /*
-    This file is part of CyberGestionnaire.
+  This file is part of CyberGestionnaire.
 
-    CyberGestionnaire is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 2 of the License, or
-    (at your option) any later version.
+  CyberGestionnaire is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 2 of the License, or
+  (at your option) any later version.
 
-    CyberGestionnaire is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+  CyberGestionnaire is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with CyberGestionnaire.  If not, see <http://www.gnu.org/licenses/>
+  You should have received a copy of the GNU General Public License
+  along with CyberGestionnaire.  If not, see <http://www.gnu.org/licenses/>
 
-*/
+ */
 
 
 require_once("Mysql.class.php");
@@ -37,166 +38,195 @@ class Session
     private $_idSalle;
     private $_idTarif;
 
-
-    private function __construct($array) {
-        $this->_id             = $array["id_session"];
-        $this->_date           = $array["date_session"];
+    private function __construct($array)
+    {
+        $this->_id = $array["id_session"];
+        $this->_date = $array["date_session"];
         $this->_idSessionSujet = $array["nom_session"];
-        $this->_nbPlaces       = $array["nbplace_session"];
-        $this->_nbDates        = $array["nbre_dates_sessions"];
-        $this->_status         = $array["status_session"];
-        $this->_idAnimateur    = $array["id_anim"];
-        $this->_idSalle        = $array["id_salle"];
-        $this->_idTarif        = $array["id_tarif"];
+        $this->_nbPlaces = $array["nbplace_session"];
+        $this->_nbDates = $array["nbre_dates_sessions"];
+        $this->_status = $array["status_session"];
+        $this->_idAnimateur = $array["id_anim"];
+        $this->_idSalle = $array["id_salle"];
+        $this->_idTarif = $array["id_tarif"];
     }
-    
+
     /*
-    * Accesseurs basiques
-    */
-    
-    public function getId() {
+     * Accesseurs basiques
+     */
+
+    public function getId()
+    {
         return $this->_id;
     }
-    
-    public function getDate() {
+
+    public function getDate()
+    {
         return $this->_date;
     }
 
-    public function getIdSessionSujet() {
+    public function getIdSessionSujet()
+    {
         return $this->_idSessionSujet;
     }
 
-    public function getSessionSujet() {
+    public function getSessionSujet()
+    {
         return SessionSujet::getSessionSujetById($this->_idSessionSujet);
     }
 
-    public function getNbPlaces() {
+    public function getNbPlaces()
+    {
         return $this->_nbPlaces;
     }
 
-    public function  getNbPlacesRestantes() {
+    public function getNbPlacesRestantes()
+    {
         return $this->getNbPlaces() - $this->getNbUtilisateursInscritsOuPresents();
     }
-    
-    public function getNbDates() {
+
+    public function getNbDates()
+    {
         return $this->_nbDates;
     }
 
-    
-    public function getStatus() {
+    public function getStatus()
+    {
         return $this->_status;
     }
 
-    public function getIdAnimateur() {
+    public function getIdAnimateur()
+    {
         return $this->_idAnimateur;
     }
 
-    public function getAnimateur() {
+    public function getAnimateur()
+    {
         return Utilisateur::getUtilisateurById($this->_idAnimateur);
     }
-        public function getIdSalle() {
+
+    public function getIdSalle()
+    {
         return $this->_idSalle;
     }
 
-    public function getSalle() {
+    public function getSalle()
+    {
         return Salle::getSalleById($this->_idSalle);
     }
-    
-    public function getIdTarif() {
+
+    public function getIdTarif()
+    {
         return $this->_idTarif;
     }
 
-    public function getTarif() {
+    public function getTarif()
+    {
         return Tarif::getTarifById($this->_idTarif);
     }
-    
-    public function addSessionDate($date, $statut) {
+
+    public function addSessionDate($date, $statut)
+    {
         $success = false;
-        
+
         $dateSession = SessionDate::creerSessionDate($this->_id, $date, $statut);
         if ($dateSession !== null) {
             // ajout des utilisateurs pour cette date
             // on n'inscrit les éventuels présents en inscrits : il ne peut y avoir de présents sur une nouvelle date !
-            foreach($this->getUtilisateursInscritsOuPresents() as $utilisateur) {
+            foreach ($this->getUtilisateursInscritsOuPresents() as $utilisateur) {
                 $dateSession->inscrireUtilisateurInscrit($utilisateur->getId());
             }
-            foreach($this->getUtilisateursEnAttente() as $utilisateur) {
+            foreach ($this->getUtilisateursEnAttente() as $utilisateur) {
                 $dateSession->inscrireUtilisateurEnAttente($utilisateur->getId());
             }
             $success = true;
         }
-        
+
         return $success;
     }
-    
-    public function getSessionDates() {
+
+    public function getSessionDates()
+    {
         return SessionDate::getSessionDatesByIdSession($this->_id);
     }
-    
-    public function getUtilisateursInscrits() {
+
+    public function getUtilisateursInscrits()
+    {
         return Utilisateur::getUtilisateursInscritsSession($this->_id);
     }
-    
-    public function getNbUtilisateursInscrits() {
+
+    public function getNbUtilisateursInscrits()
+    {
         return count(self::getUtilisateursInscrits());
-    }    
-    
-    public function getUtilisateursPresents() {
+    }
+
+    public function getUtilisateursPresents()
+    {
         return Utilisateur::getUtilisateursPresentsSession($this->_id);
     }
-    
-    public function getNbUtilisateursPresents() {
-        return count(self::getUtilisateursPresents());
-    }  
 
-    public function getUtilisateursInscritsOuPresents() {
+    public function getNbUtilisateursPresents()
+    {
+        return count(self::getUtilisateursPresents());
+    }
+
+    public function getUtilisateursInscritsOuPresents()
+    {
         return Utilisateur::getUtilisateursInscritsOuPresentsSession($this->_id);
     }
-    
-    public function getNbUtilisateursInscritsOuPresents() {
+
+    public function getNbUtilisateursInscritsOuPresents()
+    {
         return count(self::getUtilisateursInscritsOuPresents());
-    }    
-    
-    public function getUtilisateursEnAttente() {
+    }
+
+    public function getUtilisateursEnAttente()
+    {
         return Utilisateur::getUtilisateursEnAttenteSession($this->_id);
     }
-    
-    public function getNbUtilisateursEnAttente() {
+
+    public function getNbUtilisateursEnAttente()
+    {
         return count(self::getUtilisateursEnAttente());
     }
 
-    public function isUtilisateurInscrit($idUtilisateur) {
+    public function isUtilisateurInscrit($idUtilisateur)
+    {
         // verifie si le user n'est pas deja inscrit
-        $success = FALSE;
-        
-        $db     = Mysql::opendb();
-        $sql    = "SELECT * FROM `rel_session_user` WHERE `id_session` =" . $this->_id . " AND `id_user` =" . $idUtilisateur ;
+        $success = false;
+
+        $db = Mysql::opendb();
+        $sql = "SELECT * FROM `rel_session_user` WHERE `id_session` =" . $this->_id . " AND `id_user` =" . $idUtilisateur;
         // attention, renvoi une ligne par datesession !!! Donc, plusieurs "row" !
-        
-        $result = mysqli_query($db,$sql);
+
+        $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
 
         if (mysqli_num_rows($result) >= 1) {
-            $success = TRUE;
+            $success = true;
         }
-        
+
         return $success;
     }
-    
-    public function inscrireUtilisateurInscrit($idUtilisateur) {
+
+    public function inscrireUtilisateurInscrit($idUtilisateur)
+    {
         return $this->InscrireUtilisateur($idUtilisateur, '0');
     }
-    
-    public function inscrireUtilisateurPresent($idUtilisateur) {
+
+    public function inscrireUtilisateurPresent($idUtilisateur)
+    {
         return $this->InscrireUtilisateur($idUtilisateur, '1');
     }
 
-    public function inscrireUtilisateurEnAttente($idUtilisateur) {
+    public function inscrireUtilisateurEnAttente($idUtilisateur)
+    {
         return $this->InscrireUtilisateur($idUtilisateur, '2');
     }
-    
-    public function InscrireUtilisateur($idUtilisateur, $statut) {
-        $success = TRUE;
+
+    public function InscrireUtilisateur($idUtilisateur, $statut)
+    {
+        $success = true;
 
         foreach ($this->getSessionDates() as $dateSession) {
             if (!$dateSession->inscrireUtilisateur($idUtilisateur, $statut)) {
@@ -205,166 +235,171 @@ class Session
         }
         return $success;
     }
-    
-    public function desinscrireUtilisateur($idUtilisateur) {
-        $success = FALSE;
-        
-        $db      = Mysql::opendb();
-        $sql     = "DELETE FROM `rel_session_user` WHERE `id_user`=" . $idUtilisateur . " AND `id_session`=" . $this->_id ;
-        $result  = mysqli_query($db, $sql);
+
+    public function desinscrireUtilisateur($idUtilisateur)
+    {
+        $success = false;
+
+        $db = Mysql::opendb();
+        $sql = "DELETE FROM `rel_session_user` WHERE `id_user`=" . $idUtilisateur . " AND `id_session`=" . $this->_id;
+        $result = mysqli_query($db, $sql);
 
         Mysql::closedb($db);
 
-        if ($result) { 
-
-            $success = TRUE;
+        if ($result) {
+            $success = true;
         }
-                
+
         return $success;
     }
-    
-    public function getStatutUtilisateur($idUtilisateur) {
+
+    public function getStatutUtilisateur($idUtilisateur)
+    {
         $statut = null;
-        
-        $db  = Mysql::opendb();
+
+        $db = Mysql::opendb();
         $sql = "SELECT  `status_rel_session` FROM `rel_session_user` WHERE `id_session`='" . $this->_id . "' AND `id_user`='" . $idUtilisateur . "' ";
-        $result = mysqli_query($db,$sql);
+        $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
         if ($result and mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
             $statut = $row["status_rel_session"];
             mysqli_free_result($result);
         }
-        
+
         return $statut;
     }
 
-    public function hasSessionDatesValidees() {
+    public function hasSessionDatesValidees()
+    {
         // permet de savoir si des dates ont déjà été validées,
         // auquel cas, on ne doit plus supprimer la session !
 
-        $hasSessionDatesValidees = FALSE;
+        $hasSessionDatesValidees = false;
         $db = Mysql::opendb();
 
         $sql = "SELECT count( `statut_datesession` ) AS nb FROM `tab_session_dates` WHERE `id_session` =" . $this->_id . " AND `statut_datesession` >0";
 
-        $result = mysqli_query($db,$sql);
+        $result = mysqli_query($db, $sql);
 
         if ($result) {
             $row = mysqli_fetch_array($result);
             $nbDatesValidees = $row["nb"];
-            
+
             if ($nbDatesValidees > 0) {
-                $hasSessionDatesValidees = TRUE;
+                $hasSessionDatesValidees = true;
             }
         }
-        
+
         return $hasSessionDatesValidees;
     }
 
-    public function hasSessionDatesNonValidees() {
+    public function hasSessionDatesNonValidees()
+    {
         // permet de savoir si des dates ont déjà été validées,
         // auquel cas, on ne doit plus supprimer la session !
 
-        $hasSessionDatesNonValidees = FALSE;
+        $hasSessionDatesNonValidees = false;
         $db = Mysql::opendb();
 
         $sql = "SELECT count( `statut_datesession` ) AS nb FROM `tab_session_dates` WHERE `id_session` =" . $this->_id . " AND `statut_datesession` = 0";
 
-        $result = mysqli_query($db,$sql);
+        $result = mysqli_query($db, $sql);
 
         if ($result) {
             $row = mysqli_fetch_array($result);
             $nbDatesNonValidees = $row["nb"];
-            
+
             if ($nbDatesNonValidees > 0) {
-                $hasSessionDatesNonValidees = TRUE;
+                $hasSessionDatesNonValidees = true;
             }
         }
-        
+
         return $hasSessionDatesNonValidees;
     }
 
-    public function cloturer() {
-        $success = FALSE;
-        
-        $db      = Mysql::opendb();
-        $sql     = "UPDATE `tab_session` SET `status_session`=1 WHERE `id_session`=" . $this->_id;
-        $result  = mysqli_query($db, $sql);
+    public function cloturer()
+    {
+        $success = false;
+
+        $db = Mysql::opendb();
+        $sql = "UPDATE `tab_session` SET `status_session`=1 WHERE `id_session`=" . $this->_id;
+        $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
 
         if ($result) {
-            $success = TRUE;
+            $success = true;
         }
         return $success;
     }
-    
+
     /*
      * Fonctions de l'objet
      */
-    
-    public function modifier($date, $idSessionSujet, $nbPlaces, $nbDates, $status, $idAnimateur, $idSalle, $idTarif) {
 
-        $success = FALSE;
+    public function modifier($date, $idSessionSujet, $nbPlaces, $nbDates, $status, $idAnimateur, $idSalle, $idTarif)
+    {
+        $success = false;
         $db = Mysql::opendb();
-        
-        $date           = mysqli_real_escape_string($db, $date);
+
+        $date = mysqli_real_escape_string($db, $date);
         $idSessionSujet = mysqli_real_escape_string($db, $idSessionSujet);
-        $nbPlaces       = mysqli_real_escape_string($db, $nbPlaces);
-        $nbDates        = mysqli_real_escape_string($db, $nbDates);
-        $status         = mysqli_real_escape_string($db, $status);
-        $idAnimateur    = mysqli_real_escape_string($db, $idAnimateur);
-        $idSalle        = mysqli_real_escape_string($db, $idSalle);
-        $idTarif        = mysqli_real_escape_string($db, $idTarif);
+        $nbPlaces = mysqli_real_escape_string($db, $nbPlaces);
+        $nbDates = mysqli_real_escape_string($db, $nbDates);
+        $status = mysqli_real_escape_string($db, $status);
+        $idAnimateur = mysqli_real_escape_string($db, $idAnimateur);
+        $idSalle = mysqli_real_escape_string($db, $idSalle);
+        $idTarif = mysqli_real_escape_string($db, $idTarif);
 
         $sql = "UPDATE `tab_session` "
-            . "SET `date_session`='" . $date . "', "
-            . "`nom_session`='" . $idSessionSujet . "', "
-            . "`nbplace_session`='" . $nbPlaces . "', "
-            . "`nbre_dates_sessions`='" . $nbDates . "', "
-            . "`status_session`='" . $status . "', "
-            . "`id_anim`='" . $idAnimateur . "', "
-            . "`id_salle`='" . $idSalle . "', "
-            . "`id_tarif`='" . $idTarif . "' "
-            . "WHERE `id_session`=" . $this->_id;
+                . "SET `date_session`='" . $date . "', "
+                . "`nom_session`='" . $idSessionSujet . "', "
+                . "`nbplace_session`='" . $nbPlaces . "', "
+                . "`nbre_dates_sessions`='" . $nbDates . "', "
+                . "`status_session`='" . $status . "', "
+                . "`id_anim`='" . $idAnimateur . "', "
+                . "`id_salle`='" . $idSalle . "', "
+                . "`id_tarif`='" . $idTarif . "' "
+                . "WHERE `id_session`=" . $this->_id;
 
-        $result = mysqli_query($db,$sql);
+        $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
         if ($result) {
-            $this->_date           = $date;
+            $this->_date = $date;
             $this->_idSessionSujet = $idSessionSujet;
-            $this->_nbPlaces       = $nbPlaces;
-            $this->_nbDates        = $nbDates;
-            $this->_status         = $status;
-            $this->_idAnimateur    = $idAnimateur;
-            $this->_idSalle        = $idSalle;
-            $this->_idTarif        = $idTarif;
-            $success = TRUE;
+            $this->_nbPlaces = $nbPlaces;
+            $this->_nbDates = $nbDates;
+            $this->_status = $status;
+            $this->_idAnimateur = $idAnimateur;
+            $this->_idSalle = $idSalle;
+            $this->_idTarif = $idTarif;
+            $success = true;
         }
 
         return $success;
     }
 
-    public function supprimer() {
+    public function supprimer()
+    {
         $success = true;
-        
+
         // on ne supprime plus le session une fois que des dates ont été validées !
         if (!$this->hasSessionDatesValidees()) {
             $db = Mysql::opendb();
-            
-            // suppression des relations 
+
+            // suppression des relations
 
             foreach ($this->getSessionDates() as $sessionDate) {
                 // error_log("suppression de SessionDate->id =" . $sessionDate->getId());
-                if ( !$sessionDate->supprimer() ) {
+                if (!$sessionDate->supprimer()) {
                     $success = false;
                 }
             }
             if ($success) {
                 // error_log("suppression de Session->id =" . $this->_id);
-                $sql    = "DELETE FROM `tab_session` WHERE `id_session`=" . $this->_id;
+                $sql = "DELETE FROM `tab_session` WHERE `id_session`=" . $this->_id;
                 $result = mysqli_query($db, $sql);
-                
+
                 if (!$result) {
                     $success = false;
                 }
@@ -374,51 +409,51 @@ class Session
         return $success;
     }
 
-
     /*
-    * Fonctions statiques
-    */
-    
-    public static function getSessionById($id) {
+     * Fonctions statiques
+     */
 
+    public static function getSessionById($id)
+    {
         $session = null;
-        
+
         if ($id != 0) {
             $db = Mysql::opendb();
             $id = mysqli_real_escape_string($db, $id);
             $sql = "SELECT * "
-                 . "FROM `tab_session` "
-                 . "WHERE `id_session` = " . $id . "";
-            $result = mysqli_query($db,$sql);
+                    . "FROM `tab_session` "
+                    . "WHERE `id_session` = " . $id . "";
+            $result = mysqli_query($db, $sql);
             Mysql::closedb($db);
-            
+
             if (mysqli_num_rows($result) == 1) {
                 $session = new Session(mysqli_fetch_assoc($result));
             }
         }
-        
+
         return $session;
     }
-    
-    public static function creerSession($date, $idSessionSujet, $nbPlaces, $nbDates, $status, $idAnimateur, $idSalle, $idTarif) {
+
+    public static function creerSession($date, $idSessionSujet, $nbPlaces, $nbDates, $status, $idAnimateur, $idSalle, $idTarif)
+    {
         $session = null;
-        
-        $db  = Mysql::opendb();
-        
-        $date           = mysqli_real_escape_string($db, $date);
+
+        $db = Mysql::opendb();
+
+        $date = mysqli_real_escape_string($db, $date);
         $idSessionSujet = mysqli_real_escape_string($db, $idSessionSujet);
-        $nbPlaces       = mysqli_real_escape_string($db, $nbPlaces);
-        $nbDates        = mysqli_real_escape_string($db, $nbDates);
-        $status         = mysqli_real_escape_string($db, $status);
-        $idAnimateur    = mysqli_real_escape_string($db, $idAnimateur);
-        $idSalle        = mysqli_real_escape_string($db, $idSalle);
-        $idTarif        = mysqli_real_escape_string($db, $idTarif);
+        $nbPlaces = mysqli_real_escape_string($db, $nbPlaces);
+        $nbDates = mysqli_real_escape_string($db, $nbDates);
+        $status = mysqli_real_escape_string($db, $status);
+        $idAnimateur = mysqli_real_escape_string($db, $idAnimateur);
+        $idSalle = mysqli_real_escape_string($db, $idSalle);
+        $idTarif = mysqli_real_escape_string($db, $idTarif);
 
         $sql = "INSERT INTO `tab_session` (`date_session`,`nom_session`,`nbplace_session`,`nbre_dates_sessions`,`status_session`,`id_anim`,`id_salle`,`id_tarif`) "
-             . "VALUES ('" . $date . "', '" . $idSessionSujet . "', '" . $nbPlaces . "', '" . $nbDates . "', '" . $status . "', '" . $idAnimateur . "', '" . $idSalle . "', '" . $idTarif . "')";
-        
-        $result = mysqli_query($db,$sql);
-        
+                . "VALUES ('" . $date . "', '" . $idSessionSujet . "', '" . $nbPlaces . "', '" . $nbDates . "', '" . $status . "', '" . $idAnimateur . "', '" . $idSalle . "', '" . $idTarif . "')";
+
+        $result = mysqli_query($db, $sql);
+
         if ($result) {
             $session = new Session(array(
                 "id_session" => mysqli_insert_id($db),
@@ -430,192 +465,214 @@ class Session
                 "id_anim" => $idAnimateur,
                 "id_salle" => $idSalle,
                 "id_tarif" => $idTarif
-                ));
+            ));
         }
-        
+
         Mysql::closedb($db);
 
         return $session;
     }
-    
-    
-    public static function getSessions() {
-        $sessions = null;
-    
-        $db      = Mysql::opendb();
-        $sql     = "SELECT * FROM tab_session";
-        $result  = mysqli_query($db,$sql);
-        Mysql::closedb($db);
-        
-        if ($result) {
-            $sessions = array();
-            while($row = mysqli_fetch_assoc($result)) {
-                $sessions[] = new Session($row);
-            }
-            mysqli_free_result($result);
-        }
-        
-        return $sessions;
 
-    }
-    
-    public static function getSessionsNonCloturees() {
+    public static function getSessions()
+    {
         $sessions = null;
-    
-        $db      = Mysql::opendb();
-        $sql     = "SELECT * FROM tab_session WHERE status_session=0 ORDER BY `date_session` ASC";
-        $result  = mysqli_query($db,$sql);
+
+        $db = Mysql::opendb();
+        $sql = "SELECT * FROM tab_session";
+        $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
-        
+
         if ($result) {
             $sessions = array();
-            while($row = mysqli_fetch_assoc($result)) {
+            while ($row = mysqli_fetch_assoc($result)) {
                 $sessions[] = new Session($row);
             }
             mysqli_free_result($result);
         }
-        
-        return $sessions;
-    }
-    
-    public static function getSessionsArchiveeByEspaceAndAnnee($idEspace, $annee) {
-        $sessions = null;
-    
-        $db      = Mysql::opendb();
-        $sql     = "SELECT tab_session.* "
-                 . "FROM tab_session, tab_salle "
-                 . "WHERE tab_salle.`id_salle` = tab_session.`id_salle` "
-                 . "  AND tab_salle.`id_espace`=" . $idEspace . " "
-                 . "  AND YEAR(date_session)=" . $annee . " "
-                 . "  AND status_session=1 "
-                 . "ORDER BY `date_session` ASC";
-                 
-        $result  = mysqli_query($db,$sql);
-        Mysql::closedb($db);
-        
-        if ($result) {
-            $sessions = array();
-            while($row = mysqli_fetch_assoc($result)) {
-                $sessions[] = new Session($row);
-            }
-            mysqli_free_result($result);
-        }
-        
-        return $sessions;
-    }
-    
-    
-    public static function getSessionsFuturesParAnimateur($idAnimateur) {
-        $sessions = null;
-    
-        $db       = Mysql::opendb();
-        $sql      = "SELECT * "
-                  . "FROM `tab_session` "
-                  . "WHERE status_session=0 "
-                  . "  AND id_anim=" . $idAnimateur . " "
-                  . "  AND YEAR(`date_session`) >= " . date('Y') . " "
-                  . "ORDER BY `id_session` ASC";
-                  
-        $result   = mysqli_query($db,$sql);
-        Mysql::closedb($db);
-        
-        if ($result) {
-            $sessions = array();
-            while($row = mysqli_fetch_assoc($result)) {
-                $sessions[] = new Session($row);
-            }
-            mysqli_free_result($result);
-        }
-        
+
         return $sessions;
     }
 
-    public static function getSessionsFuturesParEspace($idEspace) {
+    public static function getSessionsNonCloturees()
+    {
         $sessions = null;
-    
-        $db       = Mysql::opendb();
-        $sql      = "SELECT tab_session.* "
-                  . "FROM `tab_session`, tab_salle "
-                  . "WHERE status_session=0 "
-                  . " AND  tab_salle.`id_salle` = tab_session.`id_salle` "
-                  . " AND tab_salle.`id_espace` =" . $idEspace . " "
-                  . "ORDER BY `id_session` ASC";
-        $result   = mysqli_query($db,$sql);
+
+        $db = Mysql::opendb();
+        $sql = "SELECT * FROM tab_session WHERE status_session=0 ORDER BY `date_session` ASC";
+        $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
-        
+
         if ($result) {
             $sessions = array();
-            while($row = mysqli_fetch_assoc($result)) {
+            while ($row = mysqli_fetch_assoc($result)) {
                 $sessions[] = new Session($row);
             }
             mysqli_free_result($result);
         }
-        
+
         return $sessions;
     }
-    
-    public static function getSessionsFuturesByAnnee($annee) {
-        $sessions = null;
-        
-        $db    = Mysql::opendb();
-        
-        $annee = mysqli_real_escape_string($db, $annee);
-        
-        $cetteAnnee = date('Y');
-    
-        if ($annee > $cetteAnnee) {
-    
-            $sql = "SELECT * "
-                 . "FROM `tab_session` "
-                 . "WHERE YEAR(`date_session`)=" . $annee . " "
-                 . "ORDER BY `date_session` ASC";
-    
-        } else if ($annee == $cetteAnnee){
-    
-            $sql = "SELECT * "
-                 . "FROM `tab_session` "
-                 . "WHERE YEAR(`date_session`)=" . $annee . " "
-                 . "  AND MONTH( `date_session` ) >= MONTH( NOW( )) "
-                 . "ORDER BY `date_session` ASC";
 
-        }   
+    public static function getSessionsArchiveeByEspaceAndAnnee($idEspace, $annee)
+    {
+        $sessions = null;
+
+        $db = Mysql::opendb();
+        $sql = "SELECT tab_session.* "
+                . "FROM tab_session, tab_salle "
+                . "WHERE tab_salle.`id_salle` = tab_session.`id_salle` "
+                . "  AND tab_salle.`id_espace`=" . $idEspace . " "
+                . "  AND YEAR(date_session)=" . $annee . " "
+                . "  AND status_session=1 "
+                . "ORDER BY `date_session` ASC";
 
         $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
 
         if ($result) {
             $sessions = array();
-            while($row = mysqli_fetch_assoc($result)) {
+            while ($row = mysqli_fetch_assoc($result)) {
                 $sessions[] = new Session($row);
             }
             mysqli_free_result($result);
-            
         }
+
         return $sessions;
     }
 
-    public static function getSessionsParUtilisateurEtParStatut($idUtilisateur, $statut) {
+    public static function getSessionsFuturesParAnimateur($idAnimateur)
+    {
         $sessions = null;
-    
-        $db  = Mysql::opendb();
-        $sql = "SELECT tab_session.* "
-             . "FROM tab_session, `rel_session_user` "
-             . "WHERE `rel_session_user`.`status_rel_session`=" . $statut . " "
-             . "  AND tab_session.status_session = 0 "
-             . "  AND `rel_session_user`.`id_user`=" . $idUtilisateur;
 
-                    
-        $result = mysqli_query($db,$sql);
+        $db = Mysql::opendb();
+        $sql = "SELECT * "
+                . "FROM `tab_session` "
+                . "WHERE status_session=0 "
+                . "  AND id_anim=" . $idAnimateur . " "
+                . "  AND YEAR(`date_session`) >= " . date('Y') . " "
+                . "ORDER BY `id_session` ASC";
+
+        $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
-        
+
         if ($result) {
             $sessions = array();
-            while($row = mysqli_fetch_assoc($result)) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $sessions[] = new Session($row);
+            }
+            mysqli_free_result($result);
+        }
+
+        return $sessions;
+    }
+
+    public static function getSessionsFuturesParEspace($idEspace)
+    {
+        $sessions = null;
+
+        $db = Mysql::opendb();
+        $sql = "SELECT tab_session.* "
+                . "FROM `tab_session`, tab_salle "
+                . "WHERE status_session=0 "
+                . " AND  tab_salle.`id_salle` = tab_session.`id_salle` "
+                . " AND tab_salle.`id_espace` =" . $idEspace . " "
+                . "ORDER BY `id_session` ASC";
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $sessions = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $sessions[] = new Session($row);
+            }
+            mysqli_free_result($result);
+        }
+
+        return $sessions;
+    }
+
+    public static function getSessionsFuturesByAnnee($annee)
+    {
+        $sessions = null;
+
+        $db = Mysql::opendb();
+
+        $annee = mysqli_real_escape_string($db, $annee);
+
+        $cetteAnnee = date('Y');
+
+        if ($annee > $cetteAnnee) {
+            $sql = "SELECT * "
+                    . "FROM `tab_session` "
+                    . "WHERE YEAR(`date_session`)=" . $annee . " "
+                    . "ORDER BY `date_session` ASC";
+        } elseif ($annee == $cetteAnnee) {
+            $sql = "SELECT * "
+                    . "FROM `tab_session` "
+                    . "WHERE YEAR(`date_session`)=" . $annee . " "
+                    . "  AND MONTH( `date_session` ) >= MONTH( NOW( )) "
+                    . "ORDER BY `date_session` ASC";
+        }
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $sessions = array();
+            while ($row = mysqli_fetch_assoc($result)) {
                 $sessions[] = new Session($row);
             }
             mysqli_free_result($result);
         }
         return $sessions;
     }
-    
+
+    public static function getSessionsParUtilisateurEtParStatut($idUtilisateur, $statut)
+    {
+        $sessions = null;
+
+        $db = Mysql::opendb();
+        $sql = "SELECT DISTINCT tab_session.* "
+                . "FROM tab_session, tab_session_dates,`rel_session_user` "
+                . "WHERE `rel_session_user`.`status_rel_session`=" . $statut . " "
+                . "  AND tab_session_dates.id_session = tab_session.id_session "
+                . "  AND tab_session.id_session = rel_session_user.id_session "
+                . "  AND tab_session_dates.statut_datesession = 0 "
+                . "  AND tab_session.status_session = 0 "
+                . "  AND `rel_session_user`.`id_user`=" . $idUtilisateur;
+
+        // error_log("sql Session:607 = " . $sql);
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $sessions = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $sessions[] = new Session($row);
+            }
+            mysqli_free_result($result);
+        }
+
+        return $sessions;
+    }
+
+    public static function getSessionDatesEnCoursParUtilisateurEtParStatut($idUtilisateur, $statut)
+    {
+        return SessionDate::getSessionDatesEnCoursParUtilisateurEtParStatut($idUtilisateur, $statut);
+    }
+
+    public static function getSessionDatesFermeesParUtilisateurEtParStatut($idUtilisateur, $statut)
+    {
+        return SessionDate::getSessionDatesFermeesParUtilisateurEtParStatut($idUtilisateur, $statut);
+    }
+
+    // public static function getSessionDatesUtilisateurInscrit($idUtilisateur) {
+    // return SessionDate::getSessionDatesParUtilisateurEtParStatut($idUtilisateur, 0);
+    // }
+    // public static function getSessionDatesUtilisateurPresent($idUtilisateur ) {
+    // return SessionDate::getSessionDatesParUtilisateurEtParStatut($idUtilisateur, 1);
+    // }
+    // public static function getSessionDatesUtilisateurAbsent($idUtilisateur) {
+    // return SessionDate::getSessionDatesParUtilisateurEtParStatut($idUtilisateur, 2);
+    // }
 }

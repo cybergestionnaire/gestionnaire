@@ -1,7 +1,7 @@
-<?php //*** Backup base automatique 1 fois par mois pour les admins qui se connectent! ***///
-    if (getLogBackup()) {
-     
-?>
+<?php
+//*** Backup base automatique 1 fois par mois pour les admins qui se connectent! ***///
+if (getLogBackup()) {
+    ?>
     <div class="col-md-4">
         <div class="box box-danger">
             <div class="box-header"> <i class="fa fa-warning"></i><h3 class="box-title">Sauvegarde de la base de donn&eacute;e</h3></div>
@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    
-<?php 
-    }
+
+    <?php
+}
 ?>

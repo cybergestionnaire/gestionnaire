@@ -40,7 +40,7 @@ require("../fpdf.php");
     $resultuser=mysqli_fetch_array($row);
  
 	//transcription des données
-	if ($resultuser['newsletter_user']==0){$news="Non";}else{$news="Oui";}
+	if ($resultuser['newsletter_user']==0){$news="Non";} else {$news="Oui";}
 	
 	$tarif=$resultuser['nom_tarif']." (".$resultuser['donnee_tarif'].")";
 	//photo de profil
