@@ -21,8 +21,8 @@
  */
 
 //require_once("include/class/Espace.class.php");
-require_once("include/class/Atelier.class.php");
-require_once("include/class/Session.class.php");
+//require_once("include/class/Atelier.class.php");
+//require_once("include/class/Session.class.php");
 
 $b = isset($_GET["b"]) ? $_GET["b"] : '';
 $idAtelier = isset($_GET["idatelier"]) ? $_GET["idatelier"] : '';

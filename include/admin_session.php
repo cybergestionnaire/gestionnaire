@@ -18,8 +18,8 @@
 
 
  */
-require_once("include/class/Session.class.php");
-require_once("include/class/Tarif.class.php");
+//require_once("include/class/Session.class.php");
+//require_once("include/class/Tarif.class.php");
 
 $mesno = isset($_GET["mesno"]) ? $_GET["mesno"] : '';
 if ($mesno != "") {

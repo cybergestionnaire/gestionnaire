@@ -24,9 +24,9 @@
 // error_log(print_r($_GET, true));
 // formulaire de modification de transaction
 
-require_once("include/class/Utilisateur.class.php");
-require_once("include/class/Tarif.class.php");
-require_once("include/class/Forfait.class.php");
+//require_once("include/class/Utilisateur.class.php");
+//require_once("include/class/Tarif.class.php");
+//require_once("include/class/Forfait.class.php");
 
 // récuperation des variables
 

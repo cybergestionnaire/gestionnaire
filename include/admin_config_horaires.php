@@ -23,8 +23,8 @@
  */
 
 // Configuration de l'espace
-require_once("include/class/Espace.class.php");
-require_once("include/class/Config.class.php");
+//require_once("include/class/Espace.class.php");
+//require_once("include/class/Config.class.php");
 
 // renvoi un calendrier du mois et de l'annee donnee pour determiner les jours feries
 function getCalendarClose($year, $month, $epn)

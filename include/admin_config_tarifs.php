@@ -21,9 +21,9 @@
 
  */
 
-require_once("include/class/Espace.class.php");
-require_once("include/class/Tarif.class.php");
-require_once("include/class/Forfait.class.php");
+//require_once("include/class/Espace.class.php");
+//require_once("include/class/Tarif.class.php");
+//require_once("include/class/Forfait.class.php");
 // affichage  -----------
 //chargement du tarif
 /* $tarif_r = isset($_POST['ptarif'])  ? $_POST['ptarif']  : ''; //bouton deroulant

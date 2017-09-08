@@ -26,7 +26,7 @@
 
  */
 
-require_once('include/class/Utilisateur.class.php');
+//require_once('include/class/Utilisateur.class.php');
 
 // affichage des statistiques
 if (isset($mess) && $mess != "") {

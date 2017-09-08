@@ -23,9 +23,9 @@
 //error_log(print_r($_POST, true));
 //error_log(print_r($_GET, true));
 
-require_once("include/class/Ville.class.php");
-require_once("include/class/Espace.class.php");
-require_once("include/class/Utilisateur.class.php");
+//require_once("include/class/Ville.class.php");
+//require_once("include/class/Espace.class.php");
+//require_once("include/class/Utilisateur.class.php");
 
 $act = isset($_GET["act"]) ? $_GET["act"] : '';
 $id = isset($_POST["iduser"]) ? $_POST["iduser"] : '';

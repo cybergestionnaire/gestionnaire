@@ -18,9 +18,9 @@
 
  */
 
-require_once("Mysql.class.php");
-require_once("Utilisateur.class.php");
-require_once("Transaction.class.php");
+//require_once("Mysql.class.php");
+//require_once("Utilisateur.class.php");
+//require_once("Transaction.class.php");
 
 class ForfaitAtelier
 {

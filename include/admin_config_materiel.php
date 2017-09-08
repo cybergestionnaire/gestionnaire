@@ -19,7 +19,7 @@
   2006 Namont Nicolas
 
  */
-require_once("include/class/Materiel.class.php");
+//require_once("include/class/Materiel.class.php");
 // chargement des valeurs pour l'epn par défaut
 /* $epn=$_SESSION['idepn'];
   //si changment d'epn

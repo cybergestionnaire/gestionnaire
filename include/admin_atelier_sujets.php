@@ -19,9 +19,9 @@
 
   Creation des ateliers dans la base
  */
-require_once("include/class/AtelierSujet.class.php");
-require_once("include/class/AtelierNiveau.class.php");
-require_once("include/class/AtelierCategorie.class.php");
+//require_once("include/class/AtelierSujet.class.php");
+//require_once("include/class/AtelierNiveau.class.php");
+//require_once("include/class/AtelierCategorie.class.php");
 
 $mesno = isset($_GET["mesno"]) ? $_GET["mesno"] : '';
 if ($mesno != "") {

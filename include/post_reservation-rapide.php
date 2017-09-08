@@ -22,7 +22,7 @@
 
  */
 
-require_once("include/class/Resa.class.php");
+//require_once("include/class/Resa.class.php");
 //----
 //----------
 //------------ Validation de la resa rapide -------------------------------------------------------------------///

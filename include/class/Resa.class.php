@@ -18,9 +18,9 @@
 
  */
 
-require_once("Mysql.class.php");
-require_once("Utilisateur.class.php");
-require_once("Materiel.class.php");
+//require_once("Mysql.class.php");
+//require_once("Utilisateur.class.php");
+//require_once("Materiel.class.php");
 
 class Resa
 {

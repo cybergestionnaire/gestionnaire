@@ -28,9 +28,9 @@
 // error_log("GET : " . print_r($_GET, true));
 // error_log("POST : " . print_r($_POST, true));
 
-require_once("include/class/Session.class.php");
-require_once("include/class/SessionDate.class.php");
-require_once("include/class/StatAtelierSession.class.php");
+//require_once("include/class/Session.class.php");
+//require_once("include/class/SessionDate.class.php");
+//require_once("include/class/StatAtelierSession.class.php");
 
 $idsession = isset($_GET["idsession"]) ? $_GET["idsession"] : '';
 if ($idsession == '') {

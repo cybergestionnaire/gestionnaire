@@ -1,5 +1,5 @@
 <?php
-require_once("include/class/Config.class.php");
+//require_once("include/class/Config.class.php");
 
 $config = Config::getConfig($_SESSION["idepn"]);
 $version = $config->getName();

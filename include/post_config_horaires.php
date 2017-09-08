@@ -23,7 +23,7 @@
 
 // POST de Configuration de l'espace
 
-require_once("include/class/Horaire.class.php");
+//require_once("include/class/Horaire.class.php");
 
 function updateresaconfig($epnr, $unitconfig, $maxtime_config, $resarapide, $duree_resarapide)
 {

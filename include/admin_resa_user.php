@@ -20,8 +20,8 @@
   2012 Florence DAUVERGNE
 
  */
-require_once('include/class/Utilisateur.class.php');
-require_once('include/class/Resa.class.php');
+//require_once('include/class/Utilisateur.class.php');
+//require_once('include/class/Resa.class.php');
 
 $id_user = isset($_GET["iduser"]) ? $_GET["iduser"] : '';
 $datedebut = isset($_POST["datedebut"]) ? $_POST["datedebut"] : '';

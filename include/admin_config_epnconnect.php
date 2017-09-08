@@ -20,8 +20,8 @@
 
 
  */
-require_once("include/class/Espace.class.php");
-require_once("include/class/ConfigLogiciel.class.php");
+//require_once("include/class/Espace.class.php");
+//require_once("include/class/ConfigLogiciel.class.php");
 
 // Configuration des options du logiciel
 $mess = isset($_GET["mess"]) ? $_GET["mess"] : '';

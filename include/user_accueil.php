@@ -23,9 +23,9 @@
 
 // Page d'accueil sur le compte animateur ou administrateur
 
-require_once("include/class/Resa.class.php");
-require_once("include/class/Atelier.class.php");
-require_once("include/class/SessionDate.class.php");
+//require_once("include/class/Resa.class.php");
+//require_once("include/class/Atelier.class.php");
+//require_once("include/class/SessionDate.class.php");
 
 // admin --- Utilisateur
 include("post_reservation-rapide.php");

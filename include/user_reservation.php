@@ -26,10 +26,10 @@
 // error_log(print_r($_GET, true));
 // error_log("----      ----");
 
-require_once("include/class/Salle.class.php");
-require_once("include/class/Materiel.class.php");
-require_once("include/class/Config.class.php");
-require_once("include/class/Resa.class.php");
+//require_once("include/class/Salle.class.php");
+//require_once("include/class/Materiel.class.php");
+//require_once("include/class/Config.class.php");
+//require_once("include/class/Resa.class.php");
 
 $idEspace = $_SESSION["idepn"];
 $config = Config::getConfig($idEspace);

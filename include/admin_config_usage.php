@@ -19,7 +19,7 @@
   2006 Namont Nicolas (CyberMin)
 
  */
-require_once("include/class/Usage.class.php");
+//require_once("include/class/Usage.class.php");
 // gestion des fonctions des postes
 // traitement des post
 $act = isset($_GET["act"]) ? $_GET["act"] : '';

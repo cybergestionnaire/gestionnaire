@@ -19,8 +19,8 @@
  */
 
 
-require_once("Mysql.class.php");
-require_once("include/class/Session.class.php");
+//require_once("Mysql.class.php");
+//require_once("include/class/Session.class.php");
 
 class SessionDate
 {

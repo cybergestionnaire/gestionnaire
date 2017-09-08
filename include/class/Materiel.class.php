@@ -18,8 +18,8 @@
 
  */
 
-require_once("Mysql.class.php");
-require_once("Salle.class.php");
+//require_once("Mysql.class.php");
+//require_once("Salle.class.php");
 
 class Materiel
 {

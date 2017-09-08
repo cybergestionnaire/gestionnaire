@@ -18,8 +18,8 @@
 
  */
 
-require_once("Mysql.class.php");
-require_once("Utilisateur.class.php");
+//require_once("Mysql.class.php");
+//require_once("Utilisateur.class.php");
 
 class Message
 {

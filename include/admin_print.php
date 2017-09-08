@@ -22,7 +22,7 @@
  */
 // fichier d'affichage du compte d'impression selectionne
 
-require_once('include/class/Utilisateur.class.php');
+//require_once('include/class/Utilisateur.class.php');
 
 $id_user = isset($_GET["iduser"]) ? $_GET["iduser"] : '';
 $act = isset($_GET["act"]) ? $_GET["act"] : '';

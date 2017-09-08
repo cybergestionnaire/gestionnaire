@@ -21,7 +21,7 @@
 
   Formulaire de mise à jour de version, détection et modifications dans la base de donnees
  */
-require_once("include/class/Config.class.php");
+//require_once("include/class/Config.class.php");
 
 //declencher les MAJ, verifier la version dans la tab_config
 // $versionActuelle = getMajConfigVersion($_SESSION["idepn"]);
@@ -167,7 +167,7 @@ $versionew = "1.9";
                                 }
                             }
 
-                            if ($versionActuelle == "1.2" or $versionActuelle == "1.3") {
+                            if ($versionActuelle == "1.2") {
                                 include("upgrade-database.php");
 
                                 if ($config->setName("1.9")) {
@@ -212,16 +212,16 @@ $versionew = "1.9";
                         <li>Travail de ré-écriture en objet : sont faits
                             <ul>
                                 <li>toutes les pages "configuration"</li>
-                                <li>les pages adhérents</li>
-                                <li>les pages de réservation</li>
+                                <li>une grande partie de pages adhérents (manque la gestion des transactions/abonnements, les résas et les impressions)</li>
                                 <li>la gestion des ateliers et des sessions</li>
-                                <li>La gestion des transactions (à vérifier quand même...</li>)
                             </ul>
                         </li>
                         <li>reste donc à faire :
                             <ul>
+                                <li>Tous le système de réservations</li>
+                                <li>Toute la gestion des forfaits (Adhésion/impression/consultation etc ...)</li>
                                 <li>Les statistiques</li>
-                                <li>les pages "gestion de l'espaces (courriers/breves/interventions/Liens)</li>
+                                <li>et les courriers</li>
                             </ul>
                         </li>
                         <li>A été fait également sous le capot :

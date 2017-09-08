@@ -21,9 +21,9 @@
 //error_log("POST : " . print_r($_POST, true));
 
 
-require_once("include/class/CSP.class.php");
-require_once("include/class/AtelierCategorie.class.php");
-require_once("include/class/AtelierNiveau.class.php");
+//require_once("include/class/CSP.class.php");
+//require_once("include/class/AtelierCategorie.class.php");
+//require_once("include/class/AtelierNiveau.class.php");
 // Configuration des cat&eacute;gories modifiables pour les statistiques
 // traitement des post
 $act = isset($_GET["act"]) ? $_GET["act"] : '';

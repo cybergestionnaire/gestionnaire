@@ -19,8 +19,8 @@
   2006 Namont Nicolas
   include/admin_stat.php V0.1
  */
-require_once("include/class/CSP.class.php");
-require_once("include/class/Ville.class.php");
+//require_once("include/class/CSP.class.php");
+//require_once("include/class/Ville.class.php");
 
 if ($mess != "") {
     echo $mess;

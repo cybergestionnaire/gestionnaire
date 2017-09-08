@@ -28,7 +28,7 @@
 
 // console
 //}
-require_once("include/class/Salle.class.php");
+//require_once("include/class/Salle.class.php");
 $animateur = Utilisateur::getUtilisateurById($_SESSION["iduser"]);
 if ($animateur->getStatut() == 3) {
     $salles = $animateur->getSallesAnim();

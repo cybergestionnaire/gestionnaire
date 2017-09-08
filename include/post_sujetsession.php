@@ -24,7 +24,7 @@
 // error_log("GET : " . print_r($_GET, true));
 // error_log("POST : " . print_r($_POST, true));
 
-require_once("include/class/SessionSujet.class.php");
+//require_once("include/class/SessionSujet.class.php");
 
 $s = isset($_GET["s"]) ? $_GET["s"] : '';
 $id = isset($_GET["idSujet"]) ? $_GET["idSujet"] : '';

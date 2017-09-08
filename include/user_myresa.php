@@ -22,7 +22,7 @@
 
 // fichier de gestion des reservations
 //declaration du temps semaine pour le credit de temps
-require_once('include/class/Resa.class.php');
+//require_once('include/class/Resa.class.php');
 
 
 if (isset($_GET['del']) and is_numeric($_GET['del'])) {

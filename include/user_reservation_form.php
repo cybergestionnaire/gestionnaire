@@ -27,9 +27,9 @@
 // error_log(print_r($_GET, true));
 // error_log("----      ----");
 
-require_once("include/class/Horaire.class.php");
-require_once("include/class/Config.class.php");
-require_once("include/class/Resa.class.php");
+//require_once("include/class/Horaire.class.php");
+//require_once("include/class/Config.class.php");
+//require_once("include/class/Resa.class.php");
 
 // fonctions additionnelles
 //renvoi l'affichage du form de reseravtion pour une machine

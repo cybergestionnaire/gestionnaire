@@ -18,16 +18,16 @@
 
  */
 
-require_once("Mysql.class.php");
-require_once("Forfait.class.php");
-require_once("Tarif.class.php");
-require_once("Salle.class.php");
-require_once("Atelier.class.php");
-require_once("Session.class.php");
-require_once("Transaction.class.php");
-require_once("Impression.class.php");
-require_once("Resa.class.php");
-require_once("ForfaitAtelier.class.php");
+//require_once("Mysql.class.php");
+//require_once("Forfait.class.php");
+//require_once("Tarif.class.php");
+//require_once("Salle.class.php");
+//require_once("Atelier.class.php");
+//require_once("Session.class.php");
+//require_once("Transaction.class.php");
+//require_once("Impression.class.php");
+//require_once("Resa.class.php");
+//require_once("ForfaitAtelier.class.php");
 
 class Utilisateur
 {

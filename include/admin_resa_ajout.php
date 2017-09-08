@@ -21,8 +21,8 @@
 
   include/admin_user.php V0.1
  */
-require_once("include/class/Materiel.class.php");
-require_once("include/class/Salle.class.php");
+//require_once("include/class/Materiel.class.php");
+//require_once("include/class/Salle.class.php");
 
 // admin --- Utilisateur
 $term = isset($_POST["term"]) ? $_POST["term"] : '';

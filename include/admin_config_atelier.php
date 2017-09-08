@@ -17,9 +17,9 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
  */
-require_once("include/class/CSP.class.php");
-require_once("include/class/AtelierCategorie.class.php");
-require_once("include/class/AtelierNiveau.class.php");
+//require_once("include/class/CSP.class.php");
+//require_once("include/class/AtelierCategorie.class.php");
+//require_once("include/class/AtelierNiveau.class.php");
 
 $mesno = isset($_GET["mesno"]) ? $_GET["mesno"] : '';
 if ($mesno != "") {

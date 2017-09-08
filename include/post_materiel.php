@@ -20,8 +20,8 @@
   2006 Namont Nicolas (CyberGestionnaire
 
  */
-require_once("include/class/Materiel.class.php");
-require_once("include/class/Usage.class.php");
+//require_once("include/class/Materiel.class.php");
+//require_once("include/class/Usage.class.php");
 
 // fichier de recuperation des variables du formulaire materiel
 

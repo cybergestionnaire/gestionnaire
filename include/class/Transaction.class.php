@@ -18,8 +18,8 @@
 
  */
 
-require_once("Mysql.class.php");
-require_once("Tarif.class.php");
+//require_once("Mysql.class.php");
+//require_once("Tarif.class.php");
 
 class Transaction
 {

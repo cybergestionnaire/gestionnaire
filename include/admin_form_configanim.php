@@ -23,8 +23,8 @@
 
 // Formulaire de creation ou de modification d'un adherent
 
-require_once("include/class/Espace.class.php");
-require_once("include/class/Salle.class.php");
+//require_once("include/class/Espace.class.php");
+//require_once("include/class/Salle.class.php");
 
 $idAnim = isset($_GET["idanim"]) ? $_GET["idanim"] : '';
 

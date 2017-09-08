@@ -19,8 +19,8 @@
   2006 Namont Nicolas
   2012 Dauvergne Florence
  */
-require_once("include/class/Utilisateur.class.php");
-require_once("include/class/Tarif.class.php");
+//require_once("include/class/Utilisateur.class.php");
+//require_once("include/class/Tarif.class.php");
 
 // admin --- Utilisateur
 $term = isset($_POST["term"]) ? $_POST["term"] : '';

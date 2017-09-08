@@ -21,9 +21,9 @@
  */
 
 // POST de Configuration du logiciel EPN Connect
-require_once("include/class/Espace.class.php");
-require_once("include/class/Config.class.php");
-require_once("include/class/ConfigLogiciel.class.php");
+//require_once("include/class/Espace.class.php");
+//require_once("include/class/Config.class.php");
+//require_once("include/class/ConfigLogiciel.class.php");
 //debug
 // error_log("---- _POST ----");
 // error_log(print_r($_POST, true));

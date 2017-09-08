@@ -20,8 +20,8 @@
   2012 Dauvergne florence pour les modifications
 
  */
-require_once("include/class/Session.class.php");
-require_once("include/class/StatAtelierSession.class.php");
+//require_once("include/class/Session.class.php");
+//require_once("include/class/StatAtelierSession.class.php");
 
 //Fichier de gestion des archives.
 $mesno = isset($_GET["mesno"]) ? $_GET["mesno"] : '';

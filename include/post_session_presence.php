@@ -31,8 +31,8 @@
   3=>"Supprimer"
   );
  */
-require_once("include/class/SessionDate.class.php");
-require_once("include/class/StatAtelierSession.class.php");
+//require_once("include/class/SessionDate.class.php");
+//require_once("include/class/StatAtelierSession.class.php");
 
 // error_log('in post_session_presence.php');
 // error_log("---- POST ----");

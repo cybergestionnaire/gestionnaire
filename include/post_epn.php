@@ -22,7 +22,7 @@
 
   include/post_epn.php V0.1
  */
-require_once("include/class/Espace.class.php");
+//require_once("include/class/Espace.class.php");
 
 // fichier de recuperation des variables du formulaire espace
 $b = isset($_GET['b']) ? $_GET['b'] : '';

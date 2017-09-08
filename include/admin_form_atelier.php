@@ -22,11 +22,11 @@
 
  */
 
-include_once("include/class/Salle.class.php");
-include_once("include/class/Atelier.class.php");
-include_once("include/class/AtelierSujet.class.php");
-include_once("include/class/Utilisateur.class.php");
-include_once("include/class/Tarif.class.php");
+//include_once("include/class/Salle.class.php");
+//include_once("include/class/Atelier.class.php");
+//include_once("include/class/AtelierSujet.class.php");
+//include_once("include/class/Utilisateur.class.php");
+//include_once("include/class/Tarif.class.php");
 
 if (isset($mess) && $mess != "") {
     echo $mess;
