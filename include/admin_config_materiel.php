@@ -46,7 +46,6 @@ include("include/boites/menu-parametres.php");
     <section class="col-lg-8 connectedSortable"> 
         <?php
         //$result=getAllMateriel();
-        //$result=getMaterielFromEpn($epn);
         $materiels = Materiel::getMaterielFromEspaceById($idEspace);
 
         $nbMateriels = count($materiels);

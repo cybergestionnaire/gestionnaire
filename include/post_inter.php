@@ -19,50 +19,51 @@
 
   2006 Namont Nicolas
 
-
-  include/post_inter.php V0.1
  */
 
-// traitement des post et get des interventions
-
-$titr = addslashes($_POST["titr"]);
-$date = $_POST["date"];
-$comment = addslashes($_POST["comment"]);
-$dispo = $_POST["dispo"];
-
+// error_log('in post_inter.php -------------------------');
+// error_log("---- POST ----");
+// error_log(print_r($_POST, true));
+// error_log("---- GET  ----");
+// error_log(print_r($_GET, true));
 
 // verification de l'envoi du formulaire
-if (false != isset($_POST["submit"])) {
-    // recuperation des postes concern�s
-    $result = getComputerId();
-    if (false != $result) {
-        $nb = mysqli_num_rows($result);
-        if ($nb > 0) {
-            $comp = array();
-            for ($i = 1; $i <= $nb; $i++) {
-                $row = mysqli_fetch_array($result);
-                if ($_POST[$row["id_computer"]] == "on") {
-                    $comp[$i] = $row["id_computer"];
-                }
+if (isset($_POST["submit"])) {
+
+    // traitement des post et get des interventions
+
+    $titreInter = (string)filter_input(INPUT_POST, "titre");
+    $date = (string)filter_input(INPUT_POST, "date");
+    $comment = (string)filter_input(INPUT_POST, "comment");
+    $dispo = (string)filter_input(INPUT_POST, "dispo");
+
+    
+    // recuperation des postes concernés
+    
+    $materiels = Materiel::getMateriels();
+    if ($materiels !== null && count($materiels) > 0) {
+        $comp = array();
+        foreach($materiels as $materiel) {
+            if (isset($_POST[$materiel->getId()]))  {
+                $comp[] = $materiel->getId();
             }
         }
     }
 
-
-    if (!$titr || !$comment) { //verification des champs non vide
-        header("Location:index.php?a=3&b=1&error=1");
+    if (!$titreInter || !$comment) { //verification des champs non vide
+        header("Location:index.php?a=3&b=1&mesno=4");
     } else {
-        $result = addInter($titr, $date, $comment, $dispo);
-        if (false == $result) {
-            header("Location:index.php?a=3&b=1&error=2");
+       $inter = Intervention::creerIntervention($titreInter, $comment, $dispo, $date);
+        
+        if ($inter === null) {
+            header("Location:index.php?a=3&b=1&mesno=0");
         } else {
-            $idinter = $result;
             foreach ($comp as $key => $value) {
-                if (false == addInterComputer($idinter, $value)) {
-                    header("Location:index.php?a=3&b=1&error=1");
+                if (!$inter->addMateriel($value)) {
+                    header("Location:index.php?a=3&b=1&mesno=4");
                 }
             }
-            header("Location:index.php?a=3");
+            header("Location:index.php?a=3&mesno=14");
         }
     }
 }

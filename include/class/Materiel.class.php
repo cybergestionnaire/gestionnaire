@@ -383,4 +383,30 @@ class Materiel
 
         return $materiels;
     }
+    
+    public static function getMaterielFromInterventionById($idInter)
+    {
+        $materiels = null;
+
+        $db = Mysql::opendb();
+
+        $sql = "SELECT tab_computer.* "
+             . "FROM `rel_inter_computer` ,`tab_computer` "
+             . "WHERE rel_inter_computer.id_computer = tab_computer.id_computer "
+             . "  AND rel_inter_computer.id_inter='" . $idInter . "' " 
+             . "ORDER BY tab_computer.`nom_computer` ASC";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        
+        if ($result) {
+            $materiels = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $materiels[] = new Materiel($row);
+            }
+            mysqli_free_result($result);
+        }
+
+        return $materiels;
+    }
 }

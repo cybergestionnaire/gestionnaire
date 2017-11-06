@@ -461,26 +461,3 @@ if (!is_dir($dossierimg)) {
         </div>
     </section><!-- ./col -->
 </div><!-- ./row -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

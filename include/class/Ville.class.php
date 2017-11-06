@@ -117,7 +117,6 @@ class Ville
         if ($result == false) {
             return 0; // echec de la requete
         } else {
-            ;
             if (mysqli_num_rows($result) > 0) {
                 return 1; // il reste des utilisateurs lies a la ville
             } else {

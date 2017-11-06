@@ -134,7 +134,6 @@ $tab_frequence_temps_affectation = array(
                                     $rapport = round(($restant / $tarifreferencetemps) * 100);
                                 }
                                 //dernière reservation
-                                // $lasteresa = getLastResaUser($utilisateur->getId());
 
                                 $lasteresa = $utilisateur->getLastResa();
 

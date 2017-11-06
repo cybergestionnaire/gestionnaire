@@ -29,7 +29,6 @@ $utilisateur = Utilisateur::getUtilisateurById($_SESSION["iduser"]);
 //recuperation des tarifs categorieTarif(2)=adhesion
 $tarif = Tarif::getTarifById($utilisateur->getIdTarifAdhesion());
 
-// $lasteresa    = getLastResaUser($utilisateur->getId());
 $lasteresa = $utilisateur->getLastResa();
 
 

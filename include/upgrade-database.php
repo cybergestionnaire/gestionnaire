@@ -27,7 +27,9 @@ function check_table($pdo, $table, $sql_create)
 {
     $statement = $pdo->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" . MYSQL_DATABASE_NAME . "' AND TABLE_NAME = '" . $table . "'");
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-
+    $resultAvant = "";
+    $resultApres = " ";
+    
     if (count($result) > 0) { // la table existe
         foreach ($result as $column) {
             $resultAvant = $column['TABLE_NAME'] . ' - ' . $column['ENGINE'] . ' - ' . $column['TABLE_COLLATION'];
@@ -52,7 +54,9 @@ function update_table_collation_engine($pdo, $table)
 {
 
     // vérification de l'inter classement
-
+    $resultAvant = "";
+    $resultApres = " ";
+    
     $statement = $pdo->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" . MYSQL_DATABASE_NAME . "' AND TABLE_NAME = '" . $table . "'");
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
     foreach ($result as $column) {

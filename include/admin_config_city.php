@@ -29,15 +29,22 @@
 //require_once("include/class/Ville.class.php");
 
 // traitement des post
-$act = isset($_GET['act']) ? $_GET['act'] : '';
-$idcity = isset($_GET['idcity']) ? $_GET['idcity'] : '';
+// $act = isset($_GET['act']) ? $_GET['act'] : '';
+// $idcity = isset($_GET['idcity']) ? $_GET['idcity'] : '';
 
-if (isset($_GET["act"])) {
+$act = filter_input(INPUT_GET, "act");
+$idcity = filter_input(INPUT_GET, "idcity", FILTER_VALIDATE_INT);
+
+
+if ($act !== null) {
     switch ($act) {
         case 1: // creation
-            $nom = $_POST["newcity"];
-            $codepost = $_POST["newcodepost"];
-            $pays = $_POST["newpays"];
+//            $nom = $_POST["newcity"];
+//            $codepost = $_POST["newcodepost"];
+//            $pays = $_POST["newpays"];
+            $nom = filter_input(INPUT_POST, "newcity");
+            $codepost = filter_input(INPUT_POST, "newcodepost");
+            $pays = filter_input(INPUT_POST, "newpays");
 
             if (!$nom || !$codepost || !$pays) {
                 $mess = getError(4);
@@ -54,9 +61,12 @@ if (isset($_GET["act"])) {
             break;
 
         case 2: // modification
-            $nom = $_POST["city"];
-            $codepost = $_POST["codepost"];
-            $pays = $_POST["pays"];
+//            $nom = $_POST["city"];
+//            $codepost = $_POST["codepost"];
+//            $pays = $_POST["pays"];
+            $nom = filter_input(INPUT_POST, "city");
+            $codepost = filter_input(INPUT_POST, "codepost");
+            $pays = filter_input(INPUT_POST, "pays");
 
             if (!$nom || !$codepost || !$pays) {
                 $mess = getError(4);
@@ -182,6 +192,3 @@ if ($act == 4) {
         <?php
         }
     }
-?>
-
-

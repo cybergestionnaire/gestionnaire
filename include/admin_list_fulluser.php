@@ -171,7 +171,6 @@ $classadh = '';
                     }
 
                     //dernière reservation
-                    // $lasteresa = getLastResaUser($utilisateurRecherche->getId());
                     $lasteresa = $utilisateurRecherche->getLastResa();
                     if ($lasteresa == null) {
                         $lasteresa = "NC";
@@ -404,7 +403,6 @@ $classadh = '';
                             $rapport = round(($restant / $tarifreferencetemps) * 100);
                         }
                         //dernière reservation
-                        // $lasteresa = getLastResaUser($utilisateur->getId());
                         $lasteresa = $utilisateur->getLastResa();
 
                         if ($lasteresa == null) {
