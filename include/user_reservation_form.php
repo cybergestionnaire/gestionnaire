@@ -185,14 +185,6 @@ if (is_numeric($_GET["idcomp"])) {
     $step3 = 'step';
 
     //l'affectation depuis la console à été désactivée dans cette version !
-    // if (isset($_GET["debut"]) and $step == 0) { // cas de l'affectation depuis la console
-    // $_SESSION['resa']['idcomp']    = $_GET['idcomp'];
-    // $_SESSION['resa']['nomcomp']   = $_GET['nomcomp'] ;
-    // $_SESSION['resa']['materiel']  = getMateriel($_GET['idcomp']);
-    // $_SESSION['resa']['date']      = $_GET["date"];
-    // $_SESSION['debut']             = $_GET["debut"];
-    // $step = 2;
-    // }
     //  affichage des etapes
 
     $dayNum = date("N", strtotime($_SESSION['resa']['date']));
@@ -326,7 +318,6 @@ if (is_numeric($_GET["idcomp"])) {
             //recuperation des GET
             $_SESSION['resa']['idcomp'] = $_GET['idcomp'];
             $_SESSION['resa']['nomcomp'] = $_GET['nomcomp'];
-            $_SESSION['resa']['materiel'] = getMateriel($_GET['idcomp']);
 
 
             $titre = 'Choix de l\'heure de d&eacute;but de la r&eacute;servation';

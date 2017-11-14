@@ -158,18 +158,6 @@ function getDayNum($j, $m, $a)
     return date("z", mktime(0, 0, 0, $m, $j, $a));
 }
 
-// renvoi le statut ouvert ou ferme en fonction des horaire de la journé
-function checkHoraireDay($j, $m, $y, $epn)
-{
-    $row = getHoraire(date("w", mktime(0, 0, 0, $m, $j, $y)), $epn);
-    if ($row["hor1_begin_horaire"] == 0 and $row["hor1_end_horaire"] == 0 and $row["hor2_begin_horaire"] == 0 and $row["hor2_end_horaire"] == 0) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-
 // Fonction diverses -----------------------------------------------------------
 //getDayfr() retourne le jour de la semaine
 function getDayFR($date)

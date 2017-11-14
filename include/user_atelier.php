@@ -258,10 +258,6 @@ else {
      */
 
     //************** Affichage de la liste des ateliers affichage par defaut ****///
-    //La liste des ateliers
-    $listeAtelier = getMyFutAtelier(date('Y'), date('n'), date('d'));
-    $nba = mysqli_num_rows($listeAtelier);
-    // la liste des sessions
 
     $ateliers = Atelier::getAteliersFutursByAnnee(date('Y'));
     $sessions = Session::getSessionsFuturesByAnnee(date('Y'));
@@ -317,7 +313,6 @@ else {
                                  echo "active";
                              } ?>" id="tab_3">
                                     <?php
-                                    //if ($nba > 0) {
                                     if ($nbAteliers > 0) {
                                         ?>
                                     <table class="table table-condensed">

@@ -49,23 +49,6 @@ function closedb($mydb)
 }
 
 //
-// getUser()
-// recupere un utilisateur
-function getUser($id)
-{
-    $sql = "SELECT *  FROM tab_user WHERE id_user=" . $id;
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if (false == $result) {
-        return false;
-    } else {
-        $row = mysqli_fetch_array($result);
-        return $row;
-    }
-}
-
-//
 // countUser()
 // compte le nombre d'utilisateur actif ,inactifs , total
 function countUser($id)
@@ -279,23 +262,6 @@ function delBookmark($iduser, $idurl)
     }
 }
 
-//
-// getMateriel($id)
-// renvoi les données sur un poste a partir de son id
-function getMateriel($id)
-{
-    $sql = "SELECT *
-         FROM `tab_computer` WHERE id_computer=" . $id . ";";
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    $row = mysqli_fetch_array($result);
-    if (false == $result) {
-        return false;
-    } else {
-        return $row;
-    }
-}
 
 // ajout de la relation resa / computer / usage 1=resa, 2=atelier
 // Laissé en commentaire le temps de définir si c'est utile ou non...
@@ -313,6 +279,17 @@ function getMateriel($id)
 // }
 // }
 
+
+// renvoi le statut ouvert ou ferme en fonction des horaire de la journé
+function checkHoraireDay($j, $m, $y, $epn)
+{
+    $row = getHoraire(date("w", mktime(0, 0, 0, $m, $j, $y)), $epn);
+    if ($row["hor1_begin_horaire"] == 0 and $row["hor1_end_horaire"] == 0 and $row["hor2_begin_horaire"] == 0 and $row["hor2_end_horaire"] == 0) {
+        return false;
+    } else {
+        return true;
+    }
+}
 
 // renvoi les horaires d'ouverture en min.
 function getHoraire($day, $epn)
@@ -485,100 +462,6 @@ function enterConnexionstatus($iduser, $date, $type, $macadress, $navig, $exploi
     }
 }
 
-// chercher tous les adhérents inscrits aux ateliers.
-function getAllUserAtelier($epn)
-{
-    $sql = "SELECT DISTINCT tab_user.id_user, `nom_user` ,  `prenom_user`  
-FROM  `rel_atelier_user` , tab_user, tab_atelier
-WHERE tab_user.id_user =  `rel_atelier_user`.`id_user`
-AND `epn_user`= " . $epn . "
-AND YEAR(date_atelier)=YEAR(NOW())
-UNION 
-SELECT DISTINCT tab_user.id_user, `nom_user` ,  `prenom_user` 
-FROM  `rel_session_user` , tab_user,tab_session
-WHERE tab_user.id_user =  `rel_session_user`.`id_user` 
-AND `epn_user`=" . $epn . "
-AND YEAR(date_session)=YEAR(NOW())
-ORDER BY nom_user ASC";
-
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if (false == $result) {
-        return false;
-    } else {
-        return $result;
-    }
-}
-
-function getAllUserAtelierMois($y, $m)
-{
-    $an = $y . "-" . $m . "-01";
-    $anf = $y . "-" . ($m + 2) . "-31";
-
-    $sql = "SELECT DISTINCT nom_user,prenom_user, mail_user,tel_user, rel.id_user
-    FROM `rel_atelier_user` AS rel, tab_atelier AS atelier, tab_user AS coor
-    WHERE rel.`id_atelier`=atelier.`id_atelier`
-    AND atelier.date_atelier BETWEEN '" . $an . "' AND '" . $anf . "'
-    AND rel.id_user=coor.id_user
-    ORDER BY nom_user ASC";
-
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if (false == $result) {
-        return false;
-    } else {
-        return $result;
-    }
-}
-
-///Function dans le courrier /// A SUPPRIMER
-function MakePDFUserAtelier($y, $m)
-{
-    $an = $y . "-" . $m . "-01";
-    $anf = $y . "-" . ($m + 2) . "-31";
-
-    $sql = "SELECT DISTINCT id_user
-    FROM rel_atelier_user AS r
-    LEFT JOIN tab_atelier AS a ON r.id_atelier = a.id_atelier
-    WHERE a.date_atelier BETWEEN '" . $an . "' AND '" . $anf . "'
-    ";
-
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if (false == $result) {
-        return false;
-    } else {
-        //$row=mysqli_fetch_array($result);
-        return $result;
-    }
-}
-
-//pages utilisateur les ateliers programmes
-function getMyFutAtelier($y, $m, $d)
-{
-    if ($y == date('Y')) {
-        $sql = "SELECT *
-            FROM `tab_atelier` 
-            WHERE `date_atelier` BETWEEN '" . $y . "-" . $m . "-" . $d . "' AND '" . $y . "-12-31'
-            ORDER BY `date_atelier` ASC";
-    } elseif ($year > date('Y')) {
-        $sql = "SELECT *
-            FROM `tab_atelier` 
-            WHERE `date_atelier` BETWEEN '" . $y . "-01-01' AND '" . $y . "-12-31'
-            ORDER BY `date_atelier` ASC";
-    }
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if (false == $result) {
-        return false;
-    } else {
-        return $result;
-    }
-}
 
 ///////////***********Transaction sur les ateliers, gestion des forfaits ***************///
 ///
