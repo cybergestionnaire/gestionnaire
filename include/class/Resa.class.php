@@ -394,12 +394,12 @@ class Resa
         return $resas;
     }
 
-    public static function getResasDuJour()
+    public static function getResasTermineesDuJour()
     {
         $resas = null;
 
         $db = Mysql::opendb();
-        $sql = "SELECT * FROM tab_resa WHERE `status_resa` = '1' and date_resa = DATE( NOW() ) ORDER BY date_resa ASC, debut_resa DESC";
+        $sql = "SELECT * FROM tab_resa WHERE `status_resa` = '1' and date_resa = DATE( NOW() ) and date_resa > NOW() ORDER BY date_resa ASC, debut_resa DESC";
         $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
 

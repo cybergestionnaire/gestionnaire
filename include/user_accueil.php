@@ -267,7 +267,7 @@ if ($_SESSION["status"] == "3" or $_SESSION["status"] == "4") {
                         <?php
     } ?>
                     <?php
-                    $resasTerminees = Resa::getResasDuJour();
+                    $resasTerminees = Resa::getResasTermineesDuJour();
     if ($resasTerminees !== null) {
         ?>
                         <h4>Connexions terminées aujourd'hui</h4>

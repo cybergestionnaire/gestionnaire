@@ -26,6 +26,10 @@
 // marre des deprecated de libchart....
 error_reporting(E_ALL ^ E_DEPRECATED);
 
+spl_autoload_register(function ($class) {
+    include 'include/class/' . $class . '.class.php';
+});
+
 
 //demarrage de la session
 session_start();
@@ -61,9 +65,9 @@ if (FALSE == isset($_SESSION["login"])) {
     include ("login.php");
 } else {
     // Acces autorise
-    require_once("include/class/Espace.class.php");
-    require_once("include/class/Config.class.php");
-    require_once("include/class/Utilisateur.class.php");
+//    require_once("include/class/Espace.class.php");
+//    require_once("include/class/Config.class.php");
+//    require_once("include/class/Utilisateur.class.php");
 
     //Variables de l'epn
     $espace = Espace::getEspacebyId(intval($_SESSION["idepn"]));
