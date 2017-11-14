@@ -150,10 +150,10 @@ $epn = $_SESSION["idepn"];
     </div><!-- /col-->
 
     <?php
-    $result = getAllUserAtelier($epn);
-    $nbadh = mysqli_num_rows($result);
+    $adherents = Utilisateur::getUtilisateursDAteliersParEspace($epn);
 
-    if ($nbadh > 0) {
+
+    if (count($adherents) > 0) {
         ?>
         <!-- colonne 2 : la liste des adhérent inscrits à un atelier -->
         <div class="col-xs-4">
@@ -166,13 +166,12 @@ $epn = $_SESSION["idepn"];
                             <thead><tr><th>Nom</th><th>Pr&eacute;nom</th><!--<th>Export</th>--></thead>
                             <tbody>
                                 <?php
-                                for ($i = 1; $i <= $nbadh; $i++) {
-                                    $rowadh = mysqli_fetch_array($result);
-                                    //$titreatelier=get ?>
-                                    <tr><td><?php echo $rowadh["nom_user"] ?></td>
-                                        <td><?php echo $rowadh["prenom_user"] ?></td>
+                                
+                                foreach($adherents as $adherent) { ?>
+                                    <tr><td><?php echo htmlentities($adherent->getNom()) ?></td>
+                                        <td><?php echo htmlentities($adherent->getPrenom()) ?></td>
 
-                <!--<td><input type="checkbox" name="export_[]" value="<?php echo $rowadh["id_user"]; ?>"></td>--></tr>
+                <!--<td><input type="checkbox" name="export_[]" value="<?php echo $adherent->getId(); ?>"></td>--></tr>
 
                                 <?php
                                 } ?>

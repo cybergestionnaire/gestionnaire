@@ -33,7 +33,7 @@
 
  */
 
-include_once("include/class/StatAtelierSession.class.php");
+//include_once("include/class/StatAtelierSession.class.php");
 
 $mesno = isset($_GET["mesno"]) ? $_GET["mesno"] : '';
 if ($mesno != "") {

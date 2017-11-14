@@ -26,10 +26,10 @@
 // error_log(print_r($_GET, true));
 // error_log("----      ----");
 
-require_once("include/class/Salle.class.php");
-require_once("include/class/Materiel.class.php");
-require_once("include/class/Config.class.php");
-require_once("include/class/Resa.class.php");
+//require_once("include/class/Salle.class.php");
+//require_once("include/class/Materiel.class.php");
+//require_once("include/class/Config.class.php");
+//require_once("include/class/Resa.class.php");
 
 $idEspace = $_SESSION["idepn"];
 $config = Config::getConfig($idEspace);
@@ -143,7 +143,6 @@ function getPlanning($dotd, $h1begin, $h1end, $h2begin, $h2end, $epn, $salle)
             }
 
             // affichage des horaires et des occupations
-            //$result2   = getResa($poste->getId(), $dotd, $salle)   ;
 
             $resas = Resa::getResasParJourEtParMateriel($dotd, $poste->getId());
             $width = 0;
@@ -590,7 +589,6 @@ if ($mesno != '') {
             <?php
             // Affichage des reservations par utilisateur pour les admins
             if ($_SESSION['status'] == 3 or $_SESSION['status'] == 4) {
-                // $resultresa = getResa('All', $_SESSION['resa']['date'], $idSalle) ;
 
                 $resas = Resa::getResasParJourEtParSalle($_SESSION['resa']['date'], $idSalle); ?>
                 <div class="box box-info">

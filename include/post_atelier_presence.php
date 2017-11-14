@@ -26,8 +26,8 @@
 // error_log("---- _GET ----");
 // error_log(print_r($_GET, true));
 
-require_once("include/class/Atelier.class.php");
-require_once("include/class/StatAtelierSession.class.php");
+//require_once("include/class/Atelier.class.php");
+//require_once("include/class/StatAtelierSession.class.php");
 
 if (isset($_POST["valider_presence"])) {  // si le formulaire est posté
     //recuperation des variables

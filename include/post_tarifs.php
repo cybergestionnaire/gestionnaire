@@ -22,9 +22,9 @@
 
   include/post_epn.php V0.1
  */
-require_once("include/class/Tarif.class.php");
-require_once("include/class/Forfait.class.php");
-require_once("include/class/Config.class.php");
+//require_once("include/class/Tarif.class.php");
+//require_once("include/class/Forfait.class.php");
+//require_once("include/class/Config.class.php");
 
 
 $actarif = isset($_GET["actarif"]) ? $_GET["actarif"] : '';

@@ -23,8 +23,8 @@
   a=14 : modifier programmation / $m==4 supprimer progra
 
  */
-include_once("include/class/Espace.class.php");
-include_once("include/class/Atelier.class.php");
+//include_once("include/class/Espace.class.php");
+//include_once("include/class/Atelier.class.php");
 
 $mesno = isset($_GET["mesno"]) ? $_GET["mesno"] : '';
 if ($mesno != "") {

@@ -24,53 +24,69 @@
 
 // Formulaire de creation d'une intervention
 
-
-switch ($_GET["error"]) {
-    case 1:
-        echo getError(4);
-        break;
-    case 2:
-        echo getError(0);
-        break;
+$mesno = (string)filter_input(INPUT_GET, "mesno");
+if ($mesno != "") {
+    echo getError($mesno);
 }
+
+//$error = (int)filter_input(INPUT_GET, "error");
+//
+//switch ($error) {
+//    case 1:
+//        echo getError(4);
+//        break;
+//    case 2:
+//        echo getError(0);
+//        break;
+//}
 ?>
 <div class="row">
     <section class="col-lg-7 connectedSortable">
 
         <form method="post" action="index.php?a=3" role="form">
-            <div class="box box-success"><div class="box-header"><h3 class="box-title">D&eacute;tail de l'intervention</h3></div>
+            <div class="box box-success">
+                <div class="box-header"><h3 class="box-title">D&eacute;tail de l'intervention</h3></div>
                 <div class="box-body">
 
-                    <div class="form-group"><label>Titre</label>
-                        <input type="text" name="titr" class="form-control"></div>
+                    <div class="form-group">
+                        <label>Titre*</label>
+                        <input type="text" name="titre" class="form-control">
+                    </div>
 
-                    <div class="form-group"><label>Date*</label>
-                        <input type="text" name="date" style="width:100px;" maxlength="10" class="form-control" value="<?php echo date('Y-m-d'); ?>"></div>
+                    <div class="form-group">
+                        <label>Date*</label>
+                        <input type="text" name="date" style="width:100px;" maxlength="10" class="form-control" value="<?php echo date('Y-m-d'); ?>">
+                    </div>
 
-                    <div class="form-group"><label>Commentaire*</label>
-                        <textarea name="comment" class="form-control"></textarea></div>
+                    <div class="form-group">
+                        <label>Commentaire*</label>
+                        <textarea name="comment" class="form-control"></textarea>
+                    </div>
 
-                    <div class="form-group"><label>R&eacute;servation*</label>
+                    <div class="form-group">
+                        <label>R&eacute;servation*</label>
                         <input type="radio" name="dispo" value="0" checked>Possible (Le poste reste disponible)<br>
-                        <input type="radio" name="dispo" value="1">Impossible (Le poste devient indisponible)</div>
+                        <input type="radio" name="dispo" value="1">Impossible (Le poste devient indisponible)
+                    </div>
 
-                    <div class="form-group"><label>Poste concern&eacute;*</label>
+                    <div class="form-group">
+                        <label>Postes concern&eacute;s*</label>
                         <input type="checkbox" name="all" value="all"> Tous<br><br>
                         <?php
-                        $result = getAllMateriel();
-                        $nb = mysqli_num_rows($result);
-                        if ($nb > 0) {
-                            for ($i = 1; $i <= $nb; $i++) {
-                                $row = mysqli_fetch_array($result);
-                                echo "<input type=\"checkbox\" name=\"" . $row["id_computer"] . "\">" . $row["nom_computer"] . " (" . $row["os_computer"] . ")<br>";
+                        $materiels = Materiel::getMateriels();
+                        if (count($materiels) > 0) {
+                            foreach($materiels as $materiel) {
+                                echo "<input type=\"checkbox\" name=\"" . $materiel->getId() . "\">" . $materiel->getNom() . " (" . $materiel->getOs() . ")<br>";
                             }
                         }
                         ?>
                     </div>
 
                     <div class="box-footer">
-                        <input type="submit" name="submit" value="Cr&eacute;er une intervention"  class="btn btn-primary"></div>
+                        <input type="submit" name="submit" value="Cr&eacute;er une intervention"  class="btn btn-primary">
+                    </div>
                 </div>
             </div>
         </form>
-    </section></div>
+    </section>
+</div>

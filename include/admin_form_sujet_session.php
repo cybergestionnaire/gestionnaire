@@ -15,9 +15,9 @@
   You should have received a copy of the GNU General Public License
   along with CyberGestionnaire.  If not, see <http://www.gnu.org/licenses/>
  */
-require_once("include/class/SessionSujet.class.php");
-require_once("include/class/AtelierNiveau.class.php");
-require_once("include/class/AtelierCategorie.class.php");
+//require_once("include/class/SessionSujet.class.php");
+//require_once("include/class/AtelierNiveau.class.php");
+//require_once("include/class/AtelierCategorie.class.php");
 
 $titre = '';
 $detail = '';

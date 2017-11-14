@@ -21,7 +21,7 @@
 
   include/admin_form_espace.php V0.1
  */
-require_once("include/class/Ville.class.php");
+//require_once("include/class/Ville.class.php");
 // formulaire de creation / modification d'espace
 
 

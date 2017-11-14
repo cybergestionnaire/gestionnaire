@@ -22,7 +22,7 @@
 
   include/post_materiel.php V0.1
  */
-require_once("include/class/Salle.class.php");
+//require_once("include/class/Salle.class.php");
 // fichier de recuperation des variables du formulaire materiel
 
 $act = isset($_GET["act"]) ? $_GET["act"] : '';

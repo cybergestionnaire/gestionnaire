@@ -18,16 +18,16 @@
 
  */
 
-require_once("Mysql.class.php");
-require_once("Forfait.class.php");
-require_once("Tarif.class.php");
-require_once("Salle.class.php");
-require_once("Atelier.class.php");
-require_once("Session.class.php");
-require_once("Transaction.class.php");
-require_once("Impression.class.php");
-require_once("Resa.class.php");
-require_once("ForfaitAtelier.class.php");
+//require_once("Mysql.class.php");
+//require_once("Forfait.class.php");
+//require_once("Tarif.class.php");
+//require_once("Salle.class.php");
+//require_once("Atelier.class.php");
+//require_once("Session.class.php");
+//require_once("Transaction.class.php");
+//require_once("Impression.class.php");
+//require_once("Resa.class.php");
+//require_once("ForfaitAtelier.class.php");
 
 class Utilisateur
 {
@@ -51,7 +51,7 @@ class Utilisateur
     private $_utilisation;
     private $_connaissance;
     private $_info;
-    private $_tarif;
+    private $_idTarifAdhesion;
     private $_dateRenouvellement;
     private $_idEspace;
     private $_newsletter;
@@ -372,7 +372,7 @@ class Utilisateur
         }
 
         if ($avatar == "") {
-            if ($this->_sexe = "H") {
+            if ($this->_sexe == "H") {
                 $avatar = "male.png";
             } else {
                 $avatar = "female.png";
@@ -497,16 +497,16 @@ class Utilisateur
 
     public function getSallesAnim()
     {
-        $SallesAnim = null;
+        $sallesAnim = null;
 
         $ids = explode(';', $this->getIdSallesAnim());
         if (count($ids) > 0) {
             $sallesAnim = array();
             foreach ($ids as $idSalle) {
-                $SallesAnim[] = Salle::getSalleById($idSalle);
+                $sallesAnim[] = Salle::getSalleById($idSalle);
             }
         }
-        return $SallesAnim;
+        return $sallesAnim;
     }
 
     public function setParametresAnim($idEspace, $salles, $avatar)
@@ -531,7 +531,9 @@ class Utilisateur
 
         if ($result != false) {
             $result2 = mysqli_query($db, $sql2);
-            $success = true;
+            if ($result2) {
+                $success = true;
+            }
         }
 
         Mysql::closedb($db);
@@ -1598,4 +1600,86 @@ class Utilisateur
 
         return $utilisateurs;
     }
+    
+    public static function getUtilisateursReponseMessage($idUtilisateur) {
+        $utilisateurs = null;
+
+        $db = Mysql::opendb();
+
+        $sql = "SELECT DISTINCT tab_user.* FROM `tab_messages`, tab_user "
+             . "WHERE `mes_destinataire`='" . $idUtilisateur . "' "
+             . "  AND mes_auteur=id_user "
+             . "ORDER BY `mes_auteur`";
+        
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            $utilisateurs = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+
+        return $utilisateurs;
+    }
+    
+    public static function getUtilisateursReponseAdmin() {
+        $utilisateurs = null;
+
+        $db = Mysql::opendb();
+
+        $sql = "SELECT tab_user.* "
+             . "FROM `tab_messages` , tab_user "
+             . "WHERE `mes_auteur` = id_user "
+             . "UNION "
+             . "SELECT tab_user.* "
+             . "FROM tab_user "
+             . "WHERE `status_user` =3 "
+             . "OR `status_user` =4 "
+             . "ORDER BY `status_user` ASC ";
+        
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            $utilisateurs = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+
+        return $utilisateurs;
+    }  
+    
+    public static function getUtilisateursDAteliersParEspace($idEspace) {
+        $utilisateurs = null;
+
+        $db = Mysql::opendb();
+
+         $sql = "SELECT DISTINCT tab_user.* "
+              . "FROM  `rel_atelier_user` , tab_user, tab_atelier "
+              . "WHERE tab_user.id_user =  `rel_atelier_user`.`id_user` "
+              . "  AND `epn_user`= " . $idEspace . " "
+              . "  AND YEAR(date_atelier)=YEAR(NOW()) "
+              . "UNION  "
+              . "SELECT DISTINCT tab_user.*  "
+              . "FROM  `rel_session_user` , tab_user,tab_session "
+              . "WHERE tab_user.id_user =  `rel_session_user`.`id_user`  "
+              . "  AND `epn_user`=" . $idEspace . " "
+              . "  AND YEAR(date_session)=YEAR(NOW()) "
+              . "ORDER BY nom_user ASC";
+        error_log("sql = {$sql}");
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            $utilisateurs = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+
+        return $utilisateurs;
+    }      
 }

@@ -22,8 +22,8 @@
   renvoie le nombre d'inscrits, le nombre de présents et l'id des présents (pour les stats personnelles)
   include/admin_atelier.php V0.1
  */
-require_once("include/class/Espace.class.php");
-require_once("include/class/Atelier.class.php");
+//require_once("include/class/Espace.class.php");
+//require_once("include/class/Atelier.class.php");
 
 $idAtelier = isset($_GET["idatelier"]) ? $_GET["idatelier"] : '';
 $act = isset($_GET["act"]) ? $_GET["act"] : '';

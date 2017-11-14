@@ -20,11 +20,11 @@
 
 
  */
-require_once("include/class/Espace.class.php");
-require_once("include/class/Ville.class.php");
-require_once("include/class/Tarif.class.php");
-require_once("include/class/Forfait.class.php");
-require_once("include/class/CSP.class.php");
+//require_once("include/class/Espace.class.php");
+//require_once("include/class/Ville.class.php");
+//require_once("include/class/Tarif.class.php");
+//require_once("include/class/Forfait.class.php");
+//require_once("include/class/CSP.class.php");
 // Formulaire de creation ou de modification d'un adherent
 
 $id_user = isset($_GET["iduser"]) ? $_GET["iduser"] : '';

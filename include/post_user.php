@@ -20,8 +20,8 @@
   2006 Namont Nicolas (CyberMin)
 
  */
-require_once("include/class/Utilisateur.class.php");
-require_once("include/class/Transaction.class.php");
+//require_once("include/class/Utilisateur.class.php");
+//require_once("include/class/Transaction.class.php");
 
 $act = isset($_GET["act"]) ? $_GET["act"] : '';
 $idUser = isset($_GET["iduser"]) ? $_GET["iduser"] : '';

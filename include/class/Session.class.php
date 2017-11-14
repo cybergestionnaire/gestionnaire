@@ -19,12 +19,12 @@
  */
 
 
-require_once("Mysql.class.php");
-require_once("Utilisateur.class.php");
-require_once("Salle.class.php");
-require_once("Tarif.class.php");
-require_once("SessionSujet.class.php");
-require_once("SessionDate.class.php");
+//require_once("Mysql.class.php");
+//require_once("Utilisateur.class.php");
+//require_once("Salle.class.php");
+//require_once("Tarif.class.php");
+//require_once("SessionSujet.class.php");
+//require_once("SessionDate.class.php");
 
 class Session
 {

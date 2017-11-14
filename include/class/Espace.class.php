@@ -18,11 +18,11 @@
 
  */
 
-require_once("Mysql.class.php");
-require_once("Config.class.php");
-require_once("ConfigLogiciel.class.php");
-require_once("Ville.class.php");
-require_once("Horaire.class.php");
+//require_once("Mysql.class.php");
+//require_once("Config.class.php");
+//require_once("ConfigLogiciel.class.php");
+//require_once("Ville.class.php");
+//require_once("Horaire.class.php");
 
 /**
  * La classe Espace permer "d'abstraire" les données venant de la table tab_espace.

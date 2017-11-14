@@ -18,7 +18,7 @@
 
  */
 
-require_once("include/class/Utilisateur.class.php");
+//require_once("include/class/Utilisateur.class.php");
 
 // fichier de gestion des impressions
 $month = date('m');

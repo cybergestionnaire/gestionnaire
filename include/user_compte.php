@@ -20,16 +20,15 @@
 
 
  */
-require_once("include/class/Utilisateur.class.php");
-require_once("include/class/Tarif.class.php");
-require_once("include/class/Forfait.class.php");
+//require_once("include/class/Utilisateur.class.php");
+//require_once("include/class/Tarif.class.php");
+//require_once("include/class/Forfait.class.php");
 
 // Page de gestion du compte d'un utilisateur
 $utilisateur = Utilisateur::getUtilisateurById($_SESSION["iduser"]);
 //recuperation des tarifs categorieTarif(2)=adhesion
 $tarif = Tarif::getTarifById($utilisateur->getIdTarifAdhesion());
 
-// $lasteresa    = getLastResaUser($utilisateur->getId());
 $lasteresa = $utilisateur->getLastResa();
 
 

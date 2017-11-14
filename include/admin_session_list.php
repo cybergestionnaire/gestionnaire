@@ -15,7 +15,7 @@
   You should have received a copy of the GNU General Public License
   along with CyberGestionnaire.  If not, see <http://www.gnu.org/licenses/>
  */
-require_once("include/class/Session.class.php");
+//require_once("include/class/Session.class.php");
 
 /*
   LISTE DES SESSIONS PROGRAMMES

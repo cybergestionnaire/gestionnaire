@@ -19,7 +19,7 @@
   2006 Namont Nicolas
 
  */
-require_once("include/class/Materiel.class.php");
+//require_once("include/class/Materiel.class.php");
 // chargement des valeurs pour l'epn par défaut
 /* $epn=$_SESSION['idepn'];
   //si changment d'epn
@@ -46,7 +46,6 @@ include("include/boites/menu-parametres.php");
     <section class="col-lg-8 connectedSortable"> 
         <?php
         //$result=getAllMateriel();
-        //$result=getMaterielFromEpn($epn);
         $materiels = Materiel::getMaterielFromEspaceById($idEspace);
 
         $nbMateriels = count($materiels);

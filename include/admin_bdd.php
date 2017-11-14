@@ -43,9 +43,9 @@ function getAllCityname($ordreAlpha = false)
     }
 }
 
-require_once("include/class/Ville.class.php");
-require_once("include/class/Forfait.class.php");
-require_once("include/class/Tarif.class.php");
+//require_once("include/class/Ville.class.php");
+//require_once("include/class/Forfait.class.php");
+//require_once("include/class/Tarif.class.php");
 // Gestion de la base de donn&eacute;es
 
 $total_usagers = isset($_POST["total_usagers"]) ? $_POST["total_usagers"] : '';

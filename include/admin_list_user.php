@@ -19,8 +19,8 @@
   2006 Namont Nicolas
   2012 Dauvergne Florence
  */
-require_once("include/class/Utilisateur.class.php");
-require_once("include/class/Tarif.class.php");
+//require_once("include/class/Utilisateur.class.php");
+//require_once("include/class/Tarif.class.php");
 
 // admin --- Utilisateur
 $term = isset($_POST["term"]) ? $_POST["term"] : '';
@@ -134,7 +134,6 @@ $tab_frequence_temps_affectation = array(
                                     $rapport = round(($restant / $tarifreferencetemps) * 100);
                                 }
                                 //dernière reservation
-                                // $lasteresa = getLastResaUser($utilisateur->getId());
 
                                 $lasteresa = $utilisateur->getLastResa();
 

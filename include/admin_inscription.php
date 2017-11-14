@@ -20,7 +20,7 @@
 
 
  */
-require_once("include/class/Materiel.class.php");
+//require_once("include/class/Materiel.class.php");
 
 // admin --- Utilisateur
 $mesno = isset($_GET["mesno"]) ? $_GET["mesno"] : '';

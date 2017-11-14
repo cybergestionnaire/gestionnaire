@@ -26,8 +26,8 @@
 // error_log("---- GET  ----");
 // error_log(print_r($_GET, true));
 
-require_once("include/class/Utilisateur.class.php");
-require_once("include/class/Forfait.class.php");
+//require_once("include/class/Utilisateur.class.php");
+//require_once("include/class/Forfait.class.php");
 
 /* renouvellement adhésion
   lien vers impressions

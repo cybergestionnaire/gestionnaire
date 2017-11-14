@@ -22,7 +22,7 @@
 
   include/post_animateur.php V0.1
  */
-require_once("include/class/Utilisateur.class.php");
+//require_once("include/class/Utilisateur.class.php");
 // error_log("----- POST -----");
 // error_log(print_r($_POST, true));
 // error_log("----- GET -----");

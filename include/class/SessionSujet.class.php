@@ -19,9 +19,9 @@
  */
 
 
-require_once("Mysql.class.php");
-require_once("include/class/AtelierNiveau.class.php");
-require_once("include/class/AtelierCategorie.class.php");
+//require_once("Mysql.class.php");
+//require_once("include/class/AtelierNiveau.class.php");
+//require_once("include/class/AtelierCategorie.class.php");
 
 class SessionSujet
 {

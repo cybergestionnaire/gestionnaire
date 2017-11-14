@@ -22,7 +22,7 @@
 
 // Configuration de la preinscription en ligne par utilisateur
 
-require_once("include/class/Captcha.class.php");
+//require_once("include/class/Captcha.class.php");
 
 $captcha = Captcha::getCaptcha();
 

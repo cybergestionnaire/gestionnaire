@@ -16,10 +16,10 @@
   along with CyberGestionnaire.  If not, see <http://www.gnu.org/licenses/>
 
  */
-require_once("include/class/SessionSujet.class.php");
-require_once("include/class/Salle.class.php");
-require_once("include/class/Utilisateur.class.php");
-require_once("include/class/Tarif.class.php");
+//require_once("include/class/SessionSujet.class.php");
+//require_once("include/class/Salle.class.php");
+//require_once("include/class/Utilisateur.class.php");
+//require_once("include/class/Tarif.class.php");
 
 //chargement parametres
 $idsession = isset($_GET["idsession"]) ? $_GET["idsession"] : '';

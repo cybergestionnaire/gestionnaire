@@ -26,7 +26,7 @@
 // error_log(print_r($_GET, true));
 // error_log("----      ----");
 
-require_once("include/class/Resa.class.php");
+//require_once("include/class/Resa.class.php");
 // retour
 if (isset($_POST["retour"])) {
     //normalement, plus de retour possible...

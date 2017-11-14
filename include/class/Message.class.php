@@ -18,8 +18,8 @@
 
  */
 
-require_once("Mysql.class.php");
-require_once("Utilisateur.class.php");
+//require_once("Mysql.class.php");
+//require_once("Utilisateur.class.php");
 
 class Message
 {
@@ -128,8 +128,9 @@ class Message
     {
         $message = null;
 
-        if ($date != "" && (is_int($idAuteur) && $idAuteur != 0)
-        ) {
+        if ($date != "" 
+            && $idAuteur != 0) {
+            
             $db = Mysql::opendb();
 
             $date = mysqli_real_escape_string($db, $date);
@@ -179,7 +180,7 @@ class Message
         $messages = null;
 
         $db = Mysql::opendb();
-        $sql = "SELECT * FROM tab_messages ORDER BY date ASC";
+        $sql = "SELECT * FROM tab_messages ORDER BY mes_date DESC LIMIT 50";
         $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
 
@@ -192,5 +193,32 @@ class Message
         }
 
         return $messages;
+    }
+    
+    public static function getMessagesUtilisateurById($idUtilisateur) {
+        $messages = null;
+
+        $db = Mysql::opendb();
+        $sql = "SELECT * FROM `tab_messages` WHERE `mes_auteur`='" . $idUtilisateur . "' OR `mes_destinataire`='" . $idUtilisateur . "' ORDER BY `mes_date` DESC LIMIT 50";
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result) {
+            $messages = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $messages[] = new Message($row);
+            }
+            mysqli_free_result($result);
+        }
+
+        return $messages;
+    }
+    
+    public static function getUtilisateursReponse($idUtilisateur) {
+        return Utilisateur::getUtilisateursReponseMessage($idUtilisateur);
+    }
+    
+    public static function getUtilisateursReponseAdmin() {
+        return Utilisateur::getUtilisateursReponseAdmin();
     }
 }

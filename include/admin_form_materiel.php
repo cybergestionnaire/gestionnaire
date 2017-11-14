@@ -19,8 +19,8 @@
   2006 Namont Nicolas (CyberMin)
 
  */
-require_once("include/class/Materiel.class.php");
-require_once("include/class/Usage.class.php");
+//require_once("include/class/Materiel.class.php");
+//require_once("include/class/Usage.class.php");
 // formulaire de creation / modification de materiel
 
 $idMateriel = isset($_GET["idmat"]) ? $_GET["idmat"] : '';

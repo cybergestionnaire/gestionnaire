@@ -28,7 +28,12 @@ $login = $_POST["log"];
 $passwd = $_POST["pass"];
 
 //include ("include/fonction.php");
-require_once("include/class/Utilisateur.class.php");
+//require_once("include/class/Utilisateur.class.php");
+error_reporting(E_ALL ^ E_DEPRECATED);
+
+spl_autoload_register(function ($class) {
+    include 'include/class/' . $class . '.class.php';
+});
 
 $utilisateur = Utilisateur::getUtilisateurByLoginPassword($login, $passwd);
 

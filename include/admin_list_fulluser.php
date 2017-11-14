@@ -20,9 +20,9 @@
   2012 Dauvergne Florence
 
  */
-require_once("include/class/Utilisateur.class.php");
-require_once("include/class/Tarif.class.php");
-require_once("include/class/Forfait.class.php");
+//require_once("include/class/Utilisateur.class.php");
+//require_once("include/class/Tarif.class.php");
+//require_once("include/class/Forfait.class.php");
 
 
 // admin --- Utilisateur
@@ -171,7 +171,6 @@ $classadh = '';
                     }
 
                     //dernière reservation
-                    // $lasteresa = getLastResaUser($utilisateurRecherche->getId());
                     $lasteresa = $utilisateurRecherche->getLastResa();
                     if ($lasteresa == null) {
                         $lasteresa = "NC";
@@ -404,7 +403,6 @@ $classadh = '';
                             $rapport = round(($restant / $tarifreferencetemps) * 100);
                         }
                         //dernière reservation
-                        // $lasteresa = getLastResaUser($utilisateur->getId());
                         $lasteresa = $utilisateur->getLastResa();
 
                         if ($lasteresa == null) {

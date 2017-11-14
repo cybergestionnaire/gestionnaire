@@ -16,7 +16,7 @@
   along with CyberGestionnaire.  If not, see <http://www.gnu.org/licenses/>
  */
 
-require_once("include/class/SessionSujet.class.php");
+//require_once("include/class/SessionSujet.class.php");
 /*
   require_once("include/class/AtelierSujet.class.php");
   require_once("include/class/AtelierNiveau.class.php");

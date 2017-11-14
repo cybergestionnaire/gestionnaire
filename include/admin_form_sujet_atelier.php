@@ -19,8 +19,8 @@
   Creation des ateliers dans la base
 
  */
-require_once("include/class/AtelierNiveau.class.php");
-require_once("include/class/AtelierCategorie.class.php");
+//require_once("include/class/AtelierNiveau.class.php");
+//require_once("include/class/AtelierCategorie.class.php");
 
 $label = '';
 $content = '';

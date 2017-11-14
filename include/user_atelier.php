@@ -21,8 +21,8 @@
  */
 
 //require_once("include/class/Espace.class.php");
-require_once("include/class/Atelier.class.php");
-require_once("include/class/Session.class.php");
+//require_once("include/class/Atelier.class.php");
+//require_once("include/class/Session.class.php");
 
 $b = isset($_GET["b"]) ? $_GET["b"] : '';
 $idAtelier = isset($_GET["idatelier"]) ? $_GET["idatelier"] : '';
@@ -258,10 +258,6 @@ else {
      */
 
     //************** Affichage de la liste des ateliers affichage par defaut ****///
-    //La liste des ateliers
-    $listeAtelier = getMyFutAtelier(date('Y'), date('n'), date('d'));
-    $nba = mysqli_num_rows($listeAtelier);
-    // la liste des sessions
 
     $ateliers = Atelier::getAteliersFutursByAnnee(date('Y'));
     $sessions = Session::getSessionsFuturesByAnnee(date('Y'));
@@ -317,7 +313,6 @@ else {
                                  echo "active";
                              } ?>" id="tab_3">
                                     <?php
-                                    //if ($nba > 0) {
                                     if ($nbAteliers > 0) {
                                         ?>
                                     <table class="table table-condensed">

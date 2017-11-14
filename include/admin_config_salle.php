@@ -21,7 +21,7 @@
  */
 
 // Fichier de gestion des salles ...
-require_once("include/class/Salle.class.php");
+//require_once("include/class/Salle.class.php");
 
 include("include/boites/menu-parametres.php");
 ?>

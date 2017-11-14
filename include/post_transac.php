@@ -25,9 +25,9 @@
 // error_log("---- GET  ----");
 // error_log(print_r($_GET, true));
 
-require_once("include/class/Utilisateur.class.php");
-require_once("include/class/Tarif.class.php");
-require_once("include/class/Impression.class.php");
+//require_once("include/class/Utilisateur.class.php");
+//require_once("include/class/Tarif.class.php");
+//require_once("include/class/Impression.class.php");
 
 $id_user = isset($_GET["iduser"]) ? $_GET["iduser"] : '';
 $transac = isset($_GET["idtransac"]) ? $_GET["idtransac"] : '';

@@ -22,11 +22,12 @@
 
 // fichier de gestion des reservations
 //declaration du temps semaine pour le credit de temps
-require_once('include/class/Resa.class.php');
+//require_once('include/class/Resa.class.php');
 
 
 if (isset($_GET['del']) and is_numeric($_GET['del'])) {
-    delResa($_GET['del'], $_SESSION['iduser']); //suppression de la resa
+    $resa = Resa::getResaById($_GET['del']);
+    $resa->supprimer();
     echo getError("27");
 }
 ?>

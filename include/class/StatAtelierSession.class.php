@@ -18,10 +18,10 @@
 
  */
 
-require_once("Mysql.class.php");
-require_once("Atelier.class.php");
-require_once("Utilisateur.class.php");
-require_once("Espace.class.php");
+//require_once("Mysql.class.php");
+//require_once("Atelier.class.php");
+//require_once("Utilisateur.class.php");
+//require_once("Espace.class.php");
 
 class StatAtelierSession
 {
