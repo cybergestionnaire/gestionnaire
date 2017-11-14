@@ -278,28 +278,6 @@ function delBookmark($iduser, $idurl)
         }
     }
 }
-//
-// Fonction materiel -----------------------------------------------------------
-//
-
-
-
-
-// variante utilise dans les interventions
-function getComputerId()
-{
-    $sql = "SELECT `id_computer`
-         FROM `tab_computer`
-         ORDER BY `usage_computer` , `nom_computer`";
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if (false == $result) {
-        return false;
-    } else {
-        return $result;
-    }
-}
 
 //
 // getMateriel($id)
@@ -317,22 +295,6 @@ function getMateriel($id)
     } else {
         return $row;
     }
-}
-
-//
-// reservation & planning ------------------------------------------------------
-//
-
-// delResa , supprime une reservation
-function delResa($id_resa, $id_user)
-{
-    $sql = "DELETE FROM `tab_resa` 
-          WHERE `id_resa`=" . $id_resa . " 
-          AND `id_user_resa`=" . $id_user . "
-          AND dateresa_resa>='" . date("Y-m-d") . "'";
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
 }
 
 // ajout de la relation resa / computer / usage 1=resa, 2=atelier
@@ -368,120 +330,6 @@ function getHoraire($day, $epn)
     } else {
         $row = mysqli_fetch_array($result);
         return $row;
-    }
-}
-
-//
-// breves ----------------------------------------------------------------------
-//
-//
-// getAllbreve()
-// recupere toutes les breves
-function getAllBreve($nb)
-{
-    switch ($nb) {
-
-        case 0: // Toutes les breves , gestion dans l'admin
-            $sql = "SELECT *
-             FROM `tab_news` ";
-            break;
-        case 1: // breve public, pour les adhérents
-            $sql = "SELECT `id_news`,`titre_news`,`comment_news`,`visible_news`
-             FROM `tab_news`
-             WHERE `visible_news`= 0
-             ORDER BY `id_news` ASC";
-            break;
-        case 2: // Breves interne, pour les admin et les animateurs
-            $sql = "SELECT `id_news`,`titre_news`,`comment_news`,`visible_news`
-             FROM `tab_news`
-             WHERE `visible_news`= 1
-             ORDER BY `id_news` DESC";
-            break;
-    }
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if ($result == false) {
-        return false;
-    } else {
-        return $result;
-    }
-}
-
-//
-// getBreve()
-// recupere une breve(news) a partir d'un id
-function getBreve($id)
-{
-    $sql = "SELECT *
-             FROM `tab_news`
-             WHERE `id_news`=" . $id;
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if ($result == false) {
-        return false;
-    } else {
-        $row = mysqli_fetch_array($result);
-        return $row;
-    }
-}
-
-//
-// addBreve()
-// ajoute une breve
-function addBreve($titr, $comment, $visible, $type, $datepublish, $datenews, $epn)
-{
-    $sql = "INSERT INTO `tab_news`
-         (`id_news`,`titre_news`,`comment_news`,`visible_news`,`type_news`,`date_publish`, `date_news`, `id_epn`)
-         VALUES ('','" . $titr . "','" . $comment . "','" . $visible . "','" . $type . "','" . $datepublish . "','" . $datenews . "','" . $epn . "')";
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if ($result == false) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-//
-// modBreve()
-// ajoute une breve
-function modBreve($id, $titr, $comment, $visible, $type, $datepublish, $datenews, $epn)
-{
-    $sql = "UPDATE `tab_news`
-    SET `titre_news` ='" . $titr . "',
-        `comment_news` ='" . $comment . "',
-        `visible_news` ='" . $visible . "',
-        `type_news` ='" . $type . "',
-        `date_publish`='" . $datepublish . "', 
-        `date_news`='" . $datenews . "',  
-        `id_epn`='" . $epn . "'
-     WHERE `id_news` =" . $id . " LIMIT 1 ";
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if ($result == false) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-//
-// supBreve()
-// ajoute une breve
-function supBreve($id)
-{
-    $sql = "DELETE FROM `tab_news` WHERE `id_news`=" . $id;
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if ($result == false) {
-        return false;
-    } else {
-        return true;
     }
 }
 

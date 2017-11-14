@@ -26,7 +26,8 @@
 
 
 if (isset($_GET['del']) and is_numeric($_GET['del'])) {
-    delResa($_GET['del'], $_SESSION['iduser']); //suppression de la resa
+    $resa = Resa::getResaById($_GET['del']);
+    $resa->supprimer();
     echo getError("27");
 }
 ?>

@@ -415,31 +415,31 @@ if ($_SESSION["status"] == "3" or $_SESSION["status"] == "4") {
         <div class="col-md-8">
 
 
-            <?php
-            //affichage breve admin anim
-            $result = getAllBreve(0);
-    if ($result == false) {
-        echo getError(0);
+<?php
+    //affichage breve admin anim
+    $breves = Breve::getBreves();
+
+    if ($breves === null) {
+            echo getError(0);
     } else {
-        $nb = mysqli_num_rows($result);
-        if ($nb == 0) {
-            //echo getError(10);
-        } else {
-            for ($i = 1; $i <= $nb; $i++) {
-                $row = mysqli_fetch_array($result); ?>
-                        <div class="box box-success">
-                            <div class="box-header"><h3 class="box-title"><?php echo $row["titre_news"] ?></h3></div>
-                            <div class="box-body">
-                                <p><?php echo $row["comment_news"] ?></p>
-                            </div>
-                        </div>
-                        <?php
+        if (count($breves) > 0) {
+            foreach($breves as $breve) {
+?>
+            <div class="box box-success">
+                <div class="box-header"><h3 class="box-title"><?php echo htmlentities($breve->getTitre()) ?></h3></div>
+                <div class="box-body">
+                    <p><?php echo $breve->getCommentaire() ?></p>
+                </div>
+            </div>
+<?php
+                        
             }
         }
-    } ?>
+    }
+?>
         </div>
     </div>
-    <?php
+<?php
     // *********************Page d'accueil sur le compte utilisateur
     //if ligne 49 !
 } else {
@@ -562,27 +562,28 @@ if ($_SESSION["status"] == "3" or $_SESSION["status"] == "4") {
             </div><!-- /colonne 1 -->
 
             <div class="col-md-4"> <!-- colonne 2-->
-                <?php
-                $result = getAllBreve(1);
-        if ($result == false) {
+<?php
+    //affichage breve admin anim
+    $breves = Breve::getBrevesUtilisateur();
+
+    if ($breves === null) {
             echo getError(0);
-        } else {
-            $nb = mysqli_num_rows($result);
-            if ($nb == 0) {
-                echo getError(10);
-            } else {
-                for ($i = 1; $i <= $nb; $i++) {
-                    $row = mysqli_fetch_array($result); ?>
-                            <div class="box box-success">
-                                <div class="box-header"><h3 class="box-title"><?php echo $row["titre_news"] ?></h3></div>
-                                <div class="box-body">
-                                    <p><?php $row["comment_news"] ?>"</p>
-                                </div>
-                            </div>
-                            <?php
-                }
+    } else {
+        if (count($breves) > 0) {
+            foreach($breves as $breve) {
+?>
+            <div class="box box-success">
+                <div class="box-header"><h3 class="box-title"><?php echo htmlentities($breve->getTitre()) ?></h3></div>
+                <div class="box-body">
+                    <p><?php echo $breve->getCommentaire() ?></p>
+                </div>
+            </div>
+<?php
+                        
             }
-        } ?>
+        }
+    }
+?> 
 
                 <div class="box box-warning">
                     <div class="box-header"><h3 class="box-title">Acc&eacute;der &agrave; vos historiques</h3></div>
