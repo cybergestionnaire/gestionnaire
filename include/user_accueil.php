@@ -46,6 +46,25 @@ $navig = $ua['name'] . " " . $ua['version'];
 $macadress = "inconnue pour l\'instant";
 $cx = enterConnexionstatus($_SESSION['iduser'], date('Y-m-d H:i:s'), 1, $macadress, $navig, $exploitation);
 
+
+//------------ Validation des messages -------------------------------------------------------------------///
+$message = isset($_POST["chattxt_message"]) ? $_POST["chattxt_message"] : '';
+$tags = isset($_POST["tags_message"]) ? $_POST["tags_message"] : '';
+$id_user = isset($_POST["chatadh"]) ? $_POST["chatadh"] : '';
+$date = isset($_POST["chatdate"]) ? $_POST["chatdate"] : '';
+$destinataire = isset($_POST["chatdestinataire"]) ? $_POST["chatdestinataire"] : '';
+//debug($message);
+if (isset($_POST['message_submit'])) {
+    if (isset($_POST['chatadh']) and isset($_POST['chattxt_message'])) {
+        Message::creerMessage($date, $id_user, $message, $tags, $destinataire);
+        //echo 'message ajouté';
+    } else {
+        $messErr = '<h4 class="alert_info">Vous devez entrer un texte !</h4>';
+    }
+}
+
+
+
 //***** -------------fonctions pour administrateur & animateurs
 if ($_SESSION["status"] == "3" or $_SESSION["status"] == "4") {
     if ($mesno != "") {
@@ -74,7 +93,7 @@ if ($_SESSION["status"] == "3" or $_SESSION["status"] == "4") {
                 <span class="info-box-icon bg-aqua" style="padding-top:18px"><i class="ion ion-ios-time"></i></span>
                 <div class="info-box-content">
                     <?php
-                    $rowresastatmois = Resa::getStatResaParMois(date('m'), date('Y'), $_SESSION["idepn"]);
+    $rowresastatmois = Resa::getStatResaParMois(date('m'), date('Y'), $_SESSION["idepn"]);
     $resamois = $rowresastatmois["nombre"];
 
     $datehier = date('Y-m') . "-" . (date('d') - 1);
@@ -90,7 +109,7 @@ if ($_SESSION["status"] == "3" or $_SESSION["status"] == "4") {
                 <span class="info-box-icon bg-red" style="padding-top:18px"><i class="fa ion-university"></i></span>
                 <div class="info-box-content">
                     <?php
-                    $rownbateliersstat = getStatAtelierByMonth(date('Y'), date('m'), 1, 1);
+    $rownbateliersstat = getStatAtelierByMonth(date('Y'), date('m'), 1, 1);
     $nbateliersstat = $rownbateliersstat["atelier"];
     $nbsessionstat = getSessionbyMonth(date('Y'), date('m')); ?>
                     <span class="info-box-text">Ateliers programm&eacute;s<br>(ce mois)</span>
@@ -107,7 +126,7 @@ if ($_SESSION["status"] == "3" or $_SESSION["status"] == "4") {
                 <span class="info-box-icon bg-green" style="padding-top:18px"><i class="ion ion-printer"></i></span>
                 <div class="info-box-content">
                     <?php
-                    $rowstatimpression = getStatPages(date('m'), date('Y'), $_SESSION["idepn"]);
+    $rowstatimpression = getStatPages(date('m'), date('Y'), $_SESSION["idepn"]);
     $pages = $rowstatimpression["pages"];
     $montant = $rowstatimpression["montant"]; ?>
                     <span class="info-box-text">Impressions</span>
@@ -134,7 +153,7 @@ if ($_SESSION["status"] == "3" or $_SESSION["status"] == "4") {
                 <div class="box-header"><h3 class="box-title">Au programme cette semaine &agrave; l'EPN</h3></div>
                 <div class="box-body">
                     <?php
-                    $listeAteliers = Atelier::getAteliersParSemaine(date('Y-m-d'), $_SESSION["idepn"]);
+    $listeAteliers = Atelier::getAteliersParSemaine(date('Y-m-d'), $_SESSION["idepn"]);
     $listeSessionDates = SessionDate::getSessionDatesParSemaine(date('Y-m-d'), $_SESSION["idepn"]);
     $listeGlobale = array_merge($listeAteliers, $listeSessionDates);
 
@@ -212,7 +231,7 @@ if ($_SESSION["status"] == "3" or $_SESSION["status"] == "4") {
                 <div class="box-header"><h3 class="box-title">Journal des connexions</h3></div>
                 <div class="box-body">
                     <?php
-                    $temps = 0;
+    $temps = 0;
     $resasActives = Resa::getResasActives();
     if ($resasActives !== null) {
         ?>
@@ -294,53 +313,52 @@ if ($_SESSION["status"] == "3" or $_SESSION["status"] == "4") {
 
                         <?php
                         if ($_SESSION["status"] == 4) {
-                            $listeMessage = readMessage(); //tous les messages pour l'admin
+                            $messages = Message::getMessages();
+//                            $listeMessage = readMessage(); //tous les messages pour l'admin
                         } elseif ($_SESSION["status"] == 3) {
-                            $listeMessage = readMyMessage($_SESSION["iduser"]); //messages pour les anims
+                            $messages = Message::getMessagesUtilisateurById($_SESSION["iduser"]);
+//                            $listeMessage = readMyMessage($_SESSION["iduser"]); //messages pour les anims
                         }
-    $nb = mysqli_num_rows($listeMessage);
+//    $nb = mysqli_num_rows($listeMessage);
+    // $nb = count($messages);
     $urlRedirect = "index.php";
 
-    for ($i = 1; $i <= $nb; $i++) {
-        $rowmessage = mysqli_fetch_array($listeMessage);
-        $auteur = $rowmessage["mes_auteur"];
-        $rowdest = getUser($rowmessage["mes_destinataire"]);
-        $rowauteur = getUser($rowmessage["mes_auteur"]);
-        $nomessage = $rowauteur['prenom_user'] . " " . $rowauteur['nom_user'];
-
-        if ($auteur == $_SESSION["iduser"]) {
+    foreach ($messages as $message) {
+        $auteur = $message->getAuteur();
+        $destinataire = $message->getDestinataire();
+        
+        if ($message->getIdAuteur() == $_SESSION["iduser"]) {
             $classchat1 = "direct-chat-msg right";
             $classchat2 = 'direct-chat-name pull-right';
             $classchat3 = 'direct-chat-timestamp pull-left';
-            $rowa = getAvatar($_SESSION["iduser"]);
-            $photoavatar = "img/avatar/" . $rowa["anim_avatar"];
+            $photoavatar = "img/avatar/" . $utilisateur->getAvatar();
         } else {
-            //reponse &agrave; droite
             $classchat1 = "direct-chat-msg";
             $classchat2 = 'direct-chat-name pull-left';
             $classchat3 = 'direct-chat-timestamp pull-right';
-            $filenamephoto = "img/photos_profil/" . trim($rowauteur["nom_user"]) . "_" . trim($rowauteur["prenom_user"]) . ".jpg";
+            $filenamephoto = "img/photos_profil/" . trim($auteur->getNom()) . "_" . trim($auteur->getPrenom()) . ".jpg";
             if (file_exists($filenamephoto)) {
                 $photoavatar = $filenamephoto;
             } else {
-                if ($rowauteur["sexe_user"] == 'M') {
+                if ($auteur->getSexe() == 'H') {
                     $photoavatar = "img/avatar/male.png";
                 } else {
                     $photoavatar = "img/avatar/female.png";
                 }
             }
         }
-
-        $datemes = date_format(date_create($rowmessage['mes_date']), '\l\e d/m/y \&agrave; G:i '); ?>
+        $datemes = date_format(date_create($message->getDate()), '\l\e d/m/y \&\a\g\r\a\v\e; G:i '); 
+        
+?>
 
                             <div class="<?php echo $classchat1; ?>">
                                 <div class='direct-chat-info clearfix'>
-                                    <span class='<?php echo $classchat2; ?>'><?php echo $nomessage; ?></span>
-                                    <span class='<?php echo $classchat3; ?>'><?php echo $datemes; ?> pour <?php echo $rowdest["nom_user"] . " " . $rowdest["prenom_user"]; ?> </span>
+                                    <span class='<?php echo $classchat2; ?>'><?php echo htmlentities($auteur->getPrenom() . " " . $auteur->getNom()); ?></span>
+                                    <span class='<?php echo $classchat3; ?>'><?php echo $datemes; ?> pour <?php echo htmlentities($destinataire->getPrenom() . " " . $destinataire->getNom()) ?> </span>
                                 </div>
 
                                 <img src="<?php echo $photoavatar; ?>"  class="direct-chat-img" />
-                                <div class="direct-chat-text"><?php echo stripslashes($rowmessage['mes_txt']); ?></div>
+                                <div class="direct-chat-text"><?php echo htmlentities($message->getTexte()); ?></div>
                             </div>
 
                             <?php
@@ -355,19 +373,16 @@ if ($_SESSION["status"] == "3" or $_SESSION["status"] == "4") {
                             <select name="chatdestinataire" class="form-control pull-right">
                                 <?php
                                 if ($_SESSION["status"] == 3) {
-                                    $listeAdhreponse = getListReponse($_SESSION["iduser"]);
+                                    $adherents = Message::getUtilisateursReponse($_SESSION["iduser"]);
                                 } else {
-                                    $listeAdhreponse = getListRepAdmin();
+                                    $adherents = Message::getUtilisateursReponseAdmin();
                                 }
-
-    foreach ($listeAdhreponse as $key => $value) {
-        // if ($adhreponse == $key) {
-        // echo "<option value=\"" . $key . "\" selected>" . $value . "</option>";
-        // }
-        // else {
-        echo "<option value=\"" . $key . "\">" . $value . "</option>";
-        // }
-    } ?>
+                                if ($adherents !== null && count($adherents) > 0) {
+                                    foreach ($adherents as $adherent) {
+                                         echo "<option value=\"" . $adherent->getId() . "\">" . htmlentities($adherent->getNom() . " " . $adherent->getPrenom()) . "</option>";
+                                    }
+                                }
+                                ?>
                             </select>
                         </div>
                         <div class="input-group">
@@ -607,51 +622,44 @@ if ($_SESSION["status"] == "3" or $_SESSION["status"] == "4") {
                         <div class="direct-chat-messages">
                             <!-- chat item -->
                             <?php
-                            $animateurs = Utilisateur::getAnimateurs();
-        $listeMessage = readMyMessage($_SESSION["iduser"]);
-        $nb = mysqli_num_rows($listeMessage);
+        $animateurs = Utilisateur::getAnimateurs();
+        $messages = Message::getMessagesUtilisateurById($_SESSION["iduser"]);
         $urlRedirect = "index.php";
 
-        for ($i = 0; $i < $nb; $i++) {
-            $rowmessage = mysqli_fetch_array($listeMessage);
-            $auteur = $rowmessage["mes_auteur"];
-            $rowdest = getUser($rowmessage["mes_destinataire"]);
-            $rowauteur = getUser($rowmessage["mes_auteur"]);
-            $nomessage = $rowauteur['prenom_user'] . " " . $rowauteur['nom_user'];
+        foreach ($messages as $message) {
+            $auteur = $message->getAuteur();
+            $destinataire = $message->getDestinataire();
 
-            if ($auteur == $_SESSION["iduser"]) {
+            if ($message->getIdAuteur() == $_SESSION["iduser"]) {
                 $classchat1 = "direct-chat-msg right";
                 $classchat2 = 'direct-chat-name pull-right';
                 $classchat3 = 'direct-chat-timestamp pull-left';
-                $filenamephoto = "img/photos_profil/" . trim($rowauteur["nom_user"]) . "_" . trim($rowauteur["prenom_user"]) . ".jpg";
+                $photoavatar = "img/avatar/" . $utilisateur->getAvatar();
+            } else {
+                $classchat1 = "direct-chat-msg";
+                $classchat2 = 'direct-chat-name pull-left';
+                $classchat3 = 'direct-chat-timestamp pull-right';
+                $filenamephoto = "img/photos_profil/" . trim($auteur->getNom()) . "_" . trim($auteur->getPrenom()) . ".jpg";
                 if (file_exists($filenamephoto)) {
                     $photoavatar = $filenamephoto;
                 } else {
-                    if ($rowauteur["sexe_user"] == 'M') {
+                    if ($auteur->getSexe() == 'H') {
                         $photoavatar = "img/avatar/male.png";
                     } else {
                         $photoavatar = "img/avatar/female.png";
                     }
                 }
-            } else {
-                //reponse &agrave; droite
-                $classchat1 = "direct-chat-msg";
-                $classchat2 = 'direct-chat-name pull-left';
-                $classchat3 = 'direct-chat-timestamp pull-right';
-                $rowa = getAvatar($auteur);
-                $photoavatar = "img/avatar/" . $rowa["anim_avatar"];
             }
 
-            $datemes = date_format(date_create($rowmessage['mes_date']), '\l\e d/m/y \&agrave; G:i '); ?>
-
+            $datemes = date_format(date_create($message->getDate()), '\l\e d/m/y \&\a\g\r\a\v\e; G:i '); ?>
                                 <div class="<?php echo $classchat1; ?>">
                                     <div class='direct-chat-info clearfix'>
-                                        <span class='<?php echo $classchat2; ?>'><?php echo $nomessage; ?></span>
-                                        <span class='<?php echo $classchat3; ?>'><?php echo $datemes; ?> pour <?php echo $rowdest["nom_user"] . " " . $rowdest["prenom_user"]; ?></span>
+                                        <span class='<?php echo $classchat2; ?>'><?php echo htmlentities($auteur->getPrenom() . " " . $auteur->getNom()); ?></span>
+                                        <span class='<?php echo $classchat3; ?>'><?php echo $datemes; ?> pour <?php echo htmlentities($destinataire->getPrenom() . " " . $destinataire->getNom()) ?></span>
                                     </div>
 
                                     <img src="<?php echo $photoavatar; ?>"  class="direct-chat-img" />
-                                    <div class="direct-chat-text"><?php echo stripslashes($rowmessage['mes_txt']); ?></div>
+                                    <div class="direct-chat-text"><?php echo htmlentities($message->getTexte()); ?></div>
                                 </div>
                                 <?php
         } ?>      

@@ -57,20 +57,4 @@ if (isset($_POST['resa_submit'])) {
     }
 }
 
-//----
-//----------
-//------------ Validation des messages -------------------------------------------------------------------///
-$message = isset($_POST["chattxt_message"]) ? addslashes($_POST["chattxt_message"]) : '';
-$tags = isset($_POST["tags_message"]) ? $_POST["tags_message"] : '';
-$id_user = isset($_POST["chatadh"]) ? $_POST["chatadh"] : '';
-$date = isset($_POST["chatdate"]) ? $_POST["chatdate"] : '';
-$destinataire = isset($_POST["chatdestinataire"]) ? $_POST["chatdestinataire"] : '';
-//debug($message);
-if (isset($_POST['message_submit'])) {
-    if (isset($_POST['chatadh']) and isset($_POST['chattxt_message'])) {
-        addMessage($date, $id_user, $message, $tags, $destinataire);
-        //echo 'message ajouté';
-    } else {
-        $messErr = '<h4 class="alert_info">Vous devez entrer un texte !</h4>';
-    }
-}
+

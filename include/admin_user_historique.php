@@ -42,7 +42,7 @@ $act = isset($_GET["act"]) ? $_GET["act"] : '';
 
 
 $utilisateur = Utilisateur::getUtilisateurById($id_user);
-$row = getUser($id_user);
+
 
 $nom = $utilisateur->getPrenom() . " " . $utilisateur->getNom();
 $equip = $utilisateur->getEquipement();
@@ -52,13 +52,7 @@ $connaissance = $utilisateur->getConnaissance();
 $infos = $utilisateur->getInfo();
 $sexe = $utilisateur->getSexe();
 
-// $nom          = $row["prenom_user"]." ".$row["nom_user"];
-// $equip        = $row["equipement_user"];
-// $equipement   = explode(";",$equip);
-// $utilisation  = $row["utilisation_user"];
-// $connaissance = $row["connaissance_user"];
-// $info         = stripslashes($row["info_user"]);
-// $sexe         = $row["sexe_user"];
+
 // type d'&eacute;quipement défini
 $equipementarray = array(
     0 => "Aucun &eacute;quipement",

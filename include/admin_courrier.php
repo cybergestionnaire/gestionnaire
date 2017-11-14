@@ -24,9 +24,13 @@
 
 // fichier de gestion des courriers destin&eacute;s aux utilisateurs
 
-$mesno = $_GET["mesno"];
-if ($mesno != "") {
-    echo getError($mesno);
+//Affichage -----
+$mesno = isset($_GET["mesno"]) ? $_GET["mesno"] : '';
+if ($mesno != '') {
+    echo geterror($mesno);
+}
+if (isset($mess) && $mess != "") {
+    echo $mess;
 }
 
 // array des types d'info

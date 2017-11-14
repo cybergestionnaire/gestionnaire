@@ -1598,4 +1598,56 @@ class Utilisateur
 
         return $utilisateurs;
     }
+    
+    public static function getUtilisateursReponseMessage($idUtilisateur) {
+        $utilisateurs = null;
+
+        $db = Mysql::opendb();
+
+        $sql = "SELECT DISTINCT tab_user.* FROM `tab_messages`, tab_user "
+             . "WHERE `mes_destinataire`='" . $idUtilisateur . "' "
+             . "  AND mes_auteur=id_user "
+             . "ORDER BY `mes_auteur`";
+        
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            $utilisateurs = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+
+        return $utilisateurs;
+    }
+    
+    public static function getUtilisateursReponseAdmin() {
+        $utilisateurs = null;
+
+        $db = Mysql::opendb();
+
+        $sql = "SELECT tab_user.* "
+             . "FROM `tab_messages` , tab_user "
+             . "WHERE `mes_auteur` = id_user "
+             . "UNION "
+             . "SELECT tab_user.* "
+             . "FROM tab_user "
+             . "WHERE `status_user` =3 "
+             . "OR `status_user` =4 "
+             . "ORDER BY `status_user` ASC ";
+        
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            $utilisateurs = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+
+        return $utilisateurs;
+    }    
+    
 }
