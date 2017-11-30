@@ -205,7 +205,8 @@ $utilisationarray = array(
     0 => "Aucun Lieu",
     1 => "A la maison",
     2 => "Au bureau ou &agrave; l'&eacute;cole",
-    3 => "A la maison et au bureau ou &agrave; l'&eacute;cole"
+    3 => "A la maison et au bureau ou &agrave; l'&eacute;cole",
+    4 => "En mobilit&eacute;"
 );
 
 // type de connaissance defini
