@@ -325,8 +325,8 @@
 
                     <li ><a href="index.php?a=3"><i class="fa fa-angle-double-right"></i>Interventions</a></li>
                     <li ><a href="index.php?a=4"><i class="fa fa-angle-double-right"></i>Br&egrave;ves</a></li>
-                    <li ><a href="index.php?a=52"><i class="fa fa-angle-double-right"></i>Courriers</a></li>
-                    <li ><a href="index.php?a=10"><i class="fa fa-angle-double-right"></i>Liens</a></li>
+                    <!--<li ><a href="index.php?a=52"><i class="fa fa-angle-double-right"></i>Courriers</a></li>
+                    <li ><a href="index.php?a=10"><i class="fa fa-angle-double-right"></i>Liens</a></li>-->
                 </ul>
                 <!-- Fin gestion--> 
             </li>
