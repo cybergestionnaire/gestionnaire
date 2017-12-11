@@ -49,36 +49,6 @@ function closedb($mydb)
 }
 
 //
-// countUser()
-// compte le nombre d'utilisateur actif ,inactifs , total
-function countUser($id)
-{
-    switch ($id) {
-        case 1: // TOTAL ACTIFS + INACTIFS
-            $sql = "SELECT `id_user` FROM `tab_user` WHERE `status_user`!=3 AND `status_user`!=4  ";
-            break;
-        case 2: // TOTAL ACTIFS
-            $sql = "SELECT `id_user` FROM `tab_user` WHERE `status_user`=1";
-            break;
-        case 3: // TOTAL INACTIFS
-            $sql = "SELECT `id_user` FROM `tab_user` WHERE `status_user`=2";
-            break;
-        case 4: // TOTAL ARCHIVES
-            $sql = "SELECT `id_user` FROM `tab_user` WHERE `status_user`=6";
-            break;
-    }
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if (false == $result) {
-        return false;
-    } else {
-        $nb = mysqli_num_rows($result);
-        return $nb;
-    }
-}
-
-//
 // Fonction url ----------------------------------------------------------------
 //
 //

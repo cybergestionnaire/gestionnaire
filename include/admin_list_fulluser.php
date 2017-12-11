@@ -229,7 +229,6 @@ $classadh = '';
                     case 1:
                         $titleAdh = "Adh&eacute;rents actifs";
                         $typeAdh = 1;
-                        $num = 2;
                         $other = 'inactifs';
                         $numOther = 2;
                         $othera = 'archiv&eacute;s';
@@ -240,7 +239,6 @@ $classadh = '';
                     case 2:
                         $titleAdh = "Adh&eacute;rents inactifs";
                         $typeAdh = 2;
-                        $num = 3;
                         $other = 'actifs';
                         $numOther = 1;
                         $othera = 'archiv&eacute;s';
@@ -250,7 +248,6 @@ $classadh = '';
                     case 6:
                         $titleAdh = "Adh&eacute;rents archiv&eacute;s";
                         $typeAdh = 6;
-                        $num = 4;
                         $other = 'actifs';
                         $numOther = 1;
                         $othera = 'inactifs';
@@ -306,19 +303,20 @@ $classadh = '';
                     ?>
                         <div class="box box-info">
                             <div class="box-header">
-                                <h3 class="box-title"><?php echo $titleAdh ?> : <?php echo countUser($num) ?>/<?php echo countUser(1) ?>
+                                <h3 class="box-title"><?php echo $titleAdh ?> : <?php echo count(Utilisateur::getUtilisateursByStatut($typeAdh)) ?>/<?php echo count(Utilisateur::getUtilisateurs()) ?>
                                     <?php
-                                    if (countUser(3) > 0) {
+                                    if ( count(Utilisateur::getUtilisateursByStatut(2)) > 0) {
                                         echo "&nbsp;(<a href=\"index.php?a=1&adh=" . $numOther . "\">afficher les " . $other . " </a>)";
                                     } else {
                                         echo "";
                                     }
-                    //ajout des archivés
-                    if (countUser(4) > 0) {
-                        echo "&nbsp;(<a href=\"index.php?a=1&adh=" . $numOthera . "\">afficher les " . $othera . " </a>)";
-                    } else {
-                        echo "";
-                    } ?>
+                                    //ajout des archivés
+                                    if (count(Utilisateur::getUtilisateursByStatut(6)) > 0) {
+                                        echo "&nbsp;(<a href=\"index.php?a=1&adh=" . $numOthera . "\">afficher les " . $othera . " </a>)";
+                                    } else {
+                                        echo "";
+                                    } 
+                                    ?>
                                 </h3>
 
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a  href="index.php?a=1&b=1"  class="btn btn-default"  data-toggle="tooltip" title="Ajouter un adh&eacute;rent"><i class="fa fa-plus"></i></a>

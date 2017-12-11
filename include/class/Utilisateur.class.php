@@ -29,8 +29,8 @@
 //require_once("Resa.class.php");
 //require_once("ForfaitAtelier.class.php");
 
-class Utilisateur
-{
+class Utilisateur {
+
     private $_id;
     private $_dateInscription;
     private $_nom;
@@ -56,16 +56,14 @@ class Utilisateur
     private $_idEspace;
     private $_newsletter;
 
-    public function __construct($array)
-    {
+    public function __construct($array) {
         $this->_id = $array["id_user"];
         $this->_dateInscription = $array["date_insc_user"];
         $this->_nom = $array["nom_user"];
         $this->_prenom = $array["prenom_user"];
         $this->_sexe = $array["sexe_user"];
         $this->_dateNaissance = date_create_from_format(
-                "Y-m-d",
-            $array["annee_naissance_user"]
+                "Y-m-d", $array["annee_naissance_user"]
                 . "-" . $array["mois_naissance_user"]
                 . "-" . $array["jour_naissance_user"]
         );
@@ -93,79 +91,64 @@ class Utilisateur
      * Accesseurs basiques
      */
 
-    public function getId()
-    {
+    public function getId() {
         return $this->_id;
     }
 
-    public function getDateInscription()
-    {
+    public function getDateInscription() {
         return $this->_dateInscription;
     }
 
-    public function getNom()
-    {
+    public function getNom() {
         return $this->_nom;
     }
 
-    public function getPrenom()
-    {
+    public function getPrenom() {
         return $this->_prenom;
     }
 
-    public function getSexe()
-    {
+    public function getSexe() {
         return $this->_sexe;
     }
 
-    public function getJourNaissance()
-    {
+    public function getJourNaissance() {
         return date_format($this->_dateNaissance, 'd');
     }
 
-    public function getMoisNaissance()
-    {
+    public function getMoisNaissance() {
         return date_format($this->_dateNaissance, 'n');
     }
 
-    public function getAnneeNaissance()
-    {
+    public function getAnneeNaissance() {
         return date_format($this->_dateNaissance, 'Y');
     }
 
-    public function getAdresse()
-    {
+    public function getAdresse() {
         return $this->_adresse;
     }
 
-    public function getIdVille()
-    {
+    public function getIdVille() {
         return $this->_idVille;
     }
 
-    public function getTelephone()
-    {
+    public function getTelephone() {
         return $this->_telephone;
     }
 
-    public function getMail()
-    {
+    public function getMail() {
         return $this->_mail;
     }
 
-    public function getIdTarifConsultation()
-    {
+    public function getIdTarifConsultation() {
         // return $this->_idTarifConsultation;
         return $this->getTransactionForfaitConsultation()->getIdTarif();
     }
 
-    public function getTransactionForfaitsAteliers()
-    {
+    public function getTransactionForfaitsAteliers() {
         return Transaction::getTransactionsByUtilisateurAndType($this->_id, 'for');
     }
 
-    public function getTransactionForfaitConsultation()
-    {
+    public function getTransactionForfaitConsultation() {
         $transaction = null;
         $transactions = Transaction::getTransactionsByUtilisateurAndType($this->_id, 'temps');
         if ($transactions !== null) {
@@ -174,8 +157,7 @@ class Utilisateur
         return $transaction;
     }
 
-    public function getForfaitConsultation()
-    {
+    public function getForfaitConsultation() {
 
         // il ne faut pas regarder le forfait mentionné directement dans la table user
         // mais aller le chercher dans les transacations
@@ -191,8 +173,7 @@ class Utilisateur
         return $forfait;
     }
 
-    public function getTempsUtiliseOuRestant()
-    {
+    public function getTempsUtiliseOuRestant() {
         $temps['Utilise'] = 0;
         $temps['Restant'] = 0;
 
@@ -245,88 +226,71 @@ class Utilisateur
         return $temps;
     }
 
-    public function getTempsUtilise()
-    {
+    public function getTempsUtilise() {
         return $this->getTempsUtiliseOuRestant()['Utilise'];
     }
 
-    public function getTempsRestant()
-    {
+    public function getTempsRestant() {
         return $this->getTempsUtiliseOuRestant()['Restant'];
     }
 
-    public function getLogin()
-    {
+    public function getLogin() {
         return $this->_login;
     }
 
-    public function getMotDePasse()
-    {
+    public function getMotDePasse() {
         return $this->_motDePasse;
     }
 
-    public function getStatut()
-    {
+    public function getStatut() {
         return $this->_statut;
     }
 
-    public function getDerniereVisite()
-    {
+    public function getDerniereVisite() {
         return $this->_derniereVisite;
     }
 
-    public function getCSP()
-    {
+    public function getCSP() {
         return $this->_csp;
     }
 
-    public function getEquipement()
-    {
+    public function getEquipement() {
         return $this->_equipement;
     }
 
-    public function getUtilisation()
-    {
+    public function getUtilisation() {
         return $this->_utilisation;
     }
 
-    public function getConnaissance()
-    {
+    public function getConnaissance() {
         return $this->_connaissance;
     }
 
-    public function getInfo()
-    {
+    public function getInfo() {
         return $this->_info;
     }
 
-    public function getIdTarifAdhesion()
-    {
+    public function getIdTarifAdhesion() {
         return $this->_idTarifAdhesion;
     }
 
-    public function getTarifAdhesion()
-    {
+    public function getTarifAdhesion() {
         return Tarif::getTarifById($this->_idTarifAdhesion);
     }
 
-    public function getDateRenouvellement()
-    {
+    public function getDateRenouvellement() {
         return $this->_dateRenouvellement;
     }
 
-    public function getidEspace()
-    {
+    public function getidEspace() {
         return $this->_idEspace;
     }
 
-    public function getNewsletter()
-    {
+    public function getNewsletter() {
         return $this->_newsletter;
     }
 
-    public function getAge()
-    {
+    public function getAge() {
         $annee = date_format($this->_dateNaissance, 'Y');
         $mois = date_format($this->_dateNaissance, 'n');
         $jour = date_format($this->_dateNaissance, 'd');
@@ -356,8 +320,7 @@ class Utilisateur
      * OU
      * adapter la base de données pour plus de cohérence (mettre l'avatar dans l'enregistrement utilisateur...)
      */
-    public function getAvatar()
-    {
+    public function getAvatar() {
         $avatar = "";
 
         $sql = "SELECT `anim_avatar` FROM `rel_user_anim` WHERE `id_animateur`='" . $this->_id . "'";
@@ -382,8 +345,7 @@ class Utilisateur
         return $avatar;
     }
 
-    public function MAJVisite()
-    {
+    public function MAJVisite() {
         $success = false;
         $db = Mysql::opendb();
         $sql = "UPDATE tab_user SET lastvisit_user='" . date("Y-m-d") . "' WHERE `id_user`=" . $this->_id;
@@ -396,8 +358,7 @@ class Utilisateur
         return $success;
     }
 
-    public function updateMotDePasse($motDePasse)
-    {
+    public function updateMotDePasse($motDePasse) {
         $success = false;
         $db = Mysql::opendb();
 
@@ -411,8 +372,7 @@ class Utilisateur
         return $success;
     }
 
-    public function updateStatut($statut, $dateRenouvellement, $idTarif)
-    {
+    public function updateStatut($statut, $dateRenouvellement, $idTarif) {
         $success = false;
         $db = Mysql::opendb();
 
@@ -431,8 +391,7 @@ class Utilisateur
         return $success;
     }
 
-    public function canUpdateLogin($login)
-    {
+    public function canUpdateLogin($login) {
         $success = false;
         if ($login == $this->_login || !self::existsLogin($login)) {
             //si le login ne change pas OU si le login n'existe pas déjà
@@ -442,8 +401,7 @@ class Utilisateur
         return $success;
     }
 
-    public function hasParametresAnim()
-    {
+    public function hasParametresAnim() {
         $success = false;
 
         $db = Mysql::opendb();
@@ -458,8 +416,7 @@ class Utilisateur
         return $success;
     }
 
-    public function getIdEspaceAnim()
-    {
+    public function getIdEspaceAnim() {
         $idEspaceAnim = '';
 
         $db = Mysql::opendb();
@@ -468,6 +425,7 @@ class Utilisateur
         Mysql::closedb($db);
 
         if ($result == false) {
+            
         } else {
             $row = mysqli_fetch_array($result);
 
@@ -477,8 +435,7 @@ class Utilisateur
         return $idEspaceAnim;
     }
 
-    public function getIdSallesAnim()
-    {
+    public function getIdSallesAnim() {
         $idSalleAnim = '';
 
         $db = Mysql::opendb();
@@ -487,6 +444,7 @@ class Utilisateur
         Mysql::closedb($db);
 
         if ($result == false) {
+            
         } else {
             $row = mysqli_fetch_array($result);
             $idSalleAnim = $row["id_salle"];
@@ -495,8 +453,7 @@ class Utilisateur
         return $idSalleAnim;
     }
 
-    public function getSallesAnim()
-    {
+    public function getSallesAnim() {
         $sallesAnim = null;
 
         $ids = explode(';', $this->getIdSallesAnim());
@@ -509,8 +466,7 @@ class Utilisateur
         return $sallesAnim;
     }
 
-    public function setParametresAnim($idEspace, $salles, $avatar)
-    {
+    public function setParametresAnim($idEspace, $salles, $avatar) {
         $success = false;
 
         $db = Mysql::opendb();
@@ -541,69 +497,56 @@ class Utilisateur
         return $success;
     }
 
-    public function getAteliersInscrit()
-    {
+    public function getAteliersInscrit() {
         return Atelier::getAteliersOuvertsParUtilisateurEtParStatut($this->_id, 0);
     }
 
-    public function getAteliersEnAttente()
-    {
+    public function getAteliersEnAttente() {
         return Atelier::getAteliersOuvertsParUtilisateurEtParStatut($this->_id, 2);
     }
 
-    public function getAteliersPresent()
-    {
+    public function getAteliersPresent() {
         return Atelier::getAteliersFermesParUtilisateurEtParStatut($this->_id, 1);
     }
 
-    public function getAteliersAbsent()
-    {
+    public function getAteliersAbsent() {
         return Atelier::getAteliersFermesParUtilisateurEtParStatut($this->_id, 0);
     }
 
-    public function getSessionsInscrit()
-    {
+    public function getSessionsInscrit() {
         return Session::getSessionsParUtilisateurEtParStatut($this->_id, 0);
     }
 
-    public function getSessionsEnAttente()
-    {
+    public function getSessionsEnAttente() {
         return Session::getSessionsParUtilisateurEtParStatut($this->_id, 2);
     }
 
-    public function getSessionDatesInscrit()
-    {
+    public function getSessionDatesInscrit() {
         return Session::getSessionDatesEnCoursParUtilisateurEtParStatut($this->_id, 0);
     }
 
-    public function getSessionDatesEnAttente()
-    {
+    public function getSessionDatesEnAttente() {
         return Session::getSessionDatesEnCoursParUtilisateurEtParStatut($this->_id, 2);
     }
 
-    public function getSessionDatesPresent()
-    {
+    public function getSessionDatesPresent() {
         return Session::getSessionDatesFermeesParUtilisateurEtParStatut($this->_id, 1);
     }
 
-    public function getSessionDatesAbsent()
-    {
+    public function getSessionDatesAbsent() {
         return Session::getSessionDatesFermeesParUtilisateurEtParStatut($this->_id, 0);
     }
 
-    public function getNBAteliersEtSessionsInscrit()
-    {
+    public function getNBAteliersEtSessionsInscrit() {
         return count($this->getAteliersInscrit()) + count($this->getSessionDatesInscrit());
     }
 
-    public function getNBAteliersEtSessionsPresent()
-    {
+    public function getNBAteliersEtSessionsPresent() {
         return count($this->getAteliersPresent()) + count($this->getSessionDatesPresent());
     }
 
     //retourne le nombre d'ateliers issus de forfaits déjà archivés
-    public function getNbForfaitsArchives()
-    {
+    public function getNbForfaitsArchives() {
         $somme = -1;
 
         $db = Mysql::opendb();
@@ -622,13 +565,11 @@ class Utilisateur
         return $somme;
     }
 
-    public function getForfaitsAtelier()
-    {
+    public function getForfaitsAtelier() {
         return ForfaitAtelier::getForfaitsAtelierByIdUtilisateur($this->_id);
     }
 
-    public function getNombreForfaitsAteliers()
-    {
+    public function getNombreForfaitsAteliers() {
         $somme = 0;
 
         $db = Mysql::opendb();
@@ -652,8 +593,7 @@ class Utilisateur
         return $somme;
     }
 
-    public function hasPrint()
-    {
+    public function hasPrint() {
         $success = false;
         $db = Mysql::opendb();
         $sql = "SELECT `id_print` FROM tab_print WHERE `print_user`='" . $this->_id . "' ";
@@ -666,8 +606,7 @@ class Utilisateur
         return $success;
     }
 
-    public function getImpressionDebit()
-    {
+    public function getImpressionDebit() {
         $printDebit = 0;
 
         $db = Mysql::opendb();
@@ -689,8 +628,7 @@ class Utilisateur
         return $printDebit;
     }
 
-    public function getImpressionCredit()
-    {
+    public function getImpressionCredit() {
         $printCredit = 0;
 
         $db = Mysql::opendb();
@@ -711,45 +649,20 @@ class Utilisateur
         return $printCredit;
     }
 
-    public function getImpressions()
-    {
+    public function getImpressions() {
         return Impression::getImpressionsByIdUtilisateur($this->_id);
     }
 
-    public function getTransactionsEnAttente()
-    {
+    public function getTransactionsEnAttente() {
         return Transaction::getTransactionsEnAttenteByIdutilisateur($this->_id);
     }
 
-    public function getLastResa()
-    {
+    public function getLastResa() {
         return Resa::getLastResaFromUtilisateur($this->_id);
     }
 
     public function modifier(
-        $dateInscription,
-        $nom,
-        $prenom,
-        $sexe,
-        $dateNaissance,
-        $adresse,
-        $idVille,
-        $telephone,
-        $mail,
-        $idTarifConsultation,
-        $login,
-        $motDePasse,
-        $statut,
-        $derniereVisite,
-        $csp,
-        $equipement,
-        $utilisation,
-        $connaissance,
-        $info,
-        $idTarifAdhesion,
-        $dateRenouvellement,
-        $idEspace,
-        $newsletter
+    $dateInscription, $nom, $prenom, $sexe, $dateNaissance, $adresse, $idVille, $telephone, $mail, $idTarifConsultation, $login, $motDePasse, $statut, $derniereVisite, $csp, $equipement, $utilisation, $connaissance, $info, $idTarifAdhesion, $dateRenouvellement, $idEspace, $newsletter
     ) {
         $success = false;
         // error_log("debut modif -----------------------------------------------");
@@ -869,8 +782,7 @@ class Utilisateur
         return $success;
     }
 
-    public function supprimer()
-    {
+    public function supprimer() {
         $success = false;
         // TODO : supprimer toutes les relations liées à l'utilisateur avant de le supprimer !!!
         // néanmoins, garder les lignes tab_resa pour les statistiques
@@ -894,28 +806,8 @@ class Utilisateur
 
     public static function creerUtilisateur(
     $dateInscription, // format Y-m-d
-            $nom,
-        $prenom,
-        $sexe,
-        $dateNaissance, // format Y-m-d
-            $adresse,
-        $idVille,
-        $telephone,
-        $mail,
-        $idTarifConsultation,
-        $login,
-        $motDePasse,
-        $statut,
-        $derniereVisite,
-        $csp,
-        $equipement,
-        $utilisation,
-        $connaissance,
-        $info,
-        $idTarifAdhesion,
-        $dateRenouvellement,
-        $idEspace,
-        $newsletter
+            $nom, $prenom, $sexe, $dateNaissance, // format Y-m-d
+            $adresse, $idVille, $telephone, $mail, $idTarifConsultation, $login, $motDePasse, $statut, $derniereVisite, $csp, $equipement, $utilisation, $connaissance, $info, $idTarifAdhesion, $dateRenouvellement, $idEspace, $newsletter
     ) {
         $utilisateur = null;
 
@@ -1011,8 +903,7 @@ class Utilisateur
         return $utilisateur;
     }
 
-    public static function getUtilisateurById($id)
-    {
+    public static function getUtilisateurById($id) {
         $utilisateur = null;
 
         if ($id != 0) {
@@ -1034,8 +925,7 @@ class Utilisateur
         return $utilisateur;
     }
 
-    public static function getUtilisateurByLoginPassword($login, $password)
-    {
+    public static function getUtilisateurByLoginPassword($login, $password) {
         $utilisateur = null;
 
         if ($login != "" && $password != "") {
@@ -1057,8 +947,7 @@ class Utilisateur
         return $utilisateur;
     }
 
-    public static function getUtilisateursByVille($idVille)
-    {
+    public static function getUtilisateursByVille($idVille) {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1083,8 +972,28 @@ class Utilisateur
         return $utilisateurs;
     }
 
-    public static function getAnimateurs()
-    {
+    public static function getUtilisateurs() {
+        $utilisateurs = null;
+
+        $db = Mysql::opendb();
+
+        $sql = "SELECT * "
+                . "FROM `tab_user` "
+                . "WHERE  `status_user`!= 3 AND `status_user`!= 4 "
+                . "ORDER BY `nom_user` ASC ";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+        if ($result) {
+            $utilisateurs = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $utilisateurs[] = new Utilisateur($row);
+            }
+        }
+        return $utilisateurs;
+    }
+
+    public static function getAnimateurs() {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1105,8 +1014,7 @@ class Utilisateur
         return $utilisateurs;
     }
 
-    public static function getAdministrateurs()
-    {
+    public static function getAdministrateurs() {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1128,8 +1036,7 @@ class Utilisateur
         return $utilisateurs;
     }
 
-    public static function getUtilisateursByStatut($statut)
-    {
+    public static function getUtilisateursByStatut($statut) {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1151,8 +1058,7 @@ class Utilisateur
         return $utilisateurs;
     }
 
-    public static function getUtilisateursByDateInsc($nb)
-    {
+    public static function getUtilisateursByDateInsc($nb) {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1174,8 +1080,7 @@ class Utilisateur
         return $utilisateurs;
     }
 
-    public static function searchUtilisateurs($exp)
-    {
+    public static function searchUtilisateurs($exp) {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1201,8 +1106,7 @@ class Utilisateur
         return $utilisateurs;
     }
 
-    public static function existsLogin($login)
-    {
+    public static function existsLogin($login) {
         $exists = false;
         $db = Mysql::opendb();
 
@@ -1221,8 +1125,7 @@ class Utilisateur
     }
 
     //  en lien avec la classe Atelier
-    public static function getUtilisateursInscritsAtelier($idAtelier)
-    {
+    public static function getUtilisateursInscritsAtelier($idAtelier) {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1246,8 +1149,7 @@ class Utilisateur
         return $utilisateurs;
     }
 
-    public static function getUtilisateursPresentsAtelier($idAtelier)
-    {
+    public static function getUtilisateursPresentsAtelier($idAtelier) {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1271,8 +1173,7 @@ class Utilisateur
         return $utilisateurs;
     }
 
-    public static function getUtilisateursEnAttenteAtelier($idAtelier)
-    {
+    public static function getUtilisateursEnAttenteAtelier($idAtelier) {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1297,8 +1198,7 @@ class Utilisateur
     }
 
     //  les mêmes pour les sessions
-    public static function getUtilisateursInscritsSession($idSession)
-    {
+    public static function getUtilisateursInscritsSession($idSession) {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1322,8 +1222,7 @@ class Utilisateur
         return $utilisateurs;
     }
 
-    public static function getUtilisateursPresentsSession($idSession)
-    {
+    public static function getUtilisateursPresentsSession($idSession) {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1347,8 +1246,7 @@ class Utilisateur
         return $utilisateurs;
     }
 
-    public static function getUtilisateursInscritsOuPresentsSession($idSession)
-    {
+    public static function getUtilisateursInscritsOuPresentsSession($idSession) {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1372,8 +1270,7 @@ class Utilisateur
         return $utilisateurs;
     }
 
-    public static function getUtilisateursEnAttenteSession($idSession)
-    {
+    public static function getUtilisateursEnAttenteSession($idSession) {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1398,8 +1295,7 @@ class Utilisateur
     }
 
     //  encore les mêmes pour les dates de sessions
-    public static function getUtilisateursInscritsSessionDate($idSessionDate)
-    {
+    public static function getUtilisateursInscritsSessionDate($idSessionDate) {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1423,8 +1319,7 @@ class Utilisateur
         return $utilisateurs;
     }
 
-    public static function getUtilisateursPresentsSessionDate($idSessionDate)
-    {
+    public static function getUtilisateursPresentsSessionDate($idSessionDate) {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1448,8 +1343,7 @@ class Utilisateur
         return $utilisateurs;
     }
 
-    public static function getUtilisateursEnAttenteSessionDate($idSessionDate)
-    {
+    public static function getUtilisateursEnAttenteSessionDate($idSessionDate) {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1473,8 +1367,7 @@ class Utilisateur
         return $utilisateurs;
     }
 
-    public static function getUtilisateursAvecCreditDImpression()
-    {
+    public static function getUtilisateursAvecCreditDImpression() {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1500,8 +1393,7 @@ class Utilisateur
         return $utilisateurs;
     }
 
-    public static function getUtilisateursAvecDebitDImpression()
-    {
+    public static function getUtilisateursAvecDebitDImpression() {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1527,8 +1419,7 @@ class Utilisateur
         return $utilisateurs;
     }
 
-    public static function getIduserexterne()
-    {
+    public static function getIduserexterne() {
         $idUtilisateur = 0;
 
         $db = Mysql::opendb();
@@ -1546,8 +1437,7 @@ class Utilisateur
         return $idUtilisateur;
     }
 
-    public static function archiver($idUtilisateur)
-    {
+    public static function archiver($idUtilisateur) {
         $success = false;
 
         if (intval($idUtilisateur) > 0) {
@@ -1580,8 +1470,7 @@ class Utilisateur
       }
       } */
 
-    public static function getUtilisateursAvecUnForfaitAtelierEnCours()
-    {
+    public static function getUtilisateursAvecUnForfaitAtelierEnCours() {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
@@ -1600,17 +1489,17 @@ class Utilisateur
 
         return $utilisateurs;
     }
-    
+
     public static function getUtilisateursReponseMessage($idUtilisateur) {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
 
         $sql = "SELECT DISTINCT tab_user.* FROM `tab_messages`, tab_user "
-             . "WHERE `mes_destinataire`='" . $idUtilisateur . "' "
-             . "  AND mes_auteur=id_user "
-             . "ORDER BY `mes_auteur`";
-        
+                . "WHERE `mes_destinataire`='" . $idUtilisateur . "' "
+                . "  AND mes_auteur=id_user "
+                . "ORDER BY `mes_auteur`";
+
         $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
 
@@ -1623,22 +1512,22 @@ class Utilisateur
 
         return $utilisateurs;
     }
-    
+
     public static function getUtilisateursReponseAdmin() {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
 
         $sql = "SELECT tab_user.* "
-             . "FROM `tab_messages` , tab_user "
-             . "WHERE `mes_auteur` = id_user "
-             . "UNION "
-             . "SELECT tab_user.* "
-             . "FROM tab_user "
-             . "WHERE `status_user` =3 "
-             . "OR `status_user` =4 "
-             . "ORDER BY `status_user` ASC ";
-        
+                . "FROM `tab_messages` , tab_user "
+                . "WHERE `mes_auteur` = id_user "
+                . "UNION "
+                . "SELECT tab_user.* "
+                . "FROM tab_user "
+                . "WHERE `status_user` =3 "
+                . "OR `status_user` =4 "
+                . "ORDER BY `status_user` ASC ";
+
         $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
 
@@ -1650,26 +1539,26 @@ class Utilisateur
         }
 
         return $utilisateurs;
-    }  
-    
+    }
+
     public static function getUtilisateursDAteliersParEspace($idEspace) {
         $utilisateurs = null;
 
         $db = Mysql::opendb();
 
-         $sql = "SELECT DISTINCT tab_user.* "
-              . "FROM  `rel_atelier_user` , tab_user, tab_atelier "
-              . "WHERE tab_user.id_user =  `rel_atelier_user`.`id_user` "
-              . "  AND `epn_user`= " . $idEspace . " "
-              . "  AND YEAR(date_atelier)=YEAR(NOW()) "
-              . "UNION  "
-              . "SELECT DISTINCT tab_user.*  "
-              . "FROM  `rel_session_user` , tab_user,tab_session "
-              . "WHERE tab_user.id_user =  `rel_session_user`.`id_user`  "
-              . "  AND `epn_user`=" . $idEspace . " "
-              . "  AND YEAR(date_session)=YEAR(NOW()) "
-              . "ORDER BY nom_user ASC";
-        error_log("sql = {$sql}");
+        $sql = "SELECT DISTINCT tab_user.* "
+                . "FROM  `rel_atelier_user` , tab_user, tab_atelier "
+                . "WHERE tab_user.id_user =  `rel_atelier_user`.`id_user` "
+                . "  AND `epn_user`= " . $idEspace . " "
+                . "  AND YEAR(date_atelier)=YEAR(NOW()) "
+                . "UNION  "
+                . "SELECT DISTINCT tab_user.*  "
+                . "FROM  `rel_session_user` , tab_user,tab_session "
+                . "WHERE tab_user.id_user =  `rel_session_user`.`id_user`  "
+                . "  AND `epn_user`=" . $idEspace . " "
+                . "  AND YEAR(date_session)=YEAR(NOW()) "
+                . "ORDER BY nom_user ASC";
+
         $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
 
@@ -1681,5 +1570,186 @@ class Utilisateur
         }
 
         return $utilisateurs;
-    }      
+    }
+
+    // Fonctions statistiques
+
+    /**
+     * renvoi le nombre d'utilisateurs par sexe
+     * 
+     * Renvoie un tableau sous la forme :
+     * tableau["sexe"] = nb;
+     * Les sexes devraient être 'H' ou 'F', ou '' si le sexe n'a pas été saisi...
+     * Seuls les utilisateurs actifs sont comptés.
+     * 
+     * @param int $idEspace
+     *      l'identifiant de l'espace
+     * @return array[] $sexeCount
+     *      - array avec le compte par sexe
+     *      - null en cas d'erreur
+     * 
+     */
+    public static function statSexe($idEspace) {
+        $sexeCount = null;
+
+        $db = Mysql::opendb();
+
+        $sql = "SELECT Count(id_user) as nb, sexe_user FROM `tab_user` WHERE status_user = 1 AND epn_user='" . $idEspace . "' group by sexe_user";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            $sexeCount = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $sexeCount[$row["sexe_user"]] = $row["nb"];
+            }
+        }
+
+        return $sexeCount;
+    }
+
+    /**
+     * renvoi le nombre d'utilisateurs actifs par ville
+     * 
+     * Renvoie un tableau sous la forme :
+     * tableau["ville"] = nb;
+     *      * 
+     * @param int $idEspace
+     *      l'identifiant de l'espace
+     * @return array[] $villeCount
+     *      - array avec le compte par ville
+     *      - null en cas d'erreur
+     * 
+     */
+    public static function statVilleActifs($idEspace) {
+        $villeCount = null;
+
+        $db = Mysql::opendb();
+
+        $sql = "SELECT count(`id_user`) AS nb, nom_city FROM `tab_user`, tab_city where tab_user.ville_user = tab_city.id_city and tab_user.status_user = '1' and tab_user.epn_user='" . $idEspace . "' group by nom_city";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            $villeCount = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $villeCount[$row["nom_city"]] = $row["nb"];
+            }
+        }
+
+        return $villeCount;
+    }
+
+    /**
+     * renvoi le nombre total d'utilisateurs par ville (hors animateurs et adminsitrateurs)
+     * 
+     * Renvoie un tableau sous la forme :
+     * tableau["ville"] = nb;
+     *      * 
+     * @param int $idEspace
+     *      l'identifiant de l'espace
+     * @return array[] $villeCount
+     *      - array avec le compte par ville
+     *      - null en cas d'erreur
+     * 
+     */
+    public static function statVilleTotal($idEspace) {
+        $villeCount = null;
+
+        $db = Mysql::opendb();
+
+        $sql = "SELECT count(`id_user`) AS nb, nom_city FROM `tab_user`, tab_city where tab_user.ville_user = tab_city.id_city and tab_user.status_user <> '3' and tab_user.status_user <> '4' and tab_user.epn_user='" . $idEspace . "' group by nom_city";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            $villeCount = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $villeCount[$row["nom_city"]] = $row["nb"];
+            }
+        }
+
+        return $villeCount;
+    }
+
+    /**
+     * renvoi le nombre d'utilisateurs par Catégorie Socio Professionnelle
+     * 
+     * Renvoie un tableau sous la forme :
+     * tableau["CSP"] = nb;
+     * Seuls les utilisateurs actifs sont comptés.
+     * 
+     * @param int $idEspace
+     *      l'identifiant de l'espace
+     * @return array[] $CSPCount
+     *      - array avec le compte par CSP
+     *      - null en cas d'erreur
+     * 
+     */
+    public static function statCSP($idEspace) {
+        $CSPCount = null;
+
+        $db = Mysql::opendb();
+
+        $sql = "SELECT count(`id_user`) AS nb, tab_csp.csp FROM `tab_user`, tab_csp where tab_user.csp_user = tab_csp.id_csp and tab_user.status_user = '1' and tab_user.epn_user='" . $idEspace . "' group by tab_csp.csp";
+
+        $result = mysqli_query($db, $sql);
+        Mysql::closedb($db);
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            $CSPCount = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $CSPCount[$row["csp"]] = $row["nb"];
+            }
+        }
+
+        return $CSPCount;
+    }
+
+    /**
+     * renvoi le nombre d'utilisateurs actifs par tranche d'age
+     * 
+     * Renvoie un tableau sous la forme :
+     * tableau["CSP"] = nb;
+     * Seuls les utilisateurs actifs sont comptés.
+     * 
+     * @param int $nb1
+     *      premier age de la tranche
+     * @param int $nb2
+     *      deuxième age de la tranche
+     * @param int $idEspace
+     *      l'identifiant de l'espace
+     * @return array[] $nb
+     *      - nombre de personnes dans la tranche d'âge
+     *      - 1 en cas d'erreur
+     * 
+     */
+    public static function statTranche($nb1, $nb2, $idEspace) {
+        $nb = -1;
+        
+        $anneeRef = date("Y");   // 2006
+        $anneeHaute = $anneeRef - $nb1; // ex : entre 7 et 13 ans anneeHaute = 1999 et annebasse = 1993
+        $anneeBasse = $anneeRef - $nb2;
+
+        $db = Mysql::opendb();
+
+        $sql = "SELECT `id_user` "
+                . "FROM `tab_user` "
+                . "WHERE `annee_naissance_user` <= " . $anneeHaute . " AND `annee_naissance_user` >= " . $anneeBasse . " "
+                . "  AND status_user = '1' "
+                . "  AND epn_user='" . $idEspace . "' ";
+
+        $result = mysqli_query($db, $sql);
+        
+        Mysql::closedb($db);
+        if ($result) {
+            $nb = mysqli_num_rows($result);
+        }
+        
+        return $nb;
+    }
+
 }

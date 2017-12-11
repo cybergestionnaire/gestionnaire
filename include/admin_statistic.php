@@ -33,7 +33,7 @@ if ($mess != "") {
 ?>
 <article class="module width_half"><header><h3>Statistiques par utilisateurs : R&eacute;partition Homme / Femme</h3></header>
     <div class="module_content">
-        <p>Nombre total de membres (adh&eacute;rents): <?php echo $nbTotal; ?> actifs, nombre total d'inactifs : <?php echo countUser(3); ?></p>
+        <p>Nombre total de membres (adh&eacute;rents): <?php echo $nbTotal; ?> actifs, nombre total d'inactifs : <?php echo count(Utilisateur::getUtilisateursByStatut(2)); ?></p>
         <div class="statBar">
             <div class="statText">Hommes</div>
             <div class="statBarContainPurple">

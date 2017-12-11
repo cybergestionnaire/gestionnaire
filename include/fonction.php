@@ -273,7 +273,7 @@ function numToDate($quant, $annee)
 function getPourcent($nb, $total)
 {
     if ($nb != "" and $nb != 0 and $total != "" and $total != 0) {
-        $pourcent = round(($nb * 100) / $total);
+        $pourcent = round(($nb * 100) / $total, 1 );
         return $pourcent . "%";
     } else {
         return "0";
