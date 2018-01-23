@@ -395,120 +395,6 @@ function getadherenttotal($epn)
     }
 }
 
-//
-// statSexe()
-// recupere la répartition homme femme
-
-function statSexe($sex, $epn)
-{
-    $sql = "SELECT `sexe_user`
-        FROM `tab_user`
-        WHERE `sexe_user` = '" . $sex . "'
-		AND status_user = 1
-		AND epn_user='" . $epn . "'
-		";
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if (false == $result) {
-        return false;
-    } else {
-        $nb = mysqli_num_rows($result);
-        return $nb;
-    }
-}
-
-//
-// statTranche()
-// recupere le nombre de personnes dans une tranche d'age
-function statTranche($nb1, $nb2, $nbtotal, $epn)
-{
-    $anneeRef = date("Y");   // 2006
-    $anneeHaute = $anneeRef - $nb1; // ex : entre 7 et 13 ans anneeHaute = 1999 et annebasse = 1993
-    $anneeBasse = $anneeRef - $nb2;
-    $sql = "SELECT `id_user`
-        FROM `tab_user`
-        WHERE `annee_naissance_user` <= " . $anneeHaute . " AND `annee_naissance_user` >= " . $anneeBasse . "
-		AND status_user = 1
-		AND epn_user='" . $epn . "' ";
-
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    $nb = mysqli_num_rows($result);
-    return $nb;
-}
-
-//
-// statInscription()
-// retourne nombre d'inscrit par mois et par an
-function statInscription($mois, $nb, $epn)
-{
-    $annee = date('Y');
-
-    $sql = "SELECT count(`id_user`) AS nb
-		FROM `tab_user`
-		WHERE MONTH(`date_insc_user`)= '" . $mois . "'
-		AND YEAR(`date_insc_user`)= '" . $annee . "'
-		AND status_user='" . $nb . "'
-		AND epn_user='" . $epn . "'
-		";
-
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if ($result == false) {
-        return false;
-    } else {
-        //
-        $row = mysqli_fetch_array($result);
-        return $row['nb'];
-    }
-}
-
-//
-// statCsp()
-// retourne la répartition des adherents par Csp
-function statCsp($csp, $epn)
-{
-    $csp = addslashes($csp);
-    $sql = "SELECT count(`id_user`) AS nb FROM `tab_user`
-          WHERE `csp_user` = '" . $csp . "'
-          AND `status_user`=1
-		  AND epn_user='" . $epn . "'
-		  ";
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if ($result == false) {
-        return false;
-    } else {
-        $row = mysqli_fetch_array($result);
-        return $row['nb'];
-    }
-}
-
-// statCity()
-// retourne la répartition des adherents par ville
-function statCity($ville, $statut)
-{
-    // $ville =addslashes($ville) ;
-    $sql = "SELECT count(`id_user`) AS nb FROM `tab_user`
-          WHERE `ville_user` = '" . $ville . "'
-		  AND `status_user`='" . $statut . "'
-
-
-		  ";
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if ($result == false) {
-        return false;
-    } else {
-        $row = mysqli_fetch_array($result);
-        return $row['nb'];
-    }
-}
 
 //**************                 STATISTIQUES ATELIERS           ********************************************************
 //retourne les années contenues dans les ateliers et sessions
@@ -883,6 +769,8 @@ AND YEAR(`date_AS`)='" . $year . "'
 // retourne array des n° de sessions actives
 function listSession($year, $idepn)
 {
+    $r = null;
+    
     $sql = " SELECT DISTINCT(`id_AS`) FROM `tab_as_stat`
 WHERE `type_AS`='s'
 AND `id_epn`='" . $idepn . "'

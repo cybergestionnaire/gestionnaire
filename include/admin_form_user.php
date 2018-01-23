@@ -142,11 +142,11 @@ if ($idUser == '') {   // Parametre du formulaire pour la CREATION
         if (false == $arraymail) {
             $mailok = 0;
         } else {
-            $espacearray = mysqli_fetch_array(getEspace($_SESSION["idepn"]));
-            $mail_epn = $espacearray["mail_espace"];
-            $adresse_epn = $espacearray["adresse"];
-            $nom_epn = $espacearray["nom_espace"];
-            $tel_epn = $espacearray["tel_espace"];
+            $espace = Espace::getEspaceById($_SESSION["idepn"]);
+            $mail_epn = $espace->getMail();
+            $adresse_epn = $espace->getAdresse();
+            $nom_epn = $espace->getNom();
+            $tel_epn = $espace->getTelephone();
 
             $arraymailtype = array(
                 1 => "Introduction",
@@ -205,7 +205,8 @@ $utilisationarray = array(
     0 => "Aucun Lieu",
     1 => "A la maison",
     2 => "Au bureau ou &agrave; l'&eacute;cole",
-    3 => "A la maison et au bureau ou &agrave; l'&eacute;cole"
+    3 => "A la maison et au bureau ou &agrave; l'&eacute;cole",
+    4 => "En mobilit&eacute;"
 );
 
 // type de connaissance defini

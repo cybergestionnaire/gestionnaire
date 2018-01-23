@@ -129,11 +129,10 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
         $mail_body1 = $arraymail[3];
         $mail_signature = $arraymail[4];
 
-//            $mail_body      = $mail_body1."\r\n en date du ".getDayfr($row["date_atelier"])." &agrave; ".$row["heure_atelier"]." pour l'atelier ".$rowsujet["label_atelier"]."  anim&eacute; par ".$anim."  &agrave; ".$nomsalle.".\n\r D&eacute;tail de l'atelier : \r\n".stripslashes($rowsujet["content_atelier"]).". ".$mail_signature." \r\n\r\n".$nom_epn." \r\n".$adresse_epn." \r\n".$tel_epn.".";
         $mail_body = $mail_body1 . "\r\n en date du " . getDayfr($atelier->getDate()) . " &agrave; " . $atelier->getHeure() . " pour l'atelier " . $sujet->getLabel()
                 . "  anim&eacute; par " . htmlentities($animateur->getPrenom() . ' ' . $animateur->getNom())
                 . "  &agrave; " . htmlentities($salle->getNom() . ' (' . $salle->getEspace()->getNom() . ')')
-                . ".\n\r D&eacute;tail de l'atelier : \r\n" . htmlentities($sujet->getContent()) . ". "
+                . ".\r\n D&eacute;tail de l'atelier : \r\n" . htmlentities($sujet->getContent()) . ". "
                 . $mail_signature . " \r\n\r\n" . htmlentities($espace->getNom()) . " \r\n" . htmlentities($espace->getAdresse()) . " \r\n" . htmlentities($espace->getTelephone()) . ".";
 
         $mailok = 1;

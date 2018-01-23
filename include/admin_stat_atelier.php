@@ -24,7 +24,7 @@ if (true == isset($_POST['modifepn'])) {
 }
 
 // Choix de l'epn   -------------------------------------
-$espaces = getAllEPN();
+$espaces = Espace::getEspaces();
 //verification que le dossier images des stats existe.
 $dossierimg = "img/chart/" . $year;
 if (!is_dir($dossierimg)) {
@@ -39,11 +39,11 @@ if (!is_dir($dossierimg)) {
                 <form method="post" role="form">
                     <div class="input-group"><label>Changer d'espace</label><select name="Pepn"  class="form-control pull-right" style="width: 210px;">
                             <?php
-                            foreach ($espaces as $key => $value) {
-                                if ($epn == $key) {
-                                    echo "<option  value=\"" . $key . "\" selected>" . $value . "</option>";
+                            foreach ($espaces as $espace) {
+                                if ($epn == $espace->getId()) {
+                                    echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
                                 } else {
-                                    echo "<option  value=\"" . $key . "\">" . $value . "</option>";
+                                    echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
                                 }
                             }
                             ?></select>
@@ -71,11 +71,11 @@ if (!is_dir($dossierimg)) {
                 <h3 class="box-title">Statistiques</h3>
             </div>
             <div class="box-body">
-                <a class="btn btn-app" href="index.php?a=5&b=1"><i class="fa fa-users"></i>Adh&eacute;rents<a>
-                        <a class="btn btn-app" href="index.php?a=5&b=2"><i class="fa fa-clock-o"></i>R&eacute;servations</a>
-                        <a class="btn btn-app" href="index.php?a=5&b=3"><i class="fa fa-print"></i>Impressions</a>
-                        <a class="btn btn-app" href="index.php?a=5&b=5"><i class="fa fa-ticket"></i>Sessions</a>
-                        <a class="btn btn-app disabled" href="index.php?a=5&b=4"><i class="fa fa-keyboard-o"></i>Ateliers</a>
+                <a class="btn btn-app" href="index.php?a=5&b=1"><i class="fa fa-users"></i>Adh&eacute;rents</a>
+                <a class="btn btn-app" href="index.php?a=5&b=2"><i class="fa fa-clock-o"></i>R&eacute;servations</a>
+                <a class="btn btn-app" href="index.php?a=5&b=3"><i class="fa fa-print"></i>Impressions</a>
+                <a class="btn btn-app" href="index.php?a=5&b=5"><i class="fa fa-ticket"></i>Sessions</a>
+                <a class="btn btn-app disabled" href="index.php?a=5&b=4"><i class="fa fa-keyboard-o"></i>Ateliers</a>
 
 
                         </div><!-- /.box-body -->
@@ -92,6 +92,7 @@ if (!is_dir($dossierimg)) {
                                         <?php
                                         $TotInscrits = mysqli_fetch_array(getStatInscrits("a", $year, $epn, 1)); //statut==1 ateliers programm&eacute;s
 //$JeunesInscrits=mysqli_fetch_array(getStatJInscrits($year,$epn));
+                                        $JeunesInscrits = null;
                                         $AdultesInscrits = $TotInscrits["presents"];
                                         ?>
                                         Nombre total des pr&eacute;sents pour l'ann&eacute;e <?php echo $year; ?> aux ateliers adultes : <b><?php echo $AdultesInscrits; ?></b>. <br>
@@ -116,6 +117,7 @@ if (!is_dir($dossierimg)) {
                                     <div class="box-body">
                                         <?php
                                         $toutatelier = $TotInscrits["nbateliers"];
+                                        $jeuneatelier = null;
 //$jeuneatelier=statAtelierAn($year,1);
                                         $adulteatelier = $toutatelier;
 //debug($toutatelier);
@@ -251,7 +253,11 @@ if (!is_dir($dossierimg)) {
                                             for ($x = 1; $x <= $nbcategories; $x++) {
                                                 $categorieT = mysqli_fetch_array(StatPresentsCat($year, $x, $epn));
                                                 //debug($categorieT);
-                                                $tauxP = number_format((($categorieT['NumP'] / $categorieT['NumI']) * 100), 2) . " %";
+                                                if ($categorieT['NumI'] != 0 ) {
+                                                    $tauxP = number_format((($categorieT['NumP'] / $categorieT['NumI']) * 100), 2) . " %";
+                                                } else {
+                                                    $tauxP = "0 %";
+                                                }
                                                 $dataSetC2->addPoint(new Point($categorieT['label_categorie'], $tauxP));
                                             }
 

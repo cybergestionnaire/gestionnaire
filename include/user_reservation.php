@@ -328,19 +328,11 @@ if (!checkDate($mois, $jour, $annee)) {
 $dayNum = date("N", mktime(0, 0, 0, $mois, $jour, $annee));
 $dayArr = array("", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche");
 
-
-// affichage du titre et des horaires d'ouverture en fonction de la salle choisie
 if ($_SESSION["status"] == 3) {
-    $arraysalles = getSallesbyAnim($_SESSION["iduser"]);
-    $listesalles = explode(";", $arraysalles["id_salle"]);
-    $nbsalles = count($listesalles);
-    $allsalles = array();
-    for ($i = 0; $i < $nbsalles; $i++) {
-        $allsalles[$listesalles[$i]] = getNomsalleforAnim($listesalles[$i]);
-    }
-
-    if (!isset($idSalle)) {
-        $idSalle = $listesalles[0];
+    $animateur = Utilisateur::getUtilisateurById($_SESSION["iduser"]);
+    $salles = $animateur->getSallesAnim();
+    if ($idSalle == '' and ! is_null($salles)) {
+        $idSalle = $salles[0]->getId();  //premiere salle par défaut
     }
 }
 
@@ -352,6 +344,7 @@ if ($_SESSION["status"] == 4 or $_SESSION["status"] == 1) {
         // et de lui affecter une salle de cet espace
     }
 }
+
 
 //Affichage -----
 $mesno = isset($_GET["mesno"]) ? $_GET["mesno"] : '';
