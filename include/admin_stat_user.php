@@ -143,14 +143,14 @@ if (!is_dir($dossierimg)) {
                     <div class="statText">Hommes </div>
                     <div class="statBarContainPurple">
                         <div style="width:<?php echo getPourcent($nbH, $nbActifs); ?>;" class="statBarPourcentYellow">&nbsp;<?php echo getPourcent($nbH, $nbActifs); ?></div>
-                    </div> (<?php echo $nbH ?>)
+                    </div>&nbsp;(<?php echo $nbH ?>)
                 </div>
                 <div class="clear"></div>
                 <div class="statBar">
                     <div class="statText">Femmes</div>
                     <div class="statBarContainPurple">
                         <div style="width:<?php echo getPourcent($nbF, $nbActifs); ?>;" class="statBarPourcentYellow">&nbsp;<?php echo getPourcent($nbF, $nbActifs); ?></div>
-                    </div> (<?php echo $nbF ?>)
+                    </div>&nbsp;(<?php echo $nbF ?>)
                 </div>
 <?php if ($nbI > 0) { ?>
                 <div class="clear"></div>
@@ -158,7 +158,7 @@ if (!is_dir($dossierimg)) {
                     <div class="statText">Non renseign&eacute;s</div>
                     <div class="statBarContainPurple">
                         <div style="width:<?php echo getPourcent($nbI, $nbActifs); ?>;" class="statBarPourcentYellow">&nbsp;<?php echo getPourcent($nbI, $nbActifs); ?></div>
-                    </div> (<?php echo $nbI ?>)
+                    </div>&nbsp;(<?php echo $nbI ?>)
                 </div>
 <?php } ?>
             </div>
@@ -179,7 +179,7 @@ if (!is_dir($dossierimg)) {
                     <div class="statText">0  &agrave;   6 :</div>
                     <div class="statBarContainDBlue">
                         <div style="width:<?php echo getPourcent($nbTr1, $nbActifs); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr1, $nbActifs); ?></div>
-                    </div> (<?php echo $nbTr1 ?>)
+                    </div>&nbsp;(<?php echo $nbTr1 ?>)
                 </div>
                 <div class="clear"></div>
  
@@ -187,49 +187,49 @@ if (!is_dir($dossierimg)) {
                     <div class="statText">7  &agrave;  11 : </div>
                     <div class="statBarContainDBlue">
                         <div style="width:<?php echo getPourcent($nbTr2, $nbActifs); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr2, $nbActifs); ?></div>
-                    </div> (<?php echo $nbTr2 ?>)
+                    </div>&nbsp;(<?php echo $nbTr2 ?>)
                 </div>
                 <div class="clear"></div>
 
                 <div class="statBar">
                     <div class="statText">12  &agrave;  17 :  </div><div class="statBarContainDBlue">
                         <div style="width:<?php echo getPourcent($nbTr3, $nbActifs); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr3, $nbActifs); ?></div>
-                    </div> (<?php echo $nbTr3 ?>)
+                    </div>&nbsp;(<?php echo $nbTr3 ?>)
                 </div>
                 <div class="clear"></div>
                 
                 <div class="statBar">
                     <div class="statText">18  &agrave;  25 : </div><div class="statBarContainDBlue">
                         <div style="width:<?php echo getPourcent($nbTr4, $nbActifs); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr4, $nbActifs); ?></div>
-                    </div> (<?php echo $nbTr4 ?>)
+                    </div>&nbsp;(<?php echo $nbTr4 ?>)
                 </div>
                 <div class="clear"></div>
                 
                 <div class="statBar">
                     <div class="statText">25  &agrave;  45 :  </div><div class="statBarContainDBlue">
                         <div style="width:<?php echo getPourcent($nbTr5, $nbActifs); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr5, $nbActifs); ?></div>
-                    </div> (<?php echo $nbTr5 ?>)
+                    </div>&nbsp;(<?php echo $nbTr5 ?>)
                 </div>
                 <div class="clear"></div>
                 
                 <div class="statBar">
                     <div class="statText">46  &agrave;  65 : </div><div class="statBarContainDBlue">
                         <div style="width:<?php echo getPourcent($nbTr6, $nbActifs); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr6, $nbActifs); ?></div>
-                    </div> (<?php echo $nbTr6 ?>)
+                    </div>&nbsp;(<?php echo $nbTr6 ?>)
                 </div>
                 <div class="clear"></div>
                 
                 <div class="statBar">
                     <div class="statText">66  &agrave; 75 :  </div><div class="statBarContainDBlue">
                         <div style="width:<?php echo getPourcent($nbTr7, $nbActifs); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr7, $nbActifs); ?></div>
-                    </div> (<?php echo $nbTr7 ?>)
+                    </div>&nbsp;(<?php echo $nbTr7 ?>)
                 </div>
                 <div class="clear"></div>
                 
                 <div class="statBar">
                     <div class="statText">75  et + :  </div><div class="statBarContainDBlue">
                         <div style="width:<?php echo getPourcent($nbTr8, $nbActifs); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nbTr8, $nbActifs); ?></div>
-                    </div> (<?php echo $nbTr8 ?>)
+                    </div>&nbsp;(<?php echo $nbTr8 ?>)
                 </div>
                 <div class="clear"></div>
             </div>
@@ -253,10 +253,10 @@ if (!is_dir($dossierimg)) {
                     ?>
 
                     <div class="statBar">
-                        <div class="statTextVille"><?php echo htmlentities($ville) . "  <small>(" . $nombre . " adh)</small>"; ?> </div>
+                        <div class="statTextVille"><?php echo htmlentities($ville) ?> </div>
                         <div class="statBarContainBlue">
                             <div style="width:<?php echo getPourcent($nombre, $nbActifs); ?>" class="statBarPourcentGreen">&nbsp;<?php echo getPourcent($nombre, $nbActifs); ?></div>
-                        </div>
+                        </div>&nbsp;(<?php echo $nombre ?>)
                     </div>
                     <div class="clear"></div>
                                 <?php
@@ -271,11 +271,11 @@ if (!is_dir($dossierimg)) {
                                 ?>
 
                     <div class="statBar">
-                        <div class="statTextVille"><?php echo htmlentities($ville) . "  <small>(" . $nombre . " adh)</small>"; ?> </div>
+                        <div class="statTextVille"><?php echo htmlentities($ville) ?> </div>
                         <div class="statBarContainBlue">
                             <div style="width:<?php echo getPourcent($nombre, $nbTotal); ?>" class="statBarPourcentYellow">&nbsp;<?php echo getPourcent($nombre, $nbTotal); ?></div>
 
-                        </div>
+                        </div>&nbsp;(<?php echo $nombre ?>)
                     </div>
                     <div class="clear"></div>
                     <?php
@@ -310,9 +310,10 @@ if (!is_dir($dossierimg)) {
                     ?>
 
                 <div class="statBar">
-                    <div class="statTextVille"><?php echo htmlentities($csp); ?></div>
+                    <div class="statText"><?php echo htmlentities($csp); ?></div>
                     <div class="statBarContainPurple">
-                        <div style="width:<?php echo getPourcent($nb, $nbActifs); ?>" class="statBarPourcentYellow">&nbsp;<?php echo getPourcent($nb, $nbActifs); ?></div></div>
+                        <div style="width:<?php echo getPourcent($nb, $nbActifs); ?>" class="statBarPourcentYellow">&nbsp;<?php echo getPourcent($nb, $nbActifs); ?></div>
+                    </div>&nbsp;(<?php echo $nb ?>)
                 </div>
                 <div class="clear"></div>
 
@@ -332,15 +333,17 @@ if (!is_dir($dossierimg)) {
                     <tbody>
                         <?php
                         for ($i = 1; $i <= $month; ++$i) {
-                            $nbNewAdhActifs = statInscription($i, 1, $idEspace);
-                            $nbNewAdhInactifs = statInscription($i, 2, $idEspace);
+                            $nbNewAdhActifs = Utilisateur::statInscriptions($i, 1, $idEspace);
+                            $nbNewAdhInactifs = Utilisateur::statInscriptions($i, 2, $idEspace);
                             //debug($nbNewAdhInactifs);
                             $totalNewadh = $nbNewAdhActifs + $nbNewAdhInactifs;
                             //debug($nbNewAdh);
-                            echo '<tr><td >' . getMonth($i) . '</td>
-              <td >' . $totalNewadh . '</td>
-              <td >' . $nbNewAdhActifs . ' (' . getPourcent($nbNewAdhActifs, $nbTotal) . ')</td></tr>';
-                        } ?>
+                            ?>
+                        <tr>
+                            <td ><?php echo getMonth($i) ?></td>
+                            <td ><?php echo $totalNewadh  ?></td>
+                            <td ><?php echo $nbNewAdhActifs ?></td></tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>

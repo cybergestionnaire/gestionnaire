@@ -396,35 +396,6 @@ function getadherenttotal($epn)
 }
 
 
-
-//
-// statInscription()
-// retourne nombre d'inscrit par mois et par an
-function statInscription($mois, $nb, $epn)
-{
-    $annee = date('Y');
-
-    $sql = "SELECT count(`id_user`) AS nb
-		FROM `tab_user`
-		WHERE MONTH(`date_insc_user`)= '" . $mois . "'
-		AND YEAR(`date_insc_user`)= '" . $annee . "'
-		AND status_user='" . $nb . "'
-		AND epn_user='" . $epn . "'
-		";
-
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if ($result == false) {
-        return false;
-    } else {
-        //
-        $row = mysqli_fetch_array($result);
-        return $row['nb'];
-    }
-}
-
-
 //**************                 STATISTIQUES ATELIERS           ********************************************************
 //retourne les années contenues dans les ateliers et sessions
 function getYearStatAtelierSessions()
@@ -798,6 +769,8 @@ AND YEAR(`date_AS`)='" . $year . "'
 // retourne array des n° de sessions actives
 function listSession($year, $idepn)
 {
+    $r = null;
+    
     $sql = " SELECT DISTINCT(`id_AS`) FROM `tab_as_stat`
 WHERE `type_AS`='s'
 AND `id_epn`='" . $idepn . "'

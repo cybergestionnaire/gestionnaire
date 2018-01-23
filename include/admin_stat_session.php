@@ -30,13 +30,15 @@ $nbsession = mysqli_num_rows($rowstatsession);
 
 
 // Choix de l'epn   -------------------------------------
-$espaces = getAllEPN();
+$espaces = Espace::getEspaces();
 
 //verification que le dossier images des stats existe.
 $dossierimg = "img/chart/" . $year;
 if (!is_dir($dossierimg)) {
     mkdir($dossierimg);
 }
+$session1 = 0;
+
 ?>
 <div class="row"><div class="col-md-6">
         <div class="box box-primary">
@@ -45,11 +47,11 @@ if (!is_dir($dossierimg)) {
                 <form method="post" role="form">
                     <div class="input-group"><label>Changer d'espace</label><select name="Pepn"  class="form-control pull-right" style="width: 210px;">
                             <?php
-                            foreach ($espaces as $key => $value) {
-                                if ($epn == $key) {
-                                    echo "<option  value=\"" . $key . "\" selected>" . $value . "</option>";
+                            foreach ($espaces as $espace) {
+                                if ($epn == $espace->getId()) {
+                                    echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
                                 } else {
-                                    echo "<option  value=\"" . $key . "\">" . $value . "</option>";
+                                    echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
                                 }
                             }
                             ?></select>
@@ -134,7 +136,7 @@ if (!is_dir($dossierimg)) {
                                 //debug($listeSessions[$x]);
                                 if ($x == 0) {
                                     $session1 = $listeSessions[$x];
-                                } //pour la selection
+                                }//pour la selection
                                 $pourcentF = ($frequentation['presents'] / $frequentation['inscrits']) * 100;
 
                                 echo '<tr><td><a href="index.php?a=5&b=5&year=' . $year . '&sessionselec=' . $listeSessions[$x] . ' ">' . $frequentation['session_titre'] . '</a></td>
@@ -164,7 +166,11 @@ if (!is_dir($dossierimg)) {
                                 for ($n = 1; $n <= $nbcategories; $n++) {
                                     $categories = mysqli_fetch_array(statSessionCategory($n, $y, $epn));
                                     //debug($categories);
-                                    $particip = round((($categories['presents'] / $categories['inscrits']) * 100), 2) . " %";
+                                    if ($categories['inscrits'] != 0) {
+                                        $particip = round((($categories['presents'] / $categories['inscrits']) * 100), 2) . " %";
+                                    } else {
+                                        $particip = "0 %";
+                                    }
                                     $dataSetCat->addPoint(new Point($categories['label_categorie'], $particip));
                                 }
 

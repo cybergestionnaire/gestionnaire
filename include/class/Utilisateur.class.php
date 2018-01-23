@@ -1572,10 +1572,14 @@ class Utilisateur {
         return $utilisateurs;
     }
 
+    //
     // Fonctions statistiques
-
+    //
+    
+    
+    
     /**
-     * renvoi le nombre d'utilisateurs par sexe
+     * Nombre d'utilisateurs par sexe
      * 
      * Renvoie un tableau sous la forme :
      * tableau["sexe"] = nb;
@@ -1610,7 +1614,7 @@ class Utilisateur {
     }
 
     /**
-     * renvoi le nombre d'utilisateurs actifs par ville
+     * Nombre d'utilisateurs actifs par ville
      * 
      * Renvoie un tableau sous la forme :
      * tableau["ville"] = nb;
@@ -1643,7 +1647,7 @@ class Utilisateur {
     }
 
     /**
-     * renvoi le nombre total d'utilisateurs par ville (hors animateurs et adminsitrateurs)
+     * Nombre total d'utilisateurs par ville (hors animateurs et adminsitrateurs)
      * 
      * Renvoie un tableau sous la forme :
      * tableau["ville"] = nb;
@@ -1676,7 +1680,7 @@ class Utilisateur {
     }
 
     /**
-     * renvoi le nombre d'utilisateurs par Catégorie Socio Professionnelle
+     * Nombre d'utilisateurs par Catégorie Socio Professionnelle
      * 
      * Renvoie un tableau sous la forme :
      * tableau["CSP"] = nb;
@@ -1710,7 +1714,7 @@ class Utilisateur {
     }
 
     /**
-     * renvoi le nombre d'utilisateurs actifs par tranche d'age
+     * Nombre d'utilisateurs actifs par tranche d'age
      * 
      * Renvoie un tableau sous la forme :
      * tableau["CSP"] = nb;
@@ -1722,9 +1726,9 @@ class Utilisateur {
      *      deuxième age de la tranche
      * @param int $idEspace
      *      l'identifiant de l'espace
-     * @return array[] $nb
+     * @return int $nb
      *      - nombre de personnes dans la tranche d'âge
-     *      - 1 en cas d'erreur
+     *      - -1 en cas d'erreur
      * 
      */
     public static function statTranche($nb1, $nb2, $idEspace) {
@@ -1747,6 +1751,50 @@ class Utilisateur {
         Mysql::closedb($db);
         if ($result) {
             $nb = mysqli_num_rows($result);
+        }
+        
+        return $nb;
+    }
+    
+    
+    /**
+     * Renvoie le nombre d'utilisateurs inscrits au cours du mois 
+     * 
+     * Renvoie le nombre d'utilisateurs inscrits dans l'année
+     * en cours suivant le mois et le statut.
+     * 
+     * @param int $mois
+     *      mois de l'année
+     * @param int $statut
+     *      $statut des utilisateurs
+     * @param int $idEspace
+     *      l'identifiant de l'espace
+     * @return int $nb
+     *      - nombre de personnes dans la tranche d'âge
+     *      - -1 en cas d'erreur
+     * 
+     */
+    public static function statInscriptions($mois, $statut, $idEspace) {
+        $nb = -1;
+        
+        $anneeRef = date("Y");   // 2006
+
+        $db = Mysql::opendb();
+
+        $sql = "SELECT count(`id_user`) AS nb "
+             . "FROM `tab_user` "
+             . "WHERE MONTH(`date_insc_user`)= '" . $mois . "' "
+             . "  AND YEAR(`date_insc_user`)= '" . $anneeRef . "' "
+             . "  AND status_user='" . $statut . "' "
+             . "  AND epn_user='" . $idEspace . "' ";
+
+        $result = mysqli_query($db, $sql);
+        
+        Mysql::closedb($db);
+        if ($result && mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $nb = $row["nb"];
+            }
         }
         
         return $nb;

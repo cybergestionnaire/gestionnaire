@@ -399,7 +399,7 @@ class Resa
         $resas = null;
 
         $db = Mysql::opendb();
-        $sql = "SELECT * FROM tab_resa WHERE `status_resa` = '1' and date_resa = DATE( NOW() ) and date_resa > NOW() ORDER BY date_resa ASC, debut_resa DESC";
+        $sql = "SELECT * FROM tab_resa WHERE `status_resa` = '1' and date_resa = DATE( NOW() ) and date_resa < NOW() ORDER BY date_resa ASC, debut_resa DESC";
         $result = mysqli_query($db, $sql);
         Mysql::closedb($db);
 

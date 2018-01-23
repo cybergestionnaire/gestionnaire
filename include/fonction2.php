@@ -402,20 +402,6 @@ function deleteJourFerie($id)
     }
 }
 
-function getCyberName($epn)
-{
-    $sql = "SELECT `nom_espace` FROM `tab_espace` WHERE `id_espace`='" . $epn . "' ";
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if (false == $result) {
-        return false;
-    } else {
-        $row = mysqli_fetch_array($result);
-        return $row["nom_espace"];
-    }
-}
-
 //****** Fonction pour la tab_connexion ***************//
 //entre le log de connexion dans la base
 function enterConnexionstatus($iduser, $date, $type, $macadress, $navig, $exploitation)
@@ -671,19 +657,6 @@ function getTarifs($cat)
     }
 }
 
-function getNomTarif($id)
-{
-    $sql = "SELECT `nom_tarif` FROM `tab_tarifs` WHERE `id_tarif`=" . $id;
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if (false == $result) {
-        return false;
-    } else {
-        $row = mysqli_fetch_array($result);
-        return $row["nom_tarif"];
-    }
-}
 
 ////***** FONCTIONS SUR LA GESTION MULTIESPACE ***/////
 ///RESEAU ***///
@@ -739,57 +712,6 @@ function modreseau($nom, $adresse, $ville, $tel, $mail, $logo, $courrier, $activ
 }
 
 //
-// getAllSalle()
-// recupere les salless
-function getAllSalle()
-{
-    $sql = "SELECT * FROM tab_salle;";
-
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if (false == $result) {
-        return false;
-    } else {
-        return $result;
-    }
-}
-
-//
-// getSalle()
-// recupere les salless
-function getSalle($numsalle)
-{
-    $sql = "SELECT * FROM tab_salle WHERE id_salle=" . $numsalle . ";";
-
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if (false == $result) {
-        return false;
-    } else {
-        return $result;
-    }
-}
-
-//
-// getEspace()
-// recupere les espaces
-function getEspace($numespace)
-{
-    $sql = "SELECT * FROM tab_espace WHERE id_espace=" . $numespace . " ";
-
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if (false == $result) {
-        return false;
-    } else {
-        return $result;
-    }
-}
-
-//
 //recuperer l'activation des forfaits pour l'epn
 //
 function getActivationForfaitEpn($id)
@@ -804,48 +726,6 @@ function getActivationForfaitEpn($id)
     } else {
         $row = mysqli_fetch_array($result);
         return $row;
-    }
-}
-
-function getAllEPN()
-{
-    $sql = "SELECT `id_espace`, `nom_espace` FROM `tab_espace`  ORDER BY `nom_espace` asc";
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if (false == $result) {
-        return false;
-    } else {
-        $epn = array();
-        $nb = mysqli_num_rows($result);
-        for ($i = 1; $i <= $nb; $i++) {
-            $row = mysqli_fetch_array($result);
-            $epn[$row["id_espace"]] = $row["nom_espace"];
-        }
-        return $epn;
-    }
-}
-
-//retourne la liste des salles par epn
-function getAllSallesbyepn($epn)
-{
-    $sql = "SELECT `id_salle`, `nom_salle` FROM `tab_salle`  
-                    WHERE id_espace='" . $epn . "'
-        
-    ORDER BY `id_salle`";
-    $db = opendb();
-    $result = mysqli_query($db, $sql);
-    closedb($db);
-    if (false == $result) {
-        return false;
-    } else {
-        $epn = array();
-        $nb = mysqli_num_rows($result);
-        for ($i = 1; $i <= $nb; $i++) {
-            $row = mysqli_fetch_array($result);
-            $epn[$row["id_salle"]] = $row["nom_salle"];
-        }
-        return $epn;
     }
 }
 

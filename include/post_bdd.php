@@ -41,6 +41,27 @@ function addUser($date, $nom, $prenom, $sexe, $jour, $mois, $annee, $adresse, $v
     }
 }
 
+
+
+function getAllEPN()
+{
+    $sql = "SELECT `id_espace`, `nom_espace` FROM `tab_espace`  ORDER BY `nom_espace` asc";
+    $db = opendb();
+    $result = mysqli_query($db, $sql);
+    closedb($db);
+    if (false == $result) {
+        return false;
+    } else {
+        $epn = array();
+        $nb = mysqli_num_rows($result);
+        for ($i = 1; $i <= $nb; $i++) {
+            $row = mysqli_fetch_array($result);
+            $epn[$row["id_espace"]] = $row["nom_espace"];
+        }
+        return $epn;
+    }
+}
+
 // Fichier de post, sauvegarde des données
 
 $act = isset($_GET["act"]) ? $_GET["act"] : '';

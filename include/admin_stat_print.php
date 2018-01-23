@@ -12,7 +12,7 @@ $month = date('m');
 
 
 // recuperation des tarifs disponibles
-$tarifs = getTarifs(1); //1= impressions
+// $tarifs = getTarifs(1); //1= impressions
 // chargement des valeurs pour l'epn par d&eacute;faut
 $epn = $_SESSION['idepn'];
 //si changment d'epn
@@ -21,8 +21,7 @@ if (true == isset($_POST['modifepn'])) {
 }
 
 // Choix de l'epn   -------------------------------------
-$espaces = getAllEPN();
-
+$espaces = Espace::getEspaces();
 
 
 $nbuserimprim = getstatimprim($epn);
@@ -44,11 +43,11 @@ if (!is_dir($dossierimg)) {
                 <form method="post" role="form">
                     <div class="input-group"><label>Changer d'espace</label><select name="Pepn"  class="form-control pull-right" style="width: 210px;">
                             <?php
-                            foreach ($espaces as $key => $value) {
-                                if ($epn == $key) {
-                                    echo "<option  value=\"" . $key . "\" selected>" . $value . "</option>";
+                            foreach ($espaces as $espace) {
+                                if ($epn == $espace->getId()) {
+                                    echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
                                 } else {
-                                    echo "<option  value=\"" . $key . "\">" . $value . "</option>";
+                                    echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
                                 }
                             }
                             ?></select>
@@ -74,10 +73,10 @@ if (!is_dir($dossierimg)) {
 
         <div class="box"><div class="box-header"><h3 class="box-title">Statistiques</h3></div>
             <div class="box-body">
-                <a class="btn btn-app" href="index.php?a=5&b=1"><i class="fa fa-users"></i>Adh&eacute;rents<a>
-                        <a class="btn btn-app" href="index.php?a=5&b=2" /><i class="fa fa-clock-o"></i>R&eacute;servations</a>
-                    <a class="btn btn-app disabled" href="index.php?a=5&b=3"><i class="fa fa-print"></i>Impressions</a>
-                    <a class="btn btn-app" href="index.php?a=5&b=5" /><i class="fa fa-ticket"></i>Sessions</a>
+                <a class="btn btn-app" href="index.php?a=5&b=1"><i class="fa fa-users"></i>Adh&eacute;rents</a>
+                <a class="btn btn-app" href="index.php?a=5&b=2" /><i class="fa fa-clock-o"></i>R&eacute;servations</a>
+                <a class="btn btn-app disabled" href="index.php?a=5&b=3"><i class="fa fa-print"></i>Impressions</a>
+                <a class="btn btn-app" href="index.php?a=5&b=5" /><i class="fa fa-ticket"></i>Sessions</a>
                 <a class="btn btn-app" href="index.php?a=5&b=4" /><i class="fa fa-keyboard-o"></i>Ateliers</a>
 
 
@@ -108,6 +107,9 @@ if (!is_dir($dossierimg)) {
     <?php
     // section comparaison n&b couleur
 //retrouver l'ensemble des tarifs NB
+    $nbN = 0;
+    $nbC = 0;
+    
     $rowtarifsNB = selectPrintTarif(0);
     $nbNB = mysqli_num_rows($rowtarifsNB);
     for ($x = 0; $x < $nbNB; $x++) {
@@ -229,6 +231,13 @@ if (!is_dir($dossierimg)) {
 
                     <?php
 //retrouver l'ensemble des tarifs NB
+                    $mNoir = 0;
+                    $mcouleur = 0;
+                    $totalNoirBlanc = 0;
+                    $totalcouleur = 0;
+                    $totalpages = 0;
+                    $totalcredit = 0;
+                        
                     for ($i = 1; $i <= $month; ++$i) {
                         $row = getStatPages($i, $year, $epn);
                         $pagesimprime = $row["pages"];

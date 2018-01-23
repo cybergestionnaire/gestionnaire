@@ -24,11 +24,9 @@ if (true == isset($_POST['modifepn'])) {
 }
 
 // Choix de l'epn   -------------------------------------
-$espaces = getAllEPN();
-$namepn = getCyberName($epn);
+$espaces = Espace::getEspaces();
+$namepn = Espace::getEspaceById($epn)->getNom();
 
-$salles = getAllSallesbyepn($epn);
-//debug($salles);
 //verification que le dossier images des stats existe.
 $dossierimg = "img/chart/" . $year;
 if (!is_dir($dossierimg)) {
@@ -41,19 +39,20 @@ if (!is_dir($dossierimg)) {
         <div class="box box-primary">
             <div class="box-header"><i class="fa fa-bar-chart-o"></i><h3 class="box-title">Param&egrave;tres</h3></div>
             <div class="box-body">
-                <form method="post" role="form">
+                <form method="post" role="form" action="index.php?a=5&b=2">
                     <div class="input-group"><label>Changer d'espace</label><select name="pepn"  class="form-control pull-right" style="width: 210px;">
                             <?php
-                            foreach ($espaces as $key => $value) {
-                                if ($epn == $key) {
-                                    echo "<option  value=\"" . $key . "\" selected>" . $value . "</option>";
+                            foreach ($espaces AS $espace) {
+                                if ($epn == $espace->getId()) {
+                                    echo "<option value=\"" . $espace->getId() . "\" selected>" . htmlentities($espace->getNom()) . "</option>";
                                 } else {
-                                    echo "<option  value=\"" . $key . "\">" . $value . "</option>";
+                                    echo "<option value=\"" . $espace->getId() . "\">" . htmlentities($espace->getNom()) . "</option>";
                                 }
                             }
                             ?></select>
                         <div class="input-group-btn"><button type="submit" value="Rafraichir"  name="modifepn" class="btn btn-default" style="height: 34px;"><i class="fa fa-repeat"></i></button></div>
-                    </div></form>
+                    </div>
+                </form>
                 <br>
                 <div class="input-group">
                     <label>Changer d'ann&eacute;e&nbsp;&nbsp;&nbsp;</label>
@@ -138,6 +137,8 @@ if (!is_dir($dossierimg)) {
                 <table class="table" > 
                     <thead><tr><th></th><th>Nb. d'heures</th><th>Nb. </th><th>Cumul.</th></tr></thead><tbody>
                         <?php
+                        $tot1 = 0;
+                        $tot2 = 0;
                         for ($i = 1; $i <= abs($month); ++$i) {
                             $row = getStatResa($i, $year, $epn);
                             $tot1 = $tot1 + $row['duree'];
