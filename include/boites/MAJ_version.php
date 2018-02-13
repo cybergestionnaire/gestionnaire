@@ -1,11 +1,11 @@
 <?php
-    require_once("include/class/Config.class.php");
-    
-    $config = Config::getConfig($_SESSION["idepn"]);
-    $version = $config->getName();
-    $newversion = 1.9;
-    if (floatval($version) < $newversion) {
-?>
+//require_once("include/class/Config.class.php");
+
+$config = Config::getConfig($_SESSION["idepn"]);
+$version = $config->getName();
+$newversion = 1.9;
+if (floatval($version) < $newversion) {
+    ?>
     <!--DIV Mises &agrave; jour -->
     <div class="col-md-4">
         <div class="box box-danger">
@@ -21,6 +21,6 @@
         </div>
     </div>
     <!-- / MAJ -->
-<?php
-    }
+    <?php
+}
 ?>

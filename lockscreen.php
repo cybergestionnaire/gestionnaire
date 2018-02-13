@@ -1,29 +1,28 @@
 <?php
-    // Désactivation du rapport d'erreur
-    //error_reporting(0);
-    // Affichage des erreurs pour le debuggage
-    error_reporting(E_ALL);
+// Dï¿½sactivation du rapport d'erreur
+//error_reporting(0);
+// Affichage des erreurs pour le debuggage
+error_reporting(E_ALL);
 
 
-    //demarrage de la session
-    session_start();
-    // Fichier inclus
-    include("include/fonction.php");
-    include("include/fonction2.php");
-    include("include/conf.php");
-    require_once("include/class/Utilisateur.class.php");
+//demarrage de la session
+session_start();
+// Fichier inclus
+include("include/fonction.php");
+include("include/fonction2.php");
+include("include/conf.php");
+require_once("include/class/Utilisateur.class.php");
 
-    $iduser = isset($_GET["iduser"]) ? $_GET["iduser"] : '';
-    $utilisateur = Utilisateur::getUtilisateurById($iduser); 
-    // $rowa = getAvatar($iduser);
-    // $avatar=$rowa["anim_avatar"];
-
+$iduser = isset($_GET["iduser"]) ? $_GET["iduser"] : '';
+$utilisateur = Utilisateur::getUtilisateurById($iduser);
+// $rowa = getAvatar($iduser);
+// $avatar=$rowa["anim_avatar"];
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
         <meta charset="UTF-8">
-  
+
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <!-- Bootstrap 3.3.2 -->
         <link href="template/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -42,7 +41,7 @@
     <body class="lockscreen">
         <!-- Automatic element centering -->
         <div class="lockscreen-wrapper">
-            <div class="lockscreen-logo"><?php //echo getconfigname(); ?></div>
+            <div class="lockscreen-logo"><?php //echo getconfigname();   ?></div>
             <!-- User name -->
             <div class="lockscreen-name"><?php echo $utilisateur->getPrenom(); ?>&nbsp;<?php echo $utilisateur->getNom(); ?></div>
 
@@ -57,11 +56,11 @@
                 <!-- lockscreen credentials (contains the form) -->
                 <form class="lockscreen-credentials"  method="post" action="post_login.php">
 
-<?php
-    if ($error != "") {
-        echo "Acces refus&eacute; veuillez vous identifier";
-    }
-?>
+                    <?php
+                    if ($error != "") {
+                        echo "Acces refus&eacute; veuillez vous identifier";
+                    }
+                    ?>
                     <div class="input-group">
                         <input type="password" class="form-control" placeholder="password" name="pass" required />
                         <div class="input-group-btn">
