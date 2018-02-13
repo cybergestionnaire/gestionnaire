@@ -1,7 +1,6 @@
 <?php
 
 // tests de mise à jour de la base de données cyberGestionnaire
-
 // Structure de la table `rel_atelier_computer`
 //
 
@@ -16,46 +15,52 @@ define('MYSQL_SERVER', $host);
 define('MYSQL_DATABASE_NAME', $database);
 define('MYSQL_USERNAME', $userdb);
 define('MYSQL_PASSWORD', $passdb);
- 
+
 //Instantiate the PDO object and connect to MySQL.
 $pdo = new PDO(
-        'mysql:host=' . MYSQL_SERVER . ';dbname=' . MYSQL_DATABASE_NAME, 
-        MYSQL_USERNAME, 
-        MYSQL_PASSWORD
+        'mysql:host=' . MYSQL_SERVER . ';dbname=' . MYSQL_DATABASE_NAME,
+    MYSQL_USERNAME,
+    MYSQL_PASSWORD
 );
 
-function check_table($pdo, $table, $sql_create) {
-    $statement = $pdo->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".MYSQL_DATABASE_NAME."' AND TABLE_NAME = '" .$table."'");
+function check_table($pdo, $table, $sql_create)
+{
+    $statement = $pdo->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" . MYSQL_DATABASE_NAME . "' AND TABLE_NAME = '" . $table . "'");
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-
+    $resultAvant = "";
+    $resultApres = " ";
+    
     if (count($result) > 0) { // la table existe
-        foreach($result as $column){
-            $resultAvant = $column['TABLE_NAME'] . ' - ' . $column['ENGINE']. ' - ' . $column['TABLE_COLLATION'];
-        }   
+        foreach ($result as $column) {
+            $resultAvant = $column['TABLE_NAME'] . ' - ' . $column['ENGINE'] . ' - ' . $column['TABLE_COLLATION'];
+        }
     } else { // la table n'existe pas
         echo "<p>Table $table inexistante !</p>";
         $statement2 = $pdo->query($sql_create);
         $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    $statement = $pdo->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".MYSQL_DATABASE_NAME."' AND TABLE_NAME = '" .$table."'");
+    $statement = $pdo->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" . MYSQL_DATABASE_NAME . "' AND TABLE_NAME = '" . $table . "'");
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        
-    foreach($result as $column){
-        $resultApres = $column['TABLE_NAME'] . ' - ' . $column['ENGINE']. ' - ' . $column['TABLE_COLLATION'];
+
+    foreach ($result as $column) {
+        $resultApres = $column['TABLE_NAME'] . ' - ' . $column['ENGINE'] . ' - ' . $column['TABLE_COLLATION'];
     }
 
     return ($resultApres == $resultAvant);
 }
 
-function update_table_collation_engine($pdo, $table) {
+function update_table_collation_engine($pdo, $table)
+{
 
     // vérification de l'inter classement
-   
-    $statement = $pdo->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".MYSQL_DATABASE_NAME."' AND TABLE_NAME = '" .$table."'");
+    $resultAvant = "";
+    $resultApres = " ";
+    
+    $statement = $pdo->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" . MYSQL_DATABASE_NAME . "' AND TABLE_NAME = '" . $table . "'");
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-    foreach($result as $column){
-        $resultAvant = $column['TABLE_NAME'] . ' - ' . $column['ENGINE']. ' - ' . $column['TABLE_COLLATION'];
+    foreach ($result as $column) {
+        $resultAvant = $column['TABLE_NAME'] . ' - ' . $column['ENGINE'] . ' - ' . $column['TABLE_COLLATION'];
         if ($column['TABLE_COLLATION'] != "utf8_general_ci") {
             echo "<p>-- changement de l'interclassement !</p>";
             $statement = $pdo->query("ALTER TABLE {$table} CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci");
@@ -67,43 +72,42 @@ function update_table_collation_engine($pdo, $table) {
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         }
     }
-    
-    $statement = $pdo->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".MYSQL_DATABASE_NAME."' AND TABLE_NAME = '" .$table."'");
+
+    $statement = $pdo->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" . MYSQL_DATABASE_NAME . "' AND TABLE_NAME = '" . $table . "'");
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-    
-    foreach($result as $column){
-        $resultApres =  $column['TABLE_NAME'] . ' - ' . $column['ENGINE']. ' - ' . $column['TABLE_COLLATION'];
+
+    foreach ($result as $column) {
+        $resultApres = $column['TABLE_NAME'] . ' - ' . $column['ENGINE'] . ' - ' . $column['TABLE_COLLATION'];
     }
 
     return ($resultApres == $resultAvant);
-}    
+}
 
-function update_champs($pdo, $champs, $table) {
-    $toconvert = FALSE;
-    
+function update_champs($pdo, $champs, $table)
+{
+    $toconvert = false;
+
     foreach ($champs[$table] as $champ) {
-
-        $statement = $pdo->query("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '".MYSQL_DATABASE_NAME."' AND TABLE_NAME = '" .$table."' AND COLUMN_NAME= '" . $champ["name"] ."'");
+        $statement = $pdo->query("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . MYSQL_DATABASE_NAME . "' AND TABLE_NAME = '" . $table . "' AND COLUMN_NAME= '" . $champ["name"] . "'");
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        if(count($result) > 0) { //est ce que le champ existe ?
-            foreach($result as $column){
-                $resultAvant[] =  $column['COLUMN_NAME'] . ' - ' . $column['COLUMN_TYPE']. ' - ' . $column['COLLATION_NAME'];
-                if ( ($column['COLLATION_NAME'] != "") && ($column['COLLATION_NAME'] != "utf8_general_ci")) {
+        if (count($result) > 0) { //est ce que le champ existe ?
+            foreach ($result as $column) {
+                $resultAvant[] = $column['COLUMN_NAME'] . ' - ' . $column['COLUMN_TYPE'] . ' - ' . $column['COLLATION_NAME'];
+                if (($column['COLLATION_NAME'] != "") && ($column['COLLATION_NAME'] != "utf8_general_ci")) {
                     echo "<p> -- probleme de codage, a reconvertir !</p>";
-                    $toconvert = TRUE;
+                    $toconvert = true;
                 }
                 if ($column['COLUMN_TYPE'] != $champ["type"]) {
                     // pas le bon type...
                     $statement3 = $pdo->query("ALTER TABLE {$table} CHANGE {$champ["name"]} {$champ["name"]} {$champ["type"]} {$champ["options"]}");
                     $result3 = $statement3->fetchAll(PDO::FETCH_ASSOC);
                 }
-                
             }
         } else { // si non, on le créé
             $statement2 = $pdo->query("ALTER TABLE {$table} ADD {$champ["name"]} {$champ["type"]} {$champ["options"]}");
             $result2 = $statement2->fetchAll(PDO::FETCH_ASSOC);
         }
-    }    
+    }
     if ($toconvert) { // astuce, on convertit 2 fois pour remettre en ordre
         echo "<p>-- mise à jour de l'interclassement !</p>";
         $statement = $pdo->query("ALTER TABLE {$table} CONVERT TO CHARACTER SET latin1");
@@ -113,14 +117,14 @@ function update_champs($pdo, $champs, $table) {
     }
 
     foreach ($champs[$table] as $champ) {
-        $statement = $pdo->query("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '".MYSQL_DATABASE_NAME."' AND TABLE_NAME = '" .$table."' AND COLUMN_NAME= '" . $champ["name"] ."'");
+        $statement = $pdo->query("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . MYSQL_DATABASE_NAME . "' AND TABLE_NAME = '" . $table . "' AND COLUMN_NAME= '" . $champ["name"] . "'");
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        foreach($result as $column){
-            $resultApres[] =   $column['COLUMN_NAME'] . ' - ' . $column['COLUMN_TYPE']. ' - ' . $column['COLLATION_NAME'];
+        foreach ($result as $column) {
+            $resultApres[] = $column['COLUMN_NAME'] . ' - ' . $column['COLUMN_TYPE'] . ' - ' . $column['COLLATION_NAME'];
         }
     }
     if ($resultAvant == $resultApres) {
-        return TRUE;
+        return true;
     } else {
         echo "<table border='1'><tr><td>avant traitement</td><td>Apres traitement</td></tr>\n";
         echo "<tr><td>\n";
@@ -132,19 +136,20 @@ function update_champs($pdo, $champs, $table) {
             echo $print, "<br>";
         }
         echo "</td></tr></table>\n";
-        
-        return FALSE;
+
+        return false;
     }
 }
 
-function get_champs($sql_create) {
+function get_champs($sql_create)
+{
     // premiere decoupe de la requete : ce qu'il y a avant la premiere parenthese, entre la premiere et la derniere, et après la derniere
     $partie1 = substr($sql_create, 0, strpos($sql_create, '('));
     $partie2 = substr($sql_create, strpos($sql_create, '(') + 1);
     $partie2 = substr($partie2, 0, strrpos($partie2, ')'));
-    $partie2 = str_replace(array("\n","\r"), "", $partie2);
+    $partie2 = str_replace(array("\n", "\r"), "", $partie2);
     $partie3 = substr($sql_create, strrpos($sql_create, ')') + 1);
-    
+
     // recuperation du nom de la table
     preg_match("/`(?<table>\w+)`/is", $partie1, $matches);
     $table = $matches["table"];
@@ -163,9 +168,8 @@ function get_champs($sql_create) {
             $retour[$table][] = $matches;
         }
     }
-    
+
     return $retour;
-    
 }
 
 $sql_create['rel_atelier_computer'] = "CREATE TABLE `rel_atelier_computer` (
@@ -240,7 +244,7 @@ $sql_create['rel_usage_computer'] = "CREATE TABLE `rel_usage_computer` (
   PRIMARY KEY  (`id_usage_computer`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci";
 
-$sql_create['rel_user_anim']="CREATE TABLE `rel_user_anim` (
+$sql_create['rel_user_anim'] = "CREATE TABLE `rel_user_anim` (
   `id_useranim` int(11) NOT NULL AUTO_INCREMENT,
   `id_animateur` int(11) NOT NULL,
   `id_epn` int(11) NOT NULL,
@@ -249,7 +253,7 @@ $sql_create['rel_user_anim']="CREATE TABLE `rel_user_anim` (
   PRIMARY KEY (`id_useranim`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci";
 
-$sql_create['rel_user_forfait'] ="CREATE TABLE `rel_user_forfait` (
+$sql_create['rel_user_forfait'] = "CREATE TABLE `rel_user_forfait` (
   `id_forfait` int(11) NOT NULL AUTO_INCREMENT,
   `id_user` int(11) NOT NULL,
   `id_transac` int(11) NOT NULL,
@@ -318,7 +322,7 @@ $sql_create['tab_atelier_sujet'] = "CREATE TABLE `tab_atelier_sujet` (
   PRIMARY KEY (`id_sujet`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci";
 
-$sql_create['tab_captcha']="CREATE TABLE `tab_captcha` (
+$sql_create['tab_captcha'] = "CREATE TABLE `tab_captcha` (
   `id_captcha` int(11) NOT NULL AUTO_INCREMENT,
   `capt_activation` ENUM('N', 'Y') NOT NULL,
   `capt_code` varchar(500) COLLATE latin1_general_ci NOT NULL,
@@ -619,7 +623,7 @@ $sql_create['tab_session'] = "CREATE TABLE `tab_session` (
   PRIMARY KEY  (`id_session`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci";
 
-$sql_create['tab_session_dates']= "CREATE TABLE `tab_session_dates` (
+$sql_create['tab_session_dates'] = "CREATE TABLE `tab_session_dates` (
   `id_datesession` int(11) NOT NULL AUTO_INCREMENT,
   `id_session` int(11) NOT NULL,
   `date_session` datetime NOT NULL,
@@ -729,7 +733,7 @@ foreach ($sql_create as $table => $sql) {
         echo "<p style='color:green'><b>check_table :</b> Table $table ok - pas de mise à jour</font><p>";
     } else {
         echo "<p style='color:red'><b>check_table :</b> Table $table mise à jour !</font><p>";
-    } 
+    }
     if (update_table_collation_engine($pdo, $table)) {
         echo "<p style='color:green'><b>update_table_collation_engine :</b>Table $table ok - pas de mise à jour</font><p>";
     } else {
@@ -739,10 +743,10 @@ foreach ($sql_create as $table => $sql) {
         echo "<p style='color:green'><b>update_champs :</b>Table $table ok - pas de mise à jour</font><p>";
     } else {
         echo "<p style='color:red'><b>update_champs :</b>Table $table mise à jour !</font><p>";
-    } 
+    }
 }
 
-// TODO : gestion des valeurs pas defaut 
+// TODO : gestion des valeurs pas defaut
 
 $query[] = "INSERT INTO `tab_atelier_categorie` (`id_atelier_categorie`, `label_categorie`) 
 VALUES 
@@ -831,6 +835,4 @@ $query[] = "INSERT INTO `tab_utilisation` (`id_utilisation`, `nom_utilisation`, 
 (13, 'E-commerce', 'Sous Menu', 'oui'),
 (14, 'Services numeriques scolaires', 'Sous Menu', 'oui'),
 (15, 'Autres', 'Menu Principal', 'oui');";
-$query[]="INSERT INTO `tab_reseau`(`id_reseau`, `res_nom`, `res_adresse`, `res_ville`, `res_tel`, `res_mail`, `res_logo`, `res_courrier`, `res_activation`) VALUES (1,'nom de votre reseau','1, rue du libre',1,'00 00 00 00 00','mail@mail.com','','1','1')";
-
-?>
+$query[] = "INSERT INTO `tab_reseau`(`id_reseau`, `res_nom`, `res_adresse`, `res_ville`, `res_tel`, `res_mail`, `res_logo`, `res_courrier`, `res_activation`) VALUES (1,'nom de votre reseau','1, rue du libre',1,'00 00 00 00 00','mail@mail.com','','1','1')";

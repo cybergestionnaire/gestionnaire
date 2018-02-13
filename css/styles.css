@@ -1,0 +1,20 @@
+.labelNumToday {
+    width:14%;
+    height:33px;
+    padding:5px 5px 10px 5px;
+    float:left;
+    background-color:#CCCCFF;
+    
+    font-size:14px;
+    text-align:center;
+    
+    /* border-left:1px  solid #FFFFFF ;*/
+    border-top:0px solid #CCCCCC ;
+    
+}
+.currentStep {
+        background-color:#CCCCFF;
+}
+.previousStep {
+        background-color:#CCFFCC;
+}
