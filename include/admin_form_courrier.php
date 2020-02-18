@@ -19,32 +19,35 @@
   2006 Namont Nicolas
 
 
-  include/admin_form_courrier.php V1.1
+ MAJ 2020
  */
 
 // formulaire de gestion des courriers
 
-$id = $_GET["idcourrier"];
-$b = $_GET["b"];
 
-if ($b == 1) {  // creation
+$id = (string) filter_input(INPUT_GET, "idcourrier");
+
+
+if ($id == "") {  // creation
     $post_url = "index.php?a=52&b=1&act=1";
     $label_bouton = "Ajouter un texte &agrave; un courrier";
     $label_titre = "Cr&eacute;er un nouveau texte de courrier";
+	
 } else { // modification
-    $post_url = "index.php?a=52&b=2&act=2&idcourrier=" . $id;
+    $post_url = "index.php?a=52&b=2&act=2&idcourrier=".$id;
     $label_bouton = "Modifier le texte du courrier";
     $label_titre = "Modifier le texte d'un courrier";
-    $row = getCourrier($id);
-
+	
+    $row = Courrier::getCourrierById($id);
+	
     //Informations matos
-    $titrecourrier = stripslashes($row["courrier_titre"]);
-    $texte = stripslashes($row["courrier_text"]);
-    $name = $row["courrier_name"];
-    $type = $row["courrier_type"];
+    $titrec = htmlentities($row->getTitre());
+    $texte =  htmlentities($row->getTexte());
+    $name =  htmlentities($row->getName());
+    $type =  htmlentities($row->getType());
 }
 //Affichage -----
-echo geterror($_GET["mesno"]);
+echo isset($mess) ? $mess : '';
 
 // array des types d'info
 $arrayname = array(
@@ -67,10 +70,10 @@ $arraytype = array(
             <div class="box box-primary"><div class="box-header"><h3 class="box-title"><?php echo $label_titre; ?></h3></div>
                 <div class="box-body">
                     <div class="form-group"><label>Nom* (pour la base)</label>
-                        <input type="text" name="titre" value="<?php echo $titrecourrier; ?>" class="form-control"></div>
+                        <input type="text" name="courrier_titre" value="<?php echo $titrec; ?>" class="form-control"></div>
 
                     <div class="form-group"><label>Contenu*</label>
-                        <textarea name="texte" class="form-control" rows="5" placeholder="Mettez votre texte au format html aussi !"><?php echo $texte; ?></textarea></div>
+                        <textarea name="courrier_texte" class="form-control" rows="5" placeholder="Mettez votre texte au format html aussi !"><?php echo $texte; ?></textarea></div>
 
                     <div class="form-group"><label>Courrier rattach&eacute;</label>
                         <select name="courrier_name" class="form-control" >

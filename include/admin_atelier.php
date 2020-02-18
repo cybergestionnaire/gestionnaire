@@ -17,12 +17,9 @@
 
  */
 /*
-  DETAIL D'UN ATELIER MODIFICATION 2013
+  DETAIL D'UN ATELIER MODIFICATION 2013 -- MAJ 2020
  */
 
-//require_once("include/class/Espace.class.php");
-//require_once("include/class/Atelier.class.php");
-//require_once("include/class/Tarif.class.php");
 
 $b = isset($_GET["b"]) ? $_GET["b"] : '';
 $idAtelier = isset($_GET["idatelier"]) ? $_GET["idatelier"] : '';
@@ -107,36 +104,7 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
 
     $testTarifAtelier = count(Tarif::getTarifsByCategorie('5'));
     //
-    ////Envoi du mail de rappel
-    //retrouver les mails de l'epn, les donnees texte subject/body
-    //coordonnees de l'espace
-    $arraymail = getMailRappel();
-
-    if (false == $arraymail) {
-        $mailok = 0;
-    } else {
-        $espace = $salle->getEspace();
-
-
-        $arraymailtype = array(
-            1 => "Introduction",
-            2 => "Sujet/object",
-            3 => "Corps du texte",
-            4 => "Signature"
-        );
-
-        $mail_subject = $arraymail[2];
-        $mail_body1 = $arraymail[3];
-        $mail_signature = $arraymail[4];
-
-        $mail_body = $mail_body1 . "\r\n en date du " . getDayfr($atelier->getDate()) . " &agrave; " . $atelier->getHeure() . " pour l'atelier " . $sujet->getLabel()
-                . "  anim&eacute; par " . htmlentities($animateur->getPrenom() . ' ' . $animateur->getNom())
-                . "  &agrave; " . htmlentities($salle->getNom() . ' (' . $salle->getEspace()->getNom() . ')')
-                . ".\r\n D&eacute;tail de l'atelier : \r\n" . htmlentities($sujet->getContent()) . ". "
-                . $mail_signature . " \r\n\r\n" . htmlentities($espace->getNom()) . " \r\n" . htmlentities($espace->getAdresse()) . " \r\n" . htmlentities($espace->getTelephone()) . ".";
-
-        $mailok = 1;
-    } ?> 
+   ?> 
 
     <!-- DETAIL DE L'ATELIER-->
     <div class="row">
@@ -191,7 +159,41 @@ if ($b != "") {   // affichage d'un atelier ------------------------------------
             $utilisateursinscritsOuPresents = $atelier->getUtilisateursInscritsOuPresents();
 
     if (count($utilisateursinscritsOuPresents) > 0) {
-        //tester la présence de tarifs ateliers
+       
+         ////Envoi du mail de rappel s'il y a des inscrits
+    //retrouver les mails de l'epn, les donnees texte subject/body
+    //coordonnees de l'espace
+    
+    $arraymail = getMailRappel();
+    //debug($arraymail);
+
+    if (false == $arraymail) {
+        $mailok = 0;
+    } else {
+        $espace = $salle->getEspace();
+        $arraymailtype = array(
+            1 => "Introduction",
+            2 => "Sujet/object",
+            3 => "Corps du texte",
+            4 => "Signature"
+        );
+
+       // $mail_subject = $arraymail[2];
+        $mail_body1 = $arraymail[3];
+        $mail_signature = $arraymail[4];
+
+//            $mail_body      = $mail_body1."\r\n en date du ".getDayfr($row["date_atelier"])." &agrave; ".$row["heure_atelier"]." pour l'atelier ".$rowsujet["label_atelier"]."  anim&eacute; par ".$anim."  &agrave; ".$nomsalle.".\n\r D&eacute;tail de l'atelier : \r\n".stripslashes($rowsujet["content_atelier"]).". ".$mail_signature." \r\n\r\n".$nom_epn." \r\n".$adresse_epn." \r\n".$tel_epn.".";
+        $mail_body = $mail_body1 . "\r\n en date du " . getDayfr($atelier->getDate()) . " &agrave; " . $atelier->getHeure() . " pour l'atelier " . $sujet->getLabel()
+                . "  anim&eacute; par " . htmlentities($animateur->getPrenom() . ' ' . $animateur->getNom())
+                . "  &agrave; " . htmlentities($salle->getNom() . ' (' . $salle->getEspace()->getNom() . ')')
+                . ".\n\r D&eacute;tail de l'atelier : \r\n" . htmlentities($sujet->getContent()) . ". "
+                . $mail_signature . " \r\n\r\n" . htmlentities($espace->getNom()) . " \r\n" . htmlentities($espace->getAdresse()) . " \r\n" . htmlentities($espace->getTelephone()) . ".";
+
+        $mailok = 1;
+    }
+       
+       
+       
 
         if ($testTarifAtelier > 1) {
             $tooltipinfo = "Inscriptions en cours / total d&eacute;pens&eacute;  sur total achet&eacute;";

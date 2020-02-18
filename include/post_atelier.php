@@ -16,19 +16,10 @@
   You should have received a copy of the GNU General Public License
   along with CyberGestionnaire.  If not, see <http://www.gnu.org/licenses/>
 
- */
-/*
-
-  include/post_atelier.php V0.1
- */
-// error_log("---- _POST ----");
-// error_log(print_r($_POST, true));
-// error_log("---- _GET ----");
-// error_log(print_r($_GET, true));
 
 //require_once("include/class/Atelier.class.php");
 //require_once("include/class/StatAtelierSession.class.php");
-
+*/
 $idAtelier = isset($_GET["idatelier"]) ? $_GET["idatelier"] : '';
 if (isset($_POST["submit_atelier"]) && $_POST["submit_atelier"] != "") {  // si le formulaire est posté
     $m = $_GET["m"];
@@ -97,7 +88,7 @@ if (isset($_POST["submit_atelier"]) && $_POST["submit_atelier"] != "") {  // si 
                         if ($stateAtelier == 3) { //en cas d'annulation d'atelier, l'inscrire dans les stats
                             $statAtelier = StatAtelierSession::getStatAtelierByIdAtelier($atelier->getId());
                             if ($statAtelier === null) {
-                                $statAtelier = StatAtelierSession::creerStatAtelierSession('a', $idAtelier, $atelier->getDate(), $atelier - getNbUtilisateursInscritsOuPresents(), 0, 0, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 2, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
+                                $statAtelier = StatAtelierSession::creerStatAtelierSession('a', $idAtelier, $atelier->getDate(), $atelier -> getNbUtilisateursInscritsOuPresents(), 0, 0, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 2, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
                             } else {
                                 $statAtelier->modifier('a', $idAtelier, $atelier->getDate(), $atelier - getNbUtilisateursInscritsOuPresents(), 0, 0, $atelier->getNbUtilisateursEnAttente(), $atelier->getNbPlaces(), $atelier->getSujet()->getIdCategorie(), 2, $atelier->getIdAnimateur(), $atelier->getSalle()->getIdEspace());
                             }

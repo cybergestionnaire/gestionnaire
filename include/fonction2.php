@@ -49,6 +49,36 @@ function closedb($mydb)
 }
 
 //
+// countUser()
+// compte le nombre d'utilisateur actif ,inactifs , total
+function countUser($id)
+{
+    switch ($id) {
+        case 1: // TOTAL ACTIFS + INACTIFS
+            $sql = "SELECT `id_user` FROM `tab_user` WHERE `status_user`!=3 AND `status_user`!=4  ";
+            break;
+        case 2: // TOTAL ACTIFS
+            $sql = "SELECT `id_user` FROM `tab_user` WHERE `status_user`=1";
+            break;
+        case 3: // TOTAL INACTIFS
+            $sql = "SELECT `id_user` FROM `tab_user` WHERE `status_user`=2";
+            break;
+        case 4: // TOTAL ARCHIVES
+            $sql = "SELECT `id_user` FROM `tab_user` WHERE `status_user`=6";
+            break;
+    }
+    $db = opendb();
+    $result = mysqli_query($db, $sql);
+    closedb($db);
+    if (false == $result) {
+        return false;
+    } else {
+        $nb = mysqli_num_rows($result);
+        return $nb;
+    }
+}
+
+//
 // Fonction url ----------------------------------------------------------------
 //
 //
@@ -233,23 +263,6 @@ function delBookmark($iduser, $idurl)
 }
 
 
-// ajout de la relation resa / computer / usage 1=resa, 2=atelier
-// Laissé en commentaire le temps de définir si c'est utile ou non...
-// function insertrelresa($idresa,$usage,$titreatelier)
-// {
-// $sql="INSERT INTO `rel_resa_usage`(`id_relresa`, `id_usage`, `id_resa`,`id_titreatelier`) VALUES ('','".$usage."','".$idresa."','".$titreatelier."')";
-// $db=opendb();
-// $result = mysqli_query($db,$sql) ;
-// closedb($db);
-// if ($result ==TRUE)
-// {
-// return TRUE;
-// } else {
-// return FALSE;
-// }
-// }
-
-
 // renvoi le statut ouvert ou ferme en fonction des horaire de la journé
 function checkHoraireDay($j, $m, $y, $epn)
 {
@@ -354,28 +367,7 @@ function checkDayOpen2($j, $m, $year, $epn)
     }
 }
 
-// met a jour un jour ferié
-/*
-  function updateDay($daynum,$year,$epn)
-  {
-  if (TRUE==checkDayOpen($daynum,$year,$epn))
-  {
-  //debug(checkDayOpen($daynum,$year));
-  $sql = "INSERT INTO `tab_days_closed` (`id_days_closed`, `year_days_closed`, `num_days_closed`, `state_days_closed`, `id_epn`) VALUES ('','".$year."','".$daynum."','F','".$epn."') ";
-  }
-  elseif(FALSE==checkDayOpen($daynum,$year,$epn))
-  {
-  $sql = "DELETE FROM `tab_days_closed` WHERE `num_days_closed`='".$daynum."' AND `year_days_closed`='".$year."'  WHERE id_epn='".$epn."' LIMIT 1" ;
-  }
-  $db=opendb();
-  $result = mysqli_query($db,$sql);
-  closedb($db);
-  if ($result == TRUE)
-  return TRUE;
-  else
-  return FALSE;
-  }
- */
+
 function insertJourFerie($daynum, $year, $epn)
 {
     $sql = "INSERT INTO `tab_days_closed` (`id_days_closed`, `year_days_closed`, `num_days_closed`, `state_days_closed`, `id_epn`) VALUES ('','" . $year . "','" . $daynum . "','F','" . $epn . "') ";
@@ -399,6 +391,20 @@ function deleteJourFerie($id)
         return true;
     } else {
         return false;
+    }
+}
+
+function getCyberName($epn)
+{
+    $sql = "SELECT `nom_espace` FROM `tab_espace` WHERE `id_espace`='" . $epn . "' ";
+    $db = opendb();
+    $result = mysqli_query($db, $sql);
+    closedb($db);
+    if (false == $result) {
+        return false;
+    } else {
+        $row = mysqli_fetch_array($result);
+        return $row["nom_espace"];
     }
 }
 
@@ -657,6 +663,19 @@ function getTarifs($cat)
     }
 }
 
+function getNomTarif($id)
+{
+    $sql = "SELECT `nom_tarif` FROM `tab_tarifs` WHERE `id_tarif`=" . $id;
+    $db = opendb();
+    $result = mysqli_query($db, $sql);
+    closedb($db);
+    if (false == $result) {
+        return false;
+    } else {
+        $row = mysqli_fetch_array($result);
+        return $row["nom_tarif"];
+    }
+}
 
 ////***** FONCTIONS SUR LA GESTION MULTIESPACE ***/////
 ///RESEAU ***///
@@ -712,6 +731,57 @@ function modreseau($nom, $adresse, $ville, $tel, $mail, $logo, $courrier, $activ
 }
 
 //
+// getAllSalle()
+// recupere les salless
+function getAllSalle()
+{
+    $sql = "SELECT * FROM tab_salle;";
+
+    $db = opendb();
+    $result = mysqli_query($db, $sql);
+    closedb($db);
+    if (false == $result) {
+        return false;
+    } else {
+        return $result;
+    }
+}
+
+//
+// getSalle()
+// recupere les salless
+function getSalle($numsalle)
+{
+    $sql = "SELECT * FROM tab_salle WHERE id_salle=" . $numsalle . ";";
+
+    $db = opendb();
+    $result = mysqli_query($db, $sql);
+    closedb($db);
+    if (false == $result) {
+        return false;
+    } else {
+        return $result;
+    }
+}
+
+//
+// getEspace()
+// recupere les espaces
+function getEspace($numespace)
+{
+    $sql = "SELECT * FROM tab_espace WHERE id_espace=" . $numespace . " ";
+
+    $db = opendb();
+    $result = mysqli_query($db, $sql);
+    closedb($db);
+    if (false == $result) {
+        return false;
+    } else {
+        return $result;
+    }
+}
+
+//
 //recuperer l'activation des forfaits pour l'epn
 //
 function getActivationForfaitEpn($id)
@@ -729,7 +799,50 @@ function getActivationForfaitEpn($id)
     }
 }
 
+function getAllEPN()
+{
+    $sql = "SELECT `id_espace`, `nom_espace` FROM `tab_espace`  ORDER BY `nom_espace` asc";
+    $db = opendb();
+    $result = mysqli_query($db, $sql);
+    closedb($db);
+    if (false == $result) {
+        return false;
+    } else {
+        $epn = array();
+        $nb = mysqli_num_rows($result);
+        for ($i = 1; $i <= $nb; $i++) {
+            $row = mysqli_fetch_array($result);
+            $epn[$row["id_espace"]] = $row["nom_espace"];
+        }
+        return $epn;
+    }
+}
+
+//retourne la liste des salles par epn
+function getAllSallesbyepn($epn)
+{
+    $sql = "SELECT `id_salle`, `nom_salle` FROM `tab_salle`  
+                    WHERE id_espace='" . $epn . "'
+        
+    ORDER BY `id_salle`";
+    $db = opendb();
+    $result = mysqli_query($db, $sql);
+    closedb($db);
+    if (false == $result) {
+        return false;
+    } else {
+        $epn = array();
+        $nb = mysqli_num_rows($result);
+        for ($i = 1; $i <= $nb; $i++) {
+            $row = mysqli_fetch_array($result);
+            $epn[$row["id_salle"]] = $row["nom_salle"];
+        }
+        return $epn;
+    }
+}
+
 ///***** GESTION DES COURRIERS ***** ///
+/*
 function createCourrier($titre, $texte, $name, $type)
 {
     $sql = "INSERT INTO `tab_courriers`(`id_courrier`, `courrier_titre`, `courrier_text`, `courrier_name`, `courrier_type`) 
@@ -801,11 +914,11 @@ function supCourrier($id)
         return true;
     }
 }
-
+*/
 //sur la page atelier, recuperer les infos du mail de rappel
 function getMailRappel()
 {
-    $sql = "SELECT `courrier_text`,`courrier_type` FROM `tab_courriers` WHERE `courrier_name`=1";
+    $sql = "SELECT `courrier_titre` ,`courrier_text`,`courrier_type` FROM `tab_courriers` WHERE `courrier_name`=1";
     $db = opendb();
     $result = mysqli_query($db, $sql);
     closedb($db);
@@ -819,6 +932,7 @@ function getMailRappel()
             $txt[$row["courrier_type"]] = $row["courrier_text"];
         }
         return $txt;
+       // debug($txt);
     }
 }
 
@@ -843,6 +957,7 @@ function getMailInscript()
 }
 
 //gestin de la newsletter
+
 function getNewsletterUsers()
 {
     $sql = "SELECT `nom_user`, `prenom_user`, `mail_user`, `epn_user` FROM `tab_user` WHERE `newsletter_user`=1";
@@ -855,6 +970,7 @@ function getNewsletterUsers()
         return $result;
     }
 }
+
 
 ///*******************************************************************///
 ///***** GESTION DES PROFILS ANIMATEURS ***** ///

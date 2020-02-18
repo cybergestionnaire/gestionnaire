@@ -22,11 +22,7 @@
 
  */
 
-//include_once("include/class/Salle.class.php");
-//include_once("include/class/Atelier.class.php");
-//include_once("include/class/AtelierSujet.class.php");
-//include_once("include/class/Utilisateur.class.php");
-//include_once("include/class/Tarif.class.php");
+
 
 if (isset($mess) && $mess != "") {
     echo $mess;
@@ -220,6 +216,52 @@ if ($atelierSujets === null) {
 
                     </div><!-- /box-body -->
                 </div><!-- /box --> 
+                
+                <!-- box supp pour les parametre externes-->
+                 <div class="box box-success">
+                    <div class="box-header"><h3 class="box-title">Données optionnelles</h3></div>
+                    <div class="box-body">
+						<div class="row">
+							<div class="col-lg-6">
+                                <label>Coût reception</label>
+                                <div class="input-group">
+                                    <input type="text" name="humain" value="" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label>Coût production</label>
+                                <div class="input-group">
+                                    <input type="text" name="heurespreparation" value="" class="form-control">
+                                </div>
+                            </div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Moyen Humains</label>
+									<input type="text" name="" value="" class="form-control">
+								</div>
+								</div>
+									<div class="col-lg-6">
+								<div class="form-group">
+									<label>Nombre d'heures</label>
+									<input type="text" name="" value="" class="form-control">
+								</div>
+								 </div> </div>
+								 
+                        <div class="form-group">
+                            <label>Cout communication</label>
+                            <input type="text" name="" value="" class="form-control">
+                        </div>
+                        
+                         <div class="form-group">
+                            <label>Partenariat</label>
+                            <input type="text" name="" value="" class="form-control">
+                        </div>
+						
+                    </div>
+                 </div>   
+                
             </div><!-- /col -->
 
             <div class="col-md-6">    
